@@ -1,7 +1,7 @@
 package com.addzero.kmp.processor
 
 import com.addzero.kmp.consts.GEN_PKG
-import com.addzero.kmp.processor.annotation.Route
+import com.addzero.kmp.annotation.Route
 import com.google.devtools.ksp.processing.*
 import com.google.devtools.ksp.symbol.*
 import com.google.devtools.ksp.validate

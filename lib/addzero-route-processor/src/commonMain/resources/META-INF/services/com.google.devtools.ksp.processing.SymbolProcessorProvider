@@ -1,0 +1,5 @@
+com.addzero.kmp.processor.RouteMetadataProcessorProvider
+
+#com.addzero.kmp.processor.JimmerEntityProcessorsor$JimmerEntityProcessorProvider
+#com.addzero.kmp.processor.KtorfitServiceProviderProcessorProvider
+#com.addzero.kmp.processor.ImageVectorProcessor$ImageVectorProvider

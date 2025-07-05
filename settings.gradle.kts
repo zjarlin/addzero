@@ -40,3 +40,7 @@ include("lib:addzero-route-processor")
 findProject(":lib:addzero-route-processor")?.name = "addzero-route-processor"
 include("lib:addzero-route-core")
 findProject(":lib:addzero-route-core")?.name = "addzero-route-core"
+include("lib:addzero-controller2api-processor")
+findProject(":lib:addzero-controller2api-processor")?.name = "addzero-controller2api-processor"
+include("lib:addzero-ksp-support")
+findProject(":lib:addzero-ksp-support")?.name = "addzero-ksp-support"
