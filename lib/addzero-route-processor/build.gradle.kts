@@ -1,9 +1,12 @@
 plugins {
     id("kmp-ksp")
 }
-kotlin{
-   sourceSets{
-      commonMain.dependencies {
-         implementation(projects.lib.addzeroRouteCore) }
-   }
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            api(projects.lib.addzeroRouteCore)
+
+            implementation(projects.lib.addzeroKspSupport)
+        }
+    }
 }
