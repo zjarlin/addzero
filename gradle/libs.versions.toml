@@ -29,7 +29,8 @@ dokka = "2.0.0"
 [libraries]
 
 
-gradlePlugin-android = "com.android.tools.build:gradle:8.11.0"
+#gradlePlugin-android = "com.android.tools.build:gradle:8.11.0"
+gradlePlugin-android = "com.android.tools.build:gradle:8.10.0"
 #gradlePlugin-atomicFu = { module = "org.jetbrains.kotlinx:atomicfu-gradle-plugin", version.ref = "atomicfu" }
 gradlePlugin-composeCompiler = { module = "org.jetbrains.kotlin.plugin.compose:org.jetbrains.kotlin.plugin.compose.gradle.plugin", version.ref = "kotlin" }
 gradlePlugin-dokka = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
