@@ -30,10 +30,12 @@ object Vars {
 }
 
 object Versions {
+    const val fileKitVersion = "0.8.8"
     const val versionCode = 1
     const val versionName = "1.0"
 
-    const val javaVersion = "11"
+    const val javaVersion = "24"
+    const val kotlinVersion = "2.2.0"
 
     // JVM相关常量
     val jvmTargetVersion = javaVersion.toInt()

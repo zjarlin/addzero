@@ -24,7 +24,7 @@ junit = "4.13.2"
 kotlinx-coroutines = "1.10.2"
 ktor = "3.2.0"
 logback = "1.5.18"
-composeHotReload = "1.0.0-alpha11"
+composeHotReload = "+"
 composeMultiplatform = "1.8.2"
 dokka = "2.0.0"
 [libraries]
