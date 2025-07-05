@@ -91,6 +91,11 @@ android {
     namespace = "compileOptions.addzero.kmp.component"
     compileSdk =35
 
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
+
     defaultConfig {
         applicationId = "compileOptions.addzero.kmp"
         minSdk = 24
@@ -111,10 +116,6 @@ android {
         }
     }
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
 }
 
 dependencies {

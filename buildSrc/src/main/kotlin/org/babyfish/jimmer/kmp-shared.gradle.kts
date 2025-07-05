@@ -1,3 +1,4 @@
+import org.babyfish.jimmer.defIos
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
@@ -16,9 +17,8 @@ kotlin {
         }
     }
 
-    iosX64()
-    iosArm64()
-    iosSimulatorArm64()
+    val defIos = defIos()
+
 
     jvm()
 
