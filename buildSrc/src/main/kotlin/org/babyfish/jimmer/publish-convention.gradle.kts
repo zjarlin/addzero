@@ -1,25 +1,18 @@
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
-val groupVal = "io.gitee.zjarlin"
-val p = project
-val versionVal = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd.HHmm"))
-val giturl = "https://gitee.com/zjarlin/addzero-component"
-val projName = "AddzeroComponent"
-val authorName = groupVal.split(".").last() // zjarlin
+import org.babyfish.jimmer.P.authorName
+import org.babyfish.jimmer.P.giturl
+import org.babyfish.jimmer.P.projName
 
-group = groupVal
-version = versionVal
 
 // 临时注释发布相关配置，直到基本构建可工作
- plugins {
+plugins {
     id("com.vanniktech.maven.publish")
- }
+}
 
- mavenPublishing {
+mavenPublishing {
     publishToMavenCentral(automaticRelease = true)
     signAllPublications()
-    coordinates(groupVal, p.name, versionVal)
+    coordinates(project.group.toString(), project.name, project.version.toString())
     pom {
         name.set(projName)
         description.set(projName)
@@ -45,4 +38,4 @@ version = versionVal
             developerConnection.set("scm:git:ssh://git@${giturl.removePrefix("https://")}.git")
         }
     }
- }
+}

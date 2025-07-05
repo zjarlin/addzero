@@ -1,4 +1,3 @@
-plugins {
-    id("kmp")
+plugins{
+   id("kmp")
 }
-

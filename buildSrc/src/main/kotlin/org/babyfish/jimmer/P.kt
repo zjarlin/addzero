@@ -1,13 +1,15 @@
 package org.babyfish.jimmer
 
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+
 object P {
-    const val javaVersion = "11"
     const val myGroup = "io.gitee.zjarlin"
-    const val myVersion = "1.0.0"
-    // Android 相关常量
-    const val androidCompileSdk = 35
-    const val androidMinSdk = 24
-    const val androidTargetSdk = 35
+    val myVersion = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd.HHmm"))
+
+    val giturl = "https://gitee.com/zjarlin/addzero-component"
+    val projName = "AddzeroComponent"
+    val authorName = myGroup.split(".").last() // zjarlin
 
     // 应用相关常量
     const val applicationId = "com.addzero.kmp"
@@ -16,8 +18,6 @@ object P {
     const val versionCode = 1
     const val versionName = "1.0"
 
-    // JVM相关常量
-    const val jvmTargetVersion = 11
 
     // 应用主类
     const val mainClass = "com.addzero.kmp.MainKt"
@@ -27,10 +27,18 @@ object P {
     const val packageVersion = "1.0.0"
 
     // 依赖版本
-    object Versions {
-        const val composeMultiplatform = "1.8.2"
-        const val kotlinxCoroutines = "1.10.2"
-        const val androidxActivity = "1.10.1"
-        const val androidxLifecycle = "2.9.1"
-    }
+}
+
+object Versions {
+    const val javaVersion = "11"
+    // JVM相关常量
+    val jvmTargetVersion = javaVersion.toInt()
+    // Android 相关常量
+    const val androidCompileSdk = 35
+    const val androidMinSdk = 24
+    const val androidTargetSdk = 35
+    const val composeMultiplatform = "1.8.2"
+    const val kotlinxCoroutines = "1.10.2"
+    const val androidxActivity = "1.10.1"
+    const val androidxLifecycle = "2.9.1"
 }

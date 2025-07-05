@@ -1,4 +1,4 @@
-import org.babyfish.jimmer.P.javaVersion
+import org.babyfish.jimmer.Versions.javaVersion
 
 plugins {
     `java-library`
