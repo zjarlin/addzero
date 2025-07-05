@@ -1,7 +1,7 @@
+import org.babyfish.defIos
 import org.babyfish.jimmer.Vars
 import org.babyfish.jimmer.Versions
 import org.babyfish.jimmer.Versions.javaVersion
-import org.babyfish.jimmer.defIos
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget

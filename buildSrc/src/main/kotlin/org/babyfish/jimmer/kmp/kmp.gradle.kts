@@ -1,11 +1,11 @@
+import org.babyfish.defIos
+import org.babyfish.doIos
 import org.babyfish.jimmer.Vars
 import org.babyfish.jimmer.Vars.myGroup
 import org.babyfish.jimmer.Vars.myVersion
 import org.babyfish.jimmer.Versions
 import org.babyfish.jimmer.Versions.androidTargetSdk
 import org.babyfish.jimmer.Versions.javaVersion
-import org.babyfish.jimmer.defIos
-import org.babyfish.jimmer.doIos
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
