@@ -174,22 +174,9 @@ object JlStrUtil {
 
     }
 
-    //    /**
-//     * 将字符串转换为驼峰命名
-//     */
-    fun String.toBigCamelCase(): String {
-        return this.split("_").joinToString("") {
-            it.replaceFirstChar { char -> char.uppercase() }
-        }
-    }
+    fun String.makeSurroundWith(fix: String): String {
+        return makeSurroundWith(this, fix)
 
-    /**
-     * 将列名转换为驼峰命名
-     */
-    fun String.toLowCamelCase(): String {
-        return this.split("_").joinToString("") {
-            it.replaceFirstChar { char -> char.uppercase() }
-        }.replaceFirstChar { it.lowercase() }
     }
 
 

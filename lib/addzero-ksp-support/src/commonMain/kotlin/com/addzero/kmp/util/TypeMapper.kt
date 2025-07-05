@@ -1,5 +1,11 @@
 package com.addzero.kmp.util
 
+// 定义Kotlin标准库类型，这些类型通常不需要导入
+ val kotlinStdTypes = setOf(
+    "String", "Int", "Long", "Double", "Float", "Boolean", "Short", "Byte", "Char", "List", "Set", "Map", "MutableList", "MutableSet", "MutableMap"
+)
+
+
 
 
 /**

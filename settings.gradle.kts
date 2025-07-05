@@ -46,3 +46,7 @@ include("lib:addzero-ksp-support")
 findProject(":lib:addzero-ksp-support")?.name = "addzero-ksp-support"
 include("lib:addzero-ksp-support-jdbc")
 findProject(":lib:addzero-ksp-support-jdbc")?.name = "addzero-ksp-support-jdbc"
+include("lib:addzero-jdbc2controller-processor")
+findProject(":lib:addzero-jdbc2controller-processor")?.name = "addzero-jdbc2controller-processor"
+include("lib:addzero-entity2form-processor")
+findProject(":lib:addzero-entity2form-processor")?.name = "addzero-entity2form-processor"
