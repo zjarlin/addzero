@@ -1,4 +1,6 @@
 import org.babyfish.jimmer.P.myVersion
+import org.babyfish.jimmer.defIos
+import org.babyfish.jimmer.doIos
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
@@ -28,16 +30,9 @@ kotlin {
         }
     }
 
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            baseName = "ComposeApp"
-            isStatic = true
-        }
-    }
+    val defIos = defIos()
+
+    doIos(defIos)
 
     jvm("desktop")
 
