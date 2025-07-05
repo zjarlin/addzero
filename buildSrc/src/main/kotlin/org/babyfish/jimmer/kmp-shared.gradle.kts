@@ -1,3 +1,6 @@
+import org.babyfish.jimmer.Vars
+import org.babyfish.jimmer.Versions
+import org.babyfish.jimmer.Versions.javaVersion
 import org.babyfish.jimmer.defIos
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
@@ -13,7 +16,7 @@ kotlin {
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_11)
+     jvmTarget.set(JvmTarget.fromTarget(Versions.javaVersion))
         }
     }
 
@@ -50,14 +53,17 @@ kotlin {
 }
 
 android {
-    namespace = "com.addzero.kmp.shared"
-    compileSdk =35
+
+    namespace = Vars.sharedNamespace
+    compileSdk = Versions.androidCompileSdk
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        val toVersion = JavaVersion.toVersion(javaVersion)
+        sourceCompatibility = toVersion
+        targetCompatibility = toVersion
     }
     defaultConfig {
-        minSdk =24
+
+        minSdk =Versions.androidMinSdk
     }
 
 }
