@@ -30,6 +30,8 @@ object Vars {
 }
 
 object Versions {
+    const val pinyin4jVersion = "2.5.1"
+
     const val fileKitVersion = "0.8.8"
     const val versionCode = 1
     const val versionName = "1.0"

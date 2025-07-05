@@ -2,9 +2,11 @@ package com.addzero.kmp.processor
 
 import com.addzero.kmp.consts.GEN_PKG
 import com.addzero.kmp.annotation.Route
+import com.addzero.kmp.context.SettingContext
 import com.google.devtools.ksp.processing.*
 import com.google.devtools.ksp.symbol.*
 import com.google.devtools.ksp.validate
+import java.lang.StringBuilder
 
 private const val FILE_NAME = "RouteTable"
 
@@ -14,11 +16,14 @@ private const val FILE_NAME = "RouteTable"
  */
 class RouteMetadataProcessor(
     private val codeGenerator: CodeGenerator,
-    private val logger: KSPLogger
+    private val logger: KSPLogger,
+    private val options: Map<String, String>
 ) : SymbolProcessor {
+
     val ret = mutableSetOf<Route>()
 
     override fun process(resolver: Resolver): List<KSAnnotated> {
+        SettingContext.initialize(options)
         // 获取所有带有Route注解的符号
         val symbols = resolver.getSymbolsWithAnnotation(Route::class.qualifiedName!!)
             .toList()
@@ -114,16 +119,6 @@ class RouteMetadataProcessor(
         }
     }
 
-    private fun String.toUnderLineCase(): String {
-        val sb = kotlin.text.StringBuilder()
-        for ((index, char) in this.withIndex()) {
-            if (index > 0 && char.isUpperCase()) {
-                sb.append('_')
-            }
-            sb.append(char)
-        }
-        return sb.toString()
-    }
 
     private fun generateRouteTable(routeItems: Set<Route>) {
         val packageName = GEN_PKG
@@ -241,7 +236,7 @@ class RouteMetadataProcessor(
                 stream.write(content.toByteArray())
             }
             logger.info("Created file: $packageName.$fileName")
-        } catch (e: kotlin.io.FileAlreadyExistsException) {
+        } catch (e: FileAlreadyExistsException) {
             logger.info("File already exists: $packageName.$fileName, skipping generation")
         } catch (e: Exception) {
             logger.warn("Error creating file $packageName.$fileName: ${e.message}")
@@ -258,7 +253,8 @@ class RouteMetadataProcessorProvider : SymbolProcessorProvider {
     ): SymbolProcessor {
         return RouteMetadataProcessor(
             codeGenerator = environment.codeGenerator,
-            logger = environment.logger
+            logger = environment.logger,
+            options =environment.options
         )
     }
 }
