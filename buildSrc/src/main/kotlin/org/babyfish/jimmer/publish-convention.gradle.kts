@@ -1,7 +1,7 @@
 
-import org.babyfish.jimmer.P.authorName
-import org.babyfish.jimmer.P.giturl
-import org.babyfish.jimmer.P.projName
+import org.babyfish.jimmer.Vars.authorName
+import org.babyfish.jimmer.Vars.giturl
+import org.babyfish.jimmer.Vars.projName
 
 
 // 临时注释发布相关配置，直到基本构建可工作

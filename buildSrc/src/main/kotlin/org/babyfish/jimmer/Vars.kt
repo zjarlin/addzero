@@ -3,7 +3,7 @@ package org.babyfish.jimmer
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-object P {
+object Vars {
     const val myGroup = "io.gitee.zjarlin"
     val myVersion = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd.HHmm"))
 
@@ -12,27 +12,32 @@ object P {
     val authorName = myGroup.split(".").last() // zjarlin
 
     // 应用相关常量
-    const val applicationId = "com.addzero.kmp"
-    const val applicationNamespace = "com.addzero.kmp"
+    const val applicationId = "compileOptions.addzero.kmp"
+    const val applicationNamespace = "compileOptions.addzero.kmp.component"
     const val sharedNamespace = "com.addzero.kmp.shared"
-    const val versionCode = 1
-    const val versionName = "1.0"
-
+    const val outputModuleName = "composeApp"
 
     // 应用主类
-    const val mainClass = "com.addzero.kmp.MainKt"
 
+    //    const val packageName = "compileOptions.addzero.kmp"
+//    const val mainClass = "compileOptions.addzero.kmp.MainKt"
     // 包名和版本
     const val packageName = "com.addzero.kmp"
-    const val packageVersion = "1.0.0"
+
+    const val mainClass = "${packageName}.MainKt"
 
     // 依赖版本
 }
 
 object Versions {
+    const val versionCode = 1
+    const val versionName = "1.0"
+
     const val javaVersion = "11"
+
     // JVM相关常量
     val jvmTargetVersion = javaVersion.toInt()
+
     // Android 相关常量
     const val androidCompileSdk = 35
     const val androidMinSdk = 24

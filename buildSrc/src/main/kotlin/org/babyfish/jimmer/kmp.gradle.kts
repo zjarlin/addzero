@@ -1,4 +1,9 @@
-import org.babyfish.jimmer.P.myVersion
+import org.babyfish.jimmer.Vars
+import org.babyfish.jimmer.Vars.myGroup
+import org.babyfish.jimmer.Vars.myVersion
+import org.babyfish.jimmer.Versions
+import org.babyfish.jimmer.Versions.androidTargetSdk
+import org.babyfish.jimmer.Versions.javaVersion
 import org.babyfish.jimmer.defIos
 import org.babyfish.jimmer.doIos
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
@@ -6,44 +11,40 @@ import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 plugins {
     id("org.jetbrains.compose")
     id("org.jetbrains.kotlin.multiplatform")
     id("com.android.application")
     id("org.jetbrains.kotlin.plugin.compose")
-//    id("org.jetbrains.compose.hot-reload")
 }
 
-val groupVal = "io.gitee.zjarlin"
 
-group = groupVal
+group = myGroup
 version = myVersion
 
 kotlin {
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_11)
+            jvmTarget.set(JvmTarget.fromTarget(Versions.javaVersion))
+
         }
     }
-
     val defIos = defIos()
 
     doIos(defIos)
-
     jvm("desktop")
 
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
-        outputModuleName.set("composeApp")
+
+        outputModuleName.set(Vars.outputModuleName)
         browser {
             val rootDirPath = project.rootDir.path
             val projectDirPath = project.projectDir.path
             commonWebpackConfig {
-                outputFileName = "composeApp.js"
+                outputFileName = "${Vars.outputModuleName}.js"
                 devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
                     static = (static ?: mutableListOf()).apply {
                         // Serve sources to debug inside browser
@@ -61,11 +62,9 @@ kotlin {
 
         androidMain.dependencies {
             implementation(compose.preview)
-            implementation("androidx.activity:activity-compose:1.10.1")
+            implementation("androidx.activity:activity-compose:${Versions.androidxActivity}")
         }
         commonMain.dependencies {
-            // Enables FileKit with Composable utilities
-            implementation("io.github.vinceglb:filekit-compose:0.8.8")
 
             implementation(compose.materialIconsExtended)
             implementation(compose.runtime)
@@ -74,8 +73,8 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
-            implementation("org.jetbrains.androidx.lifecycle:lifecycle-viewmodel:2.9.1")
-            implementation("org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose:2.9.1")
+            implementation("org.jetbrains.androidx.lifecycle:lifecycle-viewmodel:${Versions.androidxLifecycle}")
+            implementation("org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose:${Versions.androidxLifecycle}")
         }
         commonTest.dependencies {
             implementation("org.jetbrains.kotlin:kotlin-test")
@@ -88,20 +87,25 @@ kotlin {
 }
 
 android {
-    namespace = "compileOptions.addzero.kmp.component"
-    compileSdk =35
+
+    namespace = Vars.applicationNamespace
+
+    compileSdk = Versions.androidCompileSdk
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        val toVersion = JavaVersion.toVersion(javaVersion)
+        sourceCompatibility = toVersion
+        targetCompatibility = toVersion
     }
 
     defaultConfig {
-        applicationId = "compileOptions.addzero.kmp"
-        minSdk = 24
-        targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
+
+        applicationId = Vars.applicationId
+
+        minSdk = Versions.androidMinSdk
+        targetSdk = androidTargetSdk
+        versionCode = Versions.versionCode
+        versionName = Versions.versionName
     }
 
     packaging {
@@ -124,12 +128,13 @@ dependencies {
 
 compose.desktop {
     application {
-        mainClass = "compileOptions.addzero.kmp.MainKt"
+
+        mainClass = Vars.mainClass
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "compileOptions.addzero.kmp"
-            packageVersion = "1.0.0"
+            packageName =Vars.packageName
+            packageVersion ="1.0.0"
         }
     }
 }
