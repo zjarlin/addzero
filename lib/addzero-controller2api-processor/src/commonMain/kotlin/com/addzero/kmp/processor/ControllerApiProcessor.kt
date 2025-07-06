@@ -12,10 +12,14 @@ import java.io.File
  */
 class ControllerApiProcessor(
     private val codeGenerator: CodeGenerator,
-    private val logger: KSPLogger
+    private val logger: KSPLogger,
+    private val options: Map<String, String>
 ) : SymbolProcessor {
 
     override fun process(resolver: Resolver): List<KSAnnotated> {
+        SettingContext.initialize(options)
+        logger.warn("解析Controller符号生成Ktorfit接口初始化配置: ${SettingContext.settings}")
+
         val controllerSymbols = resolver
             .getSymbolsWithAnnotation("org.springframework.web.bind.annotation.RestController")
             .filterIsInstance<KSClassDeclaration>()
@@ -246,6 +250,10 @@ class ControllerApiProcessor(
             // 从SettingContext获取配置
             val settings = SettingContext.settings
             val outputDir = settings.apiclientOutPutDir
+
+
+            logger.info("api客户端输出目录为: $outputDir")
+
             val packageName = settings.apiClientPackageName
 
             // 创建输出目录
@@ -604,7 +612,7 @@ $httpAnnotation$methodSignature
  */
 class ControllerApiProcessorProvider : SymbolProcessorProvider {
     override fun create(environment: SymbolProcessorEnvironment): SymbolProcessor {
-        return ControllerApiProcessor(environment.codeGenerator, environment.logger)
+        return ControllerApiProcessor(environment.codeGenerator, environment.logger,environment.options)
     }
 }
 

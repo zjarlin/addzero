@@ -4,6 +4,7 @@ plugins {
     id("spring-conventions")
     id("test-conventions")
     id("ksp4backend-convention")
+//    id("com.google.devtools.ksp")
     id("org.jetbrains.kotlin.plugin.noarg") version "+"
 //    application
 }
