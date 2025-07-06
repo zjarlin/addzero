@@ -9,8 +9,6 @@
 ![项目截图](images/img.png)
 
 
-# 尽可能的将运行时优化为编译时
-
 
 ## ksp
 - jimmer实体(backend)SysUser

@@ -4,19 +4,10 @@ plugins {
     id("com.vanniktech.maven.publish")
 }
 
-afterEvaluate {
-    tasks.findByName("plainJavadocJar")?.let { plainJavadocJarTask ->
-        tasks.named("generateMetadataFileForMavenPublication") {
-            dependsOn(plainJavadocJarTask)
-        }
-    }
-}
-
 mavenPublishing {
     publishToMavenCentral(automaticRelease = true)
     signAllPublications()
 }
-
 
 
 mavenPublishing {
