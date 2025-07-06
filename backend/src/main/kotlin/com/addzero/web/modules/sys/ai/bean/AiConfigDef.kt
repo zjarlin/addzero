@@ -10,7 +10,8 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 class AiConfigDef(
-    @Value("\${deepseek.key}") private val deepseekKey: String, @Value("\${doubao.key}") private val doubaoKey: String,
+    @Value("\${spring.ai.deepseek.api-key}") private val deepseekKey: String,
+    @Value("\${doubao.key}") private val doubaoKey: String,
 
     ) {
     @Bean
