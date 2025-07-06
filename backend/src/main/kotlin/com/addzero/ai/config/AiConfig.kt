@@ -31,7 +31,7 @@ class AiConfig(
     }
 
     @Bean
-    @DependsOn("toolCallbackProvider")
+    @DependsOn("autoRegisterTools")
     fun chatClient(): ChatClient {
         return defaultChatClient(deepSeekChatModel)
     }
