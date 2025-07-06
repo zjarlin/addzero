@@ -1,11 +1,9 @@
-import com.vanniktech.maven.publish.SonatypeHost
 import org.babyfish.jimmer.Vars
 
 plugins {
-//    sin
-//    signing
     id("com.vanniktech.maven.publish")
 }
+
 afterEvaluate {
     tasks.findByName("plainJavadocJar")?.let { plainJavadocJarTask ->
         tasks.named("generateMetadataFileForMavenPublication") {
@@ -15,9 +13,7 @@ afterEvaluate {
 }
 
 mavenPublishing {
-
     publishToMavenCentral(automaticRelease = true)
-
     signAllPublications()
 }
 
