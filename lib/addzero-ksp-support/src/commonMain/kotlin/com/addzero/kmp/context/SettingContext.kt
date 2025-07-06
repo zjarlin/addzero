@@ -1,4 +1,5 @@
-import com.addzero.kmp.context.Settings
+package com.addzero.kmp.context
+
 import com.addzero.kmp.util.BeanUtil.mapToBean
 import com.addzero.kmp.util.BeanUtil.toMap
 import java.util.concurrent.atomic.AtomicReference

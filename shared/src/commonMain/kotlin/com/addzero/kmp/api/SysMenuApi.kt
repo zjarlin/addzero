@@ -1,0 +1,26 @@
+package com.addzero.kmp.api
+
+import com.addzero.kmp.entity.sys.menu.SysMenuVO
+import de.jensklingenberg.ktorfit.http.*
+
+/**
+ * Ktorfit接口 - 由KSP自动生成
+ * 原始Controller: com.addzero.web.modules.sys_menu.controller.SysMenuController
+ * 基础路径: /sysMenu
+ * 输出目录: /Users/zjarlin/Downloads/AddzeroKmp/shared/src/commonMain/kotlin/com/addzero/kmp/api
+ */
+interface SysMenuApi {
+
+/**
+ * getAllMenu
+ * HTTP方法: POST
+ * 路径: /sysMenu/getSysMenu
+ * 参数:
+ *   - params: kotlin.collections.Set<kotlin.String> (RequestBody)
+ * 返回类型: kotlin.collections.Map<kotlin.String, com.addzero.kmp.SysMenuVO>
+ */
+    @POST("/sysMenu/getSysMenu")    suspend fun getAllMenu(
+        @Body params: Set<String>
+    ): Map<String, SysMenuVO>
+
+}

@@ -1,5 +1,6 @@
 package com.addzero.kmp.processor
 
+import com.addzero.kmp.context.SettingContext
 import com.addzero.kmp.context.apiclientOutPutDir
 import com.google.devtools.ksp.processing.*
 import com.google.devtools.ksp.symbol.*

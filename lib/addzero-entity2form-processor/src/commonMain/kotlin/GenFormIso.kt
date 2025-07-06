@@ -1,5 +1,6 @@
 
-import SettingContext.settings
+import com.addzero.kmp.context.SettingContext
+import com.addzero.kmp.context.SettingContext.settings
 import com.addzero.kmp.context.isomorphicShareOutPutDir
 import com.addzero.kmp.util.filterBaseEntity
 import com.addzero.kmp.util.isJimmerEntity

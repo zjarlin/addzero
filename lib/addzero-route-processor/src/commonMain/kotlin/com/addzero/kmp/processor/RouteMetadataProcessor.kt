@@ -6,7 +6,6 @@ import com.addzero.kmp.context.SettingContext
 import com.google.devtools.ksp.processing.*
 import com.google.devtools.ksp.symbol.*
 import com.google.devtools.ksp.validate
-import java.lang.StringBuilder
 
 private const val FILE_NAME = "RouteTable"
 

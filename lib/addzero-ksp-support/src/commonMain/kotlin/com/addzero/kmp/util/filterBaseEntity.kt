@@ -1,5 +1,7 @@
 package com.addzero.kmp.util
 
+import com.addzero.kmp.context.SettingContext
+
 fun filterBaseEntity(colName: String): Boolean {
     val settings = SettingContext.settings
     val id = settings.id

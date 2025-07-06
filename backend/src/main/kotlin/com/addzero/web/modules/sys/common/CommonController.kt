@@ -5,7 +5,6 @@ import com.addzero.kmp.api.CommonApi
 import com.addzero.kmp.entity.low_table.*
 import com.addzero.kmp.exp.BizException
 import com.addzero.kmp.jdbc.meta.jdbcMetadata
-import com.addzero.kmp.kt_util.isBlank
 import com.addzero.kmp.util.TypeMapper
 import com.addzero.kmp.util.TypeMapper.toLowCamelCase
 import com.addzero.web.infra.entityMap

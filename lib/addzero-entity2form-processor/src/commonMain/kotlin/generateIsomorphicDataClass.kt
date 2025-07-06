@@ -1,5 +1,4 @@
 import com.addzero.kmp.context.SettingContext
-import com.addzero.kmp.util.JlStrUtil.isBlank
 import com.addzero.kmp.util.defaultValue
 import com.addzero.kmp.util.isBlank
 import com.addzero.kmp.util.isJimmerEntity

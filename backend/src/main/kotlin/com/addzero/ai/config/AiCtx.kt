@@ -9,8 +9,6 @@ import com.addzero.ai.util.ai.ai_abs_builder.AiUtil.Companion.buildStructureOutP
 import com.addzero.kmp.constant.Promts
 import com.addzero.kmp.kt_util.JlStrUtil.cleanBlank
 import com.addzero.kmp.kt_util.addPrefixIfNot
-import com.addzero.kmp.kt_util.isBlank
-import com.addzero.kmp.kt_util.isNotBlank
 import com.alibaba.fastjson2.toJSONString
 import org.springframework.ai.chat.client.ChatClient
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor

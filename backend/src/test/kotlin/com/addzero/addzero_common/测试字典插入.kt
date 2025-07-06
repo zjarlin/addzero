@@ -4,7 +4,6 @@ import com.addzero.kmp.mock.createMockDictItems
 import com.addzero.kmp.mock.createMockDictTypes
 import com.addzero.web.modules.sys_dict.entity.SysDict
 import com.addzero.web.modules.sys_dict.entity.by
-import com.addzero.web.modules.sys_dict.entity.deleted
 import com.addzero.web.modules.sys_dict.entity.dictName
 import com.addzero.web.modules.sys_dict.entity.fetchBy
 import com.addzero.web.modules.sys_dict.entity.sysDictItems
@@ -12,7 +11,6 @@ import com.addzero.web.modules.sys_dict_item.entity.SysDictItem
 import com.addzero.web.modules.sys_dict_item.entity.itemText
 import org.babyfish.jimmer.sql.ast.mutation.SaveMode
 import org.babyfish.jimmer.sql.kt.KSqlClient
-import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.babyfish.jimmer.sql.kt.ast.expression.`ilike?`
 import org.babyfish.jimmer.sql.kt.ast.expression.or
 import org.babyfish.jimmer.sql.kt.fetcher.newFetcher

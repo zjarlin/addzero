@@ -1,4 +1,5 @@
 
+import com.addzero.kmp.context.SettingContext
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.processing.SymbolProcessor
 import com.google.devtools.ksp.processing.SymbolProcessorEnvironment

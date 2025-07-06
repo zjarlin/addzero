@@ -6,7 +6,6 @@ import com.addzero.kmp.exp.BizException
 import com.addzero.kmp.entity.low_table.CommonTableDaTaInputDTO
 import com.addzero.kmp.entity.low_table.EnumLogicOperator
 import com.addzero.web.infra.constant.RestConsts.deleteUrl
-import com.addzero.web.infra.constant.RestConsts.listAllUrl
 import com.addzero.web.infra.constant.RestConsts.saveUrl
 import com.addzero.web.infra.constant.RestConsts.updateUrl
 import com.addzero.web.infra.jimmer.adv_search.queryPage

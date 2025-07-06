@@ -1,7 +1,6 @@
 package com.addzero.web.modules.sys_menu.controller
 import com.addzero.kmp.entity.sys.menu.SysMenuVO
 import com.addzero.kmp.mock.mockkSysMunu
-import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
