@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    dynamic:
+      primary: pg
+      datasource:
+        pg:
+          driver-class-name: org.postgresql.Driver
+          url: jdbc:postgresql://localhost:15432/postgres?currentSchema=public
+          username: postgres
+          password: postgres
+#        dm:
+#          driver-class-name: dm.jdbc.driver.DmDriver
+#          url: jdbc:dm://11111111111111111:5236/SJZYXT?searchpath=public&stringtype =unspecified &clobAsString=1
+#          username: aaaaaa
+#          password: aaaaaaa
+#        mysql:
+#          driver-class-name: com.mysql.cj.jdbc.Driver
+#          url: jdbc:mysql:// ${host:localhost}:3306/blue?characterEncoding=UTF-8&useUnicode=true&useSSL=false&tinyInt1isBit=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
+#          username: root
+#          password: root
+#        h2 :
+#          url: jdbc:h2:file:${user.dir}/db/second_brain_data/data;AUTO_SERVER=TRUE
+#          driver-class-name: org.h2.Driver                    # H2 驱动
+#          username:              # 默认用户名
+#          password:                                           # 默认密码为空

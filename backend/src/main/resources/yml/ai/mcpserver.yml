@@ -1,0 +1,8 @@
+spring:
+  ai:
+    mcp:
+      server:
+        name: webflux-mcp-server
+        version: 1.0.0
+        type: ASYNC  # Recommended for reactive applications
+        sse-message-endpoint: /mcp/messages

@@ -1,4 +1,9 @@
 
+import SettingContext.settings
+import com.addzero.kmp.context.isomorphicShareOutPutDir
+import com.addzero.kmp.util.filterBaseEntity
+import com.addzero.kmp.util.isJimmerEntity
+import com.addzero.kmp.util.kotlinStdTypes
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSDeclaration
 import com.google.devtools.ksp.symbol.KSType
@@ -52,8 +57,7 @@ fun generateDslReceiver(classDef: KSClassDeclaration): String {
 
 fun generateIsomorphicForm(
 
-    ksClass: KSClassDeclaration, outputDir: String =
-        "composeApp/src/commonMain/kotlin/com/addzero/kmp/forms",
+    ksClass: KSClassDeclaration, outputDir: String = "composeApp/src/commonMain/kotlin/com/addzero/kmp/forms",
     generatedIsoClasses: MutableSet<String> = mutableSetOf<String>(), // 跟踪所有已生成同构体的FQCN
     packageName: String = settings.formPackageName // 生成的同构体文件所在的包名
 ) {
@@ -200,7 +204,7 @@ private fun autoImport(typeDecl: KSDeclaration, typeName: String, qualifiedName:
     when {
         // 如果是Jimmer实体，其Iso同构体在同一包下，无需导入。
         // 递归生成已在getIsoTypeString中处理。
-        isJimmerEntity(typeDecl) -> { /* ��需额��导入 */
+        isJimmerEntity(typeDecl) -> {
         }
         // 如果是枚举或其他自定义类型，且不是Kotlin标准库类型
         !kotlinStdTypes.contains(typeName) && qualifiedName != null -> {

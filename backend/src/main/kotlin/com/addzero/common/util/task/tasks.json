@@ -1,0 +1,29 @@
+{
+  "tasks": [
+    {
+      "id": "task1",
+      "name": "一次性任务",
+      "type": "ONCE",
+      "command": "echo 'Hello'",
+      "delaySeconds": 5,
+      "enabled": true
+    },
+    {
+      "id": "task2",
+      "name": "定期任务",
+      "type": "FIXED_RATE",
+      "command": "echo 'Hellodingshi'",
+      "intervalSeconds": 10,
+      "enabled": true
+    },
+    {
+      "id": "task3",
+      "name": "每日任务",
+      "type": "DAILY",
+      "command": "echo 'Hello day'",
+      "hour": 2,
+      "minute": 30,
+      "enabled": true
+    }
+  ]
+}

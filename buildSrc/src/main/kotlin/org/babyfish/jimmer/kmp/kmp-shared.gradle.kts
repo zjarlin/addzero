@@ -10,6 +10,8 @@ import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
     id("com.android.library")
+    kotlin("plugin.serialization")
+
 }
 
 kotlin {
@@ -42,8 +44,11 @@ kotlin {
         }
     }
 
+
+
     sourceSets {
         commonMain.dependencies {
+            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kotlinxSerializationVersion}")
             // put your Multiplatform dependencies here
         }
         commonTest.dependencies {

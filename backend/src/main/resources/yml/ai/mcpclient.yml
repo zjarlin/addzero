@@ -1,0 +1,13 @@
+spring:
+  ai:
+    mcp:
+      client:
+        enabled: true
+        name: addzero-client
+        version: 1.0
+        request-timeout: 30s
+        type: ASYNC
+        sse:
+          connections:
+            server1:
+              url: http://localhost:11434/api

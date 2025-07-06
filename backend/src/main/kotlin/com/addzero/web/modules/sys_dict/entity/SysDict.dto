@@ -1,0 +1,23 @@
+
+specification SysDictSpec{
+#allScalars(this)
+}
+
+input SysDictSaveDTO{
+#allScalars(this)
+id?
+}
+
+input SysDictUpdateDTO{
+#allScalars(this)
+id!
+}
+
+
+SysDictView{
+#allScalars
+}
+
+
+
+

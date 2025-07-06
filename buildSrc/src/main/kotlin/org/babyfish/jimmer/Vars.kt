@@ -38,7 +38,7 @@ object Versions {
 
     const val javaVersion = "24"
     const val kotlinVersion = "2.2.0"
-
+    const val kotlinxSerializationVersion = "1.8.0"
 
     // Android 相关常量
     const val androidCompileSdk = 35

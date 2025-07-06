@@ -1,0 +1,17 @@
+specification SysUserSpec {
+    #allScalars(this)
+
+}
+
+input SysUserSaveInputDTO {
+    #allScalars(this)
+}
+
+input SysUserUpdateInputDTO {
+    #allScalars(this)
+    id!
+}
+
+SysUserOutVO {
+    #allScalars
+}

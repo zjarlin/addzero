@@ -1,0 +1,22 @@
+
+specification BizNoteSpec {
+    #allScalars(this)
+}
+
+input BizNoteSaveDTO {
+    #allScalars(this)
+}
+
+input BizNoteUpdateDTO {
+    #allScalars(this)
+    id!
+}
+
+
+BizNoteView {
+    #allScalars
+    children*
+    parent*
+    leafFlag
+
+}

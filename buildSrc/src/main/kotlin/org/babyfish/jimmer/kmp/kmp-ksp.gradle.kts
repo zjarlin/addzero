@@ -1,6 +1,7 @@
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
+//    kotlin("plugin.serialization")
 }
 
 kotlin {

@@ -1,0 +1,29 @@
+server:
+#  servlet:
+#    context-path: /api
+  port: 12344
+spring:
+
+  config:
+    import:
+      #      - classpath:yml/external.yml
+      - classpath:yml/ext.yml
+      - classpath:yml/flyway.yml
+      - classpath:yml/jimmer.yml
+      - classpath:yml/sa-token.yml
+      - classpath:yml/x-file-storage.yml
+      - classpath:yml/ai/deepseek.yml
+      - classpath:yml/ai/mcpclient.yml
+      - classpath:yml/ai/mcpserver.yml
+      - classpath:yml/ai/ollama.yml
+
+  profiles:
+    active: local
+  jackson:
+    time-zone: GMT+8
+    #    date-format: com.fasterxml.jackson.databind.util.ISO8601DateFormat
+  servlet:
+    multipart:
+      max-file-size: 500MB
+      max-request-size: 500MB
+

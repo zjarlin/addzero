@@ -1,0 +1,86 @@
+@file:OptIn(FormatStringsInDatetimeFormats::class)
+
+package com.addzero.kmp.core.ext
+
+import kotlinx.datetime.*
+import kotlinx.datetime.format.FormatStringsInDatetimeFormats
+import kotlinx.datetime.format.byUnicodePattern
+import kotlin.time.ExperimentalTime
+
+
+// 判断是否在今天
+fun LocalDateTime.isToday(): Boolean {
+    val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+    return year == today.year && month == today.month && dayOfMonth == today.dayOfMonth
+}
+
+
+/**
+ * 格式化 LocalDateTime
+ * @param pattern 格式模式，如 "yyyy-MM-dd HH:mm:ss"
+ */
+fun LocalDateTime.format(pattern: String): String {
+    val format = LocalDateTime.Format {
+        byUnicodePattern(pattern)
+    }.format(this)
+    return format
+
+}
+
+
+/**
+ * 格式化 LocalDateTime
+ * @param pattern 格式模式，如 "yyyy-MM-dd HH:mm:ss"
+ */
+fun LocalDate.format(pattern: String): String {
+    val format = LocalDate.Format {
+        byUnicodePattern(pattern)
+    }.format(this)
+    return format
+
+}
+
+
+/**
+ * 格式化 LocalDateTime
+ * @param pattern 格式模式，如 "yyyy-MM-dd HH:mm:ss"
+ */
+fun LocalTime.format(pattern: String): String {
+    val format = LocalTime.Format {
+        byUnicodePattern(pattern)
+    }.format(this)
+    return format
+
+}
+
+
+
+
+// 转换为友好显示 (如"2小时前")
+@OptIn(ExperimentalTime::class)
+fun LocalDateTime.toFriendlyString(): String {
+    val now = LocalDateTime.now()
+    val duration = now.toInstant(TimeZone.currentSystemDefault()) - this.toInstant(TimeZone.currentSystemDefault())
+
+    return when {
+        duration.inWholeDays > 365 -> "${duration.inWholeDays / 365}年前"
+        duration.inWholeDays > 30 -> "${duration.inWholeDays / 30}个月前"
+        duration.inWholeDays > 0 -> "${duration.inWholeDays}天前"
+        duration.inWholeHours > 0 -> "${duration.inWholeHours}小时前"
+        duration.inWholeMinutes > 0 -> "${duration.inWholeMinutes}分钟前"
+        else -> "刚刚"
+    }
+}
+
+
+// 判断是否是未来时间
+fun LocalDateTime.isFuture(): Boolean = this > LocalDateTime.now()
+
+fun LocalDateTime.Companion.now(): LocalDateTime = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+fun LocalDate.Companion.now(): LocalDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+fun LocalTime.Companion.now(): LocalTime = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).time
+
+fun String.toLocalDateTimeOrNull(): LocalDateTime? = runCatching { LocalDateTime.parse(this) }.getOrNull()
+fun String.toLocalDateOrNull(): LocalDate? = runCatching { LocalDate.parse(this) }.getOrNull()
+fun String.toLocalTimeOrNull(): LocalTime? = runCatching { LocalTime.parse(this) }.getOrNull()
+

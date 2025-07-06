@@ -1,0 +1,13 @@
+dromara:
+  x-file-storage: #文件存储配置
+    default-platform: minio #默认使用的存储平台
+    minio:
+      - platform: minio-1 # 存储平台标识
+        enable-storage: true  # 启用存储
+        access-key: ${MINIO_USERNAME:minioadmin}
+        secret-key: ${MINIO_PASSWORD:minioadmin}
+        end-point: http://${MINIO_HOST:localhost}:${MINIO_PORT:9000}
+        bucket-name: ${MINIO_BUCKET_NAME:xxxxxxxxxx}
+
+    thumbnail-suffix: ".min.jpg" #缩略图后缀，例如【.min.jpg】【.png】
+    #对应平台的配置写在这里，注意缩进要对齐

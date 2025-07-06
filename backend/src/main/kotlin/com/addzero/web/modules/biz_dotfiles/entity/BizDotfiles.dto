@@ -1,0 +1,23 @@
+
+specification BizDotfilesSpec{
+#allScalars(this)
+}
+
+input BizDotfilesSaveDTO{
+#allScalars(this)
+id?
+}
+
+input BizDotfilesUpdateDTO{
+#allScalars(this)
+id!
+}
+
+
+BizDotfilesView{
+#allScalars
+}
+
+
+
+

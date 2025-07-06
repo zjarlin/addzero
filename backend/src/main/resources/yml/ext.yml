@@ -1,0 +1,11 @@
+#logging.level.org.springframework.ai.chat.client.advisor=DEBUG
+
+# 需要配合docker镜像做离线ocr
+deepseek.key: ${DEEPSEEK_API_KEY:xxxxxx}
+doubao.key: ${DOUBAO_API_KEY:xxxxxxxx}
+ocr.ip: 192.168.0.110:8089
+pkg: com.addzero
+controller:
+  advice:
+    path: ${pkg}
+

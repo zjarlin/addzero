@@ -1,0 +1,6 @@
+spring:
+  flyway:
+    out-of-order: true  # 允许执行未按顺序的迁移
+    baseline-on-migrate: true  # 自动初始化元数据表，并基于现有数据库状态开始迁移
+    enabled: true
+    locations: classpath:db/migration

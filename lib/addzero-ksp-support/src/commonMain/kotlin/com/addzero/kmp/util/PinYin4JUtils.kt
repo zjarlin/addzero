@@ -14,6 +14,55 @@ import kotlin.text.get
  * PinYin4j工具类
  */
 object PinYin4JUtils {
+
+    /**
+     * 清理字符串使其成为合法的变量名称
+     * 规则：
+     * 1. 所有非字母数字字符转换为下划线
+     * 2. 移除连续的下划线
+     * 3. 移除开头和结尾的下划线
+     * 4. 确保不以数字开头
+     * 5. 如果结果为空，返回默认名称
+     * 最终uppercase
+     *
+     * @param input 原始字符串
+     * @param defaultName 当清理后名称为空时的默认名称，默认为 "CODE"
+     * @return 合法的变量名称
+     */
+    fun sanitize(input: String, defaultName: String = "CODE"): String {
+        if (input.isBlank()) {
+            return defaultName.uppercase()
+        }
+
+        try {
+            // 1. 所有非字母数字字符转换为下划线
+            val sanitized = input.replace(Regex("[^a-zA-Z0-9]"), "_")
+                // 2. 移除连续的下划线
+                .replace(Regex("_+"), "_")
+                // 3. 移除开头和结尾的下划线
+                .trim('_')
+
+            // 处理空结果
+            if (sanitized.isEmpty()) {
+                return defaultName.uppercase()
+            }
+
+            // 4. 确保不以数字开头
+            val result = if (sanitized.first().isDigit()) {
+                "__$sanitized"
+            } else {
+                sanitized
+            }
+
+            // 5. 转为大写
+            return result.uppercase()
+        } catch (e: Exception) {
+            // 捕获所有异常，确保总是返回一个有效值
+            return defaultName.uppercase()
+        }
+    }
+
+
     /**
      * 将字符串转换成拼音数组
      *

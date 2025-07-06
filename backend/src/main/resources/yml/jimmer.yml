@@ -1,0 +1,49 @@
+jimmer:
+  dialect: org.babyfish.jimmer.sql.dialect.PostgresDialect
+  #  ref-path: ${server.servlet.context-path}${jimmer.client.openapi.path}
+  language: kotlin
+  database-validation-mode: none    #验证数据库结构与实体
+  in-list-padding-enabled: true     #开启Padding优化
+  expanded-in-list-padding-enabled: false  #关闭Expanded Padding优化
+  #  dialect: org.babyfish.jimmer.sql.dialect.MySqlDialect
+  show-sql: true
+  pretty-sql: true
+  inline-sql-variables: true         #sql内联变量
+  #  executor-context-prefixes:
+  #    - com.example.springaiollama.biz
+  client:
+    ts:
+      path: /ts.zip
+    openapi:
+      path: /openapi.yaml
+      ui-path: /openapi.html
+      properties:
+        info:
+          title: document Service
+          description: document
+          version: 1.0
+        components:
+          security-schemes:
+            AuthorizationHeader:
+              type: apiKey
+              in: header
+              name: Authorization
+        securities:
+          - AuthorizationHeader: [ ]
+
+
+
+
+
+
+
+#
+#    client:
+#    ts:
+#      path: /ts.zip
+#    openapi:
+#      path: /openapi.yaml
+#      ui-path: /openapi-ui.html
+#      properties:
+#        info:
+#          description: document

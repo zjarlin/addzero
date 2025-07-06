@@ -1,0 +1,17 @@
+spring:
+  ai:
+    ollama:
+      init:
+        pull-model-strategy: never
+        embedding:
+          additional-models:
+            - nomic-embed-text
+        chat:
+          additional-models:
+            - deepseek-r1
+            - qwen2.5-coder:14b
+        timeout: 5m
+      #          include: false
+      base-url: http://${OLLAMA_URL:localhost}:11434
+      chat:
+        model: llava

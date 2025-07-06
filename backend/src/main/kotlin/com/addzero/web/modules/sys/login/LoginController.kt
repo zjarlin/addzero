@@ -1,0 +1,89 @@
+package com.addzero.web.modules.sys.login
+
+import cn.dev33.satoken.stp.StpUtil
+import com.addzero.common.consts.sql
+import com.addzero.kmp.api.LoginApi
+import com.addzero.kmp.api.SecondLoginDTO
+import com.addzero.kmp.api.SecondLoginResponse
+import com.addzero.kmp.api.SignInStatus
+import com.addzero.kmp.exp.BizException
+import com.addzero.kmp.isomorphic.SysUserIso
+import com.addzero.web.infra.jackson.convertTo
+import com.addzero.web.infra.jimmer.toJimmerEntity
+import com.addzero.web.modules.sys_user.controller.SysUserService
+import com.addzero.web.modules.sys_user.entity.SysUser
+import com.addzero.web.modules.sys_user.entity.email
+import com.addzero.web.modules.sys_user.entity.phone
+import com.addzero.web.modules.sys_user.entity.username
+import org.babyfish.jimmer.sql.kt.ast.expression.eq
+import org.babyfish.jimmer.sql.kt.ast.expression.or
+import org.springframework.web.bind.annotation.*
+
+@RestController
+class LoginController(private val sysUserService: SysUserService) : LoginApi {
+
+    @GetMapping("/sys/login/hasPermition")
+    override suspend fun hasPermition(@RequestParam code: String): Boolean {
+        return true
+    }
+
+    @PostMapping("/sys/login/signin")
+    override suspend fun signin(@RequestBody loginRe: String): SignInStatus {
+
+        val executeQuery = sql.executeQuery(SysUser::class) {
+            where(
+                or(
+                    table.username eq loginRe,
+                    table.email eq loginRe,
+                    table.phone eq loginRe,
+                )
+            )
+            select(table)
+        }.firstOrNull()
+        val checkSignInput = identifyInputType(loginRe)
+
+        if (executeQuery == null) {
+            val notregister = SignInStatus.Notregister(checkSignInput)
+            return notregister
+        }
+
+        val sysUserIso = executeQuery.convertTo<SysUserIso>()
+        val alredyregister = SignInStatus.Alredyregister(checkSignInput, sysUserIso)
+        return alredyregister
+    }
+//    fun
+
+    /**
+     * 注册一个用户
+     * @param [userRegFormState]
+     * @return [Boolean]
+     */
+    @PostMapping("/sys/login/signup")
+    override suspend fun signup(@RequestBody userRegFormState: SysUserIso): Boolean {
+        val toJimmerEntity = userRegFormState.toJimmerEntity<SysUserIso, SysUser>()
+
+        val save = sql.save(toJimmerEntity)
+        val rowAffected = save.isRowAffected
+        val modified = save.isModified
+
+        return rowAffected
+//        log.info(save.modifiedEntity)
+    }
+
+    @PostMapping("/sys/login/signinSecond")
+    override suspend fun signinSecond(@RequestBody secondLoginDTO: SecondLoginDTO): SecondLoginResponse {
+        val findByUserRegFormState = sysUserService.findByUserRegFormState(secondLoginDTO) ?: throw BizException("用户不存在")
+        val password = secondLoginDTO.userRegFormState.password
+        if (findByUserRegFormState.password != password) {
+            throw BizException("密码错误")
+        }
+        StpUtil.login(findByUserRegFormState.id)
+        val tokenInfo = StpUtil.getTokenInfo()
+        val tokenValue = tokenInfo.tokenValue
+        val secondLoginResponse = SecondLoginResponse(findByUserRegFormState.convertTo(), tokenValue)
+        return secondLoginResponse
+
+    }
+
+}
+

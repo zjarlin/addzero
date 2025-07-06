@@ -1,0 +1,11 @@
+alipay:
+  appId: ${ALI_PAY_APP_ID}
+  privateKey: ${ALI_PAY_PRIVATE_KEY}
+  publicKey: ${ALI_PAY_PUBLIC_KEY}
+  appCertPath: ${CERTS_PATH}/appPublicCert.crt
+  aliPayCertPath: ${CERTS_PATH}/alipayPublicCert.crt
+  aliPayRootCertPath: ${CERTS_PATH}/alipayRootCert.crt
+  # dev https://openapi.alipaydev.com/gateway.do
+  # prod https://openapi.alipay.com/gateway.do
+  # 沙箱  https://openapi-sandbox.dl.alipaydev.com/gateway.do
+  serverUrl: https://openapi-sandbox.dl.alipaydev.com/gateway.do

@@ -19,10 +19,13 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose")
 }
 
+//val libs = the<LibrariesForLibs>()
 
 group = myGroup
 version = myVersion
 
+val androidxLifecycle = Versions.androidxLifecycle
+//val androidxLifecycle = libs.ver
 kotlin {
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
@@ -73,8 +76,8 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
-            implementation("org.jetbrains.androidx.lifecycle:lifecycle-viewmodel:${Versions.androidxLifecycle}")
-            implementation("org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose:${Versions.androidxLifecycle}")
+            implementation("org.jetbrains.androidx.lifecycle:lifecycle-viewmodel:$androidxLifecycle")
+            implementation("org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose:$androidxLifecycle")
         }
         commonTest.dependencies {
             implementation("org.jetbrains.kotlin:kotlin-test")
