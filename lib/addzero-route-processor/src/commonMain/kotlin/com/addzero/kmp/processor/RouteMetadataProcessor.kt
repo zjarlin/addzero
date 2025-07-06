@@ -8,8 +8,10 @@ import com.google.devtools.ksp.processing.*
 import com.google.devtools.ksp.symbol.*
 import com.google.devtools.ksp.validate
 
-private const val FILE_NAME = "RouteTable"
+private const val ROUTE_TABLE_NAME = "RouteTable"
 
+
+private const val ROUTE_KEYS_NAME = "RouteKeys"
 
 /**
  * 路由元数据注解处理器
@@ -59,7 +61,6 @@ class RouteMetadataProcessor(
 
         // 生成代码
         if (ret.isNotEmpty()) {
-            logger.warn("开始生成路由表")
             generateRouteTable(ret)
         }
 
@@ -117,12 +118,11 @@ class RouteMetadataProcessor(
         }
     }
     private fun generateRouteTable(routeItems: Set<Route>) {
-        val packageName = GEN_PKG
-        val fileName = FILE_NAME
+        logger.warn("解析到 ${routeItems.size} 个路由项")
 
         // 生成路由键对象
         val routeKeysTemplate = """
-            |package $packageName
+            |package $GEN_PKG
             |
             |/**
             | * 路由键
@@ -140,10 +140,10 @@ class RouteMetadataProcessor(
 
         // 生成路由表
         val routeTableTemplate = """
-            |package $packageName
+            |package $GEN_PKG
             |
             |import androidx.compose.runtime.Composable
-            |import $packageName.RouteKeys
+            |import $GEN_PKG.RouteKeys
             |import com.addzero.kmp.annotation.Route
 
             |
@@ -151,7 +151,7 @@ class RouteMetadataProcessor(
             | * 路由表
             | * 请勿手动修改此文件
             | */
-            |object $fileName {
+            |object $ROUTE_TABLE_NAME {
             |    /**
             |     * 所有路由映射
             |     */
@@ -171,13 +171,13 @@ class RouteMetadataProcessor(
             |        ${
             routeItems.joinToString(",\n        ") {
                 "Route(" +
-                    "value = \"${it.value}\", " +
-                    "title = \"${it.title}\", " +
-                    "routePath = \"${it.routePath}\", " +
-                    "icon = \"${it.icon}\", " +
-                    "order = ${it.order}, " +
-                    "qualifiedName = \"${it.qualifiedName}\"" +
-                ")"
+                        "value = \"${it.value}\", " +
+                        "title = \"${it.title}\", " +
+                        "routePath = \"${it.routePath}\", " +
+                        "icon = \"${it.icon}\", " +
+                        "order = ${it.order}, " +
+                        "qualifiedName = \"${it.qualifiedName}\"" +
+                        ")"
             }
         }
             |    )
@@ -195,22 +195,28 @@ class RouteMetadataProcessor(
             // 生成路由键文件 - 使用安全创建方法
             logger.warn("开始生成路由键")
 
-            createNewFileIfNeeded(
-                codeGenerator = codeGenerator,
-                dependencies = Dependencies(true),
-                packageName = packageName,
-                fileName = "RouteKeys",
-                content = routeKeysTemplate
-            )
 
+
+            codeGenerator.createNewFile(
+                dependencies = Dependencies(true),
+                packageName = GEN_PKG,
+                fileName = ROUTE_KEYS_NAME
+            ).use { stream ->
+                stream.write(routeKeysTemplate.toByteArray())
+            }
+
+
+
+            logger.warn("开始生成路由表")
             // 生成路由表文件
             codeGenerator.createNewFile(
                 dependencies = Dependencies(true),
-                packageName = packageName,
-                fileName = fileName
+                packageName = GEN_PKG,
+                fileName = ROUTE_TABLE_NAME
             ).use { stream ->
                 stream.write(routeTableTemplate.toByteArray())
             }
+
         } catch (e: Exception) {
             logger.warn("Error generating route files: ${e.message}")
         }

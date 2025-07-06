@@ -61,6 +61,13 @@ kotlin {
     }
 
     sourceSets {
+
+        //生成的代码
+        commonMain{
+            kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
+        }
+
+
         val desktopMain by getting
 
         androidMain.dependencies {
