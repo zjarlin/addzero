@@ -14,7 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.addzero.kmp.component.button.AddButton
 import com.addzero.kmp.compose.icons.IconKeys
-import com.addzero.kmp.processor.annotation.Route
+import com.addzero.kmp.annotation.Route
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

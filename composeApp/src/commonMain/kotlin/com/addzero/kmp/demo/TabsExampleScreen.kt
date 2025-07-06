@@ -15,7 +15,8 @@ import com.addzero.kmp.component.high_level.AddTabs
 import com.addzero.kmp.component.high_level.CustomTabRow
 import com.addzero.kmp.component.high_level.TabItem
 import com.addzero.kmp.compose.icons.IconKeys
-import com.addzero.kmp.processor.annotation.Route
+import com.addzero.kmp.annotation.Route
+
 
 /**
  * 标签页示例屏幕

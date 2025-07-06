@@ -5,7 +5,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import com.addzero.kmp.component.tree_command.AddTreeWithCommand
 import com.addzero.kmp.component.tree_command.TreeCommand
 import com.addzero.kmp.compose.icons.IconMap
-import com.addzero.kmp.processor.annotation.Route
+import com.addzero.kmp.annotation.Route
+
 
 /**
  * 图标元数据数据类

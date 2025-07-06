@@ -12,7 +12,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.addzero.kmp.processor.annotation.Route
+import com.addzero.kmp.annotation.Route
+
 
 @Composable
 @Route("组件示例", "UI组件测试")

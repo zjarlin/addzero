@@ -16,7 +16,8 @@ import com.addzero.kmp.component.form.DynamicFormItem
 import com.addzero.kmp.component.table.AddColumn
 import com.addzero.kmp.component.table.SysColumnMetaConfig
 import com.addzero.kmp.entity.low_table.*
-import com.addzero.kmp.processor.annotation.Route
+import com.addzero.kmp.annotation.Route
+
 import kotlinx.coroutines.launch
 
 

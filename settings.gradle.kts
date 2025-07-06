@@ -52,7 +52,7 @@ include("lib:addzero-entity2form-processor")
 findProject(":lib:addzero-entity2form-processor")?.name = "addzero-entity2form-processor"
 include("lib:addzero-jdbc2enum-processor")
 findProject(":lib:addzero-jdbc2enum-processor")?.name = "addzero-jdbc2enum-processor"
-include("lib:addzero-apiprovider_processor")
-findProject(":lib:addzero-apiprovider_processor")?.name = "addzero-apiprovider_processor"
+include("lib:addzero-apiprovider-processor")
+findProject(":lib:addzero-apiprovider-processor")?.name = "addzero-apiprovider-processor"
 include("lib:addzero-tool")
 findProject(":lib:addzero-tool")?.name = "addzero-tool"

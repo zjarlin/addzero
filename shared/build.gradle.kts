@@ -1,12 +1,16 @@
 import com.google.devtools.ksp.processing.kspJsArgParser
+import de.jensklingenberg.ktorfit.gradle.KtorfitPluginExtension
 import org.babyfish.jimmer.Versions
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 plugins {
     id("kmp-shared")
     id("ksp4shared-convention")
+    id("de.jensklingenberg.ktorfit") version "+"
 }
-
+configure<KtorfitPluginExtension> {
+    kotlinVersion.set("2.3.0")
+}
 val ktorV =Versions.ktorVersion
 dependencies {
     with(projects.lib.addzeroJdbc2enumProcessor) {

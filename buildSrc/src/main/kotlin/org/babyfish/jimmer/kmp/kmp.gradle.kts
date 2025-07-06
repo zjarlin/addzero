@@ -17,6 +17,7 @@ plugins {
     id("org.jetbrains.kotlin.multiplatform")
     id("com.android.application")
     id("org.jetbrains.kotlin.plugin.compose")
+    kotlin("plugin.serialization")
 }
 
 //val libs = the<LibrariesForLibs>()
@@ -67,6 +68,7 @@ kotlin {
             implementation("androidx.activity:activity-compose:${Versions.androidxActivity}")
         }
         commonMain.dependencies {
+            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kotlinxSerializationVersion}")
 
             implementation(compose.materialIconsExtended)
             implementation(compose.runtime)

@@ -1,7 +1,8 @@
 package com.addzero.kmp.demo
 
 import androidx.compose.runtime.Composable
-import com.addzero.kmp.processor.annotation.Route
+import com.addzero.kmp.annotation.Route
+
 import com.mohamedrejeb.richeditor.model.rememberRichTextState
 import com.mohamedrejeb.richeditor.ui.material3.RichTextEditor
 

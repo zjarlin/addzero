@@ -124,10 +124,6 @@ kotlin {
 
 
             implementation("de.jensklingenberg.ktorfit:ktorfit-lib:+")
-//            implementation("io.ktor:ktor-client-core:${libs.versions.ktor}")
-//            implementation("io.ktor:ktor-client-content-negotiation:${libs.versions.ktor}")
-//            implementation("io.ktor:ktor-serialization-kotlinx-json:${libs.versions.ktor}")
-//            implementation("io.ktor:ktor-client-logging:${libs.versions.ktor}")
 
             // Koin 注解处理
             // Koin Annotations

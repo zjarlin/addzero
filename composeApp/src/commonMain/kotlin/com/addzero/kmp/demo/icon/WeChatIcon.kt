@@ -4,7 +4,8 @@ import addzerokmp.composeapp.generated.resources.Res
 import addzerokmp.composeapp.generated.resources.wechat
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
-import com.addzero.kmp.processor.annotation.Route
+import com.addzero.kmp.annotation.Route
+
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 

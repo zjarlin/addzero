@@ -20,8 +20,7 @@ class AiController(
     private val deepSeekService: DeepSeekService,
     private val doubaoService: DoubaoService,
     private val deepSeekConfig: DeepSeekConfig,
-    @Value("\${deepseek.key}") private val deepseekKey: String,
-    @Value("\${doubao.key}") private val doubaoKey: String,
+//    @Value("\${doubao.key}") private val doubaoKey: String,
 
     private val chatClient: ChatClient
 ){

@@ -54,7 +54,7 @@ class JsonDesignerViewModel : ViewModel() {
         val name: String,
         val fileName: String,
         val isCommon: Boolean = false,
-        val uploadTime: Long = System.currentTimeMillis()
+//        val uploadTime: Long = System.currentTimeMillis()
     ) {
         companion object {
             private var templateIdCounter = 0

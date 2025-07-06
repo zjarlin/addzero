@@ -17,7 +17,8 @@ import com.addzero.kmp.component.background.ChatBackground
 import com.addzero.kmp.component.background.ChatBackgroundConfig
 import com.addzero.kmp.component.background.ChatBackgroundPresets
 import com.addzero.kmp.component.background.ChatBackgroundType
-import com.addzero.kmp.processor.annotation.Route
+import com.addzero.kmp.annotation.Route
+
 
 /**
  * 聊天背景功能演示

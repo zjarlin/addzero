@@ -47,10 +47,11 @@ kotlin {
 
 
     sourceSets {
-//        commonMain{
-//            kotlin.srcDir("src/commonMain/kotlin")
-//
-//        }
+        //生成的代码
+        commonMain{
+            kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
+
+        }
         commonMain.dependencies {
             implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kotlinxSerializationVersion}")
             // put your Multiplatform dependencies here
