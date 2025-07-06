@@ -2,13 +2,14 @@ import com.vanniktech.maven.publish.SonatypeHost
 import org.babyfish.jimmer.Vars
 
 plugins {
+//    sin
+    signing
     id("com.vanniktech.maven.publish")
 }
-
-
 mavenPublishing {
     publishToMavenCentral(automaticRelease = true)
-//    signAllPublications()
+
+    signAllPublications()
 //    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
     coordinates(project.group.toString(), project.name, project.version.toString())
 
