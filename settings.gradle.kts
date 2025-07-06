@@ -1,3 +1,5 @@
+import org.apache.tools.ant.property.LocalProperties
+
 rootProject.name = "addzero"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
@@ -10,7 +12,12 @@ pluginManagement {
                 includeGroupAndSubgroups("com.google")
             }
         }
-        mavenCentral()
+        mavenCentral{
+//            credentials {
+//                username = localProps.getProperty("sonaTokenUser")
+//                password = localProps.getProperty("sonaToken")
+//            }
+        }
         gradlePluginPortal()
         maven { url = uri("https://maven.pkg.jetbrains.space/public/p/compose/dev") }
     }
@@ -28,7 +35,9 @@ dependencyResolutionManagement {
                 includeGroupAndSubgroups("com.google")
             }
         }
-        mavenCentral()
+        mavenCentral{
+
+        }
     }
 
 }
