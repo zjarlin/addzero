@@ -6,6 +6,7 @@ import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
@@ -16,9 +17,8 @@ plugins {
 
 kotlin {
     androidTarget {
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
-        compilerOptions {
-     jvmTarget.set(JvmTarget.fromTarget(Versions.javaVersion))
+        @OptIn(ExperimentalKotlinGradlePluginApi::class) compilerOptions {
+            jvmTarget.set(JvmTarget.fromTarget(Versions.javaVersion))
         }
     }
 
@@ -27,8 +27,7 @@ kotlin {
 
     jvm()
 
-    @OptIn(ExperimentalWasmDsl::class)
-    wasmJs {
+    @OptIn(ExperimentalWasmDsl::class) wasmJs {
         browser {
             val rootDirPath = project.rootDir.path
             val projectDirPath = project.projectDir.path
@@ -48,7 +47,7 @@ kotlin {
 
     sourceSets {
         //生成的代码
-        commonMain{
+        commonMain {
             kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
 
         }
@@ -73,7 +72,14 @@ android {
     }
     defaultConfig {
 
-        minSdk =Versions.androidMinSdk
+        minSdk = Versions.androidMinSdk
+    }
+
+    tasks.withType<KotlinCompilationTask<*>>().all {
+        val kspCommonMainKotlinMetadata = "kspCommonMainKotlinMetadata"
+        if (name != kspCommonMainKotlinMetadata) {
+            dependsOn(kspCommonMainKotlinMetadata)
+        }
     }
 
 }

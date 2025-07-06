@@ -8,19 +8,27 @@ plugins {
 
 //    alias(libs.plugins.compose.hot.reload)
 }
-dependencies {
-    with(projects.lib.addzeroRouteProcessor) {
-        add("kspCommonMainMetadata", this)
-    }
-    //koin依赖注入
-    with("io.insert-koin:koin-ksp-compiler:+") {
-        add("kspCommonMainMetadata", this)
-    }
 
-//    with("io.github.ltttttttttttt:LazyPeopleHttp:${lazyhttpV}") {
+dependencies {
+   kspCommonMainMetadata(projects.lib.addzeroRouteProcessor)
+    kspCommonMainMetadata("io.insert-koin:koin-ksp-compiler:+")
+}
+
+
+
+//dependencies {
+//    with(projects.lib.addzeroRouteProcessor) {
 //        add("kspCommonMainMetadata", this)
 //    }
-}
+//    //koin依赖注入
+//    with("io.insert-koin:koin-ksp-compiler:+") {
+//        add("kspCommonMainMetadata", this)
+//    }
+//
+////    with("io.github.ltttttttttttt:LazyPeopleHttp:${lazyhttpV}") {
+////        add("kspCommonMainMetadata", this)
+////    }
+//}
 
 ksp {
 //    arg("generated.dir", defaultKspGenDir)
@@ -47,19 +55,6 @@ ksp {
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 kotlin {
     sourceSets {
         commonMain.dependencies {

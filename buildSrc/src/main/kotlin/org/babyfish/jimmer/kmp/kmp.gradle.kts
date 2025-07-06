@@ -6,11 +6,13 @@ import org.babyfish.jimmer.Vars.myVersion
 import org.babyfish.jimmer.Versions
 import org.babyfish.jimmer.Versions.androidTargetSdk
 import org.babyfish.jimmer.Versions.javaVersion
+import org.gradle.kotlin.dsl.withType
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 plugins {
     id("org.jetbrains.compose")
@@ -149,3 +151,11 @@ compose.desktop {
         }
     }
 }
+
+tasks.withType<KotlinCompilationTask<*>>().all {
+    val kspCommonMainKotlinMetadata = "kspCommonMainKotlinMetadata"
+    if (name != kspCommonMainKotlinMetadata) {
+        dependsOn(kspCommonMainKotlinMetadata)
+    }
+}
+

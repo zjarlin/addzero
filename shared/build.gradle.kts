@@ -12,14 +12,22 @@ configure<KtorfitPluginExtension> {
     kotlinVersion.set("2.3.0")
 }
 val ktorV =Versions.ktorVersion
-dependencies {
-    with(projects.lib.addzeroJdbc2enumProcessor) {
-        add("kspCommonMainMetadata", this)
-    }
 
-    with(projects.lib.addzeroApiproviderProcessor) {
-        add("kspCommonMainMetadata", this)
-    }
+
+
+dependencies {
+
+
+    kspCommonMainMetadata(projects.lib.addzeroJdbc2enumProcessor)
+    kspCommonMainMetadata(projects.lib.addzeroApiproviderProcessor)
+
+//    with(projects.lib.addzeroJdbc2enumProcessor) {
+//        add("kspCommonMainMetadata", this)
+//    }
+
+//    with(projects.lib.addzeroApiproviderProcessor) {
+//        add("kspCommonMainMetadata", this)
+//    }
 
 
 }
