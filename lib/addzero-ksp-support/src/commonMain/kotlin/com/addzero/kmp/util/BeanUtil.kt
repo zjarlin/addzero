@@ -1,8 +1,10 @@
 package com.addzero.kmp.util
 
 import com.addzero.kmp.context.Settings
+import kotlin.reflect.full.memberProperties
+import kotlin.reflect.full.primaryConstructor
 
-class BeanUtil {
+object BeanUtil {
     fun Settings.toMap(): Map<String, String> =
         Settings::class.memberProperties.associate { prop ->
             prop.name to (prop.get(this)?.toString() ?: "")

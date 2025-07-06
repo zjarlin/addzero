@@ -174,15 +174,11 @@ object JlStrUtil {
         }.toMap()
     }
 
-    fun makeSurroundWith(str: String, fix: String): String {
-        val addPrefixIfNot = str.addPrefixIfNot(fix)
-        val addSuffixIfNot = addPrefixIfNot.addSuffixIfNot(fix)
-        return addSuffixIfNot
-
-    }
 
     fun String.makeSurroundWith(fix: String): String {
-        return makeSurroundWith(this, fix)
+        val addPrefixIfNot = this.addPrefixIfNot(fix)
+        val addSuffixIfNot = addPrefixIfNot.addSuffixIfNot(fix)
+        return addSuffixIfNot
 
     }
 
