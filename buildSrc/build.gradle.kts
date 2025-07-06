@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.serialization.js.ast.JsAstProtoBuf
-
 plugins {
     `kotlin-dsl`
 }
@@ -21,7 +19,7 @@ val kspVersion = libs.versions.kspVersion.get()
 
 dependencies {
 //    api(gradleApi())
-    implementation("com.android.tools.build:gradle:8.10.0")
+    implementation("com.android.tools.build:gradle:8.10.1")
     implementation("org.jetbrains.dokka:dokka-gradle-plugin:2.0.0")
     implementation("org.jetbrains.compose:compose-gradle-plugin:1.8.2")
     implementation("org.jetbrains.kotlin.plugin.compose:org.jetbrains.kotlin.plugin.compose.gradle.plugin:$kotlinVersion")

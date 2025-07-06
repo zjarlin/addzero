@@ -3,19 +3,33 @@ import org.babyfish.jimmer.Vars
 
 plugins {
 //    sin
-    signing
+//    signing
     id("com.vanniktech.maven.publish")
 }
+afterEvaluate {
+    tasks.findByName("plainJavadocJar")?.let { plainJavadocJarTask ->
+        tasks.named("generateMetadataFileForMavenPublication") {
+            dependsOn(plainJavadocJarTask)
+        }
+    }
+}
+
 mavenPublishing {
+
     publishToMavenCentral(automaticRelease = true)
 
     signAllPublications()
+}
+
+
+
+mavenPublishing {
 //    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
     coordinates(project.group.toString(), project.name, project.version.toString())
 
     pom {
         name.set("addzero")
-        description.set("The most advanced ORM of JVM, for both java & kotlin")
+        description.set("jimmer kmp")
         inceptionYear.set("2025")
         url.set(Vars.giturl)
         licenses {
@@ -39,13 +53,6 @@ mavenPublishing {
             connection.set("scm:git:git://gitee.com/zjarlin/addzero.git")
             developerConnection.set("scm:git:ssh://gitee.com/zjarlin/addzero.git")
             url.set("https://gitee.com/zjarlin/addzero")
-        }
-    }
-}
-afterEvaluate {
-    tasks.findByName("plainJavadocJar")?.let { plainJavadocJarTask ->
-        tasks.named("generateMetadataFileForMavenPublication") {
-            dependsOn(plainJavadocJarTask)
         }
     }
 }
