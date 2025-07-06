@@ -1,8 +1,10 @@
-
+package com.addzero.kmp
 import com.addzero.kmp.util.PinYin4JUtils
 import com.google.devtools.ksp.processing.*
 import com.google.devtools.ksp.symbol.KSAnnotated
 import java.sql.DriverManager
+import java.sql.SQLException
+import java.util.Properties
 import kotlin.math.absoluteValue
 
 /**
@@ -64,7 +66,7 @@ class DictEnumMetadataProcessor(
                 logger.warn("跳过字典枚举生成过程")
                 when (e) {
                     is ClassNotFoundException -> logger.warn("找不到JDBC驱动: $jdbcDriver")
-                    is java.sql.SQLException -> logger.warn("SQL错误: ${e.message}, 错误代码: ${e.errorCode}, SQL状态: ${e.sqlState}")
+                    is SQLException -> logger.warn("SQL错误: ${e.message}, 错误代码: ${e.errorCode}, SQL状态: ${e.sqlState}")
                     else -> e.printStackTrace()
                 }
             }
@@ -78,7 +80,7 @@ class DictEnumMetadataProcessor(
     /**
      * 提取字典数据并生成枚举类
      * @throws ClassNotFoundException 如果找不到JDBC驱动
-     * @throws java.sql.SQLException 如果数据库连接或查询失败
+     * @throws SQLException 如果数据库连接或查询失败
      */
     private fun extractDictEnumData() {
         // 注册JDBC驱动
@@ -86,7 +88,7 @@ class DictEnumMetadataProcessor(
 
         logger.info("正在连接数据库: $jdbcUrl")
         // 创建数据库连接 - 设置连接超时(5秒)
-        val props = java.util.Properties().apply {
+        val props = Properties().apply {
             setProperty("user", jdbcUsername)
             setProperty("password", jdbcPassword)
             setProperty("connectTimeout", "5")
