@@ -6,7 +6,25 @@ import org.babyfish.jimmer.Vars.projName
 
 // 临时注释发布相关配置，直到基本构建可工作
 plugins {
+    signing
     id("com.vanniktech.maven.publish")
+}
+signing {
+    // 推荐用 in-memory key，适合 CI/CD
+    useInMemoryPgpKeys(
+        findProperty("signing.keyId") as String?,
+        findProperty("signing.password") as String?,
+        findProperty("signing.secretKeyRingFile")?.let { file(it as String).readText() }
+    )
+    sign(publishing.publications)
+}
+
+afterEvaluate {
+    tasks.findByName("plainJavadocJar")?.let { plainJavadocJarTask ->
+        tasks.named("generateMetadataFileForMavenPublication") {
+            dependsOn(plainJavadocJarTask)
+        }
+    }
 }
 
 mavenPublishing {

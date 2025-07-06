@@ -16,7 +16,7 @@ import org.koin.core.component.KoinComponent
  * 整体应用布局框架，包含顶栏、侧边菜单和主内容区
  */
 @KoinViewModel
-class ChatViewModel : ViewModel(), KoinComponent {
+class ChatViewModel : ViewModel() {
     var showChatBot by mutableStateOf(false)
     var chatMessages = mutableStateListOf<Pair<Boolean, String>>()
         private set

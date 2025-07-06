@@ -5,7 +5,7 @@
 **/build/
 xcuserdata
 !src/**/build/
-local.properties
+lib/local.properties
 .idea
 .DS_Store
 captures
@@ -20,4 +20,4 @@ captures
 /.fastRequest
 /shared/src/commonMain/kotlin/com/addzero/kmp/generated.zip
 secring.gpg
-key.gpg
+lib/key.gpg

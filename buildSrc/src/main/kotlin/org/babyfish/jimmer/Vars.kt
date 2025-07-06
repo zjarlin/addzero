@@ -8,7 +8,7 @@ object Vars {
     val myVersion = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd.HHmm"))
 
     val giturl = "https://gitee.com/zjarlin/addzero"
-    val projName = "AddzeroComponent"
+    val projName = "addzero"
     val authorName = myGroup.split(".").last() // zjarlin
 
     // 应用相关常量
