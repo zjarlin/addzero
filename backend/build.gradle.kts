@@ -34,16 +34,17 @@ ksp {
 
 
 dependencies {
+    //通用库
+    implementation(projects.lib.addzeroTool)
     //通用ksp 解析Controller转为ktorfitApi
     ksp(projects.lib.addzeroController2apiProcessor)
     //通用ksp jdbc元数据转Controller
     ksp(projects.lib.addzeroJdbc2controllerProcessor)
     //内部使用:后台实体转composeApp form
     ksp(projects.lib.addzeroEntity2formProcessor)
-//    ksp(projects.lib.addzeroController2apiProcessor)
-//    implementation(projects.addzeroTool)
-//    implementation(projects.addzeroKspCore)
+    //内部使用:共享业务逻辑
     implementation(projects.shared)
+
 
 
 // 引入 Spring AI 相关依赖
