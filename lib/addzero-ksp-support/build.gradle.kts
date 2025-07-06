@@ -10,7 +10,7 @@ kotlin {
         }
         jvmMain.dependencies {
             implementation("com.belerweb:pinyin4j:${Versions.pinyin4jVersion}")
-            implementation("org.jetbrains.kotlin:kotlin-reflect:${Versions.kotlinVersion}")
+//            implementation("org.jetbrains.kotlin:kotlin-reflect:${Versions.kotlinVersion}")
 
 
         }

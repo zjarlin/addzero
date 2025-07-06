@@ -6,7 +6,7 @@ import de.jensklingenberg.ktorfit.http.*
  * Ktorfit接口 - 由KSP自动生成
  * 原始Controller: com.addzero.ai.util.ai.HttpAiController
  * 基础路径: /aiutil
- * 输出目录: /Users/zjarlin/Downloads/AddzeroKmp/shared/src/commonMain/kotlin/com/addzero/kmp/api
+ * 输出目录: /Users/zjarlin/AquaProjects/addzero/shared/src/commonMain/kotlin/com/addzero/kmp/api
  */
 interface HttpAiApi {
 
@@ -23,11 +23,11 @@ interface HttpAiApi {
  * 返回类型: kotlin.String
  */
     @GET("/aiutilask")    suspend fun ask(
-        @Query("question") question: String,
-        @Query("promptTemplate") promptTemplate: String,
-        @Query("chatModel") chatModel: String,
-        @Query("formatJson") formatJson: String,
-        @Query("formatJsonComment") formatJsonComment: String
-    ): String
+        @Query("question") question: kotlin.String,
+        @Query("promptTemplate") promptTemplate: kotlin.String,
+        @Query("chatModel") chatModel: kotlin.String,
+        @Query("formatJson") formatJson: kotlin.String,
+        @Query("formatJsonComment") formatJsonComment: kotlin.String
+    ): kotlin.String
 
 }

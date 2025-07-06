@@ -2,13 +2,12 @@ package com.addzero.kmp.api
 
 import de.jensklingenberg.ktorfit.http.*
 import com.addzero.kmp.isomorphic.SysDeptIso
-import com.addzero.kmp.jdbc.meta.public.table.impl.ISysUserImpl
 
 /**
  * Ktorfit接口 - 由KSP自动生成
  * 原始Controller: com.addzero.web.modules.sys_dept.controller.SysDeptController
  * 基础路径: 
- * 输出目录: /Users/zjarlin/Downloads/AddzeroKmp/shared/src/commonMain/kotlin/com/addzero/kmp/api
+ * 输出目录: /Users/zjarlin/AquaProjects/addzero/shared/src/commonMain/kotlin/com/addzero/kmp/api
  */
 interface SysDeptApi {
 
@@ -18,23 +17,23 @@ interface SysDeptApi {
  * 路径: /sysDept/tree
  * 参数:
  *   - keyword: kotlin.String (Query)
- * 返回类型: kotlin.collections.List<com.addzero.kmp.SysDeptIso>
+ * 返回类型: kotlin.collections.List<com.addzero.kmp.isomorphic.SysDeptIso>
  */
     @GET("/sysDept/tree")    suspend fun tree(
-        @Query("keyword") keyword: String
-    ): List<SysDeptIso>
+        @Query("keyword") keyword: kotlin.String
+    ): kotlin.collections.List<com.addzero.kmp.isomorphic.SysDeptIso>
 
 /**
  * save
  * HTTP方法: POST
  * 路径: /sysDept/save
  * 参数:
- *   - dept: com.addzero.kmp.SysDeptIso (RequestBody)
- * 返回类型: com.addzero.kmp.SysDeptIso
+ *   - dept: com.addzero.kmp.isomorphic.SysDeptIso (RequestBody)
+ * 返回类型: com.addzero.kmp.isomorphic.SysDeptIso
  */
     @POST("/sysDept/save")    suspend fun save(
-        @Body dept: SysDeptIso
-    ): SysDeptIso
+        @Body dept: com.addzero.kmp.isomorphic.SysDeptIso
+    ): com.addzero.kmp.isomorphic.SysDeptIso
 
 /**
  * get
@@ -42,11 +41,11 @@ interface SysDeptApi {
  * 路径: /sysDept/get/{id}
  * 参数:
  *   - id: kotlin.Long (Query)
- * 返回类型: com.addzero.kmp.SysDeptIso
+ * 返回类型: com.addzero.kmp.isomorphic.SysDeptIso
  */
     @GET("/sysDept/get/{id}")    suspend fun get(
-        @Query("id") id: Long
-    ): SysDeptIso
+        @Query("id") id: kotlin.Long
+    ): com.addzero.kmp.isomorphic.SysDeptIso
 
 /**
  * delete
@@ -57,8 +56,8 @@ interface SysDeptApi {
  * 返回类型: kotlin.Unit
  */
     @DELETE("/sysDept/delete")    suspend fun delete(
-        @Query("id") id: Long
-    ): Unit
+        @Query("id") id: kotlin.Long
+    ): kotlin.Unit
 
 /**
  * getAvailableUsers
@@ -66,10 +65,10 @@ interface SysDeptApi {
  * 路径: /sysDept/getAvailableUsers
  * 参数:
  *   - lng: kotlin.Long (Query)
- * 返回类型: kotlin.collections.List<com.addzero.kmp.ISysUserImpl>
+ * 返回类型: kotlin.collections.List<com.addzero.kmp.jdbc.meta.public.table.impl.ISysUserImpl>
  */
     @GET("/sysDept/getAvailableUsers")    suspend fun getAvailableUsers(
-        @Query("lng") lng: Long
-    ): List<ISysUserImpl>
+        @Query("lng") lng: kotlin.Long
+    ): kotlin.collections.List<com.addzero.kmp.jdbc.meta.public.table.impl.ISysUserImpl>
 
 }

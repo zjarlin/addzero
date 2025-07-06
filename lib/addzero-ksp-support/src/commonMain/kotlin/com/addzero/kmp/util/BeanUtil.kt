@@ -1,20 +1,38 @@
+// lib/addzero-ksp-support/src/commonMain/kotlin/com/addzero/kmp/util/BeanUtil.kt
 package com.addzero.kmp.util
 
 import com.addzero.kmp.context.Settings
-import kotlin.reflect.full.memberProperties
-import kotlin.reflect.full.primaryConstructor
 
 object BeanUtil {
-    fun Settings.toMap(): Map<String, String> =
-        Settings::class.memberProperties.associate { prop ->
-            prop.name to (prop.get(this)?.toString() ?: "")
-        }
+    fun Settings.toMap(): Map<String, String> = mapOf(
+        "dbType" to dbType,
+        "idType" to idType,
+        "id" to id,
+        "createBy" to createBy,
+        "updateBy" to updateBy,
+        "createTime" to createTime,
+        "updateTime" to updateTime,
+        "skipExistsFiles" to skipExistsFiles,
+        "sharedSourceDir" to sharedSourceDir,
+        "isomorphicPackageName" to isomorphicPackageName,
+        "isomorphicClassSuffix" to isomorphicClassSuffix,
+        "formPackageName" to formPackageName,
+        "apiClientPackageName" to apiClientPackageName
+    )
 
-    inline fun <reified T : Any> mapToBean(map: Map<String, String>): T {
-        val ctor = T::class.primaryConstructor!!
-        val args = ctor.parameters.associateWith { param ->
-            map[param.name] ?: error("Missing value for ${param.name}")
-        }
-        return ctor.callBy(args)
-    }
+    fun mapToBean(map: Map<String, String>): Settings = Settings(
+        dbType = map["dbType"] ?: "",
+        idType = map["idType"] ?: "",
+        id = map["id"] ?: "",
+        createBy = map["createBy"] ?: "",
+        updateBy = map["updateBy"] ?: "",
+        createTime = map["createTime"] ?: "",
+        updateTime = map["updateTime"] ?: "",
+        skipExistsFiles = map["skipExistsFiles"] ?: "",
+        sharedSourceDir = map["sharedSourceDir"] ?: "",
+        isomorphicPackageName = map["isomorphicPackageName"] ?: "",
+        isomorphicClassSuffix = map["isomorphicClassSuffix"] ?: "",
+        formPackageName = map["formPackageName"] ?: "",
+        apiClientPackageName = map["apiClientPackageName"] ?: ""
+    )
 }

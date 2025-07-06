@@ -13,7 +13,7 @@ object SettingContext {
     fun initialize(op: Map<String, String>) {
         val toMap = settings.toMap()
         val map = toMap + op
-        val mapToBean = mapToBean<Settings>(map)
+        val mapToBean = mapToBean(map)
         settingsRef.compareAndSet(null, mapToBean)
 
 //         Settings(

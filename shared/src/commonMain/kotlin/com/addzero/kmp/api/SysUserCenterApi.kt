@@ -7,7 +7,7 @@ import com.addzero.kmp.isomorphic.SysUserIso
  * Ktorfit接口 - 由KSP自动生成
  * 原始Controller: com.addzero.web.modules.sys_user.controller.SysUserCenterController
  * 基础路径: 
- * 输出目录: /Users/zjarlin/Downloads/AddzeroKmp/shared/src/commonMain/kotlin/com/addzero/kmp/api
+ * 输出目录: /Users/zjarlin/AquaProjects/addzero/shared/src/commonMain/kotlin/com/addzero/kmp/api
  */
 interface SysUserCenterApi {
 
@@ -15,9 +15,9 @@ interface SysUserCenterApi {
  * getCurrentUser
  * HTTP方法: GET
  * 路径: /sysUser/getCurrentUser
- * 返回类型: com.addzero.kmp.SysUserIso
+ * 返回类型: com.addzero.kmp.isomorphic.SysUserIso
  */
-    @GET("/sysUser/getCurrentUser")    suspend fun getCurrentUser(): SysUserIso
+    @GET("/sysUser/getCurrentUser")    suspend fun getCurrentUser(): com.addzero.kmp.isomorphic.SysUserIso
 
 /**
  * updatePassword
@@ -28,8 +28,8 @@ interface SysUserCenterApi {
  * 返回类型: kotlin.Boolean
  */
     @POST("/sysUser/updatePassword")    suspend fun updatePassword(
-        @Body newPassword: String
-    ): Boolean
+        @Body newPassword: kotlin.String
+    ): kotlin.Boolean
 
 /**
  * logout
@@ -37,6 +37,6 @@ interface SysUserCenterApi {
  * 路径: /sysUser/logout
  * 返回类型: kotlin.Boolean
  */
-    @POST("/sysUser/logout")    suspend fun logout(): Boolean
+    @POST("/sysUser/logout")    suspend fun logout(): kotlin.Boolean
 
 }

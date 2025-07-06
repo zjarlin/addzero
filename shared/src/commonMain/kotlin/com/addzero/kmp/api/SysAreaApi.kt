@@ -6,7 +6,7 @@ import de.jensklingenberg.ktorfit.http.*
  * Ktorfit接口 - 由KSP自动生成
  * 原始Controller: com.addzero.web.modules.sys_area.controller.SysAreaController
  * 基础路径: /sysArea
- * 输出目录: /Users/zjarlin/Downloads/AddzeroKmp/shared/src/commonMain/kotlin/com/addzero/kmp/api
+ * 输出目录: /Users/zjarlin/AquaProjects/addzero/shared/src/commonMain/kotlin/com/addzero/kmp/api
  */
 interface SysAreaApi {
 
@@ -16,7 +16,7 @@ interface SysAreaApi {
  * 路径: /sysArea/page
  * 返回类型: kotlin.Unit
  */
-    @GET("/sysArea/page")    suspend fun page(): Unit
+    @GET("/sysArea/page")    suspend fun page(): kotlin.Unit
 
 /**
  * save
@@ -24,6 +24,6 @@ interface SysAreaApi {
  * 路径: /sysArea/save
  * 返回类型: kotlin.Unit
  */
-    @POST("/sysArea/save")    suspend fun save(): Unit
+    @POST("/sysArea/save")    suspend fun save(): kotlin.Unit
 
 }
