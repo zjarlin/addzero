@@ -172,6 +172,7 @@ class DictEnumMetadataProcessor(
                                 generateEnumClass(dictCode, dictNameMap[dictCode] ?: "", items, enumName)
                                 logger.info("为字典'$dictCode'生成枚举类: Enum$enumName")
                             } catch (e: Exception) {
+//                                e.printStackTrace()
                                 logger.warn("为字典'$dictCode'生成枚举类失败: ${e.message}")
                             }
                         }
