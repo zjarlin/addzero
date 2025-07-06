@@ -47,6 +47,10 @@ kotlin {
 
 
     sourceSets {
+//        commonMain{
+//            kotlin.srcDir("src/commonMain/kotlin")
+//
+//        }
         commonMain.dependencies {
             implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kotlinxSerializationVersion}")
             // put your Multiplatform dependencies here

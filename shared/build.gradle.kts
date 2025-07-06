@@ -17,10 +17,10 @@ dependencies {
 
 
 }
-ksp{
-      arg(
-           "module.main.src.dir",
-    project.extensions.getByType<KotlinMultiplatformExtension>().sourceSets.getByName("commonMain").kotlin.srcDirs.first().absolutePath
+ksp {
+    arg(
+        "module.main.src.dir",
+        project.extensions.getByType<KotlinMultiplatformExtension>().sourceSets.getByName("commonMain").kotlin.srcDirs.first().absolutePath
     )
 
 }
