@@ -29,7 +29,9 @@ dependencies {
     // 确保添加序列化插件依赖
     implementation("org.jetbrains.kotlin:kotlin-serialization:$kotlinVersion") // 与Kotlin版本一致
 //    implementation("org.jetbrains.kotlin.plugin.serialization:$kotlinVersion")
-    implementation("com.vanniktech:gradle-maven-publish-plugin:0.33.0")
+//    implementation("com.vanniktech:gradle-maven-publish-plugin:0.33.0")
+    implementation("com.vanniktech:gradle-maven-publish-plugin:+")
+
 
 
 

@@ -10,6 +10,7 @@ object Vars {
     val giturl = "https://gitee.com/zjarlin/addzero"
     val projName = "addzero"
     val authorName = myGroup.split(".").last() // zjarlin
+    val email = "$authorName@outlook.com"
 
     // 应用相关常量
     const val applicationId = "compileOptions.addzero.kmp"

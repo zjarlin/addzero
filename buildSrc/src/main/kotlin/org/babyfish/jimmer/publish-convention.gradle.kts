@@ -1,41 +1,22 @@
+import com.vanniktech.maven.publish.SonatypeHost
+import org.babyfish.jimmer.Vars
 
-import org.babyfish.jimmer.Vars.authorName
-import org.babyfish.jimmer.Vars.giturl
-import org.babyfish.jimmer.Vars.projName
-
-
-// 临时注释发布相关配置，直到基本构建可工作
 plugins {
-    signing
     id("com.vanniktech.maven.publish")
 }
-signing {
-    // 推荐用 in-memory key，适合 CI/CD
-    useInMemoryPgpKeys(
-        findProperty("signing.keyId") as String?,
-        findProperty("signing.password") as String?,
-        findProperty("signing.secretKeyRingFile")?.let { file(it as String).readText() }
-    )
-    sign(publishing.publications)
-}
 
-afterEvaluate {
-    tasks.findByName("plainJavadocJar")?.let { plainJavadocJarTask ->
-        tasks.named("generateMetadataFileForMavenPublication") {
-            dependsOn(plainJavadocJarTask)
-        }
-    }
-}
 
 mavenPublishing {
     publishToMavenCentral(automaticRelease = true)
     signAllPublications()
+//    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
     coordinates(project.group.toString(), project.name, project.version.toString())
+
     pom {
-        name.set(projName)
-        description.set(projName)
+        name.set("addzero")
+        description.set("The most advanced ORM of JVM, for both java & kotlin")
         inceptionYear.set("2025")
-        url.set(giturl)
+        url.set(Vars.giturl)
         licenses {
             license {
                 name.set("The Apache License, Version 2.0")
@@ -43,17 +24,27 @@ mavenPublishing {
                 distribution.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
             }
         }
+
+
         developers {
             developer {
-                id.set(authorName)
-                name.set(authorName)
-                url.set("https://gitee.com/$authorName")
+                id.set(Vars.authorName)
+                name.set(Vars.authorName)
+                email.set(Vars.email)
             }
         }
+
         scm {
-            url.set(giturl)
-            connection.set("scm:git:git://${giturl.removePrefix("https://")}.git")
-            developerConnection.set("scm:git:ssh://git@${giturl.removePrefix("https://")}.git")
+            connection.set("scm:git:git://gitee.com/zjarlin/addzero.git")
+            developerConnection.set("scm:git:ssh://gitee.com/zjarlin/addzero.git")
+            url.set("https://gitee.com/zjarlin/addzero")
+        }
+    }
+}
+afterEvaluate {
+    tasks.findByName("plainJavadocJar")?.let { plainJavadocJarTask ->
+        tasks.named("generateMetadataFileForMavenPublication") {
+            dependsOn(plainJavadocJarTask)
         }
     }
 }
