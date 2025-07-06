@@ -25,7 +25,6 @@ group = myGroup
 version = myVersion
 
 val androidxLifecycle = Versions.androidxLifecycle
-//val androidxLifecycle = libs.ver
 kotlin {
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)

@@ -1,11 +1,13 @@
 import com.google.devtools.ksp.processing.kspJsArgParser
+import org.babyfish.jimmer.Versions
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 plugins {
     id("kmp-shared")
     id("ksp4shared-convention")
 }
-val ktorV = libs.versions.ktor.get()
+
+val ktorV =Versions.ktorVersion
 dependencies {
     with(projects.lib.addzeroJdbc2enumProcessor) {
         add("kspCommonMainMetadata", this)

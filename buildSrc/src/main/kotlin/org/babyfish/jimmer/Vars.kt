@@ -30,6 +30,7 @@ object Vars {
 }
 
 object Versions {
+    const val ktorVersion="3.2.0"
     const val pinyin4jVersion = "2.5.1"
 
     const val fileKitVersion = "0.8.8"

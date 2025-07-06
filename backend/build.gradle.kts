@@ -96,8 +96,6 @@ dependencies {
 
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
 
-// 引入工具库
-//    api(libs.bundles.tools)
 
 
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
@@ -117,7 +115,6 @@ dependencies {
     implementation("com.belerweb:pinyin4j:+")
 
     implementation("cn.idev.excel:fastexcel:+")
-//    implementation(libs.knife4j.openapi3)
 //    implementation("org.springdoc:springdoc-openapi-ui:1.6.9")
 
 //    implementation("com.github.xiaoymin:knife4j-openapi3-ui:+")

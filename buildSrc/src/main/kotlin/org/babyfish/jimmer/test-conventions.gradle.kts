@@ -3,7 +3,7 @@ plugins {
     id("spring-conventions")
 }
 
-//val libs = the<LibrariesForLibs>()
+
 
 dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
