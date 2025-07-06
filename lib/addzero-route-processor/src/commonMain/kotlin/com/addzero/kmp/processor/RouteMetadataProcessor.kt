@@ -59,6 +59,7 @@ class RouteMetadataProcessor(
 
         // 生成代码
         if (ret.isNotEmpty()) {
+            logger.warn("开始生成路由表")
             generateRouteTable(ret)
         }
 
@@ -93,9 +94,6 @@ class RouteMetadataProcessor(
             val annotation = declaration.annotations.first {
                 it.annotationType.resolve().declaration.qualifiedName?.asString() == Route::class.qualifiedName
             }
-
-
-
             val title = annotation.arguments.firstOrNull { it.name?.asString () == "title" }?.value as? String ?: simpleName
 
             val icon = annotation.arguments.firstOrNull { it.name?.asString() == "icon" }?.value as? String ?: ""
@@ -118,8 +116,6 @@ class RouteMetadataProcessor(
             null
         }
     }
-
-
     private fun generateRouteTable(routeItems: Set<Route>) {
         val packageName = GEN_PKG
         val fileName = FILE_NAME
@@ -197,6 +193,8 @@ class RouteMetadataProcessor(
 
         try {
             // 生成路由键文件 - 使用安全创建方法
+            logger.warn("开始生成路由键")
+
             createNewFileIfNeeded(
                 codeGenerator = codeGenerator,
                 dependencies = Dependencies(true),

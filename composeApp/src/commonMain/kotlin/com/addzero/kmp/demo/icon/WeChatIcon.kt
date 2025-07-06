@@ -1,7 +1,7 @@
 package com.addzero.kmp.demo.icon
 
-import addzerokmp.composeapp.generated.resources.Res
-import addzerokmp.composeapp.generated.resources.wechat
+import addzero.composeapp.generated.resources.Res
+import addzero.composeapp.generated.resources.wechat
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
 import com.addzero.kmp.annotation.Route

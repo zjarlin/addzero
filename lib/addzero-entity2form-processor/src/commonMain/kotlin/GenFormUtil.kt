@@ -31,8 +31,7 @@ fun KSPropertyDeclaration.generateDifferentTypes(): String = run {
         prop.ktName().contains("phone", ignoreCase = true) -> {
 
             """
-                       AddTextField(
-                  AddEmailField(
+                  AddTextField(
           value = state.value.${name.toLowCamelCase()}?.toString() ?: "",
           onValueChange = {
                     state.value = state.value.copy(${name.toLowCamelCase()}  =if (it.isBlank())   ${prop.defaultValue()}  else it .parseObjectByKtx())

@@ -1,5 +1,6 @@
             package com.addzero.kmp.forms
             import androidx.compose.foundation.layout.*
+            import androidx.compose.material.icons.Icons
             import androidx.compose.material3.*
             import androidx.compose.runtime.*
             import androidx.compose.ui.Modifier
@@ -208,8 +209,7 @@ fun rememberSysUserFormState(current:SysUserIso?=null): MutableState<SysUserIso>
         
         
                      val defaultRenderMap = mutableMapOf<String, @Composable () -> Unit>(
-            SysUserFormProps.phone to {                        AddTextField(
-                  AddEmailField(
+            SysUserFormProps.phone to {                   AddTextField(
           value = state.value.phone?.toString() ?: "",
           onValueChange = {
                     state.value = state.value.copy(phone  =if (it.isBlank())   null  else it .parseObjectByKtx())

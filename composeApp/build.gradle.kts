@@ -64,6 +64,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(projects.shared)
+            implementation(projects.lib.addzeroTool)
             // Enables FileKit with Composable utilities
             implementation("io.github.vinceglb:filekit-compose:${Versions.fileKitVersion}")
             // Enables FileKit with Composable utilities

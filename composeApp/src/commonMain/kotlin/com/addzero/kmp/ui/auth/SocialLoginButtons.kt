@@ -1,7 +1,7 @@
 package com.addzero.kmp.ui.auth
 
-import addzerokmp.composeapp.generated.resources.Res
-import addzerokmp.composeapp.generated.resources.wechat
+import addzero.composeapp.generated.resources.Res
+import addzero.composeapp.generated.resources.wechat
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

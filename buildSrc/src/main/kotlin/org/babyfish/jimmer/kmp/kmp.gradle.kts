@@ -22,8 +22,8 @@ plugins {
 
 //val libs = the<LibrariesForLibs>()
 
-group = myGroup
-version = myVersion
+//group = myGroup
+//version = myVersion
 
 val androidxLifecycle = Versions.androidxLifecycle
 kotlin {
