@@ -15,31 +15,41 @@ import org.babyfish.jimmer.sql.ast.mutation.SaveMode
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.babyfish.jimmer.sql.kt.ast.expression.KExpression
 import org.babyfish.jimmer.sql.kt.ast.expression.KNonNullExpression
+import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.babyfish.jimmer.sql.kt.ast.expression.sql
 import org.babyfish.jimmer.sql.kt.ast.query.KConfigurableRootQuery
 import org.babyfish.jimmer.sql.kt.ast.query.KMutableRootQuery
 import org.babyfish.jimmer.sql.kt.ast.query.specification.KSpecification
+import org.babyfish.jimmer.sql.kt.ast.table.KNonNullTable
+import org.babyfish.jimmer.sql.kt.ast.table.isNull
 import org.springframework.jdbc.core.JdbcTemplate
 
 object JimmerExt
 
 
-
-fun<E:Any> KSqlClient.updateById(e: E) =run{
-  val save = this.save(e) {
-      setMode(SaveMode.UPDATE_ONLY)
-  }
+fun <E : Any> KSqlClient.updateById(e: E) = run {
+    val save = this.save(e) {
+        setMode(SaveMode.UPDATE_ONLY)
+    }
     save
 }
 
+fun <E : Any> KNonNullTable<E>.eqId(e: E?): KNonNullExpression<Boolean> {
+    if (e == null) {
+        return isNull()
+    }
+    val id = ImmutableObjects.get(e, "id")
+    val expression = this@eqId.getId<Any>() eq id
+    return expression
+}
 
-inline fun <reified A:Any,reified E:Any > A.toJimmerEntity(): E {
+inline fun <reified A : Any, reified E : Any> A.toJimmerEntity(): E {
     val toJsonByKtx = this.toJsonByKtx<A>()
     val fromString = ImmutableObjects.fromString(E::class.java, toJsonByKtx)
     val jimmerEntity = fromString.setJimmerEntity {
         DraftObjects.unload(it, "createTime") // 清除createTime字段
     }
-    return  jimmerEntity!!
+    return jimmerEntity!!
 }
 
 
@@ -107,9 +117,8 @@ fun <E : Any> E?.setJimmerEntity(fieldName: String, value: Any?): E? = this?.let
     return copy
 }
 
-fun <E : Any> E?.setJimmerEntity(block: (DraftSpi) -> Unit = {}): E? = this?.let {
-    e ->
-    Internal.produce(ImmutableType.get(e.javaClass), e) { d  ->
+fun <E : Any> E?.setJimmerEntity(block: (DraftSpi) -> Unit = {}): E? = this?.let { e ->
+    Internal.produce(ImmutableType.get(e.javaClass), e) { d ->
         block(d as DraftSpi)
         d
     } as E
@@ -142,6 +151,4 @@ inline fun <E : Any, reified Spec : KSpecification<E>> Spec.fromMap(updates: Map
             .toJson()
     )
     return fromString
-
-
 }

@@ -1,7 +1,6 @@
 package com.addzero.web.modules.sys_dict.controller
 
 import com.addzero.common.consts.sql
-import com.addzero.kmp.api.SysDictApi
 import com.addzero.kmp.isomorphic.SysDictIso
 import com.addzero.kmp.isomorphic.SysDictItemIso
 import com.addzero.web.infra.jackson.convertTo
@@ -13,9 +12,13 @@ import com.addzero.web.modules.sys_dict.entity.sysDictItems
 import com.addzero.web.modules.sys_dict_item.entity.SysDictItem
 import com.addzero.web.modules.sys_dict_item.entity.itemText
 import com.addzero.web.modules.sys_dict_item.entity.sortOrder
+import org.babyfish.jimmer.ImmutableObjects
+import org.babyfish.jimmer.sql.kt.ast.expression.KNonNullExpression
 import org.babyfish.jimmer.sql.kt.ast.expression.asc
+import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.babyfish.jimmer.sql.kt.ast.expression.`ilike?`
 import org.babyfish.jimmer.sql.kt.ast.expression.or
+import org.babyfish.jimmer.sql.kt.ast.table.KNonNullTable
 import org.springframework.web.bind.annotation.*
 
 
@@ -25,7 +28,7 @@ class SysDictController {
 
     @GetMapping("/sys/dict/querydict")
 
-  fun querydict(@RequestParam keyword: String): List<SysDictIso> {
+    fun querydict(@RequestParam keyword: String): List<SysDictIso> {
         val createQuery = sql.executeQuery(SysDict::class) {
             where(
                 or(
@@ -56,9 +59,11 @@ class SysDictController {
         return createQuery.convertTo()
     }
 
+
+
     @PostMapping("/sys/dict/saveDict")
-  fun saveDict(@RequestBody vO: SysDictIso): SysDictIso {
-        val toJimmerEntity = vO.toJimmerEntity<SysDictIso,SysDict>()
+    fun saveDict(@RequestBody vO: SysDictIso): SysDictIso {
+        val toJimmerEntity = vO.toJimmerEntity<SysDictIso, SysDict>()
         val save = sql.save(toJimmerEntity)
         val modifiedEntity = save.modifiedEntity
         return modifiedEntity.convertTo()
@@ -66,19 +71,19 @@ class SysDictController {
 
 
     @PostMapping("/sys/dict/saveDictItem")
-  fun saveDictItem(@RequestBody impl: SysDictItemIso) {
-        val json = impl.toJimmerEntity<SysDictItemIso,SysDictItem>()
+    fun saveDictItem(@RequestBody impl: SysDictItemIso) {
+        val json = impl.toJimmerEntity<SysDictItemIso, SysDictItem>()
         sql.save(json)
     }
 
 
     @GetMapping("/sys/dict/deleteDictItem")
-  fun deleteDictItem(@RequestParam lng: Long) {
+    fun deleteDictItem(@RequestParam lng: Long) {
         sql.deleteById(SysDictItem::class, lng)
     }
 
     @GetMapping("/sys/dict/deleteDict")
-  fun deleteDict(lng: Long) {
+    fun deleteDict(lng: Long) {
         val deleteById = sql.deleteById(SysDict::class, lng)
 
 

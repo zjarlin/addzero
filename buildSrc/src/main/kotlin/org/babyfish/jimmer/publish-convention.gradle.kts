@@ -6,6 +6,7 @@ plugins {
 
 mavenPublishing {
     publishToMavenCentral(automaticRelease = true)
+//    publishToMavenCentral()
     signAllPublications()
 //    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
     coordinates(project.group.toString(), project.name, project.version.toString())
