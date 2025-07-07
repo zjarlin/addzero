@@ -1,7 +1,5 @@
 package com.addzero.kmp.ui.auth
 
-import addzero.composeapp.generated.resources.Res
-import addzero.composeapp.generated.resources.wechat
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -20,6 +18,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import io.gitee.zjarlin.composeapp.generated.resources.Res
+import io.gitee.zjarlin.composeapp.generated.resources.wechat
 import org.jetbrains.compose.resources.painterResource
 
 @Composable

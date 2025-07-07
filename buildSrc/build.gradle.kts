@@ -14,7 +14,7 @@ repositories {
 //val kotlinVersion = "2.2.0"
 //val kspVersion = "2.2.0-2.0.2"
 val kotlinVersion = libs.versions.kotlin.get()
-val kspVersion = libs.versions.kspVersion.get()
+val kspVersion = libs.versions.ksp.get()
 
 
 dependencies {

@@ -4,7 +4,7 @@
 #ksp = "2.2.0-2.0.2"
 
 [versions]
-kspVersion = "2.2.0-2.0.2"
+ksp = "2.2.0-2.0.2"
 # 构建工具版本
 filekitCompose = "0.8.8"
 kotlin = "2.2.0"

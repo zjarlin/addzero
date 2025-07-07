@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.sp
 import com.addzero.kmp.annotation.Route
 
 import com.addzero.kmp.viewmodel.ExcelTemplateDesignerViewModel
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
 /**
@@ -24,6 +25,7 @@ import org.koin.compose.viewmodel.koinViewModel
  */
 @Composable
 @Route("工具", "Excel模板设计器")
+@Preview
 fun ExcelTemplateDesignerScreen() {
     val viewModel = koinViewModel<ExcelTemplateDesignerViewModel>()
 
@@ -362,6 +364,7 @@ private fun FieldEditCard(
                 )
 
                 ExcelTemplateDesignerViewModel.FieldType.values().forEach { type ->
+
                     FilterChip(
                         selected = field.type == type,
                         onClick = { onUpdate(null, null, type) },

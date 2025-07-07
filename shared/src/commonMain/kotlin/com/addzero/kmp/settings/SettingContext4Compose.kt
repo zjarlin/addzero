@@ -13,7 +13,7 @@ object SettingContext4Compose {
 
     val DEFAULT_THEME = EnumSysTheme.LAN_SE_LIANGSE
 
-    const val BASE_URL = "http://192.168.110.229:12344"
+    const val BASE_URL = "http://localhost:12344"
     /*
     填入正确的路由地址即可
     目前RouteKeys是自动生成的,没有放在shared共享目录,如果是自定义页面填入全限定名称
