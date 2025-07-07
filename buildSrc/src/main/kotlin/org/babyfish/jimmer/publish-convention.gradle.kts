@@ -53,7 +53,6 @@ mavenPublishing {
             }
         }
 
-
         developers {
             developer {
                 id.set(Vars.authorName)
