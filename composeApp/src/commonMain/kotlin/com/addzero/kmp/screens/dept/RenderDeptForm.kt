@@ -1,40 +1,21 @@
 package com.addzero.kmp.screens.dept
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
-import com.addzero.kmp.component.search_bar.AddSearchBar
-import com.addzero.kmp.component.tree.AddTree
-import com.addzero.kmp.core.ext.convertToByKtx
 import com.addzero.kmp.forms.SysDeptForm
-import com.addzero.kmp.forms.SysDeptFormDsl
 import com.addzero.kmp.forms.rememberSysDeptFormState
-import com.addzero.kmp.isomorphic.SysDeptIso
-import com.addzero.kmp.mock.mockSysDepts
 import com.addzero.kmp.viewmodel.SysDeptViewModel
 
 @Composable
 fun RenderDeptForm(vm: SysDeptViewModel) {
 
-//    val vm = koinViewModel<SysDeptViewModel>()
+    val state = rememberSysDeptFormState()
+    SysDeptForm(state = state, visible = vm.showForm, title = "部门表单", onClose = { vm.showForm = false }, onSubmit = { vm.onSave(state.value) }) {
+        parent {
+            val sysDeptViewModel = SysDeptViewModel()
+            LeftCard(sysDeptViewModel)
+//        renderParent(state)
 
-    val rememberSysDeptFormState = rememberSysDeptFormState()
-    SysDeptForm(
-        rememberSysDeptFormState,
-        visible = vm.showForm,
-        title = "部门表单",
-        onClose = { vm.showForm = false },
-        onSubmit = { vm.onSave(rememberSysDeptFormState.value) }
-    ) {
-        renderParent(state)
+        }
         children(true)
         sysUsers(true)
     }
@@ -93,25 +74,34 @@ fun RenderDeptForm(vm: SysDeptViewModel) {
 //    }
 //}
 
-private fun SysDeptFormDsl.renderParent(vm: MutableState<SysDeptIso>) {
-    parent {
-//        var formKeyWord by remember { mutableStateOf("") }
+//@Composable
+//private fun SysDeptFormDsl.renderParent(vm: MutableState<SysDeptIso>) {
+//    var formTree by mutableStateOf(emptyList<SysDeptIso>())
 //
-//        LaunchedEffect(formKeyWord) {
-//            vm.loadDeptTree()
-//        }
+//    var formKeyWord by remember { mutableStateOf("") }
+//    LaunchedEffect(formKeyWord) {
+//    }
 //
+//    parent {
+////        var formKeyWord by remember { mutableStateOf("") }
+////
+////        LaunchedEffect(formKeyWord) {
+////            vm.loadDeptTree()
+////        }
+////
 //        Box(modifier = Modifier.fillMaxSize()) {
 //            Column {
 //                AddSearchBar(
 //                    keyword = formKeyWord,
 //                    onKeyWordChanged = { formKeyWord = it },
-//                    onSearch = { vm.loadDeptTree() }
+//                    onSearch = {
+//                        getFormTree { formTree = it }
+//                    }
 //                )
 //
 //                AddTree(
 //
-//                    items = vm.deptVos,
+//                    items = formTree,
 //                    getId = { it.id!! },
 //                    getLabel = { it.name },
 //                    getChildren = { it.children },
@@ -121,5 +111,17 @@ private fun SysDeptFormDsl.renderParent(vm: MutableState<SysDeptIso>) {
 //                )
 //            }
 //        }
-    }
-}
+//    }
+//}
+
+//@Composable
+//private fun getFormTree(onTreeChange: (List<SysDeptIso>) -> Unit): List<SysDeptIso> {
+//    var formTree by mutableStateOf(emptyList<SysDeptIso>())
+//
+//    val rememberCoroutineScope = rememberCoroutineScope()
+//    rememberCoroutineScope.launch {
+//        val tree = sysDeptApi.tree("")
+//        formTree = tree
+//        onTreeChange(formTree)
+//    }
+//}

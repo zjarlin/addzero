@@ -29,8 +29,8 @@ fun App() {
     // 已登录时渲染主界面
     val colorScheme = AppThemes.getColorScheme(ThemeViewModel.currentTheme)
     FollowSystemTheme(colorScheme = colorScheme) {
-        AppContent(loginViewModel)
-//        MainLayout()
+//        AppContent(loginViewModel)
+        MainLayout()
         ToastListener()
 
     }
