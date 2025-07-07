@@ -10,10 +10,9 @@
 
 
 
-## ksp
-- jimmer实体(backend)SysUser
-- 默认Controller(backend)SysUserController
-- 解析Controller符号全自动网络api生成(跨平台shared): SysUserApi
+- jimmer实体生成(backend)
+- 默认Controller生成(backend)
+- 解析Controller符号全自动网络api生成(必须约定入参出单都需要放在跨平台shared)
 - 同构体(跨平台shared): SysUserIso
 - 字典/枚举(跨平台shared): com.addzero.kmp.generated.enums
 - 矢量图标字符串常量: IconKeys
@@ -22,7 +21,7 @@
 - 
 - 路由导航RouteTable(跨平台composeApp) :RouteTable
 - 路由导航常量RouteKeys(跨平台composeApp) :RouteKeys
-- todo : 基于jimmer实体生成万能动态表单(包含校验部分)
+- todo : 基于jimmer实体生成动态表单(包含校验部分)
 
 
 

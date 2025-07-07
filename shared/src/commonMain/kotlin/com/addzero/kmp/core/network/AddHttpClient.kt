@@ -21,9 +21,9 @@ import kotlin.time.Duration.Companion.minutes
 expect val apiClient: HttpClient
 
 val json = Json {
-//    encodeDefaults = true
+//    encodeDefaults = false
     //显示null
-    explicitNulls = false
+//    explicitNulls = true
     ignoreUnknownKeys = true
     isLenient = true
 //    prettyPrint = true
