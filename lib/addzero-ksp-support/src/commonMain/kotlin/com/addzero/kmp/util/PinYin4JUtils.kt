@@ -374,20 +374,20 @@ object PinYin4JUtils {
 
 }
 
-fun main() {
-    // pin4j 简码 和 城市编码
-
-    val s1 = "中华人民共和国"
-
-    val headArray = getHeadByString(s1) // 获得每个汉字拼音首字母
-
-    println(headArray.contentToString())
-
-    val s2 = "长城"
-
-    println(stringToPinyin(s2, true, ",").contentToString())
-
-    val s3 = "长"
-
-    println(stringToPinyin(s3, true, ",").contentToString())
-}
+//fun main() {
+//    // pin4j 简码 和 城市编码
+//
+//    val s1 = "中华人民共和国"
+//
+//    val headArray = getHeadByString(s1) // 获得每个汉字拼音首字母
+//
+//    println(headArray.contentToString())
+//
+//    val s2 = "长城"
+//
+//    println(stringToPinyin(s2, true, ",").contentToString())
+//
+//    val s3 = "长"
+//
+//    println(stringToPinyin(s3, true, ",").contentToString())
+//}
