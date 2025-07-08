@@ -10,6 +10,10 @@
             import com.addzero.kmp.enums.RegexEnum
             import androidx.compose.material.icons.filled.*
             import com.addzero.kmp.component.form.*
+           import com.addzero.kmp.component.form.number.*
+import com.addzero.kmp.component.form.date.*
+ 
+            import androidx.compose.ui.Alignment
             import com.addzero.kmp.core.ext.parseObjectByKtx
             import com.addzero.kmp.isomorphic.*
         class SysDeptFormDsl(
@@ -165,41 +169,41 @@ fun rememberSysDeptFormState(current:SysDeptIso?=null): MutableState<SysDeptIso>
         
         
                      val defaultRenderMap = mutableMapOf<String, @Composable () -> Unit>(
-            SysDeptFormProps.name to {        AddTextField(
-            value = state.value.name?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(name  =if (it.isBlank())   ""  else it .parseObjectByKtx())
-            },
-     label = "部门名称" ,
-)
- }
+            SysDeptFormProps.name to { AddTextField(
+    value = state.value.name?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(name = if (it.isBlank()) "" else it.parseObjectByKtx())
+    },
+    label = "部门名称",
+    isRequired = true
+) }
         ,
-            SysDeptFormProps.parent to {        AddTextField(
-            value = state.value.parent?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(parent  =if (it.isBlank())   null  else it .parseObjectByKtx())
-            },
-     label = "parent" ,
-)
- }
+            SysDeptFormProps.parent to { AddTextField(
+    value = state.value.parent?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(parent = if (it.isBlank()) null else it.parseObjectByKtx())
+    },
+    label = "parent",
+    isRequired = false
+) }
         ,
-            SysDeptFormProps.children to {        AddTextField(
-            value = state.value.children?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(children  =if (it.isBlank())   emptyList()  else it .parseObjectByKtx())
-            },
-     label = "children" ,
-)
- }
+            SysDeptFormProps.children to { AddTextField(
+    value = state.value.children?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(children = if (it.isBlank()) emptyList() else it.parseObjectByKtx())
+    },
+    label = "children",
+    isRequired = true
+) }
         ,
-            SysDeptFormProps.sysUsers to {        AddTextField(
-            value = state.value.sysUsers?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(sysUsers  =if (it.isBlank())   emptyList()  else it .parseObjectByKtx())
-            },
-     label = "部门用户" ,
-)
- }
+            SysDeptFormProps.sysUsers to { AddTextField(
+    value = state.value.sysUsers?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(sysUsers = if (it.isBlank()) emptyList() else it.parseObjectByKtx())
+    },
+    label = "部门用户",
+    isRequired = true
+) }
          
  ) 
        

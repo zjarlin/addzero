@@ -48,7 +48,7 @@ fun RegisterComponent(logo: ImageVector = Icons.Default.EmojiPeople, onReg: () -
             value = userRegFormState.username,
             onValueChange = { viewModel.userRegFormState = userRegFormState.copy(username = it) },
             label = "用户名",
-            regexValidator = RegexEnum.USERNAME,
+            regexEnum = RegexEnum.USERNAME,
             leadingIcon = Icons.Default.PeopleAlt,
             disable = checkSignInput == USERNAME,
             onErrMsgChange = { input, msg -> errorMsgs.add(msg) },
@@ -85,7 +85,7 @@ fun RegisterComponent(logo: ImageVector = Icons.Default.EmojiPeople, onReg: () -
             onValueChange = { viewModel.userRegFormState = userRegFormState.copy(phone = it) },
             label = "手机号",
             isRequired = false,
-            regexValidator = RegexEnum.PHONE,
+            regexEnum = RegexEnum.PHONE,
             leadingIcon = Icons.Default.Phone,
             disable = checkSignInput == CheckSignInput.PHONE, onErrMsgChange = { input, msg -> errorMsgs.add(msg) },
             remoteValidationConfig = RemoteValidationConfig(

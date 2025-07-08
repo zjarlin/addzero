@@ -10,6 +10,10 @@
             import com.addzero.kmp.enums.RegexEnum
             import androidx.compose.material.icons.filled.*
             import com.addzero.kmp.component.form.*
+           import com.addzero.kmp.component.form.number.*
+import com.addzero.kmp.component.form.date.*
+ 
+            import androidx.compose.ui.Alignment
             import com.addzero.kmp.core.ext.parseObjectByKtx
             import com.addzero.kmp.isomorphic.*
         class BizTagFormDsl(
@@ -137,23 +141,23 @@ fun rememberBizTagFormState(current:BizTagIso?=null): MutableState<BizTagIso> {
         
         
                      val defaultRenderMap = mutableMapOf<String, @Composable () -> Unit>(
-            BizTagFormProps.name to {        AddTextField(
-            value = state.value.name?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(name  =if (it.isBlank())   ""  else it .parseObjectByKtx())
-            },
-     label = "标签名称" ,
-)
- }
+            BizTagFormProps.name to { AddTextField(
+    value = state.value.name?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(name = if (it.isBlank()) "" else it.parseObjectByKtx())
+    },
+    label = "标签名称",
+    isRequired = true
+) }
         ,
-            BizTagFormProps.description to {        AddTextField(
-            value = state.value.description?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(description  =if (it.isBlank())   null  else it .parseObjectByKtx())
-            },
-     label = "标签描述" ,
-)
- }
+            BizTagFormProps.description to { AddTextField(
+    value = state.value.description?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(description = if (it.isBlank()) null else it.parseObjectByKtx())
+    },
+    label = "标签描述",
+    isRequired = false
+) }
          
  ) 
        

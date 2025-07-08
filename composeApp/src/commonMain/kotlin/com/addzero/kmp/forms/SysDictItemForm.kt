@@ -10,6 +10,10 @@
             import com.addzero.kmp.enums.RegexEnum
             import androidx.compose.material.icons.filled.*
             import com.addzero.kmp.component.form.*
+           import com.addzero.kmp.component.form.number.*
+import com.addzero.kmp.component.form.date.*
+ 
+            import androidx.compose.ui.Alignment
             import com.addzero.kmp.core.ext.parseObjectByKtx
             import com.addzero.kmp.isomorphic.*
         class SysDictItemFormDsl(
@@ -207,68 +211,68 @@ fun rememberSysDictItemFormState(current:SysDictItemIso?=null): MutableState<Sys
         
         
                      val defaultRenderMap = mutableMapOf<String, @Composable () -> Unit>(
-            SysDictItemFormProps.itemText to {        AddTextField(
-            value = state.value.itemText?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(itemText  =if (it.isBlank())   ""  else it .parseObjectByKtx())
-            },
-     label = "字典项文本" ,
-)
- }
+            SysDictItemFormProps.itemText to { AddTextField(
+    value = state.value.itemText?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(itemText = if (it.isBlank()) "" else it.parseObjectByKtx())
+    },
+    label = "字典项文本",
+    isRequired = true
+) }
         ,
-            SysDictItemFormProps.itemValue to {        AddTextField(
-            value = state.value.itemValue?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(itemValue  =if (it.isBlank())   ""  else it .parseObjectByKtx())
-            },
-     label = "字典项值" ,
-)
- }
+            SysDictItemFormProps.itemValue to { AddTextField(
+    value = state.value.itemValue?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(itemValue = if (it.isBlank()) "" else it.parseObjectByKtx())
+    },
+    label = "字典项值",
+    isRequired = true
+) }
         ,
-            SysDictItemFormProps.description to {        AddTextField(
-            value = state.value.description?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(description  =if (it.isBlank())   null  else it .parseObjectByKtx())
-            },
-     label = "描述" ,
-)
- }
+            SysDictItemFormProps.description to { AddTextField(
+    value = state.value.description?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(description = if (it.isBlank()) null else it.parseObjectByKtx())
+    },
+    label = "描述",
+    isRequired = false
+) }
         ,
-            SysDictItemFormProps.sortOrder to {        AddTextField(
-            value = state.value.sortOrder?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(sortOrder  =if (it.isBlank())   null  else it .parseObjectByKtx())
-            },
-     label = "排序" ,
-)
- }
+            SysDictItemFormProps.sortOrder to {          AddIntegerField(
+    value = state.value.sortOrder?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(sortOrder = if (it.isBlank()) null else it.parseObjectByKtx())
+    },
+    label = "排序",
+    isRequired = false
+) }
         ,
-            SysDictItemFormProps.status to {        AddTextField(
-            value = state.value.status?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(status  =if (it.isBlank())   null  else it .parseObjectByKtx())
-            },
-     label = "状态（1启用0不启用）" ,
-)
- }
+            SysDictItemFormProps.status to {          AddIntegerField(
+    value = state.value.status?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(status = if (it.isBlank()) null else it.parseObjectByKtx())
+    },
+    label = "状态（1启用0不启用）",
+    isRequired = false
+) }
         ,
-            SysDictItemFormProps.sysDict to {        AddTextField(
-            value = state.value.sysDict?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(sysDict  =if (it.isBlank())   null  else it .parseObjectByKtx())
-            },
-     label = "sysDict" ,
-)
- }
+            SysDictItemFormProps.sysDict to { AddTextField(
+    value = state.value.sysDict?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(sysDict = if (it.isBlank()) null else it.parseObjectByKtx())
+    },
+    label = "sysDict",
+    isRequired = false
+) }
         ,
-            SysDictItemFormProps.dictId to {        AddTextField(
-            value = state.value.dictId?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(dictId  =if (it.isBlank())   null  else it .parseObjectByKtx())
-            },
-     label = "dictId" ,
-)
- }
+            SysDictItemFormProps.dictId to {          AddIntegerField(
+    value = state.value.dictId?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(dictId = if (it.isBlank()) null else it.parseObjectByKtx())
+    },
+    label = "dictId",
+    isRequired = false
+) }
          
  ) 
        

@@ -46,7 +46,7 @@ fun AddPasswordField(
         onValueChange = onValueChange,
         label = label,
         validators = validators,
-        regexValidator = regexValidator,
+        regexEnum = regexValidator,
         modifier = modifier,
         leadingIcon = Icons.Default.Lock,
         disable = !enabled,

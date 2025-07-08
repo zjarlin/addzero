@@ -10,13 +10,30 @@
             import com.addzero.kmp.enums.RegexEnum
             import androidx.compose.material.icons.filled.*
             import com.addzero.kmp.component.form.*
+           import com.addzero.kmp.component.form.number.*
+import com.addzero.kmp.component.form.date.*
+ 
+            import androidx.compose.ui.Alignment
             import com.addzero.kmp.core.ext.parseObjectByKtx
             import com.addzero.kmp.isomorphic.*
         class SysUserFormDsl(
             val state: MutableState<SysUserIso>,
             private val renderMap: MutableMap<String, @Composable () -> Unit>
         ) {
-            fun id(
+            fun price(
+    hidden: Boolean = false,
+    render:  (@Composable ( MutableState<SysUserIso>) -> Unit)? = null
+) {
+    when {
+        hidden -> renderMap["price"] = {}
+        render != null -> renderMap["price"] = {
+               render(state)
+        }
+    }
+}
+
+
+fun id(
     hidden: Boolean = false,
     render:  (@Composable ( MutableState<SysUserIso>) -> Unit)? = null
 ) {
@@ -178,6 +195,7 @@ fun updateTime(
             }
         }
 object SysUserFormProps {
+const val price = "price"
 const val phone = "phone"
 const val email = "email"
 const val username = "username"
@@ -209,101 +227,99 @@ fun rememberSysUserFormState(current:SysUserIso?=null): MutableState<SysUserIso>
         
         
                      val defaultRenderMap = mutableMapOf<String, @Composable () -> Unit>(
-            SysUserFormProps.phone to {                   AddTextField(
-          value = state.value.phone?.toString() ?: "",
-          onValueChange = {
-                    state.value = state.value.copy(phone  =if (it.isBlank())   null  else it .parseObjectByKtx())
-                    },
-             label = "手机号" ,
-            isRequired = false,
-            regexValidator = RegexEnum.PHONE,
-            leadingIcon = Icons.Default.Phone,
-          //  remoteValidationConfig = RemoteValidationConfig(
-           //     tableName = "sys_user",
-           //     column = "phone",
-           // )
-
-//            , errorMessages = errorMessages
-        )
-  }
+            SysUserFormProps.price to { AddMoneyField(
+    value = state.value.price?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(price = if (it.isBlank()) "" else it.parseObjectByKtx())
+    },
+    label = "价格",
+    isRequired = true,
+    currency = "CNY"
+) }
         ,
-            SysUserFormProps.email to {                AddEmailField(
-      value = state.value.email?.toString() ?: "",
-      onValueChange = {
-                state.value = state.value.copy(email  =if (it.isBlank())   ""  else it .parseObjectByKtx())
-                },
-         label = "电子邮箱" ,
-      //  disable = false,
-     //   showCheckEmail = true,
-//        remoteValidationConfig = RemoteValidationConfig(
-   //         tableName = "sys_user",
-   //         column = "email",
-    //    )
-    )
- }
+            SysUserFormProps.phone to { AddTextField(
+    value = state.value.phone?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(phone = if (it.isBlank()) null else it.parseObjectByKtx())
+    },
+    label = "手机号",
+   leadingIcon = Icons.Default.Phone,
+    isRequired = false,
+    regexEnum = RegexEnum.PHONE
+) }
         ,
-            SysUserFormProps.username to {        AddTextField(
-            value = state.value.username?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(username  =if (it.isBlank())   ""  else it .parseObjectByKtx())
-            },
-     label = "用户名" ,
-)
- }
+        SysUserFormProps.email to { AddEmailField(
+    value = state.value.email?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(email = if (it.isBlank()) "" else it.parseObjectByKtx())
+    },
+    showCheckEmail=false,
+    label = "电子邮箱",
+    isRequired = true,
+) }
+    ,
+            SysUserFormProps.username to { AddTextField(
+    value = state.value.username?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(username = if (it.isBlank()) "" else it.parseObjectByKtx())
+    },
+    label = "用户名",
+    isRequired = true
+) }
         ,
-            SysUserFormProps.password to {        AddTextField(
-            value = state.value.password?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(password  =if (it.isBlank())   ""  else it .parseObjectByKtx())
-            },
-     label = "密码" ,
-)
- }
+            SysUserFormProps.password to { AddTextField(
+    value = state.value.password?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(password = if (it.isBlank()) "" else it.parseObjectByKtx())
+    },
+    label = "密码",
+    isRequired = true
+) }
         ,
-            SysUserFormProps.avatar to {        AddTextField(
-            value = state.value.avatar?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(avatar  =if (it.isBlank())   null  else it .parseObjectByKtx())
-            },
-     label = "头像" ,
-)
- }
+            SysUserFormProps.avatar to { AddTextField(
+    value = state.value.avatar?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(avatar = if (it.isBlank()) null else it.parseObjectByKtx())
+    },
+    label = "头像",
+    isRequired = false
+) }
         ,
-            SysUserFormProps.nickname to {        AddTextField(
-            value = state.value.nickname?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(nickname  =if (it.isBlank())   null  else it .parseObjectByKtx())
-            },
-     label = "昵称" ,
-)
- }
+            SysUserFormProps.nickname to { AddTextField(
+    value = state.value.nickname?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(nickname = if (it.isBlank()) null else it.parseObjectByKtx())
+    },
+    label = "昵称",
+    isRequired = false
+) }
         ,
-            SysUserFormProps.gender to {        AddTextField(
-            value = state.value.gender?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(gender  =if (it.isBlank())   null  else it .parseObjectByKtx())
-            },
-     label = "性别0：男1：女2：未知" ,
-)
- }
+            SysUserFormProps.gender to { AddTextField(
+    value = state.value.gender?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(gender = if (it.isBlank()) null else it.parseObjectByKtx())
+    },
+    label = "性别",
+    isRequired = false
+) }
         ,
-            SysUserFormProps.depts to {        AddTextField(
-            value = state.value.depts?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(depts  =if (it.isBlank())   emptyList()  else it .parseObjectByKtx())
-            },
-     label = "所属部门列表" ,
-)
- }
+            SysUserFormProps.depts to { AddTextField(
+    value = state.value.depts?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(depts = if (it.isBlank()) emptyList() else it.parseObjectByKtx())
+    },
+    label = "所属部门",
+    isRequired = true
+) }
         ,
-            SysUserFormProps.roles to {        AddTextField(
-            value = state.value.roles?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(roles  =if (it.isBlank())   emptyList()  else it .parseObjectByKtx())
-            },
-     label = "角色列表" ,
-)
- }
+            SysUserFormProps.roles to { AddTextField(
+    value = state.value.roles?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(roles = if (it.isBlank()) emptyList() else it.parseObjectByKtx())
+    },
+    label = "角色列表",
+    isRequired = true
+) }
          
  ) 
        

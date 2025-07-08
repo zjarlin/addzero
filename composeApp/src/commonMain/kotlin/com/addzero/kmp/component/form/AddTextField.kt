@@ -38,7 +38,7 @@ fun AddTextField(
     placeholder: String = "请输入$label",
     isRequired: Boolean = true,
     validators: List<Pair<(String) -> Boolean, String>> = emptyList(),
-    regexValidator: RegexEnum? = null,
+    regexEnum: RegexEnum? = null,
     modifier: Modifier = Modifier,
     maxLines: Int = 1,
     maxLength: Int? = null,
@@ -87,8 +87,8 @@ fun AddTextField(
         }
 
         // 3. 检查正则验证
-        if (regexValidator != null && input.isNotBlank()) {
-            val (valid, message) = RegexEnum.validate(input, regexValidator)
+        if (regexEnum != null && input.isNotBlank()) {
+            val (valid, message) = RegexEnum.validate(input, regexEnum)
             if (!valid) {
                 errors.add(message)
             }

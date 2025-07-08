@@ -45,7 +45,7 @@ fun SecondLoginComponent(
 
         // 用户名输入框
         AddTextField(
-            value = userRegFormState.username, onValueChange = { viewModel.userRegFormState = userRegFormState.copy(username = it) }, label = "用户名", isRequired = false, regexValidator = RegexEnum.USERNAME, leadingIcon = Icons.Default.PeopleAlt, disable = true
+            value = userRegFormState.username, onValueChange = { viewModel.userRegFormState = userRegFormState.copy(username = it) }, label = "用户名", isRequired = false, regexEnum = RegexEnum.USERNAME, leadingIcon = Icons.Default.PeopleAlt, disable = true
 //            , errorMessages = errorMessages
         )
 

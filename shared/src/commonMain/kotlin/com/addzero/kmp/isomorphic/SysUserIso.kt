@@ -6,6 +6,12 @@ import kotlinx.datetime.*
 import kotlinx.serialization.Serializable
  @Serializable
 data class SysUserIso(
+                            /*
+             * 
+价格
+
+             */
+            val price: String  = "" ,
                                       /*
             * 
 主键
@@ -51,15 +57,12 @@ data class SysUserIso(
                            /*
             * 
 性别
-0：男
-1：女
-2：未知
 
             */
             val gender: EnumSysGender?  = null ,
                            /*
             * 
-所属部门列表
+所属部门
 
             */
             val depts: List<SysDeptIso>  = emptyList() ,

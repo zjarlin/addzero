@@ -41,6 +41,10 @@ fun main() {
 //@ValidImmutable
 interface SysUser : BaseDateTime {
     /**
+     *价格
+     */
+    val price: String
+    /**
      * 主键
      */
     @Id
@@ -86,14 +90,11 @@ interface SysUser : BaseDateTime {
 
     /**
      * 性别
-     * 0：男
-     * 1：女
-     * 2：未知
      */
     val gender: EnumSysGender?
 
     /**
-     * 所属部门列表
+     * 所属部门
      */
     @ManyToMany(mappedBy = "sysUsers")
     val depts: List<SysDept>

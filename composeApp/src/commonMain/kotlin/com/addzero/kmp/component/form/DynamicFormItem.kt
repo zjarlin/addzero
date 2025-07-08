@@ -13,6 +13,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.addzero.kmp.component.form.number.AddDecimalField
+import com.addzero.kmp.component.form.number.AddIntegerField
 import com.addzero.kmp.kt_util.containsAnyIgnoreCase
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -23,49 +25,52 @@ fun DynamicFormItem(
     title: String?,
     kmpType: String,
 ) {
-    val javaType = kmpType
     when {
-        // 整数类型
-//        javaType.containsAnyIgnoreCase("Long", "Integer", "Int", "Short") -> {
-//            IntegerInputField(
+//        // 整数类型
+//        kmpType.containsAnyIgnoreCase("Long", "Integer", "Int", "Short") -> {
+//            AddIntegerField(
+//                value = value.toString(),
+//                onValueChange = onValueChange,
+//                label = title ?: "",
+//            )
+//        }
+//
+//        // 浮点数类型
+//        kmpType.containsAnyIgnoreCase("Float", "Double", "BigDecimal") -> {
+//            AddDecimalField(
 //                value = value,
 //                onValueChange = onValueChange,
 //                label = title ?: "",
-//                modifier = Modifier.width(160.dp)
 //            )
 //        }
-
-        // 浮点数类型
-//        javaType.containsAnyIgnoreCase("Float", "Double", "BigDecimal") -> {
-//            DecimalInputField(
-//                value = value,
-//                onValueChange = onValueChange,
-//                label = title ?: "",
-//                modifier = Modifier.width(160.dp),
-//                precision = 2  // 限制小数位数，可根据需要调整
-//            )
-//        }
-
-        // 日期类型
-        javaType.containsAnyIgnoreCase("Date") -> {
+//
+//
+//
+//
+//
+//        // 日期类型
+//        kmpType.containsAnyIgnoreCase("Date") -> {
 //            DatePickerField(
 //                value = value.toString(),
 //                onValueChange = onValueChange,
 //                label = title ?: "",
 //                modifier = Modifier.width(160.dp)
 //            )
-        }
-
-        // 布尔类型
-        javaType.containsAnyIgnoreCase("Boolean") -> {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Switch(
-                    checked = value as? Boolean == true,
-                    onCheckedChange = onValueChange
-                )
-                Text("是/否", modifier = Modifier.width(40.dp))
-            }
-        }
+//        }
+//
+//        // 布尔类型
+//        kmpType.containsAnyIgnoreCase("Boolean") -> {
+//            Row(verticalAlignment = Alignment.CenterVertically) {
+//                Switch(
+//                    checked = value as? Boolean == true,
+//                    onCheckedChange = onValueChange
+//                )
+//                Text(
+//                    text = if (value as? Boolean == true) "是" else "否",
+//                    modifier = Modifier.width(40.dp)
+//                )
+//            }
+//        }
 
         // 默认文本类型
         else -> {

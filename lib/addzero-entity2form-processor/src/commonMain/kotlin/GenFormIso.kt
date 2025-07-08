@@ -1,4 +1,3 @@
-
 import com.addzero.kmp.context.SettingContext
 import com.addzero.kmp.context.SettingContext.settings
 import com.addzero.kmp.context.isomorphicShareOutPutDir
@@ -184,6 +183,10 @@ ${
             import com.addzero.kmp.enums.RegexEnum
             import androidx.compose.material.icons.filled.*
             import com.addzero.kmp.component.form.*
+           import com.addzero.kmp.component.form.number.*
+import com.addzero.kmp.component.form.date.*
+ 
+            import androidx.compose.ui.Alignment
             import com.addzero.kmp.core.ext.parseObjectByKtx
             import com.addzero.kmp.isomorphic.*
 ${generateDslReceiver(ksClass)}

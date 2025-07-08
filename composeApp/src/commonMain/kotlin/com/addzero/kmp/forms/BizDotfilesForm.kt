@@ -10,6 +10,10 @@
             import com.addzero.kmp.enums.RegexEnum
             import androidx.compose.material.icons.filled.*
             import com.addzero.kmp.component.form.*
+           import com.addzero.kmp.component.form.number.*
+import com.addzero.kmp.component.form.date.*
+ 
+            import androidx.compose.ui.Alignment
             import com.addzero.kmp.core.ext.parseObjectByKtx
             import com.addzero.kmp.isomorphic.*
         class BizDotfilesFormDsl(
@@ -235,86 +239,87 @@ fun rememberBizDotfilesFormState(current:BizDotfilesIso?=null): MutableState<Biz
         
         
                      val defaultRenderMap = mutableMapOf<String, @Composable () -> Unit>(
-            BizDotfilesFormProps.osType to {        AddTextField(
-            value = state.value.osType?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(osType  =if (it.isBlank())   emptyList()  else it .parseObjectByKtx())
-            },
-     label = "操作系统win=winlinux=linuxmac=macnull=不限" ,
-)
- }
+            BizDotfilesFormProps.osType to { AddTextField(
+    value = state.value.osType?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(osType = if (it.isBlank()) emptyList() else it.parseObjectByKtx())
+    },
+    label = "操作系统win=winlinux=linuxmac=macnull=不限",
+    isRequired = true
+) }
         ,
-            BizDotfilesFormProps.osStructure to {        AddTextField(
-            value = state.value.osStructure?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(osStructure  =if (it.isBlank())   null  else it .parseObjectByKtx())
-            },
-     label = "系统架构arm64=arm64x86=x86不限=不限" ,
-)
- }
+            BizDotfilesFormProps.osStructure to { AddTextField(
+    value = state.value.osStructure?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(osStructure = if (it.isBlank()) null else it.parseObjectByKtx())
+    },
+    label = "系统架构arm64=arm64x86=x86不限=不限",
+    isRequired = false
+) }
         ,
-            BizDotfilesFormProps.defType to {        AddTextField(
-            value = state.value.defType?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(defType  =if (it.isBlank())   com.addzero.kmp.generated.enums.EnumShellDefType.entries.first()  else it .parseObjectByKtx())
-            },
-     label = "定义类型alias=aliasexport=exportfunction=functionsh=shvar=var" ,
-)
- }
+            BizDotfilesFormProps.defType to { AddTextField(
+    value = state.value.defType?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(defType = if (it.isBlank()) com.addzero.kmp.generated.enums.EnumShellDefType.entries.first() else it.parseObjectByKtx())
+    },
+    label = "定义类型alias=aliasexport=exportfunction=functionsh=shvar=var",
+    isRequired = true
+) }
         ,
-            BizDotfilesFormProps.name to {        AddTextField(
-            value = state.value.name?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(name  =if (it.isBlank())   ""  else it .parseObjectByKtx())
-            },
-     label = "名称" ,
-)
- }
+            BizDotfilesFormProps.name to { AddTextField(
+    value = state.value.name?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(name = if (it.isBlank()) "" else it.parseObjectByKtx())
+    },
+    label = "名称",
+    isRequired = true
+) }
         ,
-            BizDotfilesFormProps.value to {        AddTextField(
-            value = state.value.value?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(value  =if (it.isBlank())   ""  else it .parseObjectByKtx())
-            },
-     label = "值" ,
-)
- }
+            BizDotfilesFormProps.value to { AddTextField(
+    value = state.value.value?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(value = if (it.isBlank()) "" else it.parseObjectByKtx())
+    },
+    label = "值",
+    isRequired = true
+) }
         ,
-            BizDotfilesFormProps.describtion to {        AddTextField(
-            value = state.value.describtion?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(describtion  =if (it.isBlank())   null  else it .parseObjectByKtx())
-            },
-     label = "注释" ,
-)
- }
+            BizDotfilesFormProps.describtion to { AddTextField(
+    value = state.value.describtion?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(describtion = if (it.isBlank()) null else it.parseObjectByKtx())
+    },
+    label = "注释",
+    isRequired = false
+) }
         ,
-            BizDotfilesFormProps.status to {        AddTextField(
-            value = state.value.status?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(status  =if (it.isBlank())   com.addzero.kmp.generated.enums.EnumSysToggle.entries.first()  else it .parseObjectByKtx())
-            },
-     label = "状态1=启用0=未启用" ,
-)
- }
+            BizDotfilesFormProps.status to { AddTextField(
+    value = state.value.status?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(status = if (it.isBlank()) com.addzero.kmp.generated.enums.EnumSysToggle.entries.first() else it.parseObjectByKtx())
+    },
+    label = "状态1=启用0=未启用",
+    isRequired = true
+) }
         ,
-            BizDotfilesFormProps.fileUrl to {        AddTextField(
-            value = state.value.fileUrl?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(fileUrl  =if (it.isBlank())   null  else it .parseObjectByKtx())
-            },
-     label = "文件地址" ,
-)
- }
+            BizDotfilesFormProps.fileUrl to { AddTextField(
+    value = state.value.fileUrl?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(fileUrl = if (it.isBlank()) null else it.parseObjectByKtx())
+    },
+    label = "文件地址",
+    isRequired = false,
+    regexEnum = RegexEnum.URL
+) }
         ,
-            BizDotfilesFormProps.location to {        AddTextField(
-            value = state.value.location?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(location  =if (it.isBlank())   null  else it .parseObjectByKtx())
-            },
-     label = "文件位置" ,
-)
- }
+            BizDotfilesFormProps.location to { AddTextField(
+    value = state.value.location?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(location = if (it.isBlank()) null else it.parseObjectByKtx())
+    },
+    label = "文件位置",
+    isRequired = false
+) }
          
  ) 
        

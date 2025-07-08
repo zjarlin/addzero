@@ -1,7 +1,41 @@
 package com.addzero.kmp.util
 
+import com.addzero.kmp.util.JlStrUtil.makeSurroundWith
 import com.google.devtools.ksp.symbol.*
 import java.io.File
+
+
+val KSPropertyDeclaration.name: String
+    get() = this.simpleName.asString()
+val KSPropertyDeclaration.resolveType: KSType
+    get() = this.type.resolve()
+val KSPropertyDeclaration.isRequired: Boolean
+    get() = !this.resolveType.isMarkedNullable
+
+val KSPropertyDeclaration.typeDecl: KSDeclaration  // 属性类型的声明
+    get() = resolveType.declaration
+
+val KSPropertyDeclaration.typeName: String  // 属性类型的简单名称
+    get() = this.typeDecl.simpleName.asString()
+
+
+// 生成默认值
+val KSPropertyDeclaration.defaultValue: String
+    get() = this.defaultValue()
+// 判断是否需要导入对于form来说,递归可能这里会生成无用的iso
+
+val KSPropertyDeclaration.label: String
+    get() {
+        // 优先从@Label注解获取值
+        val anno = this.getAnno("Label")
+        if (anno != null) {
+            val argFirstValue = anno.getArgFirstValue()
+            return argFirstValue?.makeSurroundWith("\"") ?: ""
+        }
+
+        // 没有@Label注解则使用原来的逻辑
+        return (this.docString ?: name).removeAnyQuote().makeSurroundWith("\"")
+    }
 
 
 fun KSType.getQualifiedTypeString(): String {
@@ -27,8 +61,6 @@ fun KSType.getQualifiedTypeString(): String {
         else -> "$baseType$nullableSuffix"
     }
 }
-
-
 
 
 fun genCode(pathname: String, toJsonStr: String, skipExistFile: Boolean = false) {
@@ -198,10 +230,6 @@ fun KSPropertyDeclaration.isNullableFlag(): String {
     }
 }
 
-
-fun KSPropertyDeclaration.ktName(): String {
-    return this.simpleName.asString()
-}
 
 // 判断是否为Jimmer实体接口
 fun isJimmerEntity(typeDecl: KSDeclaration): Boolean {

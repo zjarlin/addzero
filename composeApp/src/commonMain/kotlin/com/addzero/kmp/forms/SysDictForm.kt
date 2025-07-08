@@ -10,6 +10,10 @@
             import com.addzero.kmp.enums.RegexEnum
             import androidx.compose.material.icons.filled.*
             import com.addzero.kmp.component.form.*
+           import com.addzero.kmp.component.form.number.*
+import com.addzero.kmp.component.form.date.*
+ 
+            import androidx.compose.ui.Alignment
             import com.addzero.kmp.core.ext.parseObjectByKtx
             import com.addzero.kmp.isomorphic.*
         class SysDictFormDsl(
@@ -178,41 +182,41 @@ fun rememberSysDictFormState(current:SysDictIso?=null): MutableState<SysDictIso>
         
         
                      val defaultRenderMap = mutableMapOf<String, @Composable () -> Unit>(
-            SysDictFormProps.dictName to {        AddTextField(
-            value = state.value.dictName?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(dictName  =if (it.isBlank())   ""  else it .parseObjectByKtx())
-            },
-     label = "字典名称" ,
-)
- }
+            SysDictFormProps.dictName to { AddTextField(
+    value = state.value.dictName?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(dictName = if (it.isBlank()) "" else it.parseObjectByKtx())
+    },
+    label = "字典名称",
+    isRequired = true
+) }
         ,
-            SysDictFormProps.dictCode to {        AddTextField(
-            value = state.value.dictCode?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(dictCode  =if (it.isBlank())   ""  else it .parseObjectByKtx())
-            },
-     label = "字典编码" ,
-)
- }
+            SysDictFormProps.dictCode to { AddTextField(
+    value = state.value.dictCode?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(dictCode = if (it.isBlank()) "" else it.parseObjectByKtx())
+    },
+    label = "字典编码",
+    isRequired = true
+) }
         ,
-            SysDictFormProps.description to {        AddTextField(
-            value = state.value.description?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(description  =if (it.isBlank())   null  else it .parseObjectByKtx())
-            },
-     label = "描述" ,
-)
- }
+            SysDictFormProps.description to { AddTextField(
+    value = state.value.description?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(description = if (it.isBlank()) null else it.parseObjectByKtx())
+    },
+    label = "描述",
+    isRequired = false
+) }
         ,
-            SysDictFormProps.sysDictItems to {        AddTextField(
-            value = state.value.sysDictItems?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(sysDictItems  =if (it.isBlank())   emptyList()  else it .parseObjectByKtx())
-            },
-     label = "sysDictItems" ,
-)
- }
+            SysDictFormProps.sysDictItems to { AddTextField(
+    value = state.value.sysDictItems?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(sysDictItems = if (it.isBlank()) emptyList() else it.parseObjectByKtx())
+    },
+    label = "sysDictItems",
+    isRequired = true
+) }
          
  ) 
        

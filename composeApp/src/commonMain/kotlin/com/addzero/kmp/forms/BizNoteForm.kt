@@ -10,6 +10,10 @@
             import com.addzero.kmp.enums.RegexEnum
             import androidx.compose.material.icons.filled.*
             import com.addzero.kmp.component.form.*
+           import com.addzero.kmp.component.form.number.*
+import com.addzero.kmp.component.form.date.*
+ 
+            import androidx.compose.ui.Alignment
             import com.addzero.kmp.core.ext.parseObjectByKtx
             import com.addzero.kmp.isomorphic.*
         class BizNoteFormDsl(
@@ -235,86 +239,96 @@ fun rememberBizNoteFormState(current:BizNoteIso?=null): MutableState<BizNoteIso>
         
         
                      val defaultRenderMap = mutableMapOf<String, @Composable () -> Unit>(
-            BizNoteFormProps.leafFlag to {        AddTextField(
-            value = state.value.leafFlag?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(leafFlag  =if (it.isBlank())   false  else it .parseObjectByKtx())
-            },
-     label = "leafFlag" ,
-)
- }
+            BizNoteFormProps.leafFlag to {     
+Row(verticalAlignment = Alignment.CenterVertically) {
+Text("leafFlag")
+    Switch(
+        checked = state.value.leafFlag ?: false,
+        onCheckedChange = {
+            state.value = state.value.copy(leafFlag = it)
+        },
+    )
+    
+    Text(
+        text = if (  state.value as? Boolean == true) "是" else "否",
+        modifier = Modifier.width(40.dp)
+    )
+
+}
+     }
         ,
-            BizNoteFormProps.children to {        AddTextField(
-            value = state.value.children?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(children  =if (it.isBlank())   emptyList()  else it .parseObjectByKtx())
-            },
-     label = "笔记的子节点列表，表示当前笔记的子笔记。通过{@linkOneToMany}注解与父笔记关联。@return子笔记列表" ,
-)
- }
+            BizNoteFormProps.children to { AddTextField(
+    value = state.value.children?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(children = if (it.isBlank()) emptyList() else it.parseObjectByKtx())
+    },
+    label = "笔记的子节点列表，表示当前笔记的子笔记。通过{@linkOneToMany}注解与父笔记关联。@return子笔记列表",
+    isRequired = true
+) }
         ,
-            BizNoteFormProps.parent to {        AddTextField(
-            value = state.value.parent?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(parent  =if (it.isBlank())   null  else it .parseObjectByKtx())
-            },
-     label = "笔记的父节点，表示当前笔记的父笔记。通过{@linkManyToOne}注解与子笔记关联。@return父笔记，如果没有父笔记则返回null" ,
-)
- }
+            BizNoteFormProps.parent to { AddTextField(
+    value = state.value.parent?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(parent = if (it.isBlank()) null else it.parseObjectByKtx())
+    },
+    label = "笔记的父节点，表示当前笔记的父笔记。通过{@linkManyToOne}注解与子笔记关联。@return父笔记，如果没有父笔记则返回null",
+    isRequired = false
+) }
         ,
-            BizNoteFormProps.title to {        AddTextField(
-            value = state.value.title?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(title  =if (it.isBlank())   ""  else it .parseObjectByKtx())
-            },
-     label = "标题" ,
-)
- }
+            BizNoteFormProps.title to { AddTextField(
+    value = state.value.title?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(title = if (it.isBlank()) "" else it.parseObjectByKtx())
+    },
+    label = "标题",
+    isRequired = true
+) }
         ,
-            BizNoteFormProps.content to {        AddTextField(
-            value = state.value.content?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(content  =if (it.isBlank())   ""  else it .parseObjectByKtx())
-            },
-     label = "内容" ,
-)
- }
+            BizNoteFormProps.content to { AddTextField(
+    value = state.value.content?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(content = if (it.isBlank()) "" else it.parseObjectByKtx())
+    },
+    label = "内容",
+    isRequired = true
+) }
         ,
-            BizNoteFormProps.type to {        AddTextField(
-            value = state.value.type?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(type  =if (it.isBlank())   null  else it .parseObjectByKtx())
-            },
-     label = "类型1=markdown2=pdf3=word4=excel@return笔记类型" ,
-)
- }
+            BizNoteFormProps.type to { AddTextField(
+    value = state.value.type?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(type = if (it.isBlank()) null else it.parseObjectByKtx())
+    },
+    label = "类型1=markdown2=pdf3=word4=excel@return笔记类型",
+    isRequired = false
+) }
         ,
-            BizNoteFormProps.tags to {        AddTextField(
-            value = state.value.tags?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(tags  =if (it.isBlank())   emptyList()  else it .parseObjectByKtx())
-            },
-     label = "笔记的标签列表，用于分类和检索。通过中间表实现与标签的多对多关系@return标签列表" ,
-)
- }
+            BizNoteFormProps.tags to { AddTextField(
+    value = state.value.tags?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(tags = if (it.isBlank()) emptyList() else it.parseObjectByKtx())
+    },
+    label = "笔记的标签列表，用于分类和检索。通过中间表实现与标签的多对多关系@return标签列表",
+    isRequired = true
+) }
         ,
-            BizNoteFormProps.path to {        AddTextField(
-            value = state.value.path?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(path  =if (it.isBlank())   null  else it .parseObjectByKtx())
-            },
-     label = "笔记的路径@return笔记路径" ,
-)
- }
+            BizNoteFormProps.path to { AddTextField(
+    value = state.value.path?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(path = if (it.isBlank()) null else it.parseObjectByKtx())
+    },
+    label = "笔记的路径@return笔记路径",
+    isRequired = false
+) }
         ,
-            BizNoteFormProps.fileUrl to {        AddTextField(
-            value = state.value.fileUrl?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(fileUrl  =if (it.isBlank())   null  else it .parseObjectByKtx())
-            },
-     label = "笔记关联的文件链接（可选）。" ,
-)
- }
+            BizNoteFormProps.fileUrl to { AddTextField(
+    value = state.value.fileUrl?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(fileUrl = if (it.isBlank()) null else it.parseObjectByKtx())
+    },
+    label = "笔记关联的文件链接（可选）。",
+    isRequired = false,
+    regexEnum = RegexEnum.URL
+) }
          
  ) 
        

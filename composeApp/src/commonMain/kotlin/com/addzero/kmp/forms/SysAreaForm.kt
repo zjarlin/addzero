@@ -10,6 +10,10 @@
             import com.addzero.kmp.enums.RegexEnum
             import androidx.compose.material.icons.filled.*
             import com.addzero.kmp.component.form.*
+           import com.addzero.kmp.component.form.number.*
+import com.addzero.kmp.component.form.date.*
+ 
+            import androidx.compose.ui.Alignment
             import com.addzero.kmp.core.ext.parseObjectByKtx
             import com.addzero.kmp.isomorphic.*
         class SysAreaFormDsl(
@@ -113,41 +117,41 @@ fun rememberSysAreaFormState(current:SysAreaIso?=null): MutableState<SysAreaIso>
         
         
                      val defaultRenderMap = mutableMapOf<String, @Composable () -> Unit>(
-            SysAreaFormProps.parentId to {        AddTextField(
-            value = state.value.parentId?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(parentId  =if (it.isBlank())   null  else it .parseObjectByKtx())
-            },
-     label = "上级数据库列名:parent_id数据类型:int8可空:是" ,
-)
- }
+            SysAreaFormProps.parentId to {          AddIntegerField(
+    value = state.value.parentId?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(parentId = if (it.isBlank()) null else it.parseObjectByKtx())
+    },
+    label = "上级数据库列名:parent_id数据类型:int8可空:是",
+    isRequired = false
+) }
         ,
-            SysAreaFormProps.nodeType to {        AddTextField(
-            value = state.value.nodeType?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(nodeType  =if (it.isBlank())   null  else it .parseObjectByKtx())
-            },
-     label = "1省,2市,3区数据库列名:node_type数据类型:text可空:是默认值:NULL::charactervarying" ,
-)
- }
+            SysAreaFormProps.nodeType to { AddTextField(
+    value = state.value.nodeType?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(nodeType = if (it.isBlank()) null else it.parseObjectByKtx())
+    },
+    label = "1省,2市,3区数据库列名:node_type数据类型:text可空:是默认值:NULL::charactervarying",
+    isRequired = false
+) }
         ,
-            SysAreaFormProps.name to {        AddTextField(
-            value = state.value.name?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(name  =if (it.isBlank())   null  else it .parseObjectByKtx())
-            },
-     label = "name数据库列名:name数据类型:text可空:是默认值:NULL::charactervarying" ,
-)
- }
+            SysAreaFormProps.name to { AddTextField(
+    value = state.value.name?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(name = if (it.isBlank()) null else it.parseObjectByKtx())
+    },
+    label = "name数据库列名:name数据类型:text可空:是默认值:NULL::charactervarying",
+    isRequired = false
+) }
         ,
-            SysAreaFormProps.areaCode to {        AddTextField(
-            value = state.value.areaCode?.toString() ?: "",
-  onValueChange = {
-            state.value = state.value.copy(areaCode  =if (it.isBlank())   null  else it .parseObjectByKtx())
-            },
-     label = "区域编码数据库列名:area_code数据类型:text可空:是默认值:NULL::charactervarying" ,
-)
- }
+            SysAreaFormProps.areaCode to { AddTextField(
+    value = state.value.areaCode?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(areaCode = if (it.isBlank()) null else it.parseObjectByKtx())
+    },
+    label = "区域编码数据库列名:area_code数据类型:text可空:是默认值:NULL::charactervarying",
+    isRequired = false
+) }
          
  ) 
        
