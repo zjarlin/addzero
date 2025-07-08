@@ -46,7 +46,8 @@ object FormStrategyManager {
         PhoneStrategy,
         StringStrategy,
         UrlStrategy,
-        UsernameStrategy
+        UsernameStrategy,
+        PasswordStrategy
     )
 
     /**

@@ -64,15 +64,17 @@ fun SecondLoginComponent(
 
 
         // 密码输入框
-        AddPasswordField(value = userRegFormState.password, onValueChange = { viewModel.userRegFormState = userRegFormState.copy(password = it) }, otherIcon = {
+        AddPasswordField(
+            value = userRegFormState.password, onValueChange = { viewModel.userRegFormState = userRegFormState.copy(password = it) },
+            otherIcon = {
 
-            AddIconButton(
-                text = "登录", imageVector = Icons.AutoMirrored.Filled.Login, onClick = onSecondLogin
-            )
+                AddIconButton(
+                    text = "登录", imageVector = Icons.AutoMirrored.Filled.Login, onClick = onSecondLogin
+                )
 
-            AddIconButton("切换账号", imageVector = Icons.Default.SwitchAccount) { viewModel.singinStatus = SignInStatus.None }
+                AddIconButton("切换账号", imageVector = Icons.Default.SwitchAccount) { viewModel.singinStatus = SignInStatus.None }
 
-        }
+            },
 //        , errorMessages = errorMessages
         )
 

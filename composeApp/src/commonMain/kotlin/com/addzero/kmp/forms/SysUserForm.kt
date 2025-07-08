@@ -298,13 +298,13 @@ column = "username",
       ) 
       ) }
         ,
-            SysUserFormProps.password to { AddTextField(
+            SysUserFormProps.password to {       AddPasswordField(
     value = state.value.password?.toString() ?: "",
     onValueChange = {
         state.value = state.value.copy(password = if (it.isBlank()) "" else it.parseObjectByKtx())
     },
     label = "密码",
-    isRequired = true
+    isRequired = true,
 ) }
         ,
             SysUserFormProps.avatar to { AddTextField(

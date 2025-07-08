@@ -111,7 +111,7 @@ fun RegisterComponent(logo: ImageVector = Icons.Default.EmojiPeople, onReg: () -
             value = viewModel.confirmPassword,
             onValueChange = { viewModel.confirmPassword = it },
             label = "确认密码",
-            validators = validators, onErrMsgChange = { input, msg -> errorMsgs.add(msg) }
+            validators = validators, onErrMsgChange = { input, msg -> errorMsgs.add(msg) },
 //            , errorMessages = errorMessages
         )
 

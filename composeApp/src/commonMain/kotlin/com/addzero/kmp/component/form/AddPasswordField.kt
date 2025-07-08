@@ -32,15 +32,16 @@ fun AddPasswordField(
     regexValidator: RegexEnum = RegexEnum.PASSWORD,
     otherIcon: @Composable (() -> Unit)? = null,
     onErrMsgChange: ((String, String) -> Unit)? = null,
-
     modifier: Modifier = Modifier,
-    errorMessages: List<String> =emptyList<String>(),
-    remoteValidationConfig: RemoteValidationConfig?=null,
+    errorMessages: List<String> = emptyList<String>(),
+    remoteValidationConfig: RemoteValidationConfig? = null,
+    isRequired: Boolean=true,
 
     ) {
     var passwordVisible by remember { mutableStateOf(false) }
     val imageVector = if (passwordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility
     AddTextField(
+        isRequired = isRequired,
         remoteValidationConfig = remoteValidationConfig,
         value = value,
         onValueChange = onValueChange,
@@ -52,7 +53,12 @@ fun AddPasswordField(
         disable = !enabled,
         trailingIcon = {
             Row {
-                AddIconButton(text = "显示密码", imageVector = imageVector) { passwordVisible = !passwordVisible }
+                AddIconButton(
+                    text = if (passwordVisible) "隐藏密码" else "显示密码",
+                    imageVector = imageVector
+                ) {
+                    passwordVisible = !passwordVisible
+                }
                 otherIcon?.let { it() }
             }
         },
