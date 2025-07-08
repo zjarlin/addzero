@@ -154,16 +154,38 @@ const val sysUsers = "sysUsers"
 fun rememberSysDeptFormState(current:SysDeptIso?=null): MutableState<SysDeptIso> {
     return remember (current){ mutableStateOf(current?: SysDeptIso ()) }
 }
-        @Composable
-        fun SysDeptForm(
+     @Composable
+     fun SysDeptForm(
+     state: MutableState<SysDeptIso>,
+visible: Boolean,
+         title: String,
+ onClose: () -> Unit,
+ onSubmit: () -> Unit,
+ confirmEnabled: Boolean = true,
+  dslConfig: SysDeptFormDsl.() -> Unit = {}
+     
+     ) {
+     
+
+     
+        AddDrawer(
+     visible = visible,
+     title = title,
+     onClose = onClose,
+     onSubmit = onSubmit,
+     confirmEnabled = confirmEnabled,
+
+     ) {
+           SysDeptFormOriginal(
+         state, dslConfig,
+     ) 
+     }
+     }
+
+              @Composable
+        fun SysDeptFormOriginal(
         state: MutableState<SysDeptIso>,
-   visible: Boolean,
-            title: String,
-    onClose: () -> Unit,
-    onSubmit: () -> Unit,
-    confirmEnabled: Boolean = true,
      dslConfig: SysDeptFormDsl.() -> Unit = {}
-        
         ) {
         
            val renderMap = remember { mutableMapOf<String, @Composable () -> Unit>() }
@@ -218,22 +240,16 @@ fun rememberSysDeptFormState(current:SysDeptIso?=null): MutableState<SysDeptIso>
        
     val items = finalItems
  
-        
-           AddDrawer(
-        visible = visible,
-        title = title,
-        onClose = onClose,
-        onSubmit = onSubmit,
-        confirmEnabled = confirmEnabled,
-
-        ) {
             AddMultiColumnContainer(
                 howMuchColumn = 2,
                 items =items
             )
-        }
+        
  
         
         
         
         }
+ 
+        
+        

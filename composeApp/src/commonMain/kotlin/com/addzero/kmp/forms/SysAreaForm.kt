@@ -102,16 +102,38 @@ const val areaCode = "areaCode"
 fun rememberSysAreaFormState(current:SysAreaIso?=null): MutableState<SysAreaIso> {
     return remember (current){ mutableStateOf(current?: SysAreaIso ()) }
 }
-        @Composable
-        fun SysAreaForm(
+     @Composable
+     fun SysAreaForm(
+     state: MutableState<SysAreaIso>,
+visible: Boolean,
+         title: String,
+ onClose: () -> Unit,
+ onSubmit: () -> Unit,
+ confirmEnabled: Boolean = true,
+  dslConfig: SysAreaFormDsl.() -> Unit = {}
+     
+     ) {
+     
+
+     
+        AddDrawer(
+     visible = visible,
+     title = title,
+     onClose = onClose,
+     onSubmit = onSubmit,
+     confirmEnabled = confirmEnabled,
+
+     ) {
+           SysAreaFormOriginal(
+         state, dslConfig,
+     ) 
+     }
+     }
+
+              @Composable
+        fun SysAreaFormOriginal(
         state: MutableState<SysAreaIso>,
-   visible: Boolean,
-            title: String,
-    onClose: () -> Unit,
-    onSubmit: () -> Unit,
-    confirmEnabled: Boolean = true,
      dslConfig: SysAreaFormDsl.() -> Unit = {}
-        
         ) {
         
            val renderMap = remember { mutableMapOf<String, @Composable () -> Unit>() }
@@ -166,22 +188,16 @@ fun rememberSysAreaFormState(current:SysAreaIso?=null): MutableState<SysAreaIso>
        
     val items = finalItems
  
-        
-           AddDrawer(
-        visible = visible,
-        title = title,
-        onClose = onClose,
-        onSubmit = onSubmit,
-        confirmEnabled = confirmEnabled,
-
-        ) {
             AddMultiColumnContainer(
                 howMuchColumn = 2,
                 items =items
             )
-        }
+        
  
         
         
         
         }
+ 
+        
+        

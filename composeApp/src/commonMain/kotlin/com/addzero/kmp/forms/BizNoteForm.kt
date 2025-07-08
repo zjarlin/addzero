@@ -224,16 +224,38 @@ const val fileUrl = "fileUrl"
 fun rememberBizNoteFormState(current:BizNoteIso?=null): MutableState<BizNoteIso> {
     return remember (current){ mutableStateOf(current?: BizNoteIso ()) }
 }
-        @Composable
-        fun BizNoteForm(
+     @Composable
+     fun BizNoteForm(
+     state: MutableState<BizNoteIso>,
+visible: Boolean,
+         title: String,
+ onClose: () -> Unit,
+ onSubmit: () -> Unit,
+ confirmEnabled: Boolean = true,
+  dslConfig: BizNoteFormDsl.() -> Unit = {}
+     
+     ) {
+     
+
+     
+        AddDrawer(
+     visible = visible,
+     title = title,
+     onClose = onClose,
+     onSubmit = onSubmit,
+     confirmEnabled = confirmEnabled,
+
+     ) {
+           BizNoteFormOriginal(
+         state, dslConfig,
+     ) 
+     }
+     }
+
+              @Composable
+        fun BizNoteFormOriginal(
         state: MutableState<BizNoteIso>,
-   visible: Boolean,
-            title: String,
-    onClose: () -> Unit,
-    onSubmit: () -> Unit,
-    confirmEnabled: Boolean = true,
      dslConfig: BizNoteFormDsl.() -> Unit = {}
-        
         ) {
         
            val renderMap = remember { mutableMapOf<String, @Composable () -> Unit>() }
@@ -343,22 +365,16 @@ Text("leafFlag")
        
     val items = finalItems
  
-        
-           AddDrawer(
-        visible = visible,
-        title = title,
-        onClose = onClose,
-        onSubmit = onSubmit,
-        confirmEnabled = confirmEnabled,
-
-        ) {
             AddMultiColumnContainer(
                 howMuchColumn = 2,
                 items =items
             )
-        }
+        
  
         
         
         
         }
+ 
+        
+        

@@ -196,16 +196,38 @@ const val dictId = "dictId"
 fun rememberSysDictItemFormState(current:SysDictItemIso?=null): MutableState<SysDictItemIso> {
     return remember (current){ mutableStateOf(current?: SysDictItemIso ()) }
 }
-        @Composable
-        fun SysDictItemForm(
+     @Composable
+     fun SysDictItemForm(
+     state: MutableState<SysDictItemIso>,
+visible: Boolean,
+         title: String,
+ onClose: () -> Unit,
+ onSubmit: () -> Unit,
+ confirmEnabled: Boolean = true,
+  dslConfig: SysDictItemFormDsl.() -> Unit = {}
+     
+     ) {
+     
+
+     
+        AddDrawer(
+     visible = visible,
+     title = title,
+     onClose = onClose,
+     onSubmit = onSubmit,
+     confirmEnabled = confirmEnabled,
+
+     ) {
+           SysDictItemFormOriginal(
+         state, dslConfig,
+     ) 
+     }
+     }
+
+              @Composable
+        fun SysDictItemFormOriginal(
         state: MutableState<SysDictItemIso>,
-   visible: Boolean,
-            title: String,
-    onClose: () -> Unit,
-    onSubmit: () -> Unit,
-    confirmEnabled: Boolean = true,
      dslConfig: SysDictItemFormDsl.() -> Unit = {}
-        
         ) {
         
            val renderMap = remember { mutableMapOf<String, @Composable () -> Unit>() }
@@ -287,22 +309,16 @@ fun rememberSysDictItemFormState(current:SysDictItemIso?=null): MutableState<Sys
        
     val items = finalItems
  
-        
-           AddDrawer(
-        visible = visible,
-        title = title,
-        onClose = onClose,
-        onSubmit = onSubmit,
-        confirmEnabled = confirmEnabled,
-
-        ) {
             AddMultiColumnContainer(
                 howMuchColumn = 2,
                 items =items
             )
-        }
+        
  
         
         
         
         }
+ 
+        
+        

@@ -120,17 +120,11 @@ ${
         """.trimIndent()
 
 
-    val effectFormFun = """
-        @Composable
-        fun ${className}Form(
+    val effectFormFunOriginal = """
+              @Composable
+        fun ${className}FormOriginal(
         state: MutableState<${isoClassName}>,
-   visible: Boolean,
-            title: String,
-    onClose: () -> Unit,
-    onSubmit: () -> Unit,
-    confirmEnabled: Boolean = true,
      dslConfig: ${className}FormDsl.() -> Unit = {}
-        
         ) {
         
            val renderMap = remember { mutableMapOf<String, @Composable () -> Unit>() }
@@ -148,6 +142,35 @@ ${
        
     val items = finalItems
  
+            AddMultiColumnContainer(
+                howMuchColumn = 2,
+                items =items
+            )
+        
+ 
+        
+        
+        
+        }
+ 
+        
+        """
+
+
+    val effectFormFun = """
+        @Composable
+        fun ${className}Form(
+        state: MutableState<${isoClassName}>,
+   visible: Boolean,
+            title: String,
+    onClose: () -> Unit,
+    onSubmit: () -> Unit,
+    confirmEnabled: Boolean = true,
+     dslConfig: ${className}FormDsl.() -> Unit = {}
+        
+        ) {
+        
+ 
         
            AddDrawer(
         visible = visible,
@@ -157,15 +180,10 @@ ${
         confirmEnabled = confirmEnabled,
 
         ) {
-            AddMultiColumnContainer(
-                howMuchColumn = 2,
-                items =items
-            )
+              ${className}FormOriginal(
+            state, dslConfig,
+        ) 
         }
- 
-        
-        
-        
         }
         """.trimIndent()
 
@@ -195,6 +213,7 @@ ${generateDslReceiver(ksClass)}
 $propconsts
 $rememberFun
 $effectFormFun
+$effectFormFunOriginal
 """.trimMargin()
     val file = File("$outputDir/${dataClassName}.kt")
 

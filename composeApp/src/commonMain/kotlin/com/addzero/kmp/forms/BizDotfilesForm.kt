@@ -224,16 +224,38 @@ const val location = "location"
 fun rememberBizDotfilesFormState(current:BizDotfilesIso?=null): MutableState<BizDotfilesIso> {
     return remember (current){ mutableStateOf(current?: BizDotfilesIso ()) }
 }
-        @Composable
-        fun BizDotfilesForm(
+     @Composable
+     fun BizDotfilesForm(
+     state: MutableState<BizDotfilesIso>,
+visible: Boolean,
+         title: String,
+ onClose: () -> Unit,
+ onSubmit: () -> Unit,
+ confirmEnabled: Boolean = true,
+  dslConfig: BizDotfilesFormDsl.() -> Unit = {}
+     
+     ) {
+     
+
+     
+        AddDrawer(
+     visible = visible,
+     title = title,
+     onClose = onClose,
+     onSubmit = onSubmit,
+     confirmEnabled = confirmEnabled,
+
+     ) {
+           BizDotfilesFormOriginal(
+         state, dslConfig,
+     ) 
+     }
+     }
+
+              @Composable
+        fun BizDotfilesFormOriginal(
         state: MutableState<BizDotfilesIso>,
-   visible: Boolean,
-            title: String,
-    onClose: () -> Unit,
-    onSubmit: () -> Unit,
-    confirmEnabled: Boolean = true,
      dslConfig: BizDotfilesFormDsl.() -> Unit = {}
-        
         ) {
         
            val renderMap = remember { mutableMapOf<String, @Composable () -> Unit>() }
@@ -334,22 +356,16 @@ fun rememberBizDotfilesFormState(current:BizDotfilesIso?=null): MutableState<Biz
        
     val items = finalItems
  
-        
-           AddDrawer(
-        visible = visible,
-        title = title,
-        onClose = onClose,
-        onSubmit = onSubmit,
-        confirmEnabled = confirmEnabled,
-
-        ) {
             AddMultiColumnContainer(
                 howMuchColumn = 2,
                 items =items
             )
-        }
+        
  
         
         
         
         }
+ 
+        
+        

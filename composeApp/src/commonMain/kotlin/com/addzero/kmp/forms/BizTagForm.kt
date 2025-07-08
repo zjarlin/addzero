@@ -126,16 +126,38 @@ const val description = "description"
 fun rememberBizTagFormState(current:BizTagIso?=null): MutableState<BizTagIso> {
     return remember (current){ mutableStateOf(current?: BizTagIso ()) }
 }
-        @Composable
-        fun BizTagForm(
+     @Composable
+     fun BizTagForm(
+     state: MutableState<BizTagIso>,
+visible: Boolean,
+         title: String,
+ onClose: () -> Unit,
+ onSubmit: () -> Unit,
+ confirmEnabled: Boolean = true,
+  dslConfig: BizTagFormDsl.() -> Unit = {}
+     
+     ) {
+     
+
+     
+        AddDrawer(
+     visible = visible,
+     title = title,
+     onClose = onClose,
+     onSubmit = onSubmit,
+     confirmEnabled = confirmEnabled,
+
+     ) {
+           BizTagFormOriginal(
+         state, dslConfig,
+     ) 
+     }
+     }
+
+              @Composable
+        fun BizTagFormOriginal(
         state: MutableState<BizTagIso>,
-   visible: Boolean,
-            title: String,
-    onClose: () -> Unit,
-    onSubmit: () -> Unit,
-    confirmEnabled: Boolean = true,
      dslConfig: BizTagFormDsl.() -> Unit = {}
-        
         ) {
         
            val renderMap = remember { mutableMapOf<String, @Composable () -> Unit>() }
@@ -172,22 +194,16 @@ fun rememberBizTagFormState(current:BizTagIso?=null): MutableState<BizTagIso> {
        
     val items = finalItems
  
-        
-           AddDrawer(
-        visible = visible,
-        title = title,
-        onClose = onClose,
-        onSubmit = onSubmit,
-        confirmEnabled = confirmEnabled,
-
-        ) {
             AddMultiColumnContainer(
                 howMuchColumn = 2,
                 items =items
             )
-        }
+        
  
         
         
         
         }
+ 
+        
+        
