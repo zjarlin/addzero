@@ -27,6 +27,7 @@ fun KSPropertyDeclaration.generateDifferentTypes(): String = run {
 
     val pdoc = (prop.docString ?: name).removeAnyQuote().makeSurroundWith("\"")
     when {
+        //判断如果是数字类型
 
         prop.ktName().contains("phone", ignoreCase = true) -> {
 
