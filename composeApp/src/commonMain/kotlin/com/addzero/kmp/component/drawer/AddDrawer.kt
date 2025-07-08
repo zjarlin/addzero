@@ -1,19 +1,26 @@
 package com.addzero.kmp.component.drawer
 
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 
@@ -61,27 +68,32 @@ fun AddDrawer(
     showButtons: Boolean = true,
     content: @Composable BoxScope.() -> Unit
 ) {
-    // 抽屉尺寸动画
+    // 抽屉尺寸动画 - 添加缓动效果
     val drawerWidth by animateDpAsState(
         targetValue = if (visible && (direction == DrawerDirection.RIGHT || direction == DrawerDirection.LEFT))
             (LocalDensity.current.density * width).dp else 0.dp,
+        animationSpec = tween(durationMillis = 300),
         label = "drawerWidth"
     )
 
     val drawerHeight by animateDpAsState(
         targetValue = if (visible && (direction == DrawerDirection.TOP || direction == DrawerDirection.BOTTOM))
             (LocalDensity.current.density * height).dp else 0.dp,
+        animationSpec = tween(durationMillis = 300),
         label = "drawerHeight"
     )
 
     // 只有在可见时才渲染内容，避免自动显示问题
     if (!visible) return
-    // 遮罩层
+    // 美化的遮罩层
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.scrim.copy(alpha = 0.5f))
-            .clickable(onClick = onClose)
+            .background(Color.Black.copy(alpha = 0.4f)) // 更深的遮罩效果
+            .clickable(
+                indication = null,
+                interactionSource = remember { MutableInteractionSource() }
+            ) { onClose() }
             .zIndex(10f)
     )
 
@@ -97,7 +109,8 @@ fun AddDrawer(
             DrawerDirection.BOTTOM -> Alignment.BottomCenter
         }
     ) {
-        Surface(
+        // 美化的抽屉容器
+        Card(
             modifier = Modifier
                 .let {
                     when (direction) {
@@ -108,72 +121,140 @@ fun AddDrawer(
                             it.fillMaxWidth().height(drawerHeight)
                     }
                 }
-                .shadow(elevation = 8.dp),
-            color = backgroundColor
+                .shadow(
+                    elevation = 16.dp,
+                    shape = when (direction) {
+                        DrawerDirection.RIGHT -> RoundedCornerShape(topStart = 20.dp, bottomStart = 20.dp)
+                        DrawerDirection.LEFT -> RoundedCornerShape(topEnd = 20.dp, bottomEnd = 20.dp)
+                        DrawerDirection.TOP -> RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp)
+                        DrawerDirection.BOTTOM -> RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)
+                    }
+                ),
+            shape = when (direction) {
+                DrawerDirection.RIGHT -> RoundedCornerShape(topStart = 20.dp, bottomStart = 20.dp)
+                DrawerDirection.LEFT -> RoundedCornerShape(topEnd = 20.dp, bottomEnd = 20.dp)
+                DrawerDirection.TOP -> RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp)
+                DrawerDirection.BOTTOM -> RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)
+            },
+            colors = CardDefaults.cardColors(
+                containerColor = Color(0xFFFAFAFA) // 固定的现代化背景色
+            ),
+            border = BorderStroke(
+                width = 1.dp,
+                color = Color(0xFFE0E0E0)
+            ),
+            elevation = CardDefaults.cardElevation(
+                defaultElevation = 16.dp
+            )
         ) {
             Column(
                 modifier = Modifier.fillMaxSize()
             ) {
-                // 抽屉标题栏
+                // 美化的标题栏
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(MaterialTheme.colorScheme.primary)
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                        .background(
+                            Color(0xFF1976D2), // 固定的深蓝色标题栏
+                            shape = when (direction) {
+                                DrawerDirection.RIGHT -> RoundedCornerShape(topStart = 20.dp)
+                                DrawerDirection.LEFT -> RoundedCornerShape(topEnd = 20.dp)
+                                DrawerDirection.TOP -> RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp)
+                                DrawerDirection.BOTTOM -> RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)
+                            }
+                        )
+                        .padding(horizontal = 24.dp, vertical = 16.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
                         text = title,
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.onPrimary
+                        style = MaterialTheme.typography.titleLarge.copy(
+                            fontWeight = FontWeight.Bold
+                        ),
+                        color = Color.White
                     )
 
-                    IconButton(onClick = onClose) {
+                    IconButton(
+                        onClick = onClose,
+                        modifier = Modifier
+                            .size(40.dp)
+                            .clip(RoundedCornerShape(12.dp))
+                            .background(Color.White.copy(alpha = 0.1f))
+                    ) {
                         Icon(
                             imageVector = Icons.Default.Close,
                             contentDescription = "关闭",
-                            tint = MaterialTheme.colorScheme.onPrimary
+                            tint = Color.White,
+                            modifier = Modifier.size(20.dp)
                         )
                     }
                 }
 
-                // 表单内容，使用可滚动的Box作为容器
-                Surface(
+                // 美化的内容区域
+                Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f)
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
-                    shape = MaterialTheme.shapes.medium,
-                    tonalElevation = 1.dp
-                ) {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        content = content
-                    )
-                }
+                        .padding(horizontal = 24.dp, vertical = 20.dp),
+                    content = content
+                )
 
-                // 底部按钮区域
+                // 美化的底部按钮区域
                 if (showButtons) {
+                    // 分割线
+                    HorizontalDivider(
+                        modifier = Modifier.padding(horizontal = 24.dp),
+                        color = Color(0xFFE0E0E0)
+                    )
+
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(MaterialTheme.colorScheme.surfaceVariant)
-                            .padding(horizontal = 16.dp, vertical = 8.dp),
+                            .padding(horizontal = 24.dp, vertical = 20.dp),
                         horizontalArrangement = Arrangement.End,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
+                        OutlinedButton(
+                            onClick = onClose,
+                            modifier = Modifier
+                                .height(48.dp)
+                                .widthIn(min = 100.dp),
+                            shape = RoundedCornerShape(12.dp),
+                            colors = ButtonDefaults.outlinedButtonColors(
+                                contentColor = Color(0xFF1976D2)
+                            ),
+                            border = BorderStroke(1.dp, Color(0xFF1976D2))
+                        ) {
+                            Text(
+                                cancelText,
+                                style = MaterialTheme.typography.bodyLarge.copy(
+                                    fontWeight = FontWeight.Medium
+                                )
+                            )
+                        }
 
-                            TextButton(onClick = onClose) {
-                                Text(cancelText)
-                            }
-                            Spacer(modifier = Modifier.width(16.dp))
-                            Button(
-                                onClick = onSubmit,
-                                enabled = confirmEnabled
-                            ) {
-                                Text(confirmText)
-                            }
+                        Spacer(modifier = Modifier.width(16.dp))
+
+                        Button(
+                            onClick = onSubmit,
+                            enabled = confirmEnabled,
+                            modifier = Modifier
+                                .height(48.dp)
+                                .widthIn(min = 100.dp),
+                            shape = RoundedCornerShape(12.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(0xFF1976D2),
+                                contentColor = Color.White
+                            )
+                        ) {
+                            Text(
+                                confirmText,
+                                style = MaterialTheme.typography.bodyLarge.copy(
+                                    fontWeight = FontWeight.Medium
+                                )
+                            )
+                        }
                     }
                 }
             }
