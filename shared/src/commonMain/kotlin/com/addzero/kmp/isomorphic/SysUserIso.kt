@@ -12,6 +12,12 @@ data class SysUserIso(
 
              */
             val price: String  = "" ,
+                            /*
+             * 
+整数
+
+             */
+            val testInt: Int  = 0 ,
                                       /*
             * 
 主键

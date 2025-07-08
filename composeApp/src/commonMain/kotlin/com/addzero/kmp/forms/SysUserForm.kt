@@ -33,6 +33,19 @@ import com.addzero.kmp.component.form.date.*
 }
 
 
+fun testInt(
+    hidden: Boolean = false,
+    render:  (@Composable ( MutableState<SysUserIso>) -> Unit)? = null
+) {
+    when {
+        hidden -> renderMap["testInt"] = {}
+        render != null -> renderMap["testInt"] = {
+               render(state)
+        }
+    }
+}
+
+
 fun id(
     hidden: Boolean = false,
     render:  (@Composable ( MutableState<SysUserIso>) -> Unit)? = null
@@ -196,6 +209,7 @@ fun updateTime(
         }
 object SysUserFormProps {
 const val price = "price"
+const val testInt = "testInt"
 const val phone = "phone"
 const val email = "email"
 const val username = "username"
@@ -237,6 +251,15 @@ fun rememberSysUserFormState(current:SysUserIso?=null): MutableState<SysUserIso>
     currency = "CNY"
 ) }
         ,
+            SysUserFormProps.testInt to {          AddIntegerField(
+    value = state.value.testInt?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(testInt = if (it.isBlank()) 0 else it.parseObjectByKtx())
+    },
+    label = "整数",
+    isRequired = true
+) }
+        ,
             SysUserFormProps.phone to { AddTextField(
     value = state.value.phone?.toString() ?: "",
     onValueChange = {
@@ -258,14 +281,22 @@ fun rememberSysUserFormState(current:SysUserIso?=null): MutableState<SysUserIso>
     isRequired = true,
 ) }
     ,
-            SysUserFormProps.username to { AddTextField(
-    value = state.value.username?.toString() ?: "",
-    onValueChange = {
-        state.value = state.value.copy(username = if (it.isBlank()) "" else it.parseObjectByKtx())
-    },
-    label = "用户名",
-    isRequired = true
-) }
+            SysUserFormProps.username to {       AddTextField(
+          value = state.value.username?.toString() ?: "",
+          onValueChange = {
+              state.value = state.value.copy(username = if (it.isBlank()) "" else it.parseObjectByKtx())
+          },
+          label = "用户名",
+          isRequired = true,
+          regexEnum = RegexEnum.USERNAME,
+            leadingIcon = Icons.Default.PeopleAlt, 
+            //            disable = checkSignInput == USERNAME,
+
+     remoteValidationConfig = RemoteValidationConfig(
+tableName = "sys_user",
+column = "username",
+      ) 
+      ) }
         ,
             SysUserFormProps.password to { AddTextField(
     value = state.value.password?.toString() ?: "",

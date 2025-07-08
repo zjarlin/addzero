@@ -17,11 +17,6 @@ import org.springframework.stereotype.Service
 @Service
 class SysUserService {
     fun getCurrentUser(): SysUser {
-
-
-
-
-
         // 获取当前登录用户ID
         val userId = StpUtil.getLoginIdAsLong()
         val findById = sql.findById(SysUser::class, userId) ?: throw BizException("用户未找到")

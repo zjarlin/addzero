@@ -1,7 +1,7 @@
 package strategy
-import strategy.impl.*
 
 import com.google.devtools.ksp.symbol.KSPropertyDeclaration
+import strategy.impl.*
 
 /**
  * 表单策略基类
@@ -15,17 +15,17 @@ interface FormStrategy {
     /**
      * 优先级（数字越小优先级越高）
      */
-     val priority: Int
+    val priority: Int
 
     /**
      * 判断是否支持该属性
      */
-     fun support(prop: KSPropertyDeclaration): Boolean
+    fun support(prop: KSPropertyDeclaration): Boolean
 
     /**
      * 生成代码
      */
-     fun genCode(prop: KSPropertyDeclaration): String
+    fun genCode(prop: KSPropertyDeclaration): String
 
 }
 
@@ -45,8 +45,8 @@ object FormStrategyManager {
         PercentageStrategy,
         PhoneStrategy,
         StringStrategy,
-        UrlStrategy
-
+        UrlStrategy,
+        UsernameStrategy
     )
 
     /**
