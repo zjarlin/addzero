@@ -16,7 +16,9 @@ import androidx.compose.ui.unit.sp
 import com.addzero.kmp.annotation.Route
 
 import com.addzero.kmp.viewmodel.ExcelTemplateDesignerViewModel
+import kotlinx.datetime.Clock.System.now
 import org.koin.compose.viewmodel.koinViewModel
+import kotlin.time.Clock
 
 /**
  * Excel元数据提取测试界面
@@ -26,13 +28,13 @@ import org.koin.compose.viewmodel.koinViewModel
 @Route("测试", "元数据提取测试")
 fun ExcelMetadataTestScreen() {
     val viewModel = koinViewModel<ExcelTemplateDesignerViewModel>()
-    
+
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
         // 顶部工具栏
         MetadataTestTopBar(viewModel)
-        
+
         // 主要内容 - 三栏布局
         Row(
             modifier = Modifier
@@ -44,13 +46,13 @@ fun ExcelMetadataTestScreen() {
                 viewModel = viewModel,
                 modifier = Modifier.weight(0.35f)
             )
-            
+
             // 中间JSON预览 (35%)
             TestJsonPreview(
                 viewModel = viewModel,
                 modifier = Modifier.weight(0.35f)
             )
-            
+
             // 右侧元数据提取 (30%)
             TestMetadataPanel(
                 viewModel = viewModel,
@@ -85,7 +87,7 @@ private fun MetadataTestTopBar(viewModel: ExcelTemplateDesignerViewModel) {
                 ),
                 color = Color.White
             )
-            
+
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
@@ -97,7 +99,7 @@ private fun MetadataTestTopBar(viewModel: ExcelTemplateDesignerViewModel) {
                 ) {
                     Text("添加一维", color = Color.White, fontSize = 12.sp)
                 }
-                
+
                 Button(
                     onClick = { viewModel.addTwoDimensionField("工作内容", "基础开挖") },
                     colors = ButtonDefaults.buttonColors(
@@ -106,10 +108,10 @@ private fun MetadataTestTopBar(viewModel: ExcelTemplateDesignerViewModel) {
                 ) {
                     Text("添加二维", color = Color.White, fontSize = 12.sp)
                 }
-                
+
                 Button(
-                    onClick = { 
-                        viewModel.addAvailableExcelFile("施工日记${System.currentTimeMillis()}.xlsx", "2.5MB")
+                    onClick = {
+                        viewModel.addAvailableExcelFile("施工日记${now()}.xlsx", "2.5MB")
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.White.copy(alpha = 0.2f)
@@ -153,14 +155,14 @@ private fun TestDesignArea(
                 ),
                 color = MaterialTheme.colorScheme.primary
             )
-            
+
             // 一维字段
             Text(
                 text = "🔹 一维字段 (${viewModel.oneDimensionFields.size})",
                 style = MaterialTheme.typography.titleSmall,
                 color = Color(0xFF059669)
             )
-            
+
             viewModel.oneDimensionFields.forEach { field ->
                 TestFieldCard(
                     field = field,
@@ -170,16 +172,16 @@ private fun TestDesignArea(
                     onDelete = { viewModel.deleteOneDimensionField(field) }
                 )
             }
-            
+
             HorizontalDivider()
-            
+
             // 二维字段
             Text(
                 text = "🔸 二维字段 (${viewModel.twoDimensionFields.size})",
                 style = MaterialTheme.typography.titleSmall,
                 color = Color(0xFF7C3AED)
             )
-            
+
             viewModel.twoDimensionFields.forEach { field ->
                 TestFieldCard(
                     field = field,
@@ -226,7 +228,7 @@ private fun TestFieldCard(
                     textStyle = MaterialTheme.typography.bodySmall,
                     singleLine = true
                 )
-                
+
                 OutlinedTextField(
                     value = field.value,
                     onValueChange = onValueChange,
@@ -235,7 +237,7 @@ private fun TestFieldCard(
                     textStyle = MaterialTheme.typography.bodySmall,
                     singleLine = true
                 )
-                
+
                 IconButton(
                     onClick = onDelete,
                     modifier = Modifier.size(24.dp)
@@ -248,14 +250,14 @@ private fun TestFieldCard(
                     )
                 }
             }
-            
+
             // 类型选择 - 测试高亮效果
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(6.dp)
             ) {
                 Text("类型:", fontSize = 10.sp, color = Color(0xFF6B7280))
-                
+
                 ExcelTemplateDesignerViewModel.FieldType.values().forEach { type ->
                     FilterChip(
                         selected = field.type == type,
@@ -293,7 +295,7 @@ private fun TestJsonPreview(
     modifier: Modifier = Modifier
 ) {
     var showCopySuccess by remember { mutableStateOf(false) }
-    
+
     Card(
         modifier = modifier
             .fillMaxHeight()
@@ -319,9 +321,9 @@ private fun TestJsonPreview(
                     ),
                     color = Color.White
                 )
-                
+
                 Button(
-                    onClick = { 
+                    onClick = {
                         viewModel.copyJsonToClipboard()
                         showCopySuccess = true
                     },
@@ -334,16 +336,16 @@ private fun TestJsonPreview(
                     Text("复制", fontSize = 11.sp)
                 }
             }
-            
+
             Spacer(modifier = Modifier.height(8.dp))
-            
+
             // 复制成功提示
             if (showCopySuccess) {
                 LaunchedEffect(Unit) {
                     kotlinx.coroutines.delay(2000)
                     showCopySuccess = false
                 }
-                
+
                 Card(
                     colors = CardDefaults.cardColors(
                         containerColor = Color(0xFF10B981)
@@ -358,7 +360,7 @@ private fun TestJsonPreview(
                 }
                 Spacer(modifier = Modifier.height(8.dp))
             }
-            
+
             // JSON内容
             Card(
                 modifier = Modifier.fillMaxSize(),
@@ -416,16 +418,16 @@ private fun TestMetadataPanel(
                 ),
                 color = Color(0xFF1E40AF)
             )
-            
+
             Spacer(modifier = Modifier.height(8.dp))
-            
+
             // Excel文件列表
             Text(
                 text = "📁 Excel文件 (${viewModel.availableExcelFiles.size})",
                 style = MaterialTheme.typography.titleSmall,
                 color = Color(0xFF374151)
             )
-            
+
             if (viewModel.availableExcelFiles.isNotEmpty()) {
                 val scrollState = rememberScrollState()
                 Column(
@@ -450,73 +452,73 @@ private fun TestMetadataPanel(
                     color = Color(0xFF9CA3AF)
                 )
             }
-            
+
             Spacer(modifier = Modifier.height(8.dp))
-            
+
             // 购物车
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "🛒 购物车 (${viewModel.metadataExtractionCart.size})",
-                    style = MaterialTheme.typography.titleSmall,
-                    color = Color(0xFF374151)
-                )
-                
-                if (viewModel.metadataExtractionCart.isNotEmpty()) {
-                    Row {
-                        IconButton(
-                            onClick = { viewModel.clearExtractionCart() },
-                            modifier = Modifier.size(20.dp)
-                        ) {
-                            Icon(
-                                Icons.Default.Clear,
-                                contentDescription = "清空",
-                                tint = Color(0xFFEF4444),
-                                modifier = Modifier.size(12.dp)
-                            )
-                        }
-                        
-                        IconButton(
-                            onClick = { viewModel.startMetadataExtraction() },
-                            modifier = Modifier.size(20.dp)
-                        ) {
-                            Icon(
-                                Icons.Default.PlayArrow,
-                                contentDescription = "开始",
-                                tint = Color(0xFF10B981),
-                                modifier = Modifier.size(12.dp)
-                            )
-                        }
-                    }
-                }
-            }
-            
+//            Row(
+//                modifier = Modifier.fillMaxWidth(),
+//                horizontalArrangement = Arrangement.SpaceBetween,
+//                verticalAlignment = Alignment.CenterVertically
+//            ) {
+//                Text(
+//                    text = "🛒 购物车 (${viewModel.metadataExtractionCart.size})",
+//                    style = MaterialTheme.typography.titleSmall,
+//                    color = Color(0xFF374151)
+//                )
+//
+//                if (viewModel.metadataExtractionCart.isNotEmpty()) {
+//                    Row {
+//                        IconButton(
+//                            onClick = { viewModel.clearExtractionCart() },
+//                            modifier = Modifier.size(20.dp)
+//                        ) {
+//                            Icon(
+//                                Icons.Default.Clear,
+//                                contentDescription = "清空",
+//                                tint = Color(0xFFEF4444),
+//                                modifier = Modifier.size(12.dp)
+//                            )
+//                        }
+//
+//                        IconButton(
+//                            onClick = { viewModel.startMetadataExtraction() },
+//                            modifier = Modifier.size(20.dp)
+//                        ) {
+//                            Icon(
+//                                Icons.Default.PlayArrow,
+//                                contentDescription = "开始",
+//                                tint = Color(0xFF10B981),
+//                                modifier = Modifier.size(12.dp)
+//                            )
+//                        }
+//                    }
+//                }
+//            }
+
             // 购物车内容
-            if (viewModel.metadataExtractionCart.isNotEmpty()) {
-                val cartScrollState = rememberScrollState()
-                Column(
-                    modifier = Modifier
-                        .weight(0.5f)
-                        .verticalScroll(cartScrollState),
-                    verticalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
-                    viewModel.metadataExtractionCart.forEach { item ->
-                        TestCartItem(
-                            item = item,
-                            onRemove = { viewModel.removeFromExtractionCart(item) }
-                        )
-                    }
-                }
-            } else {
-                Text(
-                    text = "购物车为空",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Color(0xFF9CA3AF)
-                )
-            }
+//            if (viewModel.metadataExtractionCart.isNotEmpty()) {
+//                val cartScrollState = rememberScrollState()
+//                Column(
+//                    modifier = Modifier
+//                        .weight(0.5f)
+//                        .verticalScroll(cartScrollState),
+//                    verticalArrangement = Arrangement.spacedBy(4.dp)
+//                ) {
+//                    viewModel.metadataExtractionCart.forEach { item ->
+//                        TestCartItem(
+//                            item = item,
+//                            onRemove = { viewModel.removeFromExtractionCart(item) }
+//                        )
+//                    }
+//                }
+//            } else {
+//                Text(
+//                    text = "购物车为空",
+//                    style = MaterialTheme.typography.bodySmall,
+//                    color = Color(0xFF9CA3AF)
+//                )
+//            }
         }
     }
 }
@@ -558,7 +560,7 @@ private fun TestExcelFileCard(
                     tint = Color(0xFF10B981),
                     modifier = Modifier.size(12.dp)
                 )
-                
+
                 Column {
                     Text(
                         text = excelFile.name,
@@ -575,7 +577,7 @@ private fun TestExcelFileCard(
                         fontSize = 8.sp
                     )
                 }
-                
+
                 if (isInCart) {
                     Icon(
                         Icons.Default.CheckCircle,
@@ -585,7 +587,7 @@ private fun TestExcelFileCard(
                     )
                 }
             }
-            
+
             Row {
                 if (!isInCart) {
                     IconButton(
@@ -600,7 +602,7 @@ private fun TestExcelFileCard(
                         )
                     }
                 }
-                
+
                 IconButton(
                     onClick = onRemove,
                     modifier = Modifier.size(16.dp)
@@ -663,7 +665,7 @@ private fun TestCartItem(
                     },
                     modifier = Modifier.size(10.dp)
                 )
-                
+
                 Column {
                     Text(
                         text = item.excelTemplate.name,
@@ -686,7 +688,7 @@ private fun TestCartItem(
                     )
                 }
             }
-            
+
             if (item.status == ExcelTemplateDesignerViewModel.ExtractionStatus.PENDING) {
                 IconButton(
                     onClick = onRemove,
