@@ -26,7 +26,7 @@ import com.addzero.kmp.ui.infra.model.menu.SideMenu
 import com.addzero.kmp.ui.infra.model.navigation.RecentTabsManager
 import com.addzero.kmp.ui.infra.navigation.NavigationObserver
 import com.addzero.kmp.viewmodel.ChatViewModel
-import com.addzero.kmp.component.theme.QuickThemeToggle
+
 import kotlinx.coroutines.delay
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -158,13 +158,6 @@ fun MainLayout() {
                         }
                     }
                 }
-
-                // 快速主题切换按钮 - 用于测试渐变效果
-                QuickThemeToggle(
-                    modifier = Modifier
-                        .align(Alignment.BottomEnd)
-                        .padding(16.dp)
-                )
             }
         }
     }

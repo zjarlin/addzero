@@ -14,12 +14,15 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.addzero.kmp.component.button.AddFloatingActionButton
 import com.addzero.kmp.component.button.AddIconButton
+import com.addzero.kmp.component.theme.QuickThemeToggle
 import com.addzero.kmp.ui.infra.model.menu.MenuLayoutToggleButton
 import com.addzero.kmp.ui.infra.model.menu.MenuViewModel
 import com.addzero.kmp.ui.infra.model.menu.SysUserCenterScreen
 import com.addzero.kmp.ui.infra.theme.ThemeSelectionButton
 import com.addzero.kmp.ui.infra.theme.ThemeToggleButton
+import com.addzero.kmp.ui.infra.theme.ThemeViewModel
 import com.addzero.kmp.viewmodel.ChatViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -35,8 +38,10 @@ fun SysTopBar(
     navController: NavController,
     isSearchOpen: MutableState<Boolean>? = null
 ) {
-
     val chatViewModel = koinViewModel<ChatViewModel>()
+    val currentTheme = ThemeViewModel.currentTheme
+    //是否为渐变主题
+    val isGradientTheme = currentTheme.isGradient()
 
     TopAppBar(
         title = { Text("AddzeroKmp") },
@@ -51,38 +56,54 @@ fun SysTopBar(
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
+
+                // 快速主题切换按钮 - 用于测试渐变效果
+                QuickThemeToggle()
+                // 间距
+                Spacer(modifier = Modifier.width(8.dp))
+
+
+                // 主题明暗切换按钮 - 仅在非渐变主题时显示
+                if (!isGradientTheme) {
+                    ThemeToggleButton()
+                    // 间距
+                    Spacer(modifier = Modifier.width(8.dp))
+                }
+
+                ThemeSelectionButton()
+
+
+                // 间距
+                Spacer(modifier = Modifier.width(8.dp))
+
+
                 // 全局搜索栏
                 AddSysRouteSearchBar(
                     navController = navController,
                     isSearchOpen = isSearchOpen
                 )
-
                 // 间距
                 Spacer(modifier = Modifier.width(8.dp))
 
-                // 主题明暗切换按钮
-                ThemeToggleButton()
 
-                // 间距
-                Spacer(modifier = Modifier.width(8.dp))
 
-                // 主题选择按钮
-                ThemeSelectionButton()
-
-                // 间距
-                Spacer(modifier = Modifier.width(8.dp))
-
-                // 用户菜单
+                // 用户中心
                 Box(modifier = Modifier.width(40.dp)) {
                     SysUserCenterScreen()
                 }
+
+                // 间距
+                Spacer(modifier = Modifier.width(8.dp))
+
+
                 // 机器人按钮
-                AddIconButton(text = "AI机器人", imageVector =Icons.Default.SmartToy ) {
+                AddFloatingActionButton(
+                    imageVector = Icons.Default.SmartToy,
+                    text = "AI对话",
+                ) {
                     chatViewModel.showChatBot = !chatViewModel.showChatBot
                 }
-//                IconButton(onClick = { chatViewModel.showChatBot = true }) {
-//                    Icon(Icons.Default.SmartToy, contentDescription = "AI机器人")
-//                }
+
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(

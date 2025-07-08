@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -18,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.addzero.kmp.ui.infra.theme.*
+import com.addzero.kmp.component.button.AddFloatingActionButton
 
 /**
  * 主题切换器组件
@@ -174,14 +176,18 @@ fun GradientThemePreview(
 
 /**
  * 快速主题切换按钮
+ * 使用 AddFloatingActionButton 高阶组件实现
  */
 @Composable
 fun QuickThemeToggle(
     modifier: Modifier = Modifier
 ) {
     val currentTheme = ThemeViewModel.currentTheme
-    
-    FloatingActionButton(
+
+    AddFloatingActionButton(
+        text = "切换渐变主题 (${currentTheme.getDisplayName()})",
+        imageVector = Icons.Default.Palette,
+        modifier = modifier,
         onClick = {
             // 循环切换渐变主题
             val gradientThemes = listOf(
@@ -192,21 +198,15 @@ fun QuickThemeToggle(
                 AppThemeType.GRADIENT_AURORA,
                 AppThemeType.GRADIENT_NEON
             )
-            
+
             val currentIndex = gradientThemes.indexOf(currentTheme)
             val nextTheme = if (currentIndex >= 0) {
                 gradientThemes[(currentIndex + 1) % gradientThemes.size]
             } else {
                 gradientThemes.first()
             }
-            
+
             ThemeViewModel.setTheme(nextTheme)
-        },
-        modifier = modifier
-    ) {
-        Text(
-            text = "🎨",
-            style = MaterialTheme.typography.titleMedium
-        )
-    }
+        }
+    )
 }
