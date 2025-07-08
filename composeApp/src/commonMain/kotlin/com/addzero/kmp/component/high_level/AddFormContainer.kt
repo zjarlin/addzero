@@ -1,6 +1,10 @@
 package com.addzero.kmp.component.high_level
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -10,94 +14,91 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
+import androidx.compose.ui.window.Popup
+import androidx.compose.ui.window.PopupProperties
 import com.addzero.kmp.component.button.AddLoadingButton
 import com.addzero.kmp.ui.infra.theme.AppThemes
 import com.addzero.kmp.ui.infra.theme.ThemeViewModel
 import kotlinx.coroutines.launch
 
-/**
- * 高性能的标题图标推导 - 使用预计算的映射表
- */
+// 高性能图标推导映射表 - 预计算避免运行时字符串匹配
 private val titleIconMap = mapOf(
-    // 操作类
-    "添加" to Icons.Default.Add, "新增" to Icons.Default.Add, "创建" to Icons.Default.Add,
-    "编辑" to Icons.Default.Edit, "修改" to Icons.Default.Edit, "更新" to Icons.Default.Edit,
-    "删除" to Icons.Default.Delete, "移除" to Icons.Default.Delete,
-
-    // 用户相关
-    "用户" to Icons.Default.Person, "账户" to Icons.Default.Person,
-    "设置" to Icons.Default.Settings, "配置" to Icons.Default.Settings,
-
-    // 搜索和导入导出
-    "搜索" to Icons.Default.Search, "查找" to Icons.Default.Search,
-    "上传" to Icons.Default.Upload, "导入" to Icons.Default.Upload,
-    "下载" to Icons.Default.Download, "导出" to Icons.Default.Download,
-
-    // 通信相关
-    "邮件" to Icons.Default.Email, "邮箱" to Icons.Default.Email,
-    "密码" to Icons.Default.Lock, "登录" to Icons.Default.Lock,
-    "电话" to Icons.Default.Phone, "联系" to Icons.Default.Phone,
-    "消息" to Icons.Default.Notifications, "通知" to Icons.Default.Notifications,
-
-    // 文件相关
-    "文件" to Icons.Default.Description, "文档" to Icons.Default.Description,
-    "图片" to Icons.Default.Image, "图像" to Icons.Default.Image,
-    "视频" to Icons.Default.VideoLibrary,
-    "音频" to Icons.Default.AudioFile, "音乐" to Icons.Default.AudioFile,
-    "文件夹" to Icons.Default.Folder,
-
-    // 时间和位置
-    "日期" to Icons.Default.DateRange, "时间" to Icons.Default.DateRange,
-    "位置" to Icons.Default.LocationOn, "地址" to Icons.Default.LocationOn,
-
-    // 状态和操作
-    "收藏" to Icons.Default.Favorite, "喜欢" to Icons.Default.Favorite,
-    "分享" to Icons.Default.Share,
-    "帮助" to Icons.Default.Help, "支持" to Icons.Default.Help,
-    "信息" to Icons.Default.Info, "详情" to Icons.Default.Info,
-    "警告" to Icons.Default.Warning,
-    "错误" to Icons.Default.Error,
-    "成功" to Icons.Default.CheckCircle, "完成" to Icons.Default.CheckCircle,
-    "标签" to Icons.Default.Label,
-    "链接" to Icons.Default.Link,
-    "打印" to Icons.Default.Print,
+    "用户" to Icons.Default.Person,
+    "角色" to Icons.Default.AccountBox,
+    "权限" to Icons.Default.Security,
+    "设置" to Icons.Default.Settings,
+    "配置" to Icons.Default.Settings,
+    "系统" to Icons.Default.Computer,
+    "数据" to Icons.Default.Storage,
+    "文件" to Icons.Default.Folder,
+    "上传" to Icons.Default.Upload,
+    "下载" to Icons.Default.Download,
+    "导入" to Icons.Default.GetApp,
+    "导出" to Icons.Default.Share,
+    "编辑" to Icons.Default.Edit,
+    "修改" to Icons.Default.Edit,
+    "新增" to Icons.Default.Add,
+    "添加" to Icons.Default.Add,
+    "创建" to Icons.Default.Add,
+    "删除" to Icons.Default.Delete,
+    "移除" to Icons.Default.Remove,
+    "查看" to Icons.Default.Visibility,
+    "详情" to Icons.Default.Info,
+    "信息" to Icons.Default.Info,
+    "消息" to Icons.Default.Message,
+    "通知" to Icons.Default.Notifications,
+    "邮件" to Icons.Default.Email,
+    "搜索" to Icons.Default.Search,
+    "筛选" to Icons.Default.FilterList,
+    "排序" to Icons.Default.Sort,
+    "统计" to Icons.Default.BarChart,
+    "报表" to Icons.Default.Assessment,
+    "分析" to Icons.Default.Analytics,
+    "监控" to Icons.Default.Monitor,
+    "日志" to Icons.Default.History,
+    "备份" to Icons.Default.Backup,
+    "恢复" to Icons.Default.Restore,
+    "同步" to Icons.Default.Sync,
     "刷新" to Icons.Default.Refresh,
-    "复制" to Icons.Default.ContentCopy,
-    "粘贴" to Icons.Default.ContentPaste,
-    "剪切" to Icons.Default.ContentCut,
+    "重置" to Icons.Default.RestartAlt,
+    "清空" to Icons.Default.Clear,
     "保存" to Icons.Default.Save,
-    "表单" to Icons.Default.Assignment
+    "提交" to Icons.Default.Send,
+    "发布" to Icons.Default.Publish,
+    "审核" to Icons.Default.Gavel,
+    "标签" to Icons.Default.Label,
+    "分类" to Icons.Default.Category,
+    "任务" to Icons.Default.Assignment,
+    "项目" to Icons.Default.Work,
+    "帮助" to Icons.Default.Help,
+    "关于" to Icons.Default.Info
 )
 
 /**
- * 高性能的标题图标推导函数
+ * 高性能图标推导函数 - 使用预计算映射表
  */
 private fun getTitleIcon(title: String): ImageVector {
-    // 首先尝试精确匹配
+    // 直接查找完全匹配
     titleIconMap[title]?.let { return it }
-
-    // 然后尝试包含匹配（转换为小写进行比较）
-    val lowerTitle = title.lowercase()
+    
+    // 查找包含关系
     for ((keyword, icon) in titleIconMap) {
-        if (lowerTitle.contains(keyword.lowercase())) {
+        if (title.contains(keyword)) {
             return icon
         }
     }
-
+    
     // 默认图标
-    return Icons.Default.Edit
+    return Icons.Default.Description
 }
 
 /**
- * 美观大方的表单容器组件
- * 以 Dialog 形式置顶显示
+ * 微软云母效果表单容器组件
+ * 清晰简洁的半透明设计，确保输入框完全可读
  *
  * @param visible 是否显示表单
  * @param onClose 关闭回调
@@ -117,152 +118,119 @@ fun AddFormContainer(
     onSubmit: suspend () -> Unit,
     confirmEnabled: Boolean = true,
     title: String = "表单",
-    titleIcon: ImageVector? = null, // 如果为null，将自动根据title推导
+    titleIcon: ImageVector? = null,
     submitText: String = "提交",
     cancelText: String = "取消",
     submitIcon: ImageVector = Icons.Default.Save,
     modifier: Modifier = Modifier,
     content: @Composable ColumnScope.() -> Unit
-
 ) {
     if (!visible) return
 
-    Dialog(
+    // 使用 Popup 替代 Dialog，避免背景变暗
+    Popup(
         onDismissRequest = onClose,
-        properties = DialogProperties(
-            usePlatformDefaultWidth = false, // Allow custom width
+        properties = PopupProperties(
             dismissOnBackPress = true,
-            dismissOnClickOutside = true
+            dismissOnClickOutside = true,
+            focusable = true
         )
     ) {
         var isLoading by remember { mutableStateOf(false) }
         val scope = rememberCoroutineScope()
-        val currentTheme = ThemeViewModel.currentTheme
-        val gradientConfig = AppThemes.getGradientConfig(currentTheme)
 
-        // 使用计算属性优化图标推导性能 - 只有在title或titleIcon变化时才重新计算
-        val resolvedTitleIcon by remember(title, titleIcon) {
-            derivedStateOf {
+        // 简化的全屏居中容器，直接点击关闭
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Black.copy(alpha = 0.3f)) // 轻微遮罩提升层次感
+                .clickable(
+                    indication = null,
+                    interactionSource = remember { MutableInteractionSource() }
+                ) { onClose() },
+            contentAlignment = Alignment.Center
+        ) {
+
+            // 高性能图标推导
+            val resolvedTitleIcon: ImageVector = remember(title, titleIcon) {
                 titleIcon ?: getTitleIcon(title)
             }
-        }
 
-        Card(
-            modifier = modifier
-                .fillMaxWidth(0.8f) // 缩小到80%宽度，提升易用性
-                .fillMaxHeight(0.75f), // 缩小到75%高度
-            shape = RoundedCornerShape(20.dp), // 稍微减小圆角
-            elevation = CardDefaults.cardElevation(12.dp), // 增加阴影深度
-            colors = CardDefaults.cardColors(
-                containerColor = if (currentTheme.isGradient()) {
-                    MaterialTheme.colorScheme.surface.copy(alpha = 0.95f)
-                } else {
-                    MaterialTheme.colorScheme.surface
-                }
-            )
-        ) {
-            // 添加渐变背景层
-            Box(
-                modifier = Modifier.fillMaxSize()
+            // 精心设计的表单容器 - 固定底色，良好对比度
+            Card(
+                modifier = modifier
+                    .fillMaxWidth(0.85f)
+                    .fillMaxHeight(0.8f)
+                    .clickable(
+                        indication = null,
+                        interactionSource = remember { MutableInteractionSource() }
+                    ) { /* 阻止事件冒泡 */ },
+                shape = RoundedCornerShape(16.dp),
+                elevation = CardDefaults.cardElevation(
+                    defaultElevation = 24.dp,
+                    pressedElevation = 32.dp
+                ),
+                colors = CardDefaults.cardColors(
+                    // 固定的现代化底色设计 - 不随主题变化
+                    containerColor = Color(0xFFFAFAFA), // 温暖的浅灰白色
+                ),
+                border = BorderStroke(
+                    width = 1.dp,
+                    color = Color(0xFFE0E0E0) // 精致的边框
+                )
             ) {
-                // 渐变背景（仅在渐变主题时显示）
-                if (currentTheme.isGradient() && gradientConfig != null) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clip(RoundedCornerShape(20.dp))
-                            .background(
-                                brush = Brush.linearGradient(
-                                    colors = listOf(
-                                        gradientConfig.colors.first().copy(alpha = 0.08f),
-                                        gradientConfig.colors[1].copy(alpha = 0.05f),
-                                        gradientConfig.colors.getOrNull(2)?.copy(alpha = 0.03f) ?: Color.Transparent,
-                                        Color.Transparent
-                                    )
-                                )
-                            )
-                    )
-                }
-
                 Column(
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    // Header with Title and Close button - 美化头部，标题居中显示
+                    // 标题栏
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(start = 16.dp, end = 16.dp, top = 24.dp, bottom = 20.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        // 左侧占位，保持居中平衡
                         Spacer(modifier = Modifier.width(44.dp))
 
-                        // 居中的标题区域（包含图标和文本）
                         Row(
                             modifier = Modifier.weight(1f),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Center
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
-                            // 标题图标（自动推导）
                             Box(
                                 modifier = Modifier
-                                    .size(44.dp)
+                                    .size(40.dp)
                                     .clip(RoundedCornerShape(12.dp))
                                     .background(
-                                        if (currentTheme.isGradient() && gradientConfig != null) {
-                                            Brush.linearGradient(
-                                                colors = listOf(
-                                                    gradientConfig.colors.first().copy(alpha = 0.15f),
-                                                    gradientConfig.colors[1].copy(alpha = 0.1f)
-                                                )
-                                            )
-                                        } else {
-                                            Brush.linearGradient(
-                                                colors = listOf(
-                                                    MaterialTheme.colorScheme.primaryContainer,
-                                                    MaterialTheme.colorScheme.primaryContainer
-                                                )
-                                            )
-                                        }
+                                        Color(0xFF2196F3).copy(alpha = 0.1f) // 固定的蓝色背景
                                     ),
                                 contentAlignment = Alignment.Center
                             ) {
                                 Icon(
                                     imageVector = resolvedTitleIcon,
                                     contentDescription = null,
-                                    tint = if (currentTheme.isGradient() && gradientConfig != null) {
-                                        gradientConfig.colors.first()
-                                    } else {
-                                        MaterialTheme.colorScheme.primary
-                                    },
+                                    tint = Color(0xFF2196F3), // 固定的蓝色图标
                                     modifier = Modifier.size(24.dp)
                                 )
                             }
 
                             Spacer(modifier = Modifier.width(12.dp))
 
-                            // 标题文本
                             Text(
                                 text = title,
                                 style = MaterialTheme.typography.headlineSmall.copy(
                                     fontWeight = FontWeight.Bold,
-                                    color = if (currentTheme.isGradient() && gradientConfig != null) {
-                                        gradientConfig.colors.first()
-                                    } else {
-                                        MaterialTheme.colorScheme.primary
-                                    }
+                                    color = Color(0xFF1976D2) // 固定的深蓝色标题
                                 )
                             )
                         }
 
-                        // 美化关闭按钮
                         IconButton(
                             onClick = onClose,
                             modifier = Modifier
                                 .size(44.dp)
                                 .clip(RoundedCornerShape(12.dp))
                                 .background(
-                                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+                                    Color(0xFFF5F5F5) // 固定的浅灰色背景
                                 )
                         ) {
                             Icon(
@@ -274,28 +242,24 @@ fun AddFormContainer(
                         }
                     }
 
-                    // 美化分割线
+                    // 分割线
                     HorizontalDivider(
                         modifier = Modifier.padding(horizontal = 28.dp),
-                        color = if (currentTheme.isGradient() && gradientConfig != null) {
-                            gradientConfig.colors.first().copy(alpha = 0.2f)
-                        } else {
-                            MaterialTheme.colorScheme.outlineVariant
-                        }
+                        color = Color(0xFFE0E0E0) // 固定的浅灰色分割线
                     )
 
-                    // Content area - 优化内容区域间距
+                    // 内容区域
                     Column(
                         modifier = Modifier
-                            .weight(1f) // Occupy remaining space
+                            .weight(1f)
                             .fillMaxWidth()
                             .padding(horizontal = 28.dp, vertical = 20.dp),
-                        verticalArrangement = Arrangement.spacedBy(16.dp) // 统一间距
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
                         content()
                     }
 
-                    // Footer with buttons - 美化按钮区域
+                    // 按钮区域
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -303,20 +267,15 @@ fun AddFormContainer(
                         horizontalArrangement = Arrangement.End,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        // 美化取消按钮
                         OutlinedButton(
                             onClick = onClose,
                             modifier = Modifier
                                 .height(52.dp)
                                 .widthIn(min = 100.dp),
                             shape = RoundedCornerShape(16.dp),
-                            colors = if (currentTheme.isGradient() && gradientConfig != null) {
-                                ButtonDefaults.outlinedButtonColors(
-                                    contentColor = gradientConfig.colors.first()
-                                )
-                            } else {
-                                ButtonDefaults.outlinedButtonColors()
-                            }
+                            colors = ButtonDefaults.outlinedButtonColors(
+                                contentColor = Color(0xFF1976D2) // 固定的深蓝色按钮文字
+                            )
                         ) {
                             Text(
                                 cancelText,
@@ -328,7 +287,6 @@ fun AddFormContainer(
 
                         Spacer(modifier = Modifier.width(20.dp))
 
-                        // 美化提交按钮
                         AddLoadingButton(
                             enabled = confirmEnabled,
                             text = submitText,
@@ -350,8 +308,6 @@ fun AddFormContainer(
                     }
                 }
             }
-        }
-    }
-}
-
-// 假设 AddLoadingButton 已经存在
+        } // Card 表单容器闭合括号
+    } // Box 居中容器闭合括号
+} // Popup 闭合括号
