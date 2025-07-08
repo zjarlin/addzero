@@ -8,6 +8,7 @@ import com.addzero.kmp.ui.auth.LoginScreen
 import com.addzero.kmp.ui.infra.MainLayout
 import com.addzero.kmp.ui.infra.theme.AppThemes
 import com.addzero.kmp.ui.infra.theme.FollowSystemTheme
+import com.addzero.kmp.ui.infra.theme.GradientThemeWrapper
 import com.addzero.kmp.ui.infra.theme.ThemeViewModel
 import com.addzero.kmp.viewmodel.LoginViewModel
 import org.koin.compose.viewmodel.koinViewModel
@@ -27,12 +28,15 @@ fun App() {
     EventBusMonitor()
     val loginViewModel = koinViewModel<LoginViewModel>()
     // 已登录时渲染主界面
-    val colorScheme = AppThemes.getColorScheme(ThemeViewModel.currentTheme)
-    FollowSystemTheme(colorScheme = colorScheme) {
-//        AppContent(loginViewModel)
-        MainLayout()
-        ToastListener()
+    val currentTheme = ThemeViewModel.currentTheme
+    val colorScheme = AppThemes.getColorScheme(currentTheme)
 
+    FollowSystemTheme(colorScheme = colorScheme) {
+        GradientThemeWrapper(themeType = currentTheme) {
+//            AppContent(loginViewModel)
+            MainLayout()
+            ToastListener()
+        }
     }
 }
 

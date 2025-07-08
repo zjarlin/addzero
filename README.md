@@ -40,10 +40,6 @@
 
 #### 🔧 **addzero-ksp-support** - KSP 工具支持库
 - **KspUtil.kt** - KSP 扩展属性和工具函数
-  - `KSPropertyDeclaration.name` - 属性名称
-  - `KSPropertyDeclaration.label` - 优先使用 @Label 注解，回退到文档注释
-  - `KSPropertyDeclaration.isRequired` - 基于可空性判断必填状态
-  - `KSPropertyDeclaration.defaultValue` - 默认值生成
 - **TypeMapper.kt** - 类型映射工具
 - **BeanUtil.kt** - Bean 处理工具
 - **JlStrUtil.kt** - 字符串处理工具
@@ -106,31 +102,6 @@
 - 文件操作工具
 - 模板引擎支持
 
-### 🔄 **KSP 处理器工作流程**
-
-```mermaid
-graph TD
-    A[Jimmer 实体定义] --> B[KSP 编译时处理]
-    B --> C[addzero-entity2form-processor]
-    B --> D[addzero-controller2api-processor]
-    B --> E[addzero-route-processor]
-    B --> F[addzero-jdbc2enum-processor]
-
-    C --> G[动态表单组件]
-    D --> H[Ktorfit API 接口]
-    E --> I[路由表和导航]
-    F --> J[字典枚举类]
-
-    G --> K[前端 UI 组件]
-    H --> L[网络请求层]
-    I --> M[导航系统]
-    J --> N[类型安全枚举]
-
-    K --> O[完整应用]
-    L --> O
-    M --> O
-    N --> O
-```
 
 ### 🎯 **一致性保证机制**
 
@@ -152,14 +123,11 @@ graph TD
 ### 📈 **性能优化特性**
 
 #### ⚡ **编译时优化**
-- **单次类型解析** - `property.type.resolve()` 只调用一次
 - **零抽象开销** - 直接生成最终代码，无运行时反射
 - **内联优化** - 编译器可以更好地优化生成的代码
 
 #### 🎯 **策略模式优化**
-- **密封类自动注册** - 避免手动维护策略列表
 - **优先级排序** - 确保最匹配的策略优先执行
-- **延迟初始化** - 只有使用时才初始化策略对象
 
 ### 🚀 **快速开始**
 

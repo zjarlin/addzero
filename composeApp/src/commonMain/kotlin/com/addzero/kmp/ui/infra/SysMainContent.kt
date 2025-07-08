@@ -13,6 +13,8 @@ import androidx.navigation.compose.composable
 import com.addzero.kmp.di.NavgationService
 import com.addzero.kmp.generated.RouteKeys
 import com.addzero.kmp.generated.RouteTable
+import com.addzero.kmp.ui.infra.theme.MainContentGradientBackground
+import com.addzero.kmp.ui.infra.theme.ThemeViewModel
 
 /**
  * 主内容区组件
@@ -21,20 +23,28 @@ import com.addzero.kmp.generated.RouteTable
  */
 @Composable
 fun MainContent(navController: NavHostController) {
-    Surface(
-        modifier = Modifier.fillMaxWidth(),
-        tonalElevation = 0.dp
-    ) {
-        // 渲染导航内容
-//        navController.currentDestination
-        renderNavContent(navController)
+    val currentTheme = ThemeViewModel.currentTheme
 
-        // 标记导航图已初始化
-        // 这个DisposableEffect会在组合完成后执行，此时NavHost已经完全初始化
-//        DisposableEffect(Unit) {
-//            onNavHostInitialized()
-//            onDispose {}
-//        }
+    MainContentGradientBackground(
+        themeType = currentTheme,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Surface(
+            modifier = Modifier.fillMaxWidth(),
+            tonalElevation = 0.dp,
+            color = androidx.compose.ui.graphics.Color.Transparent // 透明背景显示渐变
+        ) {
+            // 渲染导航内容
+//            navController.currentDestination
+            renderNavContent(navController)
+
+            // 标记导航图已初始化
+            // 这个DisposableEffect会在组合完成后执行，此时NavHost已经完全初始化
+//            DisposableEffect(Unit) {
+//                onNavHostInitialized()
+//                onDispose {}
+//            }
+        }
     }
 }
 

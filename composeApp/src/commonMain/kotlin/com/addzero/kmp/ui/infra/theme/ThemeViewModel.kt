@@ -10,8 +10,8 @@ import androidx.compose.runtime.setValue
  * @date 2025/04/11
  */
 object ThemeViewModel {
-    // 当前主题类型，默认为淡蓝色浅色主题
-    var currentTheme by mutableStateOf(AppThemeType.LIGHT_BLUE)
+    // 当前主题类型，默认为彩虹渐变主题来测试渐变效果
+    var currentTheme by mutableStateOf(AppThemeType.GRADIENT_OCEAN)
         private set
 
     // 是否为暗色主题 - 保留此属性以保持兼容性
@@ -27,6 +27,13 @@ object ThemeViewModel {
                 AppThemeType.DARK_BLUE -> AppThemeType.LIGHT_BLUE
                 AppThemeType.DARK_GREEN -> AppThemeType.LIGHT_GREEN
                 AppThemeType.DARK_PURPLE -> AppThemeType.LIGHT_PURPLE
+                // 渐变主题保持不变
+                AppThemeType.GRADIENT_RAINBOW,
+                AppThemeType.GRADIENT_SUNSET,
+                AppThemeType.GRADIENT_OCEAN,
+                AppThemeType.GRADIENT_FOREST,
+                AppThemeType.GRADIENT_AURORA,
+                AppThemeType.GRADIENT_NEON -> currentTheme
                 else -> AppThemeType.LIGHT_BLUE
             }
         } else {
@@ -36,6 +43,13 @@ object ThemeViewModel {
                 AppThemeType.LIGHT_BLUE -> AppThemeType.DARK_BLUE
                 AppThemeType.LIGHT_GREEN -> AppThemeType.DARK_GREEN
                 AppThemeType.LIGHT_PURPLE -> AppThemeType.DARK_PURPLE
+                // 渐变主题保持不变
+                AppThemeType.GRADIENT_RAINBOW,
+                AppThemeType.GRADIENT_SUNSET,
+                AppThemeType.GRADIENT_OCEAN,
+                AppThemeType.GRADIENT_FOREST,
+                AppThemeType.GRADIENT_AURORA,
+                AppThemeType.GRADIENT_NEON -> currentTheme
                 else -> AppThemeType.DARK_BLUE
             }
         }

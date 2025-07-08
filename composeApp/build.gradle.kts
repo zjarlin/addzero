@@ -88,7 +88,7 @@ kotlin {
             implementation("org.jetbrains.kotlinx:kotlinx-datetime:+")
 
             // 通用UI组件
-            implementation("com.mikepenz:multiplatform-markdown-renderer-m3:+")
+            implementation("com.mikepenz:multiplatform-markdown-renderer-m3:0.36.0-b02")
             implementation("org.jetbrains.androidx.navigation:navigation-compose:+")
 
             //图片加载库

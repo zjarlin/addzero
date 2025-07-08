@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -24,6 +25,7 @@ import com.addzero.kmp.generated.RouteKeys
 import com.addzero.kmp.kt_util.isNotBlank
 import com.addzero.kmp.ui.infra.model.menu.MenuViewModel.currentRoute
 import com.addzero.kmp.ui.infra.model.menu.MenuViewModel.isExpand
+import com.addzero.kmp.ui.infra.theme.*
 
 /**
  * 侧边菜单组件
@@ -33,26 +35,39 @@ import com.addzero.kmp.ui.infra.model.menu.MenuViewModel.isExpand
  */
 @Composable
 fun SideMenu() {
-    // 侧边菜单
-    Surface(
+    val currentTheme = ThemeViewModel.currentTheme
+
+    // 侧边菜单 - 美化设计，支持渐变主题
+    SidebarGradientBackground(
+        themeType = currentTheme,
         modifier = Modifier
-            .width(if (isExpand) 250.dp else 65.dp)
-            .fillMaxHeight(),
-        color = MaterialTheme.colorScheme.surface,
-        tonalElevation = 2.dp
+            .width(if (isExpand) 240.dp else 56.dp)
+            .fillMaxHeight()
     ) {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = Color.Transparent, // 透明背景，显示渐变
+            tonalElevation = 0.dp
+        ) {
         Column {
-            // 菜单标题
+            // 菜单标题 - 减少内边距
             if (isExpand) {
                 Text(
                     text = "导航菜单",
-                    style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier.padding(16.dp)
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
+                )
+                // 添加分隔线
+                HorizontalDivider(
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                    thickness = 0.5.dp,
+                    color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f)
                 )
             }
 
-            // 使用AddTree组件渲染菜单树
-            Box(modifier = Modifier.fillMaxSize().padding(horizontal = 8.dp)) {
+            // 使用AddTree组件渲染菜单树 - 减少内边距
+            Box(modifier = Modifier.fillMaxSize().padding(horizontal = 4.dp, vertical = 4.dp)) {
                 AddTree(
                     items = MenuViewModel.menuItems,
                     getId = { it.path },
@@ -80,6 +95,7 @@ fun SideMenu() {
                     }
                 )
             }
+        }
         }
     }
 }
@@ -122,7 +138,7 @@ private fun getMenuIcon(vO: SysMenuVO): ImageVector? {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun customRender4SysMenu(nodeInfo: TreeNodeInfo<SysMenuVO>) {
-
+    val currentTheme = ThemeViewModel.currentTheme
     val isExpandSideMenu = isExpand
     val isExpandedNode = nodeInfo.isExpanded
     val node = nodeInfo.node
@@ -147,80 +163,91 @@ private fun customRender4SysMenu(nodeInfo: TreeNodeInfo<SysMenuVO>) {
         state = rememberTooltipState()
     ) {
         if (isExpandSideMenu) {
-            // 展开状态 - 显示完整菜单项
-            NavigationDrawerItem(
-                icon = {
-                    Icon(
-                        imageVector = vector,
-                        contentDescription = if (isExpandedNode) "折叠" else "展开",
-                        modifier = Modifier.size(24.dp)
-                    )
-                },
-                label = {
-                    Text(
-                        text = nodeInfo.label,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                },
-                badge = {
-                    if (nodeInfo.hasChildren) {
-                        val arrowIcon = if (isExpandedNode) {
-                            Icons.Default.KeyboardArrowDown
-                        } else {
-                            Icons.AutoMirrored.Filled.KeyboardArrowRight
-                        }
-                        Icon(
-                            imageVector = arrowIcon,
-                            contentDescription = if (isExpandedNode) "折叠" else "展开",
-                            modifier = Modifier.size(24.dp)
-                        )
-                    }
-                },
-                selected = nodeInfo.isSelected || nodeInfo.id == currentRoute,
-                onClick = {
-                    // 直接调用节点的点击事件，让AddTree内部处理折叠逻辑
-                    nodeInfo.onNodeClick(node)
-                },
-                modifier = Modifier.padding(
-                    start = (nodeInfo.level * 16).dp,
-                    top = 4.dp,
-                    end = 8.dp,
-                    bottom = 4.dp
-                ),
-                colors = NavigationDrawerItemDefaults.colors(
-                    selectedContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f),
-                    unselectedContainerColor = MaterialTheme.colorScheme.surface
-                )
-            )
-        } else {
-            // 收起状态 - 只显示图标
+            // 展开状态 - 美化菜单项设计，支持渐变主题
             val isSelected = nodeInfo.isSelected || nodeInfo.id == currentRoute
-            val bgColor = if (isSelected)
-                MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
-            else
-                MaterialTheme.colorScheme.surface
+            val textColor = getMenuItemTextColor(currentTheme, isSelected)
+            val iconColor = getMenuItemIconColor(currentTheme, isSelected)
 
-            val iconColor = if (isSelected)
-                MaterialTheme.colorScheme.primary
-            else
-                MaterialTheme.colorScheme.onSurface
-
-            Box(
-                contentAlignment = Alignment.Center,
+            MenuItemGradientBackground(
+                themeType = currentTheme,
+                isSelected = isSelected,
                 modifier = Modifier
-                    .padding(vertical = 8.dp)
-                    .size(48.dp)
-                    .clip(RoundedCornerShape(percent = 50))
-                    .background(bgColor)
+                    .fillMaxWidth()
+                    .height(42.dp) // 增加高度，更舒适
+                    .padding(
+                        start = (nodeInfo.level * 16 + 6).dp, // 适中的缩进
+                        end = 6.dp,
+                        top = 2.dp,
+                        bottom = 2.dp
+                    )
+                    .clip(RoundedCornerShape(8.dp)) // 轻微圆角，更现代
                     .clickable { nodeInfo.onNodeClick(node) }
+                    .padding(horizontal = 12.dp, vertical = 8.dp) // 增加内边距
             ) {
+                Row(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                // 图标
                 Icon(
                     imageVector = vector,
                     contentDescription = nodeInfo.label,
-                    modifier = Modifier.size(24.dp),
+                    modifier = Modifier.size(20.dp), // 稍微增大图标
                     tint = iconColor
                 )
+
+                Spacer(modifier = Modifier.width(12.dp)) // 增加间距
+
+                // 文本 - 支持渐变效果
+                GradientText(
+                    text = nodeInfo.label,
+                    themeType = currentTheme,
+                    isSelected = isSelected,
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.weight(1f)
+                )
+
+                // 展开/收起箭头
+                if (nodeInfo.hasChildren) {
+                    val arrowIcon = if (isExpandedNode) {
+                        Icons.Default.KeyboardArrowDown
+                    } else {
+                        Icons.AutoMirrored.Filled.KeyboardArrowRight
+                    }
+                    Icon(
+                        imageVector = arrowIcon,
+                        contentDescription = if (isExpandedNode) "折叠" else "展开",
+                        modifier = Modifier.size(18.dp), // 适中的箭头尺寸
+                        tint = iconColor.copy(alpha = 0.7f)
+                    )
+                }
+                }
+            }
+        } else {
+            // 收起状态 - 美化图标设计，支持渐变主题
+            val isSelected = nodeInfo.isSelected || nodeInfo.id == currentRoute
+            val iconColor = getMenuItemIconColor(currentTheme, isSelected)
+
+            MenuItemGradientBackground(
+                themeType = currentTheme,
+                isSelected = isSelected,
+                modifier = Modifier
+                    .padding(vertical = 3.dp, horizontal = 6.dp) // 适中的内边距
+                    .size(44.dp, 38.dp) // 增加尺寸，更舒适
+                    .clip(RoundedCornerShape(10.dp)) // 轻微圆角，更现代
+                    .clickable { nodeInfo.onNodeClick(node) }
+            ) {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    Icon(
+                        imageVector = vector,
+                        contentDescription = nodeInfo.label,
+                        modifier = Modifier.size(20.dp), // 增大图标尺寸
+                        tint = iconColor
+                    )
+                }
             }
         }
     }
