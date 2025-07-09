@@ -89,10 +89,10 @@ fun SideMenu() {
                         }
                         // 注意：折叠/展开状态由AddTree内部管理，这里不需要手动处理
                     },
-//                    nodeRender = { nodeInfo ->
-//                        // 自定义菜单项渲染
-//                        customRender4SysMenu(nodeInfo)
-//                    }
+                    nodeRender = { nodeInfo ->
+                        // 自定义菜单项渲染
+                        customRender4SysMenu(nodeInfo)
+                    }
                 )
             }
         }
@@ -107,8 +107,10 @@ private fun getMenuIcon(vO: SysMenuVO): ImageVector? {
         val vector = IconMap[vO.icon].vector
         vector
     } else {
+        // 根据路径推断图标，移除重复条件
         when {
             vO.children.isNotEmpty() -> Icons.AutoMirrored.Filled.ViewList
+            path.contains("home") -> Icons.Default.Home
             path.contains("dashboard") -> Icons.Default.Dashboard
             path.contains("user") || path.contains("account") -> Icons.Default.Person
             path.contains("setting") -> Icons.Default.Settings
@@ -122,16 +124,8 @@ private fun getMenuIcon(vO: SysMenuVO): ImageVector? {
             path.contains("analytics") -> Icons.Default.Analytics
             path.contains("help") -> Icons.AutoMirrored.Filled.Help
             path.contains("about") -> Icons.Default.Info
-            path.contains("home") -> Icons.Default.Home
-            path.contains("dashboard") -> Icons.Default.Dashboard
-            path.contains("user") || path.contains("account") -> Icons.Default.Person
-            path.contains("setting") -> Icons.Default.Settings
-            path.contains("report") -> Icons.Default.BarChart
-            path.contains("data") -> Icons.Default.Storage
-            path.contains("file") -> Icons.AutoMirrored.Filled.InsertDriveFile
             else -> Icons.AutoMirrored.Filled.Article
         }
-
     }
 }
 
@@ -144,12 +138,14 @@ private fun customRender4SysMenu(nodeInfo: TreeNodeInfo<SysMenuVO>) {
     val node = nodeInfo.node
     val icon = node.icon
     val menuIcon = getMenuIcon(node)
-    val vector = if (icon != "Apps" && icon.isNotBlank()) {
-        IconMap[icon].vector
-    } else {
-        menuIcon ?: IconMap[icon].vector
-    }
 
+    // 修复图标获取逻辑，确保收起状态下能正确显示图标
+    val vector = when {
+        icon.isNotBlank() && icon != "Apps" -> IconMap[icon].vector
+        menuIcon != null -> menuIcon
+        icon == "Apps" -> IconMap[icon].vector
+        else -> Icons.Default.Circle // 默认图标
+    }
 
     TooltipBox(
         positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
@@ -168,8 +164,8 @@ private fun customRender4SysMenu(nodeInfo: TreeNodeInfo<SysMenuVO>) {
             val textColor = getMenuItemTextColor(currentTheme, isSelected)
             val iconColor = getMenuItemIconColor(currentTheme, isSelected)
 
-            // 外层容器，处理缩进和间距
-            Box(
+            // 使用 Card 作为容器，处理缩进和间距
+            Card(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
@@ -178,85 +174,118 @@ private fun customRender4SysMenu(nodeInfo: TreeNodeInfo<SysMenuVO>) {
                         top = 2.dp,
                         bottom = 2.dp
                     )
+                    .clickable { nodeInfo.onNodeClick(node) },
+                shape = RoundedCornerShape(8.dp),
+                elevation = CardDefaults.cardElevation(
+                    defaultElevation = if (isSelected) 2.dp else 0.dp
+                ),
+                colors = CardDefaults.cardColors(
+                    containerColor = when {
+                        // 渐变主题选中状态
+                        currentTheme.isGradient() && isSelected -> {
+                            AppThemes.getGradientConfig(currentTheme)?.colors?.first()?.copy(alpha = 0.15f)
+                                ?: MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f)
+                        }
+                        // 普通主题选中状态
+                        isSelected -> MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f)
+                        // 未选中状态
+                        else -> Color.Transparent
+                    }
+                )
             ) {
-                MenuItemGradientBackground(
-                    themeType = currentTheme,
-                    isSelected = isSelected,
+                Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(40.dp) // 参考 Android Developer 的高度
-                        .clickable { nodeInfo.onNodeClick(node) }
-                        .padding(horizontal = 12.dp, vertical = 8.dp) // 统一内边距
-                ) {
-                Row(
-                    modifier = Modifier.fillMaxSize(),
+                        .height(40.dp)
+                        .padding(horizontal = 12.dp, vertical = 8.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                // 图标
-                Icon(
-                    imageVector = vector,
-                    contentDescription = nodeInfo.label,
-                    modifier = Modifier.size(20.dp), // 稍微增大图标
-                    tint = iconColor
-                )
-
-                Spacer(modifier = Modifier.width(12.dp)) // 增加间距
-
-                // 文本 - 支持渐变效果
-                GradientText(
-                    text = nodeInfo.label,
-                    themeType = currentTheme,
-                    isSelected = isSelected,
-                    style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.weight(1f)
-                )
-
-                // 展开/收起箭头
-                if (nodeInfo.hasChildren) {
-                    val arrowIcon = if (isExpandedNode) {
-                        Icons.Default.KeyboardArrowDown
-                    } else {
-                        Icons.AutoMirrored.Filled.KeyboardArrowRight
-                    }
+                    // 图标
                     Icon(
-                        imageVector = arrowIcon,
-                        contentDescription = if (isExpandedNode) "折叠" else "展开",
-                        modifier = Modifier.size(18.dp), // 适中的箭头尺寸
-                        tint = iconColor.copy(alpha = 0.7f)
+                        imageVector = vector,
+                        contentDescription = nodeInfo.label,
+                        modifier = Modifier.size(20.dp),
+                        tint = iconColor
                     )
+
+                    Spacer(modifier = Modifier.width(12.dp))
+
+                    // 文本 - 支持渐变效果
+                    GradientText(
+                        text = nodeInfo.label,
+                        themeType = currentTheme,
+                        isSelected = isSelected,
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.weight(1f)
+                    )
+
+                    // 展开/收起箭头
+                    if (nodeInfo.hasChildren) {
+                        val arrowIcon = if (isExpandedNode) {
+                            Icons.Default.KeyboardArrowDown
+                        } else {
+                            Icons.AutoMirrored.Filled.KeyboardArrowRight
+                        }
+                        Icon(
+                            imageVector = arrowIcon,
+                            contentDescription = if (isExpandedNode) "折叠" else "展开",
+                            modifier = Modifier.size(18.dp),
+                            tint = iconColor.copy(alpha = 0.7f)
+                        )
+                    }
                 }
-                }
-            }
             }
         } else {
-            // 收起状态 - 美化图标设计，支持渐变主题
+            // 收起状态 - 使用 Card 作为容器，只显示图标
             val isSelected = nodeInfo.isSelected || nodeInfo.id == currentRoute
             val iconColor = getMenuItemIconColor(currentTheme, isSelected)
 
-            // 外层容器，处理间距
-            Box(
+            // 使用 Card 作为容器，确保图标正确显示
+            Card(
                 modifier = Modifier
-                    .padding(vertical = 3.dp, horizontal = 6.dp)
+                    .size(44.dp, 40.dp)
+                    .padding(vertical = 2.dp, horizontal = 6.dp)
+                    .clickable { nodeInfo.onNodeClick(node) },
+                shape = RoundedCornerShape(8.dp),
+                elevation = CardDefaults.cardElevation(
+                    defaultElevation = if (isSelected) 2.dp else 0.dp
+                ),
+                colors = CardDefaults.cardColors(
+                    containerColor = when {
+                        // 渐变主题选中状态
+                        currentTheme.isGradient() && isSelected -> {
+                            AppThemes.getGradientConfig(currentTheme)?.colors?.first()?.copy(alpha = 0.15f)
+                                ?: MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f)
+                        }
+                        // 普通主题选中状态
+                        isSelected -> MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f)
+                        // 未选中状态
+                        else -> Color.Transparent
+                    }
+                )
             ) {
-                MenuItemGradientBackground(
-                    themeType = currentTheme,
-                    isSelected = isSelected,
-                    modifier = Modifier
-                        .size(44.dp, 40.dp) // 统一尺寸，与展开状态高度一致
-                        .clickable { nodeInfo.onNodeClick(node) }
-                ) {
                 Box(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    Icon(
-                        imageVector = vector,
-                        contentDescription = nodeInfo.label,
-                        modifier = Modifier.size(20.dp), // 增大图标尺寸
-                        tint = iconColor
-                    )
+                    // 确保图标能正确显示
+                    if (vector != null) {
+                        Icon(
+                            imageVector = vector,
+                            contentDescription = nodeInfo.label,
+                            modifier = Modifier.size(20.dp),
+                            tint = iconColor
+                        )
+                    } else {
+                        // 如果没有图标，显示默认图标
+                        Icon(
+                            imageVector = Icons.Default.Circle,
+                            contentDescription = nodeInfo.label,
+                            modifier = Modifier.size(20.dp),
+                            tint = iconColor
+                        )
+                    }
                 }
-            }
             }
         }
     }
