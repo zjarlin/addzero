@@ -164,8 +164,8 @@ private fun customRender4SysMenu(nodeInfo: TreeNodeInfo<SysMenuVO>) {
             val textColor = getMenuItemTextColor(currentTheme, isSelected)
             val iconColor = getMenuItemIconColor(currentTheme, isSelected)
 
-            // 使用 Card 作为容器，处理缩进和间距
-            Card(
+            // 使用 Surface 作为容器，处理缩进和间距
+            Surface(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
@@ -176,22 +176,18 @@ private fun customRender4SysMenu(nodeInfo: TreeNodeInfo<SysMenuVO>) {
                     )
                     .clickable { nodeInfo.onNodeClick(node) },
                 shape = RoundedCornerShape(8.dp),
-                elevation = CardDefaults.cardElevation(
-                    defaultElevation = if (isSelected) 2.dp else 0.dp
-                ),
-                colors = CardDefaults.cardColors(
-                    containerColor = when {
-                        // 渐变主题选中状态
-                        currentTheme.isGradient() && isSelected -> {
-                            AppThemes.getGradientConfig(currentTheme)?.colors?.first()?.copy(alpha = 0.15f)
-                                ?: MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f)
-                        }
-                        // 普通主题选中状态
-                        isSelected -> MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f)
-                        // 未选中状态
-                        else -> Color.Transparent
+                tonalElevation = if (isSelected) 2.dp else 0.dp,
+                color = when {
+                    // 渐变主题选中状态
+                    currentTheme.isGradient() && isSelected -> {
+                        AppThemes.getGradientConfig(currentTheme)?.colors?.first()?.copy(alpha = 0.15f)
+                            ?: MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f)
                     }
-                )
+                    // 普通主题选中状态
+                    isSelected -> MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f)
+                    // 未选中状态
+                    else -> Color.Transparent
+                }
             ) {
                 Row(
                     modifier = Modifier
@@ -240,29 +236,25 @@ private fun customRender4SysMenu(nodeInfo: TreeNodeInfo<SysMenuVO>) {
             val isSelected = nodeInfo.isSelected || nodeInfo.id == currentRoute
             val iconColor = getMenuItemIconColor(currentTheme, isSelected)
 
-            // 使用 Card 作为容器，确保图标正确显示
-            Card(
+            // 使用 Surface 作为容器，确保图标正确显示
+            Surface(
                 modifier = Modifier
                     .size(44.dp, 40.dp)
                     .padding(vertical = 2.dp, horizontal = 6.dp)
                     .clickable { nodeInfo.onNodeClick(node) },
                 shape = RoundedCornerShape(8.dp),
-                elevation = CardDefaults.cardElevation(
-                    defaultElevation = if (isSelected) 2.dp else 0.dp
-                ),
-                colors = CardDefaults.cardColors(
-                    containerColor = when {
-                        // 渐变主题选中状态
-                        currentTheme.isGradient() && isSelected -> {
-                            AppThemes.getGradientConfig(currentTheme)?.colors?.first()?.copy(alpha = 0.15f)
-                                ?: MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f)
-                        }
-                        // 普通主题选中状态
-                        isSelected -> MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f)
-                        // 未选中状态
-                        else -> Color.Transparent
+                tonalElevation = if (isSelected) 2.dp else 0.dp,
+                color = when {
+                    // 渐变主题选中状态
+                    currentTheme.isGradient() && isSelected -> {
+                        AppThemes.getGradientConfig(currentTheme)?.colors?.first()?.copy(alpha = 0.15f)
+                            ?: MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f)
                     }
-                )
+                    // 普通主题选中状态
+                    isSelected -> MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f)
+                    // 未选中状态
+                    else -> Color.Transparent
+                }
             ) {
                 Box(
                     contentAlignment = Alignment.Center,
