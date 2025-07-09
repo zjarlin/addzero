@@ -24,13 +24,17 @@
 - **JDBC 元数据** (跨平台 Shared) - `com.addzero.kmp.jdbc.meta.jdbcMetadata`
 
 ### 🎨 **智能表单生成** - KSP 驱动的动态 UI
-- **✅ 基于 Jimmer 实体的动态表单生成** - 包含完整校验逻辑
+- **✅ 基于 Jimmer 实体的动态表单生成** - 包含完整校验逻辑和DSL自定义
 - **🔄 策略模式架构** - 可扩展的字段类型支持
 - **🎯 智能字段识别** - 根据字段名称和类型自动选择合适的输入组件
 - **📱 多样化输入组件** - 整数、小数、金额、百分比、日期、邮箱、手机号等
 - **💰 智能货币图标** - 根据货币类型自动显示对应图标（¥/$/€等）
 - **🔍 RegexEnum 验证** - 统一的正则表达式验证体系
 - **🏷️ @Label 注解支持** - 优先使用注解标签，回退到文档注释(即写代码注释编译时会当做表单label)
+- **🎨 DSL自定义渲染** - 通过DSL代码块自定义任意字段的渲染方式
+- **🔄 响应式状态管理** - 基于MutableState的自动UI更新
+- **📦 多列布局支持** - AddMultiColumnContainer自动布局
+- **🎭 条件渲染** - 支持基于业务逻辑的动态字段显示/隐藏
 
 ### 🎨 **ComposeAssist 响应式组件** - Vue风格的状态管理
 - **✅ 响应式State生成** - 基于`mutableStateOf`的自动重组机制
@@ -340,65 +344,313 @@ ksp {
 }
 ```
 
-#### 3️⃣ **自动生成的表单**
+#### 3️⃣ **自动生成的表单结构**
 ```kotlin
 // 自动生成的 UserProfileForm.kt
 @Composable
-fun UserProfileForm(state: MutableState<UserProfile>) {
-    Column {
-        AddTextField(
-            value = state.value.username ?: "",
-            label = "用户名",
-            isRequired = false
-        )
+fun UserProfileForm(
+    state: MutableState<UserProfileIso>,
+    visible: Boolean,
+    title: String,
+    onClose: () -> Unit,
+    onSubmit: () -> Unit,
+    confirmEnabled: Boolean = true,
+    dslConfig: UserProfileFormDsl.() -> Unit = {}  // DSL配置块
+) {
+    AddDrawer(
+        visible = visible,
+        title = title,
+        onClose = onClose,
+        onSubmit = onSubmit,
+        confirmEnabled = confirmEnabled
+    ) {
+        UserProfileFormOriginal(state, dslConfig)
+    }
+}
 
-        AddTextField(
-            value = state.value.email ?: "",
-            label = "邮箱",
-            regexEnum = RegexEnum.EMAIL
-        )
+@Composable
+fun UserProfileFormOriginal(
+    state: MutableState<UserProfileIso>,
+    dslConfig: UserProfileFormDsl.() -> Unit = {}
+) {
+    val renderMap = remember { mutableMapOf<String, @Composable () -> Unit>() }
+    UserProfileFormDsl(state, renderMap).apply(dslConfig)
 
-        AddTextField(
-            value = state.value.phone ?: "",
-            label = "手机号",
-            regexEnum = RegexEnum.PHONE
-        )
+    val defaultRenderMap = mutableMapOf<String, @Composable () -> Unit>(
+        UserProfileFormProps.username to {
+            AddTextField(
+                value = state.value.username ?: "",
+                onValueChange = { state.value = state.value.copy(username = it) },
+                label = "用户名",
+                isRequired = true,
+                regexEnum = RegexEnum.USERNAME
+            )
+        },
+        UserProfileFormProps.email to {
+            AddEmailField(
+                value = state.value.email ?: "",
+                onValueChange = { state.value = state.value.copy(email = it) },
+                label = "邮箱地址",
+                isRequired = true
+            )
+        },
+        UserProfileFormProps.phone to {
+            AddTextField(
+                value = state.value.phone ?: "",
+                onValueChange = { state.value = state.value.copy(phone = it) },
+                label = "手机号",
+                leadingIcon = Icons.Default.Phone,
+                regexEnum = RegexEnum.PHONE
+            )
+        },
+        UserProfileFormProps.accountBalance to {
+            AddMoneyField(
+                value = state.value.accountBalance?.toString() ?: "",
+                onValueChange = { state.value = state.value.copy(accountBalance = it.toBigDecimal()) },
+                label = "账户余额",
+                currency = "CNY"  // 自动显示 ¥ 图标
+            )
+        }
+    )
 
-        AddMoneyField(
-            value = state.value.accountBalance?.toString() ?: "",
-            label = "账户余额",
-            currency = "CNY"  // 自动显示 ¥ 图标
-        )
+    val finalItems = remember(renderMap) {
+        defaultRenderMap
+            .filterKeys { it !in renderMap }  // 未被DSL覆盖的字段
+            .plus(renderMap.filterValues { it != {} })  // 添加非隐藏的自定义字段
+    }.values.toList()
 
-        AddPercentageField(
-            value = state.value.vipDiscountRate?.toString() ?: "",
-            label = "VIP折扣率"
-        )
+    AddMultiColumnContainer(
+        howMuchColumn = 2,
+        items = finalItems
+    )
+}
 
-        Switch(
-            checked = state.value.isActive ?: false,
-            text = "是否激活"
-        )
+// DSL配置类
+class UserProfileFormDsl(
+    val state: MutableState<UserProfileIso>,
+    private val renderMap: MutableMap<String, @Composable () -> Unit>
+) {
+    fun username(
+        hidden: Boolean = false,
+        render: (@Composable (MutableState<UserProfileIso>) -> Unit)? = null
+    ) {
+        when {
+            hidden -> renderMap["username"] = {}
+            render != null -> renderMap["username"] = { render(state) }
+        }
+    }
+
+    fun email(
+        hidden: Boolean = false,
+        render: (@Composable (MutableState<UserProfileIso>) -> Unit)? = null
+    ) {
+        when {
+            hidden -> renderMap["email"] = {}
+            render != null -> renderMap["email"] = { render(state) }
+        }
+    }
+
+    // ... 其他字段的DSL方法
+
+    fun hide(vararg fields: String) {
+        fields.forEach { renderMap[it] = {} }
+    }
+}
+
+// 字段常量
+object UserProfileFormProps {
+    const val username = "username"
+    const val email = "email"
+    const val phone = "phone"
+    const val accountBalance = "accountBalance"
+}
+```
+
+#### 4️⃣ **DSL自定义字段渲染**
+
+**🎯 核心特性：通过DSL代码块自定义任意字段的渲染方式**
+
+```kotlin
+@Composable
+fun UserProfileScreen() {
+    val userState = rememberUserProfileFormState()
+    var showForm by remember { mutableStateOf(false) }
+
+    // 使用DSL自定义字段渲染
+    UserProfileForm(
+        state = userState,
+        visible = showForm,
+        title = "用户资料",
+        onClose = { showForm = false },
+        onSubmit = {
+            // 提交表单数据
+            submitUserProfile(userState.value)
+            showForm = false
+        }
+    ) {
+        // 🎨 自定义用户名字段 - 添加特殊样式
+        username { state ->
+            OutlinedTextField(
+                value = state.value.username ?: "",
+                onValueChange = { state.value = state.value.copy(username = it) },
+                label = { Text("🎯 自定义用户名") },
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = Color.Blue,
+                    focusedLabelColor = Color.Blue
+                ),
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+
+        // 💰 自定义账户余额字段 - 添加货币选择器
+        accountBalance { state ->
+            var selectedCurrency by remember { mutableStateOf("CNY") }
+
+            Column {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    DropdownMenu(
+                        currencies = listOf("CNY", "USD", "EUR"),
+                        selected = selectedCurrency,
+                        onSelectionChange = { selectedCurrency = it }
+                    )
+
+                    AddMoneyField(
+                        value = state.value.accountBalance?.toString() ?: "",
+                        onValueChange = {
+                            state.value = state.value.copy(
+                                accountBalance = it.toBigDecimalOrNull()
+                            )
+                        },
+                        label = "账户余额",
+                        currency = selectedCurrency,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+
+                Text(
+                    text = "当前汇率: ${getCurrencyRate(selectedCurrency)}",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = Color.Gray
+                )
+            }
+        }
+
+        // 📧 自定义邮箱字段 - 添加验证状态显示
+        email { state ->
+            var isValidating by remember { mutableStateOf(false) }
+            var validationResult by remember { mutableStateOf<String?>(null) }
+
+            Column {
+                AddEmailField(
+                    value = state.value.email ?: "",
+                    onValueChange = {
+                        state.value = state.value.copy(email = it)
+                        // 触发异步验证
+                        isValidating = true
+                        validateEmailAsync(it) { result ->
+                            validationResult = result
+                            isValidating = false
+                        }
+                    },
+                    label = "邮箱地址",
+                    showCheckEmail = true
+                )
+
+                // 验证状态指示器
+                when {
+                    isValidating -> {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            CircularProgressIndicator(modifier = Modifier.size(16.dp))
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text("验证中...", style = MaterialTheme.typography.bodySmall)
+                        }
+                    }
+                    validationResult != null -> {
+                        Text(
+                            text = validationResult!!,
+                            color = if (validationResult!!.contains("可用")) Color.Green else Color.Red,
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                    }
+                }
+            }
+        }
+
+        // 🙈 隐藏某些字段
+        hide("avatar", "createTime", "updateTime")
+
+        // 或者单独隐藏
+        phone(hidden = true)
     }
 }
 ```
 
-#### 4️⃣ **使用生成的表单**
+#### 5️⃣ **DSL高级用法**
+
 ```kotlin
-@Composable
-fun UserProfileScreen() {
-    val userState = remember { mutableStateOf(UserProfile()) }
-
-    UserProfileForm(state = userState)
-
-    Button(
-        onClick = {
-            // 提交表单数据
-            submitUserProfile(userState.value)
+// 🎯 条件渲染
+UserProfileForm(state = userState, ...) {
+    // 根据用户角色显示不同字段
+    if (currentUser.isAdmin) {
+        roles { state ->
+            AddMultiSelectField(
+                options = getAllRoles(),
+                selected = state.value.roles,
+                onSelectionChange = { state.value = state.value.copy(roles = it) },
+                label = "管理员角色"
+            )
         }
-    ) {
-        Text("保存")
+    } else {
+        roles(hidden = true)  // 普通用户隐藏角色字段
     }
+
+    // 根据VIP状态显示特殊字段
+    if (state.value.isVip) {
+        vipLevel { state ->
+            AddSliderField(
+                value = state.value.vipLevel?.toFloat() ?: 1f,
+                onValueChange = { state.value = state.value.copy(vipLevel = it.toInt()) },
+                label = "VIP等级",
+                valueRange = 1f..10f,
+                steps = 8
+            )
+        }
+    }
+}
+
+// 🎨 主题化字段
+UserProfileForm(state = userState, ...) {
+    // 应用统一的主题样式
+    val primaryColor = MaterialTheme.colorScheme.primary
+
+    username { state ->
+        ThemedTextField(
+            value = state.value.username ?: "",
+            onValueChange = { state.value = state.value.copy(username = it) },
+            label = "用户名",
+            themeColor = primaryColor
+        )
+    }
+
+    email { state ->
+        ThemedTextField(
+            value = state.value.email ?: "",
+            onValueChange = { state.value = state.value.copy(email = it) },
+            label = "邮箱",
+            themeColor = primaryColor
+        )
+    }
+}
+
+// 🔄 动态字段组合
+UserProfileForm(state = userState, ...) {
+    // 创建字段组
+    createFieldGroup("基本信息", listOf("username", "email", "phone"))
+    createFieldGroup("财务信息", listOf("accountBalance", "vipLevel"))
+    createFieldGroup("系统信息", listOf("roles", "depts"))
 }
 ```
 
@@ -406,7 +658,7 @@ fun UserProfileScreen() {
 
 ## 🎯 动态表单生成示例
 
-### 实体定义 → 表单组件的完美映射
+### 实体定义 → 智能表单 + DSL自定义的完美映射
 
 ```kotlin
 // 1. 定义 Jimmer 实体
@@ -434,52 +686,177 @@ interface User {
     val isActive: Boolean
 }
 
-// 2. KSP 自动生成表单代码
+// 2. KSP 自动生成智能表单 + DSL自定义支持
 @Composable
-fun UserForm(state: MutableState<User>) {
-    AddTextField(
-        value = state.value.username?.toString() ?: "",
-        onValueChange = { /* ... */ },
-        label = "用户名",
-        isRequired = false
+fun UserForm(
+    state: MutableState<UserIso>,
+    visible: Boolean,
+    title: String,
+    onClose: () -> Unit,
+    onSubmit: () -> Unit,
+    dslConfig: UserFormDsl.() -> Unit = {}  // 🎨 DSL自定义块
+) {
+    AddDrawer(
+        visible = visible,
+        title = title,
+        onClose = onClose,
+        onSubmit = onSubmit
+    ) {
+        UserFormOriginal(state, dslConfig)
+    }
+}
+
+@Composable
+fun UserFormOriginal(
+    state: MutableState<UserIso>,
+    dslConfig: UserFormDsl.() -> Unit = {}
+) {
+    // 🔄 DSL配置处理
+    val renderMap = remember { mutableMapOf<String, @Composable () -> Unit>() }
+    UserFormDsl(state, renderMap).apply(dslConfig)
+
+    // 🎯 默认智能字段渲染
+    val defaultRenderMap = mutableMapOf<String, @Composable () -> Unit>(
+        UserFormProps.username to {
+            AddTextField(
+                value = state.value.username ?: "",
+                onValueChange = { state.value = state.value.copy(username = it) },
+                label = "用户名",
+                isRequired = true,
+                regexEnum = RegexEnum.USERNAME,
+                leadingIcon = Icons.Default.PeopleAlt,
+                remoteValidationConfig = RemoteValidationConfig(
+                    tableName = "sys_user",
+                    column = "username"
+                )
+            )
+        },
+        UserFormProps.email to {
+            AddEmailField(
+                value = state.value.email ?: "",
+                onValueChange = { state.value = state.value.copy(email = it) },
+                label = "邮箱地址",
+                isRequired = true,
+                showCheckEmail = true
+            )
+        },
+        UserFormProps.phone to {
+            AddTextField(
+                value = state.value.phone ?: "",
+                onValueChange = { state.value = state.value.copy(phone = it) },
+                label = "手机号码",
+                leadingIcon = Icons.Default.Phone,
+                regexEnum = RegexEnum.PHONE
+            )
+        },
+        UserFormProps.balance to {
+            AddMoneyField(
+                value = state.value.balance?.toString() ?: "",
+                onValueChange = { state.value = state.value.copy(balance = it.toBigDecimal()) },
+                label = "账户余额",
+                currency = "CNY"  // 🪙 自动显示 ¥ 图标
+            )
+        },
+        UserFormProps.discountRate to {
+            AddPercentageField(
+                value = state.value.discountRate?.toString() ?: "",
+                onValueChange = { state.value = state.value.copy(discountRate = it.toDouble()) },
+                label = "折扣率"
+            )
+        },
+        UserFormProps.isActive to {
+            Switch(
+                checked = state.value.isActive ?: false,
+                onCheckedChange = { state.value = state.value.copy(isActive = it) },
+                text = "是否激活"
+            )
+        }
     )
 
-    AddTextField(
-        value = state.value.email?.toString() ?: "",
-        onValueChange = { /* ... */ },
-        label = "邮箱地址",
-        isRequired = false,
-        regexEnum = RegexEnum.EMAIL
-    )
+    // 🎭 合并默认渲染和DSL自定义渲染
+    val finalItems = remember(renderMap) {
+        defaultRenderMap
+            .filterKeys { it !in renderMap }  // 未被DSL覆盖的字段
+            .plus(renderMap.filterValues { it != {} })  // 添加非隐藏的自定义字段
+    }.values.toList()
 
-    AddTextField(
-        value = state.value.phone?.toString() ?: "",
-        onValueChange = { /* ... */ },
-        label = "手机号码",
-        isRequired = false,
-        regexEnum = RegexEnum.PHONE
+    // 📱 多列自适应布局
+    AddMultiColumnContainer(
+        howMuchColumn = 2,
+        items = finalItems
     )
+}
 
-    AddMoneyField(
-        value = state.value.balance?.toString() ?: "",
-        onValueChange = { /* ... */ },
-        label = "账户余额",
-        isRequired = false,
-        currency = "CNY"  // 自动显示 ¥ 图标
-    )
+// 3. 使用DSL自定义字段渲染
+@Composable
+fun UserManagementScreen() {
+    val userState = rememberUserFormState()
+    var showForm by remember { mutableStateOf(false) }
 
-    AddPercentageField(
-        value = state.value.discountRate?.toString() ?: "",
-        onValueChange = { /* ... */ },
-        label = "折扣率",
-        isRequired = false
-    )
+    UserForm(
+        state = userState,
+        visible = showForm,
+        title = "用户管理",
+        onClose = { showForm = false },
+        onSubmit = { submitUser(userState.value) }
+    ) {
+        // 🎨 自定义用户名字段 - 添加实时可用性检查
+        username { state ->
+            var isChecking by remember { mutableStateOf(false) }
+            var isAvailable by remember { mutableStateOf<Boolean?>(null) }
 
-    Switch(
-        checked = state.value.isActive ?: false,
-        onCheckedChange = { /* ... */ },
-        text = "是否激活"
-    )
+            Column {
+                AddTextField(
+                    value = state.value.username ?: "",
+                    onValueChange = {
+                        state.value = state.value.copy(username = it)
+                        isChecking = true
+                        checkUsernameAvailability(it) { available ->
+                            isAvailable = available
+                            isChecking = false
+                        }
+                    },
+                    label = "用户名",
+                    trailingIcon = {
+                        when {
+                            isChecking -> CircularProgressIndicator(modifier = Modifier.size(20.dp))
+                            isAvailable == true -> Icon(Icons.Default.CheckCircle, null, tint = Color.Green)
+                            isAvailable == false -> Icon(Icons.Default.Error, null, tint = Color.Red)
+                        }
+                    }
+                )
+
+                if (isAvailable == false) {
+                    Text("用户名已被占用", color = Color.Red, style = MaterialTheme.typography.bodySmall)
+                }
+            }
+        }
+
+        // 💰 自定义余额字段 - 添加货币转换
+        balance { state ->
+            var selectedCurrency by remember { mutableStateOf("CNY") }
+
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                DropdownMenu(
+                    currencies = listOf("CNY", "USD", "EUR"),
+                    selected = selectedCurrency,
+                    onSelectionChange = { selectedCurrency = it },
+                    modifier = Modifier.width(100.dp)
+                )
+
+                AddMoneyField(
+                    value = state.value.balance?.toString() ?: "",
+                    onValueChange = { state.value = state.value.copy(balance = it.toBigDecimal()) },
+                    label = "账户余额",
+                    currency = selectedCurrency,
+                    modifier = Modifier.weight(1f)
+                )
+            }
+        }
+
+        // 🙈 隐藏不需要的字段
+        hide("createTime", "updateTime")
+    }
 }
 ```
 
