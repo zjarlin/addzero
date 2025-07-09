@@ -3,56 +3,59 @@ package com.addzero.kmp.component.tree
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
 /**
  * 默认树节点渲染函数
- * 根据节点信息渲染树节点，包括展开/折叠图标、节点类型图标、标签文本以及可选的类型标签
+ * 参考 Android 官方文档样式，提供现代化的选中效果
  *
  * @param nodeInfo 节点信息，包含标签、层级、是否可展开、是否已选中等
  * @param showType 是否显示节点类型标签，默认为false
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun <T> DefaultNodeRender(
     nodeInfo: TreeNodeInfo<T>,
     showType: Boolean = false
 ) {
-    // 只在节点选中时设置背景颜色，其他情况下保持透明
-    val backgroundColor = when {
-        nodeInfo.isSelected -> MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f)
-        else -> Color.Transparent
-    }
-
     // 根据节点名称和是否有子节点推断节点类型
     val nodeName = nodeInfo.label
     val hasChildren = nodeInfo.hasChildren
     val nodeType = NodeType.guess(nodeName, hasChildren)
 
-    // 节点容器 - 只占用实际节点需要的空间，不扩散到整个宽度
-    Box(
+    // 外层容器，处理间距
+    // 使用 Surface 提供现代化的选中效果
+    Surface(
         modifier = Modifier
-            // 需要fillMaxWidth来确保显示全宽，但仅在节点内容区域添加背景色
             .fillMaxWidth()
-            .clickable { nodeInfo.onNodeClick(nodeInfo.node) }
-            .padding(vertical = 8.dp, horizontal = 12.dp)
+            .clip(RoundedCornerShape(8.dp))
+            .clickable { nodeInfo.onNodeClick(nodeInfo.node) },
+        shape = RoundedCornerShape(8.dp),
+        color = when {
+            // 选中状态 - 参考 Android 官方文档的荧光绿效果
+            nodeInfo.isSelected -> Color(0xFF4CAF50).copy(alpha = 0.15f) // 荧光绿背景
+            else -> Color.Transparent
+        },
+        tonalElevation = if (nodeInfo.isSelected) 1.dp else 0.dp,
+        shadowElevation = 0.dp,
+        onClick = { nodeInfo.onNodeClick(nodeInfo.node) }
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                // 背景色只应用于实际Row内容，不扩展到整个宽度
-                .background(backgroundColor)
-                .padding(4.dp)
+                .fillMaxWidth()
+                .padding(horizontal = 12.dp, vertical = 8.dp)
         ) {
             // 缩进空间
             if (nodeInfo.level > 0) {
@@ -67,9 +70,11 @@ fun <T> DefaultNodeRender(
                     else
                         Icons.AutoMirrored.Filled.KeyboardArrowRight,
                     contentDescription = if (nodeInfo.isExpanded) "折叠" else "展开",
-                    modifier = Modifier
-                        .size(20.dp)
-                        .clickable { nodeInfo.onNodeClick(nodeInfo.node) }
+                    modifier = Modifier.size(20.dp),
+                    tint = if (nodeInfo.isSelected)
+                        Color(0xFF2E7D32) // 深绿色，与荧光绿背景形成对比
+                    else
+                        MaterialTheme.colorScheme.onSurfaceVariant
                 )
             } else {
                 Spacer(modifier = Modifier.width(20.dp))
@@ -81,7 +86,13 @@ fun <T> DefaultNodeRender(
             Icon(
                 imageVector = nodeInfo.icon ?: nodeType.getIcon(nodeInfo.isExpanded),
                 contentDescription = null,
-                tint = nodeType.getColor(),
+                tint = if (nodeInfo.isSelected) {
+                    // 选中状态使用深绿色，与荧光绿背景形成对比
+                    Color(0xFF2E7D32)
+                } else {
+                    // 未选中状态使用节点类型的原始颜色
+                    nodeType.getColor()
+                },
                 modifier = Modifier.size(24.dp)
             )
 
@@ -91,11 +102,13 @@ fun <T> DefaultNodeRender(
             Text(
                 text = nodeInfo.label,
                 style = MaterialTheme.typography.bodyMedium,
-                fontWeight = if (nodeInfo.isSelected) FontWeight.Bold else FontWeight.Normal,
-                color = if (nodeInfo.isSelected)
-                    MaterialTheme.colorScheme.primary
-                else
+                fontWeight = if (nodeInfo.isSelected) FontWeight.SemiBold else FontWeight.Normal,
+                color = if (nodeInfo.isSelected) {
+                    // 选中状态使用深绿色文本，参考 Android 官方文档
+                    Color(0xFF1B5E20)
+                } else {
                     MaterialTheme.colorScheme.onSurface
+                }
             )
 
             // 可选：显示节点类型
@@ -104,7 +117,11 @@ fun <T> DefaultNodeRender(
                 Text(
                     text = nodeType.name,
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = if (nodeInfo.isSelected) {
+                        Color(0xFF2E7D32).copy(alpha = 0.8f)
+                    } else {
+                        MaterialTheme.colorScheme.onSurfaceVariant
+                    },
                     modifier = Modifier.padding(start = 8.dp)
                 )
             }
