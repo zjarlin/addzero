@@ -89,10 +89,10 @@ fun SideMenu() {
                         }
                         // 注意：折叠/展开状态由AddTree内部管理，这里不需要手动处理
                     },
-                    nodeRender = { nodeInfo ->
-                        // 自定义菜单项渲染
-                        customRender4SysMenu(nodeInfo)
-                    }
+//                    nodeRender = { nodeInfo ->
+//                        // 自定义菜单项渲染
+//                        customRender4SysMenu(nodeInfo)
+//                    }
                 )
             }
         }
@@ -168,22 +168,26 @@ private fun customRender4SysMenu(nodeInfo: TreeNodeInfo<SysMenuVO>) {
             val textColor = getMenuItemTextColor(currentTheme, isSelected)
             val iconColor = getMenuItemIconColor(currentTheme, isSelected)
 
-            MenuItemGradientBackground(
-                themeType = currentTheme,
-                isSelected = isSelected,
+            // 外层容器，处理缩进和间距
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(42.dp) // 增加高度，更舒适
                     .padding(
                         start = (nodeInfo.level * 16 + 6).dp, // 适中的缩进
                         end = 6.dp,
                         top = 2.dp,
                         bottom = 2.dp
                     )
-                    .clip(RoundedCornerShape(8.dp)) // 轻微圆角，更现代
-                    .clickable { nodeInfo.onNodeClick(node) }
-                    .padding(horizontal = 12.dp, vertical = 8.dp) // 增加内边距
             ) {
+                MenuItemGradientBackground(
+                    themeType = currentTheme,
+                    isSelected = isSelected,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(40.dp) // 参考 Android Developer 的高度
+                        .clickable { nodeInfo.onNodeClick(node) }
+                        .padding(horizontal = 12.dp, vertical = 8.dp) // 统一内边距
+                ) {
                 Row(
                     modifier = Modifier.fillMaxSize(),
                     verticalAlignment = Alignment.CenterVertically
@@ -223,20 +227,24 @@ private fun customRender4SysMenu(nodeInfo: TreeNodeInfo<SysMenuVO>) {
                 }
                 }
             }
+            }
         } else {
             // 收起状态 - 美化图标设计，支持渐变主题
             val isSelected = nodeInfo.isSelected || nodeInfo.id == currentRoute
             val iconColor = getMenuItemIconColor(currentTheme, isSelected)
 
-            MenuItemGradientBackground(
-                themeType = currentTheme,
-                isSelected = isSelected,
+            // 外层容器，处理间距
+            Box(
                 modifier = Modifier
-                    .padding(vertical = 3.dp, horizontal = 6.dp) // 适中的内边距
-                    .size(44.dp, 38.dp) // 增加尺寸，更舒适
-                    .clip(RoundedCornerShape(10.dp)) // 轻微圆角，更现代
-                    .clickable { nodeInfo.onNodeClick(node) }
+                    .padding(vertical = 3.dp, horizontal = 6.dp)
             ) {
+                MenuItemGradientBackground(
+                    themeType = currentTheme,
+                    isSelected = isSelected,
+                    modifier = Modifier
+                        .size(44.dp, 40.dp) // 统一尺寸，与展开状态高度一致
+                        .clickable { nodeInfo.onNodeClick(node) }
+                ) {
                 Box(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier.fillMaxSize()
@@ -248,6 +256,7 @@ private fun customRender4SysMenu(nodeInfo: TreeNodeInfo<SysMenuVO>) {
                         tint = iconColor
                     )
                 }
+            }
             }
         }
     }

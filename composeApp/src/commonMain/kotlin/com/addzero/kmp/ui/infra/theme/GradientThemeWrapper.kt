@@ -3,7 +3,10 @@ package com.addzero.kmp.ui.infra.theme
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -11,6 +14,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 
 /**
  * 渐变主题包装器
@@ -22,7 +26,7 @@ fun GradientThemeWrapper(
     content: @Composable () -> Unit
 ) {
     val gradientConfig = AppThemes.getGradientConfig(themeType)
-    
+
     if (gradientConfig != null && themeType.isGradient()) {
         // 渐变主题 - 应用渐变背景
         Box(
@@ -59,7 +63,7 @@ fun SidebarGradientBackground(
     content: @Composable () -> Unit
 ) {
     val gradientConfig = AppThemes.getGradientConfig(themeType)
-    
+
     if (gradientConfig != null && themeType.isGradient()) {
         // 渐变主题 - 应用侧边栏渐变
         Box(
@@ -86,9 +90,10 @@ fun SidebarGradientBackground(
 }
 
 /**
- * 菜单项渐变背景
- * 为选中的菜单项提供渐变效果
+ * 菜单项背景
+ * 参考 Android Developer 网站的侧边栏样式，提供现代化的选中效果
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MenuItemGradientBackground(
     themeType: AppThemeType,
@@ -97,43 +102,47 @@ fun MenuItemGradientBackground(
     content: @Composable () -> Unit
 ) {
     val gradientConfig = AppThemes.getGradientConfig(themeType)
-    
-    val backgroundModifier = if (gradientConfig != null && themeType.isGradient() && isSelected) {
-        // 渐变主题且选中状态 - 应用渐变背景
-        modifier.background(
-            brush = Brush.horizontalGradient(
-                colors = listOf(
-                    gradientConfig.colors.first().copy(alpha = 0.4f),
-                    gradientConfig.colors[1].copy(alpha = 0.25f),
-                    gradientConfig.colors.getOrNull(2)?.copy(alpha = 0.1f) ?: Color.Transparent
-                )
-            )
-        )
-    } else if (gradientConfig != null && themeType.isGradient()) {
-        // 渐变主题未选中状态 - 轻微渐变
-        modifier.background(
-            brush = Brush.horizontalGradient(
-                colors = listOf(
-                    gradientConfig.colors.first().copy(alpha = 0.08f),
-                    Color.Transparent,
-                    Color.Transparent
-                )
-            )
-        )
-    } else if (isSelected) {
-        // 普通主题选中状态 - 使用主色调
-        modifier.background(
-            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.12f)
-        )
-    } else {
-        // 普通主题未选中状态 - 透明背景
-        modifier.background(
-            color = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.3f)
-        )
-    }
-    
-    Box(modifier = backgroundModifier) {
-        content()
+
+    // 使用 Surface 提供统一的悬浮和选中效果
+    Surface(
+        modifier = modifier,
+        shape = RoundedCornerShape(8.dp),
+        color = when {
+            // 渐变主题选中状态 - 使用渐变主色
+            gradientConfig != null && themeType.isGradient() && isSelected -> {
+                gradientConfig.colors.first().copy(alpha = 0.15f)
+            }
+            // 普通主题选中状态 - 参考 Android Developer 的浅蓝色背景
+            isSelected -> {
+                MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f)
+            }
+            // 未选中状态 - 完全透明
+            else -> Color.Transparent
+        },
+        tonalElevation = 0.dp, // 移除高度，保持平面设计
+        shadowElevation = 0.dp, // 移除阴影
+        onClick = { /* 点击由外层处理 */ }
+    ) {
+        // 渐变主题选中状态的额外渐变层
+        if (gradientConfig != null && themeType.isGradient() && isSelected) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        brush = Brush.horizontalGradient(
+                            colors = listOf(
+                                gradientConfig.colors.first().copy(alpha = 0.2f),
+                                gradientConfig.colors[1].copy(alpha = 0.12f),
+                                gradientConfig.colors.getOrNull(2)?.copy(alpha = 0.06f) ?: Color.Transparent
+                            )
+                        )
+                    )
+            ) {
+                content()
+            }
+        } else {
+            content()
+        }
     }
 }
 
@@ -177,39 +186,41 @@ fun GradientText(
 
 /**
  * 获取菜单项文本颜色
+ * 参考 Android Developer 网站样式，选中状态使用深色文本
  */
 @Composable
 fun getMenuItemTextColor(themeType: AppThemeType, isSelected: Boolean): Color {
     val gradientConfig = AppThemes.getGradientConfig(themeType)
 
     return if (gradientConfig != null && themeType.isGradient() && isSelected) {
-        // 渐变主题选中状态 - 使用渐变色
-        gradientConfig.colors.first()
+        // 渐变主题选中状态 - 使用渐变色的深色版本
+        gradientConfig.colors.first().copy(alpha = 0.9f)
     } else if (isSelected) {
-        // 普通主题选中状态 - 使用主色调
-        MaterialTheme.colorScheme.primary
+        // 普通主题选中状态 - 参考 Android Developer 使用深色文本
+        MaterialTheme.colorScheme.onPrimaryContainer
     } else {
         // 未选中状态 - 使用默认文本色
-        MaterialTheme.colorScheme.onSurface.copy(alpha = 0.9f)
+        MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
     }
 }
 
 /**
  * 获取菜单项图标颜色
+ * 参考 Android Developer 网站样式，选中状态使用深色图标
  */
 @Composable
 fun getMenuItemIconColor(themeType: AppThemeType, isSelected: Boolean): Color {
     val gradientConfig = AppThemes.getGradientConfig(themeType)
-    
+
     return if (gradientConfig != null && themeType.isGradient() && isSelected) {
-        // 渐变主题选中状态 - 使用渐变色
-        gradientConfig.colors.first()
+        // 渐变主题选中状态 - 使用渐变色的深色版本
+        gradientConfig.colors.first().copy(alpha = 0.9f)
     } else if (isSelected) {
-        // 普通主题选中状态 - 使用主色调
-        MaterialTheme.colorScheme.primary
+        // 普通主题选中状态 - 参考 Android Developer 使用深色图标
+        MaterialTheme.colorScheme.onPrimaryContainer
     } else {
         // 未选中状态 - 使用默认图标色
-        MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
+        MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
     }
 }
 
