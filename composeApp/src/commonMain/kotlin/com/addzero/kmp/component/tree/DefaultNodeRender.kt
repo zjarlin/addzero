@@ -34,23 +34,27 @@ fun <T> DefaultNodeRender(
     val hasChildren = nodeInfo.hasChildren
     val nodeType = NodeType.guess(nodeName, hasChildren)
 
-    // 外层容器，处理间距
-    // 使用 Surface 提供现代化的选中效果
-    Surface(
+    // 外层容器，处理间距和背景
+    Box(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(8.dp))
-            .clickable { nodeInfo.onNodeClick(nodeInfo.node) },
-        shape = RoundedCornerShape(8.dp),
-        color = when {
-            // 选中状态 - 参考 Android 官方文档的荧光绿效果
-            nodeInfo.isSelected -> Color(0xFF4CAF50).copy(alpha = 0.15f) // 荧光绿背景
-            else -> Color.Transparent
-        },
-        tonalElevation = if (nodeInfo.isSelected) 1.dp else 0.dp,
-        shadowElevation = 0.dp,
-        onClick = { nodeInfo.onNodeClick(nodeInfo.node) }
+            .padding(vertical = 2.dp, horizontal = 8.dp)
     ) {
+        // 使用 Box + background 避免 Surface 的悬浮效果冲突
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(8.dp))
+                .background(
+                    color = when {
+                        // 选中状态 - 参考 Android 官方文档的荧光绿效果
+                        nodeInfo.isSelected -> Color(0xFF4CAF50).copy(alpha = 0.15f) // 荧光绿背景
+                        else -> Color.Transparent
+                    },
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .clickable { nodeInfo.onNodeClick(nodeInfo.node) }
+        ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
@@ -125,6 +129,7 @@ fun <T> DefaultNodeRender(
                     modifier = Modifier.padding(start = 8.dp)
                 )
             }
+        }
         }
     }
 }
