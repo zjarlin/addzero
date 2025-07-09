@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import com.addzero.kmp.ui.infra.Colors
 
 /**
  * 渐变背景配置
@@ -94,144 +95,144 @@ object AppThemes {
 
     // 蓝色主题
     private val LightBlueScheme = lightColorScheme(
-        primary = Color(0xFF0D65C2),         // 更深的蓝色
-        primaryContainer = Color(0xFFADD8F7), // 浅蓝色容器
-        secondary = Color(0xFF0A4B9A),        // 更深的次要色
-        secondaryContainer = Color(0xFFBBD6F2), // 次要容器色
-        surface = Color(0xFFE9F5FF),         // 浅蓝色表面
-        background = Color(0xFFF5FAFF),      // 更浅的蓝色背景
+        primary = Colors.DeepBlue,
+        primaryContainer = Colors.LightBlueContainer,
+        secondary = Colors.DarkSecondaryBlue,
+        secondaryContainer = Colors.SecondaryBlueContainer,
+        surface = Colors.LightBlueSurface,
+        background = Colors.VeryLightBlueBackground,
         onPrimary = Color.White,
         onSecondary = Color.White
     )
 
     private val DarkBlueScheme = darkColorScheme(
-        primary = Color(0xFF90CAF9),
-        primaryContainer = Color(0xFF1565C0),
-        secondary = Color(0xFF64B5F6),
-        secondaryContainer = Color(0xFF0D47A1),
-        onPrimary = Color.Black,
-        onSecondary = Color.Black
+        primary = Colors.DarkBluePrimary,
+        primaryContainer = Colors.DarkBluePrimaryContainer,
+        secondary = Colors.DarkBlueSecondary,
+        secondaryContainer = Colors.DarkBlueSecondaryContainer,
+        onPrimary = Colors.Black,
+        onSecondary = Colors.Black
     )
 
     // 绿色主题
     private val LightGreenScheme = lightColorScheme(
-        primary = Color(0xFF43A047),
-        primaryContainer = Color(0xFFC8E6C9),
-        secondary = Color(0xFF2E7D32),
-        secondaryContainer = Color(0xFFCEEBD0),
+        primary = Colors.GreenPrimary,
+        primaryContainer = Colors.GreenContainer,
+        secondary = Colors.DarkGreenSecondary,
+        secondaryContainer = Colors.GreenSecondaryContainer,
         onPrimary = Color.White,
         onSecondary = Color.White
     )
 
     private val DarkGreenScheme = darkColorScheme(
-        primary = Color(0xFF81C784),
-        primaryContainer = Color(0xFF2E7D32),
-        secondary = Color(0xFFA5D6A7),
-        secondaryContainer = Color(0xFF1B5E20),
-        onPrimary = Color.Black,
-        onSecondary = Color.Black
+        primary = Colors.DarkGreenPrimary,
+        primaryContainer = Colors.DarkGreenPrimaryContainer,
+        secondary = Colors.DarkGreenSecondaryColor,
+        secondaryContainer = Colors.DarkGreenSecondaryContainer,
+        onPrimary = Colors.Black,
+        onSecondary = Colors.Black
     )
 
     // 紫色主题
     private val LightPurpleScheme = lightColorScheme(
-        primary = Color(0xFF7B1FA2),
-        primaryContainer = Color(0xFFE1BEE7),
-        secondary = Color(0xFF6A1B9A),
-        secondaryContainer = Color(0xFFE9CAF0),
+        primary = Colors.PurplePrimary,
+        primaryContainer = Colors.PurpleContainer,
+        secondary = Colors.DarkPurpleSecondary,
+        secondaryContainer = Colors.PurpleSecondaryContainer,
         onPrimary = Color.White,
         onSecondary = Color.White
     )
 
     private val DarkPurpleScheme = darkColorScheme(
-        primary = Color(0xFFCE93D8),
-        primaryContainer = Color(0xFF6A1B9A),
-        secondary = Color(0xFFBA68C8),
-        secondaryContainer = Color(0xFF4A148C),
-        onPrimary = Color.Black,
-        onSecondary = Color.Black
+        primary = Colors.DarkPurplePrimary,
+        primaryContainer = Colors.DarkPurplePrimaryContainer,
+        secondary = Colors.DarkPurpleSecondaryColor,
+        secondaryContainer = Colors.DarkPurpleSecondaryContainer,
+        onPrimary = Colors.Black,
+        onSecondary = Colors.Black
     )
 
     // 炫彩渐变主题
     private val GradientRainbowScheme = lightColorScheme(
-        primary = Color(0xFFFF6B9D),
-        primaryContainer = Color(0xFFFFF0F5),
-        secondary = Color(0xFF9B59B6),
-        secondaryContainer = Color(0xFFF3E5F5),
-        surface = Color(0xFFFFFBFE),
-        surfaceContainer = Color(0xFFF7F2FA),
-        background = Color(0xFFFFFBFE),
+        primary = Colors.RainbowPink,
+        primaryContainer = Colors.RainbowContainer,
+        secondary = Colors.RainbowPurple,
+        secondaryContainer = Colors.GradientSurfaceContainer,
+        surface = Colors.GradientSurface,
+        surfaceContainer = Colors.GradientSurfaceContainer,
+        background = Colors.GradientBackground,
         onPrimary = Color.White,
         onSecondary = Color.White,
-        onSurface = Color(0xFF1C1B1F),
-        onBackground = Color(0xFF1C1B1F)
+        onSurface = Colors.GradientOnSurface,
+        onBackground = Colors.GradientOnBackground
     )
 
     private val GradientSunsetScheme = lightColorScheme(
-        primary = Color(0xFFFF6B35),
-        primaryContainer = Color(0xFFFFF4F0),
-        secondary = Color(0xFFFF8C42),
-        secondaryContainer = Color(0xFFFFF7F3),
-        surface = Color(0xFFFFFBFE),
-        surfaceContainer = Color(0xFFFAF5F2),
-        background = Color(0xFFFFFBFE),
+        primary = Colors.SunsetOrangeRed,
+        primaryContainer = Colors.SunsetContainer,
+        secondary = Colors.SunsetOrange,
+        secondaryContainer = Colors.GradientSurfaceContainer,
+        surface = Colors.GradientSurface,
+        surfaceContainer = Colors.GradientSurfaceContainer,
+        background = Colors.GradientBackground,
         onPrimary = Color.White,
         onSecondary = Color.White,
-        onSurface = Color(0xFF1C1B1F),
-        onBackground = Color(0xFF1C1B1F)
+        onSurface = Colors.GradientOnSurface,
+        onBackground = Colors.GradientOnBackground
     )
 
     private val GradientOceanScheme = lightColorScheme(
-        primary = Color(0xFF0077BE),
-        primaryContainer = Color(0xFFE6F3FF),
-        secondary = Color(0xFF00A8CC),
-        secondaryContainer = Color(0xFFE0F7FA),
-        surface = Color(0xFFFFFBFE),
-        surfaceContainer = Color(0xFFE8F4F8),
-        background = Color(0xFFFFFBFE),
+        primary = Colors.OceanDeepBlue,
+        primaryContainer = Colors.OceanContainer,
+        secondary = Colors.OceanCyan,
+        secondaryContainer = Colors.GradientSurfaceContainer,
+        surface = Colors.GradientSurface,
+        surfaceContainer = Colors.GradientSurfaceContainer,
+        background = Colors.GradientBackground,
         onPrimary = Color.White,
         onSecondary = Color.White,
-        onSurface = Color(0xFF1C1B1F),
-        onBackground = Color(0xFF1C1B1F)
+        onSurface = Colors.GradientOnSurface,
+        onBackground = Colors.GradientOnBackground
     )
 
     private val GradientForestScheme = lightColorScheme(
-        primary = Color(0xFF2E7D32),
-        primaryContainer = Color(0xFFE8F5E8),
-        secondary = Color(0xFF4CAF50),
-        secondaryContainer = Color(0xFFE8F5E8),
-        surface = Color(0xFFFFFBFE),
-        surfaceContainer = Color(0xFFE8F5E8),
-        background = Color(0xFFFFFBFE),
+        primary = Colors.ForestDarkGreen,
+        primaryContainer = Colors.ForestContainer,
+        secondary = Colors.ForestGreen,
+        secondaryContainer = Colors.ForestContainer,
+        surface = Colors.GradientSurface,
+        surfaceContainer = Colors.ForestContainer,
+        background = Colors.GradientBackground,
         onPrimary = Color.White,
         onSecondary = Color.White,
-        onSurface = Color(0xFF1C1B1F),
-        onBackground = Color(0xFF1C1B1F)
+        onSurface = Colors.GradientOnSurface,
+        onBackground = Colors.GradientOnBackground
     )
 
     private val GradientAuroraScheme = lightColorScheme(
-        primary = Color(0xFF7C4DFF),
-        primaryContainer = Color(0xFFF3E5F5),
-        secondary = Color(0xFF00E676),
-        secondaryContainer = Color(0xFFE8F5E8),
-        surface = Color(0xFFFFFBFE),
-        surfaceContainer = Color(0xFFF0F4FF),
-        background = Color(0xFFFFFBFE),
+        primary = Colors.AuroraPurple,
+        primaryContainer = Colors.AuroraContainer,
+        secondary = Colors.AuroraGreen,
+        secondaryContainer = Colors.ForestContainer,
+        surface = Colors.GradientSurface,
+        surfaceContainer = Colors.GradientSurfaceContainer,
+        background = Colors.GradientBackground,
         onPrimary = Color.White,
-        onSecondary = Color.Black,
-        onSurface = Color(0xFF1C1B1F),
-        onBackground = Color(0xFF1C1B1F)
+        onSecondary = Colors.Black,
+        onSurface = Colors.GradientOnSurface,
+        onBackground = Colors.GradientOnBackground
     )
 
     private val GradientNeonScheme = lightColorScheme(
-        primary = Color(0xFFFF1744),
-        primaryContainer = Color(0xFFFFF0F3),
-        secondary = Color(0xFF00E5FF),
-        secondaryContainer = Color(0xFFE0F7FA),
-        surface = Color(0xFF121212),
-        surfaceContainer = Color(0xFF1E1E1E),
-        background = Color(0xFF121212),
+        primary = Colors.NeonRed,
+        primaryContainer = Colors.NeonContainer,
+        secondary = Colors.NeonCyan,
+        secondaryContainer = Colors.GradientSurfaceContainer,
+        surface = Colors.NeonSurface,
+        surfaceContainer = Colors.NeonSurfaceContainer,
+        background = Colors.NeonBackground,
         onPrimary = Color.White,
-        onSecondary = Color.Black,
+        onSecondary = Colors.Black,
         onSurface = Color.White,
         onBackground = Color.White
     )
@@ -265,52 +266,52 @@ object AppThemes {
         return when (themeType) {
             AppThemeType.GRADIENT_RAINBOW -> GradientConfig(
                 colors = listOf(
-                    Color(0xFFFF6B9D), // 粉色
-                    Color(0xFF9B59B6), // 紫色
-                    Color(0xFF3498DB), // 蓝色
-                    Color(0xFF2ECC71), // 绿色
-                    Color(0xFFF39C12), // 橙色
-                    Color(0xFFE74C3C)  // 红色
+                    Colors.RainbowPink,
+                    Colors.RainbowPurple,
+                    Colors.RainbowBlue,
+                    Colors.RainbowGreen,
+                    Colors.RainbowOrange,
+                    Colors.RainbowRed
                 )
             )
             AppThemeType.GRADIENT_SUNSET -> GradientConfig(
                 colors = listOf(
-                    Color(0xFFFF6B35), // 橙红
-                    Color(0xFFFF8C42), // 橙色
-                    Color(0xFFFFA726), // 浅橙
-                    Color(0xFFFFD54F)  // 黄色
+                    Colors.SunsetOrangeRed,
+                    Colors.SunsetOrange,
+                    Colors.SunsetLightOrange,
+                    Colors.SunsetYellow
                 )
             )
             AppThemeType.GRADIENT_OCEAN -> GradientConfig(
                 colors = listOf(
-                    Color(0xFF0077BE), // 深蓝
-                    Color(0xFF00A8CC), // 青色
-                    Color(0xFF26C6DA), // 浅青
-                    Color(0xFF80DEEA)  // 极浅青
+                    Colors.OceanDeepBlue,
+                    Colors.OceanCyan,
+                    Colors.OceanLightCyan,
+                    Colors.OceanVeryLightCyan
                 )
             )
             AppThemeType.GRADIENT_FOREST -> GradientConfig(
                 colors = listOf(
-                    Color(0xFF2E7D32), // 深绿
-                    Color(0xFF4CAF50), // 绿色
-                    Color(0xFF66BB6A), // 浅绿
-                    Color(0xFF81C784)  // 极浅绿
+                    Colors.ForestDarkGreen,
+                    Colors.ForestGreen,
+                    Colors.ForestLightGreen,
+                    Colors.ForestVeryLightGreen
                 )
             )
             AppThemeType.GRADIENT_AURORA -> GradientConfig(
                 colors = listOf(
-                    Color(0xFF7C4DFF), // 紫色
-                    Color(0xFF00E676), // 绿色
-                    Color(0xFF00BCD4), // 青色
-                    Color(0xFFE91E63)  // 粉色
+                    Colors.AuroraPurple,
+                    Colors.AuroraGreen,
+                    Colors.AuroraCyan,
+                    Colors.AuroraPink
                 )
             )
             AppThemeType.GRADIENT_NEON -> GradientConfig(
                 colors = listOf(
-                    Color(0xFFFF1744), // 霓虹红
-                    Color(0xFFFF6EC7), // 霓虹粉
-                    Color(0xFF00E5FF), // 霓虹青
-                    Color(0xFF76FF03)  // 霓虹绿
+                    Colors.NeonRed,
+                    Colors.NeonPink,
+                    Colors.NeonCyan,
+                    Colors.NeonGreen
                 )
             )
             else -> null

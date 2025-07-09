@@ -2,17 +2,13 @@ package com.addzero.kmp.demo
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.addzero.kmp.annotation.Route
-
 import com.mohamedrejeb.compose.dnd.DragAndDropContainer
 import com.mohamedrejeb.compose.dnd.drag.DraggableItem
 import com.mohamedrejeb.compose.dnd.drop.dropTarget
@@ -79,11 +75,18 @@ fun DragListDemo() {
                         ),
                         elevation = CardDefaults.cardElevation(4.dp)
                     ) {
-                        Box(
-                            contentAlignment = Alignment.Center,
-                            modifier = Modifier.fillMaxSize()
+                        Surface(
+                            //
+                            modifier = Modifier.fillMaxSize(),
+                            color = MaterialTheme.colorScheme.surface,
+                            contentColor = MaterialTheme.colorScheme.onSurface
                         ) {
-                            Text(text = item.label, style = MaterialTheme.typography.titleMedium)
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(text = item.label, style = MaterialTheme.typography.titleMedium)
+                            }
                         }
                     }
                 }
