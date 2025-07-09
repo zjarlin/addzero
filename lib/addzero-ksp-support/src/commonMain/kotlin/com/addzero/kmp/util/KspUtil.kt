@@ -291,3 +291,208 @@ fun guessTableName(ktClass: KSClassDeclaration): String {
 fun KSPropertyDeclaration.hasAnno(string: String): Boolean {
     return this.getAnno(string) != null
 }
+
+/**
+ * 获取完整的类型字符串表达，包括泛型、注解、函数类型等
+ * 用于 @ComposeAssist 等需要精确类型信息的场景
+ */
+fun KSType.getCompleteTypeString(): String {
+    return buildString {
+        // 处理函数类型的注解（如 @Composable）
+        val annotations = this@getCompleteTypeString.annotations.toList()
+        if (annotations.isNotEmpty()) {
+            val annotationStrings = annotations.map { annotation ->
+                val shortName = annotation.shortName.asString()
+                val args = annotation.arguments
+                if (args.isNotEmpty()) {
+                    val argString = args.joinToString(", ") { arg ->
+                        "${arg.name?.asString() ?: ""}=${arg.value}"
+                    }
+                    "[$shortName($argString)]"
+                } else {
+                    "[$shortName]"
+                }
+            }
+            append(annotationStrings.joinToString(" "))
+            append(" ")
+        }
+
+        // 获取基础类型名称
+        val declaration = this@getCompleteTypeString.declaration
+        val baseTypeName = declaration.qualifiedName?.asString() ?: declaration.simpleName.asString()
+
+        // 处理函数类型
+        if (baseTypeName.startsWith("kotlin.Function")) {
+            append(buildFunctionTypeString())
+        } else {
+            append(baseTypeName)
+
+            // 处理泛型参数
+            val typeArguments = this@getCompleteTypeString.arguments
+            if (typeArguments.isNotEmpty()) {
+                append("<")
+                append(typeArguments.joinToString(", ") { arg ->
+                    when (arg.variance) {
+                        Variance.STAR -> "*"
+                        Variance.CONTRAVARIANT -> "in ${arg.type?.resolve()?.getCompleteTypeString() ?: "*"}"
+                        Variance.COVARIANT -> "out ${arg.type?.resolve()?.getCompleteTypeString() ?: "*"}"
+                        else -> arg.type?.resolve()?.getCompleteTypeString() ?: "*"
+                    }
+                })
+                append(">")
+            }
+        }
+
+        // 处理可空性
+        if (this@getCompleteTypeString.isMarkedNullable) {
+            append("?")
+        }
+    }
+}
+
+/**
+ * 构建函数类型字符串，如 (T) -> R, @Composable (T) -> Unit 等
+ */
+private fun KSType.buildFunctionTypeString(): String {
+    val declaration = this.declaration
+    val baseTypeName = declaration.qualifiedName?.asString() ?: declaration.simpleName.asString()
+
+    // 解析函数类型的参数数量
+    val functionNumber = when {
+        baseTypeName == "kotlin.Function0" -> 0
+        baseTypeName.startsWith("kotlin.Function") -> {
+            baseTypeName.removePrefix("kotlin.Function").toIntOrNull() ?: 0
+        }
+        else -> 0
+    }
+
+    val typeArguments = this.arguments
+
+    return buildString {
+        // 函数参数类型
+        if (functionNumber > 0 && typeArguments.size > functionNumber) {
+            append("(")
+            val paramTypes = typeArguments.take(functionNumber).map { arg ->
+                arg.type?.resolve()?.getCompleteTypeString() ?: "*"
+            }
+            append(paramTypes.joinToString(", "))
+            append(")")
+        } else if (functionNumber == 0) {
+            append("()")
+        }
+
+        append(" -> ")
+
+        // 返回类型
+        val returnType = typeArguments.lastOrNull()?.type?.resolve()?.getCompleteTypeString() ?: "Unit"
+        append(returnType)
+    }
+}
+
+/**
+ * 获取参数的完整类型字符串，包括参数注解
+ */
+fun KSValueParameter.getCompleteTypeString(): String {
+    return buildString {
+        // 处理参数注解
+        val annotations = this@getCompleteTypeString.annotations.toList()
+        if (annotations.isNotEmpty()) {
+            val annotationStrings = annotations.map { annotation ->
+                val shortName = annotation.shortName.asString()
+                val args = annotation.arguments
+                if (args.isNotEmpty()) {
+                    val argString = args.joinToString(", ") { arg ->
+                        val name = arg.name?.asString()
+                        val value = arg.value
+                        if (name != null) "$name=$value" else value.toString()
+                    }
+                    "@$shortName($argString)"
+                } else {
+                    "@$shortName"
+                }
+            }
+            append(annotationStrings.joinToString(" "))
+            append(" ")
+        }
+
+        // 获取类型字符串
+        append(this@getCompleteTypeString.type.resolve().getCompleteTypeString())
+    }
+}
+
+/**
+ * 获取简化的类型字符串，移除包名但保留泛型和注解
+ */
+fun KSType.getSimplifiedTypeString(): String {
+    return this.getCompleteTypeString()
+        .replace("kotlin.collections.", "")
+        .replace("kotlin.", "")
+        .replace("androidx.compose.runtime.", "")
+        .replace("androidx.compose.ui.", "")
+        .replace("androidx.compose.foundation.", "")
+        .replace("androidx.compose.material3.", "")
+}
+
+/**
+ * 获取函数的完整签名字符串，包括泛型参数、参数注解等
+ */
+fun KSFunctionDeclaration.getCompleteSignature(): String {
+    return buildString {
+        // 函数注解
+        val annotations = this@getCompleteSignature.annotations.toList()
+        if (annotations.isNotEmpty()) {
+            annotations.forEach { annotation ->
+                append("@${annotation.shortName.asString()}")
+                if (annotation.arguments.isNotEmpty()) {
+                    append("(")
+                    append(annotation.arguments.joinToString(", ") { arg ->
+                        "${arg.name?.asString() ?: ""}=${arg.value}"
+                    })
+                    append(")")
+                }
+                append("\n")
+            }
+        }
+
+        append("fun ")
+
+        // 泛型参数
+        val typeParameters = this@getCompleteSignature.typeParameters
+        if (typeParameters.isNotEmpty()) {
+            append("<")
+            append(typeParameters.joinToString(", ") { typeParam ->
+                val name = typeParam.name.asString()
+                val bounds = typeParam.bounds.toList()
+                if (bounds.isNotEmpty()) {
+                    val boundsString = bounds.joinToString(" & ") { bound ->
+                        bound.resolve().getCompleteTypeString()
+                    }
+                    "$name : $boundsString"
+                } else {
+                    name
+                }
+            })
+            append("> ")
+        }
+
+        append(this@getCompleteSignature.simpleName.asString())
+        append("(")
+
+        // 参数列表
+        val parameters = this@getCompleteSignature.parameters
+        append(parameters.joinToString(",\n    ") { param ->
+            val paramName = param.name?.asString() ?: ""
+            val paramType = param.getCompleteTypeString()
+            val defaultValue = if (param.hasDefault) " = ..." else ""
+            "$paramName: $paramType$defaultValue"
+        })
+
+        append(")")
+
+        // 返回类型
+        val returnType = this@getCompleteSignature.returnType?.resolve()
+        if (returnType != null && returnType.declaration.simpleName.asString() != "Unit") {
+            append(": ${returnType.getCompleteTypeString()}")
+        }
+    }
+}

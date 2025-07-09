@@ -325,7 +325,8 @@ numberState.value = 100      // 自动重组！
 @Entity
 interface UserProfile {
     @Id val id: Long
-    @Label("用户名") val username: String
+    /** 用户名 */     //📢这里不加注解默认取doc注释(懒省事就完了
+    val username: String
     @Label("邮箱") val email: String
     @Label("手机号") val phone: String
     @Label("账户余额") val accountBalance: BigDecimal

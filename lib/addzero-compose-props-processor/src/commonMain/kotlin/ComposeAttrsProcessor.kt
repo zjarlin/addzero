@@ -3,6 +3,8 @@ package com.addzero.kmp.processor
 import com.google.devtools.ksp.processing.*
 import com.google.devtools.ksp.symbol.*
 import com.google.devtools.ksp.validate
+import com.addzero.kmp.util.getCompleteTypeString
+import com.addzero.kmp.util.getSimplifiedTypeString
 
 private const val propsXd = "var"
 
@@ -282,17 +284,21 @@ class ComposeAttrsProcessor(
             } else {
                 val resolvedType = param.type.resolve()
 
-                // 检查原始类型字符串的可空性，而不是依赖KSP的isMarkedNullable
+                // 使用新的完整类型字符串方法
                 val originalTypeString = param.type.toString()
+                val completeTypeString = resolvedType.getCompleteTypeString()
+                val simplifiedTypeString = resolvedType.getSimplifiedTypeString()
                 val isActuallyNullable = originalTypeString.endsWith("?")
 
-                logger.warn("参数 $paramName: 原始类型=$originalTypeString, 解析类型=${resolvedType.getQualifiedTypeString()}, 可空=$isActuallyNullable")
+                logger.warn("参数 $paramName: 原始类型=$originalTypeString, 完整类型=$completeTypeString, 简化类型=$simplifiedTypeString, 可空=$isActuallyNullable")
 
                 ParameterInfo(
                     name = paramName,
                     type = resolvedType,
                     hasDefaultValue = param.hasDefault,
-                    isNullable = isActuallyNullable
+                    isNullable = isActuallyNullable,
+                    completeTypeString = completeTypeString,
+                    simplifiedTypeString = simplifiedTypeString
                 )
             }
         }
@@ -357,8 +363,23 @@ $widgetFunctionCode
                 getActualDefaultValue(param)
             } else ""
 
-            val baseTypeString = simplifyTypeString(param.type.getQualifiedTypeString(), genericParamNames)
-            val cleanTypeString = baseTypeString.removeSuffix("?")
+            // 使用完整的类型字符串，直接使用完整类型信息
+            val typeString = if (param.completeTypeString.isNotEmpty()) {
+                // 使用完整类型字符串，只移除泛型限定符
+                var result = param.completeTypeString
+                genericParamNames.forEach { paramName ->
+                    result = result.replace(Regex("""[\w.]+\.$paramName\b"""), paramName)
+                }
+                // 处理 @Composable 注解格式
+                result = result.replace("[Composable]", "@Composable")
+                // 移除参数注解
+                result = result.replace(Regex("""\[ParameterName\([^)]+\)\]\s*"""), "")
+                result
+            } else {
+                simplifyTypeString(param.type.getQualifiedTypeString(), genericParamNames)
+            }
+
+            val cleanTypeString = typeString.removeSuffix("?")
             val finalTypeString = if (param.isNullable) "$cleanTypeString?" else cleanTypeString
 
             "${param.name}: $finalTypeString$defaultValue"
@@ -375,8 +396,23 @@ $widgetFunctionCode
 
         // 生成公开的var属性
         val publicProperties = parameters.joinToString("\n    ") { param ->
-            val baseTypeString = simplifyTypeString(param.type.getQualifiedTypeString(), genericParamNames)
-            val cleanTypeString = baseTypeString.removeSuffix("?")
+            // 使用完整的类型字符串，直接使用完整类型信息
+            val typeString = if (param.completeTypeString.isNotEmpty()) {
+                // 使用完整类型字符串，只移除泛型限定符
+                var result = param.completeTypeString
+                genericParamNames.forEach { paramName ->
+                    result = result.replace(Regex("""[\w.]+\.$paramName\b"""), paramName)
+                }
+                // 处理 @Composable 注解格式
+                result = result.replace("[Composable]", "@Composable")
+                // 移除参数注解
+                result = result.replace(Regex("""\[ParameterName\([^)]+\)\]\s*"""), "")
+                result
+            } else {
+                simplifyTypeString(param.type.getQualifiedTypeString(), genericParamNames)
+            }
+
+            val cleanTypeString = typeString.removeSuffix("?")
             val finalTypeString = if (param.isNullable) "$cleanTypeString?" else cleanTypeString
 
             """var ${param.name}: $finalTypeString
@@ -437,6 +473,40 @@ class $className$genericDeclaration(
         simplified = simplified.replace(Regex("""kotlin\.Function1<([^,]+),\s*([^>]+)>"""), "($1) -> $2")
         simplified = simplified.replace(Regex("""kotlin\.Function2<([^,]+),\s*([^,]+),\s*([^>]+)>"""), "($1, $2) -> $3")
         simplified = simplified.replace(Regex("""kotlin\.Function0<([^>]+)>"""), "() -> $1")
+
+        return simplified
+    }
+
+    /**
+     * 进一步简化生成的类型字符串，处理泛型限定符和注解
+     */
+    private fun simplifyGeneratedTypeString(typeString: String, genericParamNames: Set<String>): String {
+        var simplified = typeString
+
+        // 移除泛型限定符，如 com.addzero.kmp.component.tree.AddTree.T -> T
+        genericParamNames.forEach { paramName ->
+            simplified = simplified.replace(Regex("""[\w.]+\.$paramName\b"""), paramName)
+        }
+
+        // 处理 @Composable 注解
+        simplified = simplified.replace("[Composable]", "@Composable")
+
+        // 处理参数注解
+        simplified = simplified.replace(Regex("""\[ParameterName\([^)]+\)\]\s*"""), "")
+
+        // 移除多余的包名，但保留重要的类型信息
+        simplified = simplified.replace("kotlin.collections.", "")
+        simplified = simplified.replace("kotlin.", "")
+        simplified = simplified.replace("androidx.compose.ui.graphics.vector.", "")
+        simplified = simplified.replace("androidx.compose.ui.", "")
+        simplified = simplified.replace("androidx.compose.runtime.", "")
+        simplified = simplified.replace("androidx.compose.foundation.", "")
+        simplified = simplified.replace("androidx.compose.material3.", "")
+
+        // 修复泛型类型，确保 TreeNodeInfo<T> 等保持完整
+        simplified = simplified.replace("TreeNodeInfo<T>", "TreeNodeInfo<T>")
+        simplified = simplified.replace("List<T>", "List<T>")
+        simplified = simplified.replace("Set<Any>", "Set<Any>")
 
         return simplified
     }
@@ -609,10 +679,24 @@ fun ${genericDeclaration}${functionName}Widget(
                 getActualDefaultValue(param)
             } else ""
 
-            // 构建正确的类型字符串
-            val baseTypeString = simplifyTypeString(param.type.getQualifiedTypeString(), genericParamNames)
+            // 使用完整的类型字符串，直接使用完整类型信息
+            val typeString = if (param.completeTypeString.isNotEmpty()) {
+                // 使用完整类型字符串，只移除泛型限定符
+                var result = param.completeTypeString
+                genericParamNames.forEach { paramName ->
+                    result = result.replace(Regex("""[\w.]+\.$paramName\b"""), paramName)
+                }
+                // 处理 @Composable 注解格式
+                result = result.replace("[Composable]", "@Composable")
+                // 移除参数注解
+                result = result.replace(Regex("""\[ParameterName\([^)]+\)\]\s*"""), "")
+                result
+            } else {
+                simplifyTypeString(param.type.getQualifiedTypeString(), genericParamNames)
+            }
+
             // 移除KSP可能错误添加的可空性标记
-            val cleanTypeString = baseTypeString.removeSuffix("?")
+            val cleanTypeString = typeString.removeSuffix("?")
             // 根据我们检测到的真实可空性添加?
             val finalTypeString = if (param.isNullable) "$cleanTypeString?" else cleanTypeString
 
@@ -1023,7 +1107,9 @@ data class ParameterInfo(
     val name: String,
     val type: KSType,
     val hasDefaultValue: Boolean,
-    val isNullable: Boolean
+    val isNullable: Boolean,
+    val completeTypeString: String = "",
+    val simplifiedTypeString: String = ""
 )
 
 /**

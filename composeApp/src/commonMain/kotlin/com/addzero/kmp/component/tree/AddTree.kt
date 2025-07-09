@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.addzero.kmp.anno.Good
+import com.addzero.kmp.annotation.ComposeAssist
 import com.addzero.kmp.component.tree.NodeType.Companion.guessIcon
 
 /**
@@ -32,6 +33,7 @@ import com.addzero.kmp.component.tree.NodeType.Companion.guessIcon
  * @param bottomSlot 底部插槽
  * @param contextMenuContent 右键菜单内容插槽
  */
+@ComposeAssist
 @Composable
 @Good
 fun <T> AddTree(
