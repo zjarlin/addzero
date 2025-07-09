@@ -5,6 +5,8 @@
 ## 🚀 技术栈
 [![技术栈](https://skillicons.dev/icons?i=kotlin,gradle,idea,wasm,spring,postgres,docker,androidstudio)](https://skillicons.dev)
 
+**核心技术：** Kotlin Multiplatform • Jetpack Compose • Jimmer ORM • KSP • Spring Boot • PostgreSQL
+
 ## 📸 项目展示
 ![项目截图](images/img_2.png)
 ![项目截图](images/img_1.png)
@@ -29,6 +31,14 @@
 - **💰 智能货币图标** - 根据货币类型自动显示对应图标（¥/$/€等）
 - **🔍 RegexEnum 验证** - 统一的正则表达式验证体系
 - **🏷️ @Label 注解支持** - 优先使用注解标签，回退到文档注释(即写代码注释编译时会当做表单label)
+
+### 🎨 **ComposeAssist 响应式组件** - Vue风格的状态管理
+- **✅ 响应式State生成** - 基于`mutableStateOf`的自动重组机制
+- **🎯 参数打包** - 将组件参数打包为类型安全的State对象
+- **🚀 Widget函数生成** - 只接受State参数的辅助组件
+- **🧩 完整泛型支持** - 支持泛型函数和约束泛型
+- **🔄 自动重组** - 修改State属性自动触发UI更新
+- **📦 零样板代码** - 一个`@ComposeAssist`注解生成完整工具集
 
 ### 🧭 **路由导航系统**
 - **路由表生成** (跨平台 ComposeApp) - `RouteTable`
@@ -97,6 +107,14 @@
 - 导航服务核心实现
 - 路由元数据模型
 
+#### 🎨 **addzero-compose-props-processor** - Compose辅助工具生成器
+- **ComposeAssistProcessor.kt** - 基于 @ComposeAssist 注解生成响应式State和辅助工具
+- **响应式State生成** - 自动生成支持Compose重组的状态管理类
+- **Widget函数生成** - 生成只接受State参数的辅助组件
+- **Remember函数生成** - 生成状态记忆函数，支持泛型
+- **泛型支持** - 完整支持泛型函数，包括约束泛型
+- **Vue风格体验** - 类似Vue的$attrs功能，但更加类型安全
+
 #### 🛠️ **addzero-tool** - 通用跨平台工具库
 - 代码生成工具
 - 文件操作工具
@@ -128,6 +146,173 @@
 
 #### 🎯 **策略模式优化**
 - **优先级排序** - 确保最匹配的策略优先执行
+
+## 🎨 ComposeAssist - 响应式组件状态管理
+
+> **类似Vue的$attrs功能，但更加类型安全和响应式**
+
+### ✨ **核心特性**
+- **🔄 响应式State** - 基于`mutableStateOf`的自动重组
+- **🎯 类型安全** - 编译时检查所有参数类型
+- **🚀 零样板代码** - 一个注解生成完整的辅助工具集
+- **🧩 泛型支持** - 完整支持泛型函数，包括约束泛型
+- **📦 参数打包** - 将组件参数打包为响应式State对象
+
+### 🚀 **使用示例**
+
+#### 1️⃣ **定义组件**
+```kotlin
+@ComposeAssist
+@Composable
+fun Counter(
+    count: Int = 0,
+    label: String = "计数器",
+    onIncrement: () -> Unit = {},
+    onDecrement: () -> Unit = {}
+) {
+    Card {
+        Column {
+            Text("$label: $count")
+            Row {
+                Button(onClick = onDecrement) { Text("-") }
+                Button(onClick = onIncrement) { Text("+") }
+            }
+        }
+    }
+}
+```
+
+#### 2️⃣ **自动生成的代码**
+```kotlin
+// 响应式State类 - 支持Compose重组
+class CounterState(
+    count: Int = 0,
+    label: String = "计数器",
+    onIncrement: () -> Unit = {},
+    onDecrement: () -> Unit = {}
+) {
+    private val _count = mutableStateOf(count)
+    private val _label = mutableStateOf(label)
+
+    var count: Int
+        get() = _count.value
+        set(value) { _count.value = value }  // 修改会自动触发重组！
+
+    var label: String
+        get() = _label.value
+        set(value) { _label.value = value }  // 修改会自动触发重组！
+
+    // ... 其他属性
+}
+
+// Widget辅助函数 - 只接受State参数
+@Composable
+fun CounterWidget(state: CounterState) {
+    Counter(
+        count = state.count,
+        label = state.label,
+        onIncrement = state.onIncrement,
+        onDecrement = state.onDecrement
+    )
+}
+
+// Remember函数 - 状态记忆
+@Composable
+fun rememberCounterState(
+    count: Int = 0,
+    label: String = "计数器",
+    onIncrement: () -> Unit = {},
+    onDecrement: () -> Unit = {}
+): CounterState {
+    return remember {
+        CounterState(count, label, onIncrement, onDecrement)
+    }
+}
+```
+
+#### 3️⃣ **响应式使用**
+```kotlin
+@Composable
+fun MyScreen() {
+    // 创建响应式State
+    val counterState = rememberCounterState(
+        count = 0,
+        label = "我的计数器"
+    )
+
+    // 配置事件处理
+    counterState.onIncrement = {
+        counterState.count += 1  // 自动触发重组！
+    }
+
+    counterState.onDecrement = {
+        counterState.count -= 1  // 自动触发重组！
+    }
+
+    // 使用Widget函数
+    CounterWidget(state = counterState)
+
+    // 外部控制 - 直接修改State
+    Button(
+        onClick = {
+            counterState.count = 100      // 自动重组！
+            counterState.label = "重置"   // 自动重组！
+        }
+    ) {
+        Text("重置为100")
+    }
+}
+```
+
+#### 4️⃣ **泛型支持**
+```kotlin
+@ComposeAssist
+@Composable
+fun <T> GenericDisplay(
+    value: T?,
+    label: String = "数据",
+    formatter: (T) -> String = { it.toString() }
+) {
+    Text("$label: ${value?.let(formatter) ?: "空"}")
+}
+
+// 使用泛型State
+val stringState = rememberGenericDisplayState<String>(
+    value = "Hello",
+    label = "字符串"
+)
+
+val numberState = rememberGenericDisplayState<Int>(
+    value = 42,
+    label = "数字"
+)
+
+// 响应式修改
+stringState.value = "World"  // 自动重组！
+numberState.value = 100      // 自动重组！
+```
+
+### 🎯 **核心优势**
+
+#### 🔄 **真正的响应式**
+- 每个属性都基于`mutableStateOf`
+- 修改任何属性都会自动触发Compose重组
+- 无需手动管理状态更新
+
+#### 📦 **完美的参数打包**
+- 将组件的所有参数打包为一个State对象
+- 支持所有类型：基础类型、@Composable函数、事件回调
+- 保持原始函数的类型安全性
+
+#### 🎯 **类型安全**
+- 编译时检查所有参数类型
+- 完整的泛型支持，包括约束泛型
+- 自动处理可空性和默认值
+
+#### 🚀 **开发效率**
+- 一个`@ComposeAssist`注解生成完整工具集
+- 零样板代码，专注业务逻辑
+- Vue风格的开发体验
 
 ### 🚀 **快速开始**
 
@@ -334,6 +519,8 @@ fun renderNavContent(navController: NavHostController) {
 - [x] **动态表单生成** - 基于 Jimmer 实体的完整表单生成
 - [x] **智能字段识别** - 自动选择合适的输入组件
 - [x] **货币图标支持** - 多币种图标自动切换
+- [x] **ComposeAssist响应式组件** - Vue风格的状态管理和组件辅助工具
+- [x] **泛型支持** - 完整的泛型函数支持，包括约束泛型
 - [ ] **RBAC 权限系统** - 基于 KSP 元数据的权限控制
 - [ ] **组件库完善** - 更多专业化输入组件
 - [ ] **AI 智能体集成** - 智能代码生成助手
