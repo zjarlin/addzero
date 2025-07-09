@@ -14,7 +14,12 @@ import io.github.vinceglb.filekit.core.PickerMode
 fun TestPicker() {
     // Pick files from Compose
     val launcher = rememberFilePickerLauncher(mode = PickerMode.Multiple()) { files ->
-        val map = files?.map { it.name }
+        val map = files?.map {
+            it.name
+            val path = it.path
+            val size = it.getSize()
+            size
+        }
         println(map)
         // Handle picked files
     }

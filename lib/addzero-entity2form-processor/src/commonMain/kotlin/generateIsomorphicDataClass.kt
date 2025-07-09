@@ -48,7 +48,7 @@ fun generateIsomorphicDataClass(
         when {
             // 如果是Jimmer实体，其Iso同构体在同一包下，无需导入。
             // 递归生成已在getIsoTypeString中处理。
-            isJimmerEntity(typeDecl) -> { /* ��需额��导入 */
+            isJimmerEntity(typeDecl) -> {
             }
             // 如果是枚举或其他自定义类型，且不是Kotlin标准库类型
             !kotlinStdTypes.contains(typeName) && qualifiedName != null -> {
@@ -132,11 +132,13 @@ fun generateIsomorphicDataClass(
     }.distinct().sorted().joinToString("\n") { "import $it" }
 
     val code = """
+@file:OptIn(ExperimentalTime::class)
         |package $packageName
         |
         |            
         |$finalImportStr
         |import kotlinx.serialization.Serializable
+import kotlin.time.ExperimentalTime
         | @Serializable
         |data class $dataClassName(
         |    $props

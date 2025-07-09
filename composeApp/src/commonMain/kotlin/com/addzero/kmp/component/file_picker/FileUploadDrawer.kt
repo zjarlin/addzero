@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.addzero.kmp.component.AddInputDescribe
 import com.addzero.kmp.component.drawer.AddDrawer
 import com.addzero.kmp.component.drawer.DrawerDirection
+import com.addzero.kmp.component.form.formatFileSize
 import io.github.vinceglb.filekit.compose.rememberFilePickerLauncher
 import io.github.vinceglb.filekit.core.PickerMode
 import io.github.vinceglb.filekit.core.PlatformFiles
@@ -289,14 +290,3 @@ private fun FileItem(
 }
 
 
-/**
- * 格式化文件大小
- */
-private fun formatFileSize(size: Long): String {
-    return when {
-        size < 1024 -> "$size B"
-        size < 1024 * 1024 -> "${(size / 1024.0).toInt()} KB"
-        size < 1024 * 1024 * 1024 -> "${(size / (1024.0 * 1024.0)).toInt()} MB"
-        else -> "${(size / (1024.0 * 1024.0 * 1024.0)).toInt()} GB"
-    }
-}

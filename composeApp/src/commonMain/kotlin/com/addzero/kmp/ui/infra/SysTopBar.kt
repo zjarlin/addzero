@@ -3,20 +3,30 @@ package com.addzero.kmp.ui.infra
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CloudUpload
 import androidx.compose.material.icons.filled.SmartToy
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import com.addzero.kmp.component.button.AddFloatingActionButton
 import com.addzero.kmp.component.button.AddIconButton
 import com.addzero.kmp.component.theme.QuickThemeToggle
+import com.addzero.kmp.component.upload_manager.GlobalUploadManager
+import com.addzero.kmp.component.upload_manager.UploadManagerUI
 import com.addzero.kmp.ui.infra.model.menu.MenuLayoutToggleButton
 import com.addzero.kmp.ui.infra.model.menu.MenuViewModel
 import com.addzero.kmp.ui.infra.model.menu.SysUserCenterScreen
@@ -42,6 +52,9 @@ fun SysTopBar(
     val currentTheme = ThemeViewModel.currentTheme
     //是否为渐变主题
     val isGradientTheme = currentTheme.isGradient()
+
+    // 上传管理器对话框状态
+    var showUploadManager by remember { mutableStateOf(false) }
 
     TopAppBar(
         title = { Text("AddzeroKmp") },
@@ -95,6 +108,37 @@ fun SysTopBar(
                 // 间距
                 Spacer(modifier = Modifier.width(8.dp))
 
+                // 上传管理器按钮
+                val uploadManager = GlobalUploadManager.instance
+                val activeTasksCount = uploadManager.activeTasks.size
+
+                if (activeTasksCount > 0) {
+                    BadgedBox(
+                        badge = {
+                            Badge {
+                                Text(
+                                    text = activeTasksCount.toString(),
+                                    style = MaterialTheme.typography.labelSmall
+                                )
+                            }
+                        }
+                    ) {
+                        AddIconButton(
+                            imageVector = Icons.Default.CloudUpload,
+                            text = "上传管理器",
+                            onClick = { showUploadManager = true }
+                        )
+                    }
+                } else {
+                    AddIconButton(
+                        imageVector = Icons.Default.CloudUpload,
+                        text = "上传管理器",
+                        onClick = { showUploadManager = true }
+                    )
+                }
+
+                // 间距
+                Spacer(modifier = Modifier.width(8.dp))
 
                 // 机器人按钮
                 AddFloatingActionButton(
@@ -111,4 +155,24 @@ fun SysTopBar(
             titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
         )
     )
+
+    // 上传管理器对话框
+    if (showUploadManager) {
+        Dialog(
+            onDismissRequest = { showUploadManager = false }
+        ) {
+            Card(
+                modifier = Modifier
+                    .width(800.dp)
+                    .height(600.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surface
+                )
+            ) {
+                UploadManagerUI(
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
+        }
+    }
 }

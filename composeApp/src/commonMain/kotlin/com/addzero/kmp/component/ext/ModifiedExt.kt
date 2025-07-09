@@ -17,7 +17,8 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
-import kotlinx.datetime.Clock
+import com.addzero.kmp.core.ext.nowLong
+import kotlinx.datetime.Instant
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -61,7 +62,7 @@ fun Modifier.debouncedClickable(
     Modifier.semantics(mergeDescendants = true) {
         role = Role.Button
         onClick(action = {
-            val currentTime = Clock.System.now().toEpochMilliseconds()
+            val currentTime = nowLong()
             if (currentTime - lastClickTime >= timeout.inWholeMilliseconds) {
                 lastClickTime = currentTime
                 if (hapticFeedBack) haptic.performHapticFeedback(HapticFeedbackType.LongPress)

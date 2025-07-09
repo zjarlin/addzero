@@ -16,7 +16,7 @@ import io.ktor.http.HttpStatusCode.Companion.Unauthorized
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun EventBusMonitor() {
+fun EventBusConsumer() {
     val koinViewModel = koinViewModel<LoginViewModel>()
 //    val hasPermition = koinViewModel.hasPermission(permissionCode)
 

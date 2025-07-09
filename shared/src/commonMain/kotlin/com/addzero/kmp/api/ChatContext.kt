@@ -13,6 +13,7 @@ data class ChatRequest(val promt: String) : ChatContext()
 data class 视觉Request(val promt: String, val images: List<String>) : ChatContext()
 
 
+@Serializable
 data class FileUploadResponse(
     val fileUrl: String,
     val progress: Float,

@@ -164,9 +164,9 @@ fun KSPropertyDeclaration.defaultValue(): String {
         typeName == "List" -> "emptyList()"
         typeName == "Set" -> "emptySet()"
         typeName == "Map" -> "emptyMap()"
-        typeName == "LocalDateTime" -> "kotlinx.datetime.Clock.System.now().toLocalDateTime(kotlinx.datetime.TimeZone.currentSystemDefault())"
-        typeName == "LocalDate" -> "kotlinx.datetime.Clock.System.now().toLocalDateTime(kotlinx.datetime.TimeZone.currentSystemDefault()).date"
-        typeName == "LocalTime" -> "kotlinx.datetime.Clock.System.now().toLocalDateTime(kotlinx.datetime.TimeZone.currentSystemDefault()).time"
+        typeName == "LocalDateTime" -> "kotlin.time.Clock.System.now().toLocalDateTime(kotlinx.datetime.TimeZone.currentSystemDefault())"
+        typeName == "LocalDate" -> "kotlin.time.Clock.System.now().toLocalDateTime(kotlinx.datetime.TimeZone.currentSystemDefault()).date"
+        typeName == "LocalTime" -> "kotlin.time.Clock.System.now().toLocalDateTime(kotlinx.datetime.TimeZone.currentSystemDefault()).time"
         else -> ""
     }
 }

@@ -2,7 +2,7 @@ package com.addzero.kmp
 
 import androidx.compose.runtime.Composable
 import com.addzero.kmp.component.toast.ToastListener
-import com.addzero.kmp.events.EventBusMonitor
+import com.addzero.kmp.events.EventBusConsumer
 import com.addzero.kmp.events.emitEventBus
 import com.addzero.kmp.ui.auth.LoginScreen
 import com.addzero.kmp.ui.infra.MainLayout
@@ -25,7 +25,7 @@ class MyModule
 fun App() {
     initKoin()
     emitEventBus()
-    EventBusMonitor()
+    EventBusConsumer()
     val loginViewModel = koinViewModel<LoginViewModel>()
     // 已登录时渲染主界面
     val currentTheme = ThemeViewModel.currentTheme

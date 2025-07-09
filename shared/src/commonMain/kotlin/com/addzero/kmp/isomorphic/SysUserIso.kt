@@ -1,9 +1,11 @@
+@file:OptIn(ExperimentalTime::class)
 package com.addzero.kmp.isomorphic
 
             
 import com.addzero.kmp.generated.enums.EnumSysGender
 import kotlinx.datetime.*
 import kotlinx.serialization.Serializable
+import kotlin.time.ExperimentalTime
  @Serializable
 data class SysUserIso(
                             /*
@@ -79,7 +81,7 @@ data class SysUserIso(
             */
             val roles: List<SysRoleIso>  = emptyList() ,
     
-val createTime: LocalDateTime  = kotlinx.datetime.Clock.System.now().toLocalDateTime(kotlinx.datetime.TimeZone.currentSystemDefault()) ,
+val createTime: LocalDateTime  = kotlin.time.Clock.System.now().toLocalDateTime(kotlinx.datetime.TimeZone.currentSystemDefault()) ,
     
 val updateTime: LocalDateTime?  = null 
 )

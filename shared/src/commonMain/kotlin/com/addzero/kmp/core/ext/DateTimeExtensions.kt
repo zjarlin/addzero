@@ -1,10 +1,11 @@
-@file:OptIn(FormatStringsInDatetimeFormats::class)
+@file:OptIn(ExperimentalTime::class)
 
 package com.addzero.kmp.core.ext
 
 import kotlinx.datetime.*
-import kotlinx.datetime.format.FormatStringsInDatetimeFormats
+import kotlinx.datetime.Clock.System.now
 import kotlinx.datetime.format.byUnicodePattern
+import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
 
@@ -53,11 +54,22 @@ fun LocalTime.format(pattern: String): String {
 
 }
 
+fun nowLong(): Long {
+    val toEpochMilliseconds = LocalDateTime.now().toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds()
+    return toEpochMilliseconds
+}
 
+@Deprecated("use nowLong instead")
+fun nowInt(): Int {
+    val now = now().toStdlibInstant().nanosecondsOfSecond
+    return now
+}
+
+
+val now: LocalDateTime get() = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
 
 
 // 转换为友好显示 (如"2小时前")
-@OptIn(ExperimentalTime::class)
 fun LocalDateTime.toFriendlyString(): String {
     val now = LocalDateTime.now()
     val duration = now.toInstant(TimeZone.currentSystemDefault()) - this.toInstant(TimeZone.currentSystemDefault())

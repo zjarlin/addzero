@@ -2,9 +2,10 @@ package com.addzero.kmp.viewmodel
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.snapshotFlow
+import com.addzero.kmp.core.ext.nowLong
 import io.ktor.util.collections.*
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 
 /**
  * 加载状态
@@ -15,17 +16,17 @@ sealed class LoadState(
 ) {
     data class Loading(
         override val message: String? = null,
-        override val key: Long = Clock.System.now().toEpochMilliseconds(),
+        override val key: Long = nowLong(),
     ) : LoadState(message, key)
 
     data class Success(
         override val message: String? = null,
-        override val key: Long = Clock.System.now().toEpochMilliseconds(),
+        override val key: Long = nowLong(),
     ) : LoadState(message, key)
 
     data class Fail(
         override val message: String? = null,
-        override val key: Long = Clock.System.now().toEpochMilliseconds(),
+        override val key: Long = nowLong(),
     ) : LoadState(message, key)
 
     override fun equals(other: Any?): Boolean {

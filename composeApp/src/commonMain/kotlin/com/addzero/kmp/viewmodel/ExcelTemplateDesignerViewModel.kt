@@ -5,10 +5,12 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.addzero.kmp.core.ext.now
 import com.addzero.kmp.ext.api
 import kotlinx.coroutines.delay
-import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDateTime
 import org.koin.android.annotation.KoinViewModel
+import kotlin.time.ExperimentalTime
 
 /**
  * Excel模板设计器ViewModel
@@ -16,7 +18,7 @@ import org.koin.android.annotation.KoinViewModel
  */
 @KoinViewModel
 class ExcelTemplateDesignerViewModel : ViewModel() {
-    
+
     /**
      * 字段数据类
      */
@@ -31,7 +33,7 @@ class ExcelTemplateDesignerViewModel : ViewModel() {
             fun generateId(): String = "field_${++idCounter}"
         }
     }
-    
+
     /**
      * 字段类型
      */
@@ -39,10 +41,11 @@ class ExcelTemplateDesignerViewModel : ViewModel() {
         STRING,   // 字符串
         NUMBER    // 数字
     }
-    
+
     /**
      * Excel模板
      */
+    @OptIn(ExperimentalTime::class)
     data class ExcelTemplate(
         val id: String = generateTemplateId(),
         val name: String,
@@ -50,7 +53,7 @@ class ExcelTemplateDesignerViewModel : ViewModel() {
         val isCommon: Boolean = false,
         val jsonTemplateId: String? = null, // 关联的JSON模板ID
         val fileSize: String = "未知", // 文件大小
-        val uploadTime: Long = Clock.System.now().toEpochMilliseconds() // 上传时间
+        val uploadTime: LocalDateTime = now
     ) {
         companion object {
             private var templateIdCounter = 0
@@ -64,7 +67,7 @@ class ExcelTemplateDesignerViewModel : ViewModel() {
     data class MetadataExtractionItem(
         val id: String = generateExtractionId(),
         val excelTemplate: ExcelTemplate,
-        val extractionTime: Long = Clock.System.now().toEpochMilliseconds(),
+        val extractionTime: LocalDateTime = now,
         val status: ExtractionStatus = ExtractionStatus.PENDING
     ) {
         companion object {
@@ -92,27 +95,27 @@ class ExcelTemplateDesignerViewModel : ViewModel() {
         val jsonContent: String,
         val oneDimensionFields: List<FieldItem>,
         val twoDimensionFields: List<FieldItem>,
-        val createTime: Long =  Clock.System.now().toEpochMilliseconds()
+        val createTime: LocalDateTime = now
     ) {
         companion object {
             private var jsonTemplateIdCounter = 0
             fun generateJsonTemplateId(): String = "json_template_${++jsonTemplateIdCounter}"
         }
     }
-    
+
     // 一维区域字段列表 (vo: Map<String, Any>)
     val oneDimensionFields = mutableStateListOf<FieldItem>()
-    
+
     // 二维区域字段列表 (dtos: List<Map<String, Any>>)
     val twoDimensionFields = mutableStateListOf<FieldItem>()
-    
+
     // 生成的JSON预览
     var jsonPreview by mutableStateOf("{}")
         private set
-    
+
     // 上传的Excel模板
     val excelTemplates = mutableStateListOf<ExcelTemplate>()
-    
+
     // 常用模板
     val commonTemplates = mutableStateListOf<ExcelTemplate>()
 
@@ -132,7 +135,7 @@ class ExcelTemplateDesignerViewModel : ViewModel() {
     // 错误信息
     var errorMessage by mutableStateOf<String?>(null)
         private set
-    
+
     init {
         // 初始化示例数据
         addOneDimensionField("一维区域", "")
@@ -140,7 +143,7 @@ class ExcelTemplateDesignerViewModel : ViewModel() {
         addTwoDimensionField("湿度", "222")
         updateJsonPreview()
     }
-    
+
     /**
      * 添加一维字段
      */
@@ -148,7 +151,7 @@ class ExcelTemplateDesignerViewModel : ViewModel() {
         oneDimensionFields.add(FieldItem(key = key, value = value))
         updateJsonPreview()
     }
-    
+
     /**
      * 添加二维字段
      */
@@ -156,7 +159,7 @@ class ExcelTemplateDesignerViewModel : ViewModel() {
         twoDimensionFields.add(FieldItem(key = key, value = value))
         updateJsonPreview()
     }
-    
+
     /**
      * 更新一维字段
      */
@@ -166,7 +169,7 @@ class ExcelTemplateDesignerViewModel : ViewModel() {
         type?.let { field.type = it }
         updateJsonPreview()
     }
-    
+
     /**
      * 更新二维字段
      */
@@ -176,7 +179,7 @@ class ExcelTemplateDesignerViewModel : ViewModel() {
         type?.let { field.type = it }
         updateJsonPreview()
     }
-    
+
     /**
      * 删除一维字段
      */
@@ -184,7 +187,7 @@ class ExcelTemplateDesignerViewModel : ViewModel() {
         oneDimensionFields.remove(field)
         updateJsonPreview()
     }
-    
+
     /**
      * 删除二维字段
      */
@@ -192,13 +195,13 @@ class ExcelTemplateDesignerViewModel : ViewModel() {
         twoDimensionFields.remove(field)
         updateJsonPreview()
     }
-    
+
     /**
      * 生成vo数据 (Map<String, Any>)
      */
     fun generateVoData(): Map<String, Any> {
         val voMap = mutableMapOf<String, Any>()
-        
+
         // 添加一维区域
         val oneDimensionMap = mutableMapOf<String, Any>()
         oneDimensionFields.forEach { field ->
@@ -207,7 +210,7 @@ class ExcelTemplateDesignerViewModel : ViewModel() {
             }
         }
         voMap["一维区域"] = oneDimensionMap
-        
+
         // 添加二维区域
         val twoDimensionList = mutableListOf<Map<String, Any>>()
         if (twoDimensionFields.isNotEmpty()) {
@@ -226,16 +229,16 @@ class ExcelTemplateDesignerViewModel : ViewModel() {
             }
         }
         voMap["二维区域"] = twoDimensionList
-        
+
         return voMap
     }
-    
+
     /**
      * 生成dtos数据 (List<Map<String, Any>>)
      */
     fun generateDtosData(): List<Map<String, Any>> {
         val dtosList = mutableListOf<Map<String, Any>>()
-        
+
         // 生成两行示例数据
         repeat(2) { index ->
             val rowMap = mutableMapOf<String, Any>()
@@ -249,10 +252,10 @@ class ExcelTemplateDesignerViewModel : ViewModel() {
                 dtosList.add(rowMap)
             }
         }
-        
+
         return dtosList
     }
-    
+
     /**
      * 转换值类型
      */
@@ -262,7 +265,7 @@ class ExcelTemplateDesignerViewModel : ViewModel() {
             FieldType.NUMBER -> value.toDoubleOrNull() ?: value
         }
     }
-    
+
     /**
      * 更新JSON预览
      */
@@ -341,7 +344,7 @@ class ExcelTemplateDesignerViewModel : ViewModel() {
             else -> "\"$value\""
         }
     }
-    
+
     /**
      * 上传Excel模板
      */
@@ -353,7 +356,7 @@ class ExcelTemplateDesignerViewModel : ViewModel() {
         excelTemplates.add(template)
         onUpload(fileName)
     }
-    
+
     /**
      * 保存为常用模板
      */
@@ -362,7 +365,7 @@ class ExcelTemplateDesignerViewModel : ViewModel() {
         commonTemplates.add(commonTemplate)
         excelTemplates.remove(template)
     }
-    
+
     /**
      * 删除模板
      */
@@ -370,7 +373,7 @@ class ExcelTemplateDesignerViewModel : ViewModel() {
         excelTemplates.remove(template)
         commonTemplates.remove(template)
     }
-    
+
     /**
      * 清空所有字段
      */
@@ -382,7 +385,7 @@ class ExcelTemplateDesignerViewModel : ViewModel() {
         addTwoDimensionField("湿度", "222")
         updateJsonPreview()
     }
-    
+
     /**
      * 导出数据供Excel填充使用
      */
