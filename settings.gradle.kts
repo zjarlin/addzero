@@ -66,4 +66,7 @@ findProject(":lib:addzero-apiprovider-processor")?.name = "addzero-apiprovider-p
 include("lib:addzero-tool")
 findProject(":lib:addzero-tool")?.name = "addzero-tool"
 
+include("lib:addzero-compose-props-annotations")
+findProject(":lib:addzero-compose-props-annotations")?.name = "addzero-compose-props-annotations"
 include("lib:addzero-compose-props-processor")
+findProject(":lib:addzero-compose-props-processor")?.name = "addzero-compose-props-processor"

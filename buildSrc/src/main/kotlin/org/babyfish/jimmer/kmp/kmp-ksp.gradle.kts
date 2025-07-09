@@ -1,5 +1,3 @@
-import org.gradle.internal.impldep.com.google.api.services.storage.Storage
-
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
 //    kotlin("plugin.serialization")
@@ -10,6 +8,10 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
+
+//            implementation(projects.lib.addzeroKspSupport)
+
+
 //            implementation(project(:addzero-ksp))
         }
         jvmMain.dependencies {

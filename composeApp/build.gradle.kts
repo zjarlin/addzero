@@ -11,6 +11,7 @@ plugins {
 
 dependencies {
    kspCommonMainMetadata(projects.lib.addzeroRouteProcessor)
+   kspCommonMainMetadata(projects.lib.addzeroComposePropsProcessor)
     kspCommonMainMetadata("io.insert-koin:koin-ksp-compiler:+")
 }
 
@@ -76,6 +77,7 @@ kotlin {
             //注解处理器核心包
 //            implementation(projects.addzeroKspCore)
             implementation(projects.lib.addzeroRouteCore)
+            implementation(projects.lib.addzeroComposePropsAnnotations)
 
             // KMP 兼容的生命周期管理不能引入这个.启动skia报错
 
