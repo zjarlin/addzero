@@ -26,13 +26,13 @@ import org.koin.compose.viewmodel.koinViewModel
 @Route("测试", "Excel模板测试")
 fun ExcelTemplateTestScreen() {
     val viewModel = koinViewModel<ExcelTemplateDesignerViewModel>()
-    
+
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
         // 简化的顶部栏
         SimpleTopBar(viewModel)
-        
+
         // 主要内容
         Row(
             modifier = Modifier
@@ -44,7 +44,7 @@ fun ExcelTemplateTestScreen() {
                 viewModel = viewModel,
                 modifier = Modifier.weight(0.6f)
             )
-            
+
             // 右侧JSON预览
             SimpleJsonPreview(
                 viewModel = viewModel,
@@ -79,7 +79,7 @@ private fun SimpleTopBar(viewModel: ExcelTemplateDesignerViewModel) {
                 ),
                 color = Color.White
             )
-            
+
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
@@ -91,7 +91,7 @@ private fun SimpleTopBar(viewModel: ExcelTemplateDesignerViewModel) {
                 ) {
                     Text("添加一维", color = Color.White, fontSize = 12.sp)
                 }
-                
+
                 Button(
                     onClick = { viewModel.addTwoDimensionField() },
                     colors = ButtonDefaults.buttonColors(
@@ -100,7 +100,7 @@ private fun SimpleTopBar(viewModel: ExcelTemplateDesignerViewModel) {
                 ) {
                     Text("添加二维", color = Color.White, fontSize = 12.sp)
                 }
-                
+
                 Button(
                     onClick = { viewModel.clearAll() },
                     colors = ButtonDefaults.buttonColors(
@@ -145,7 +145,7 @@ private fun SimpleFieldEditor(
                 ),
                 color = MaterialTheme.colorScheme.primary
             )
-            
+
             // 一维字段
             Text(
                 text = "🔹 一维字段 (${viewModel.oneDimensionFields.size}个)",
@@ -154,7 +154,7 @@ private fun SimpleFieldEditor(
                 ),
                 color = Color(0xFF059669)
             )
-            
+
             viewModel.oneDimensionFields.forEachIndexed { index, field ->
                 SimpleFieldCard(
                     field = field,
@@ -170,9 +170,9 @@ private fun SimpleFieldEditor(
                     }
                 )
             }
-            
+
             HorizontalDivider()
-            
+
             // 二维字段
             Text(
                 text = "🔸 二维字段 (${viewModel.twoDimensionFields.size}个)",
@@ -181,7 +181,7 @@ private fun SimpleFieldEditor(
                 ),
                 color = Color(0xFF7C3AED)
             )
-            
+
             viewModel.twoDimensionFields.forEachIndexed { index, field ->
                 SimpleFieldCard(
                     field = field,
@@ -236,7 +236,7 @@ private fun SimpleFieldCard(
                     ),
                     color = Color(0xFF6B7280)
                 )
-                
+
                 IconButton(
                     onClick = onDelete,
                     modifier = Modifier.size(24.dp)
@@ -249,7 +249,7 @@ private fun SimpleFieldCard(
                     )
                 }
             }
-            
+
             // 输入字段
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -263,7 +263,7 @@ private fun SimpleFieldCard(
                     textStyle = MaterialTheme.typography.bodySmall,
                     singleLine = true
                 )
-                
+
                 OutlinedTextField(
                     value = field.value,
                     onValueChange = onValueChange,
@@ -273,7 +273,7 @@ private fun SimpleFieldCard(
                     singleLine = true
                 )
             }
-            
+
             // 调试信息
             Text(
                 text = "ID: ${field.id} | Key: '${field.key}' | Value: '${field.value}'",
@@ -313,9 +313,9 @@ private fun SimpleJsonPreview(
                 ),
                 color = Color.White
             )
-            
+
             Spacer(modifier = Modifier.height(12.dp))
-            
+
             // 错误信息
             viewModel.errorMessage?.let { error ->
                 Card(
@@ -332,7 +332,7 @@ private fun SimpleJsonPreview(
                 }
                 Spacer(modifier = Modifier.height(8.dp))
             }
-            
+
             // JSON内容
             Card(
                 modifier = Modifier.fillMaxSize(),

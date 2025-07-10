@@ -6,12 +6,15 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.ripple.rememberRipple
+// 移除已弃用的 rememberRipple 导入
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.input.key.*
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -129,7 +132,7 @@ private fun TabItem(
         modifier = Modifier
             .clickable(
                 interactionSource = interactionSource,
-                indication = LocalIndication.current, // 可以考虑自定义 Indication 效果
+                indication = null, // 🎨 禁用默认的 indication，让 Surface 的 ripple 处理悬浮效果
                 onClick = onActivate
             )
             .height(40.dp), // 略微增加标签高度
