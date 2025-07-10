@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.unit.dp
 import com.addzero.kmp.component.search_bar.AddSearchBar
+import com.addzero.kmp.component.tree.NodeType
 
 /**
  * 🚀 优化版树组件 - 使用 ViewModel 管理状态
@@ -175,7 +176,7 @@ private fun <T> TreeNodeRenderer(
     val nodeId = viewModel.getId(node)
     val isExpanded = viewModel.isExpanded(nodeId)
     val isSelected = viewModel.isSelected(nodeId)
-    val children = viewModel.getChildren(node)
+    val children = viewModel.getChildrenCached(node)
     val hasChildren = children.isNotEmpty()
 
     // 🎯 节点内容
@@ -266,8 +267,9 @@ private fun <T> TreeNodeContent(
                 Spacer(modifier = Modifier.width(8.dp))
             }
 
-            // 🎨 节点图标
-            val icon = viewModel.getIcon(node)
+            // 🎨 节点图标 - 使用 ViewModel 的缓存图标方法
+            val icon = viewModel.getIconCached(node)
+
             if (icon != null) {
                 Icon(
                     imageVector = icon,
@@ -284,7 +286,7 @@ private fun <T> TreeNodeContent(
 
             // 📝 节点标签
             Text(
-                text = viewModel.getLabel(node),
+                text = viewModel.getLabelCached(node),
                 style = MaterialTheme.typography.bodyMedium,
                 color = if (isSelected) {
                     MaterialTheme.colorScheme.primary
@@ -328,7 +330,12 @@ fun <T> AddTree(
     getChildren: (T) -> List<T>,
     modifier: Modifier = Modifier,
     getNodeType: (T) -> String = { "" },
-    getIcon: @Composable (T) -> ImageVector? = { null },
+    getIcon: @Composable (T) -> ImageVector? = { node ->
+        // 🚀 默认使用 NodeType 推测图标
+        val label = getLabel(node)
+        val children = getChildren(node)
+        NodeType.guessIcon(label, children.isNotEmpty())
+    },
     initiallyExpandedIds: Set<Any> = emptySet(),
     onNodeClick: (T) -> Unit = {},
     onNodeContextMenu: (T) -> Unit = {},

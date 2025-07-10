@@ -21,7 +21,7 @@ inline fun <reified T> T.toJsonByKtx(): String {
 /**
  * 将对象转换为另一个对象
  */
-inline fun <reified T> Any.convertToByKtx(): T {
+internal inline fun <reified T> Any.convertToByKtx(): T {
     return this.toJsonByKtx().parseObjectByKtx<T>()
 }
 

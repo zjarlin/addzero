@@ -1,11 +1,11 @@
 package com.addzero.kmp.entity
 
 data class PageResult<T>(
-    val content: List<T> = emptyList(),
+    val rows: List<T> = emptyList(),
 
-    val totalElements: Long = 0L,
+    val totalRowCount: Long = 0L,
 
-    val totalPages: Int = 0,
+    val totalPageCount: Int = 0,
 
     val pageIndex: Int = 1,
 
@@ -19,9 +19,9 @@ data class PageResult<T>(
       fun <T> empty(pageSize: Int = 20) =
 
       PageResult<T>(
-            content = emptyList(),
-            totalElements = 0,
-            totalPages = 0,
+            rows = emptyList(),
+            totalRowCount = 0,
+            totalPageCount = 0,
             pageIndex = 0,
             pageSize = pageSize,
             isFirst = true,

@@ -45,6 +45,11 @@ class TreeViewModel<T> {
 
     var showSearchBar by mutableStateOf(false)
 
+    // 🚀 性能优化：缓存机制
+    private val iconCache = mutableMapOf<Any, ImageVector?>()
+    private val childrenCache = mutableMapOf<Any, List<T>>()
+    private val labelCache = mutableMapOf<Any, String>()
+
     // 📋 过滤后的数据 - 使用 TreeSearch 实现正确的树搜索
     val filteredItems by derivedStateOf {
         if (searchQuery.isBlank()) {
@@ -104,6 +109,9 @@ class TreeViewModel<T> {
         items = newItems
         expandedIds = initiallyExpandedIds
 
+        // 🚀 清空所有缓存，因为数据已更新
+        clearAllCaches()
+
         // 🎯 初始化选择管理器
         if (isConfigured) {
             selectionManager.initialize(
@@ -125,6 +133,64 @@ class TreeViewModel<T> {
                 }
             )
         }
+    }
+
+    /**
+     * 🚀 性能优化的图标获取方法 - 使用缓存避免重复计算
+     */
+    @Composable
+    fun getIconCached(node: T): ImageVector? {
+        val nodeId = getId(node)
+
+        // 先检查缓存
+        iconCache[nodeId]?.let { return it }
+
+        // 缓存未命中，计算图标
+        val icon = getIcon(node) ?: run {
+            // 如果没有配置图标，使用 NodeType 进行推测
+            val label = getLabel(node)
+            val children = getChildren(node)
+            com.addzero.kmp.component.tree.NodeType.guessIcon(label, children.isNotEmpty())
+        }
+
+        // 存入缓存
+        iconCache[nodeId] = icon
+        return icon
+    }
+
+    /**
+     * 🚀 性能优化的标签获取方法 - 使用缓存
+     */
+    fun getLabelCached(node: T): String {
+        val nodeId = getId(node)
+        return labelCache.getOrPut(nodeId) { getLabel(node) }
+    }
+
+    /**
+     * 🚀 性能优化的子节点获取方法 - 使用缓存
+     */
+    fun getChildrenCached(node: T): List<T> {
+        val nodeId = getId(node)
+        return childrenCache.getOrPut(nodeId) { getChildren(node) }
+    }
+
+    /**
+     * 🚀 清空所有缓存
+     */
+    private fun clearAllCaches() {
+        iconCache.clear()
+        childrenCache.clear()
+        labelCache.clear()
+    }
+
+    /**
+     * 📊 性能监控：获取缓存统计信息
+     */
+    fun getCacheStats(): String {
+        return "TreeViewModel 缓存统计: " +
+                "图标缓存=${iconCache.size}, " +
+                "标签缓存=${labelCache.size}, " +
+                "子节点缓存=${childrenCache.size}"
     }
 
     /**

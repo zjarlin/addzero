@@ -30,9 +30,9 @@ fun <E> createPageFactory(): PageFactory<E, PageResult<E>> {
 
         // 构建分页结果对象
         PageResult(
-            content = rows,
-            totalElements = totalCount,
-            totalPages = totalPages.toInt(),
+            rows = rows,
+            totalRowCount = totalCount,
+            totalPageCount = totalPages.toInt(),
             pageIndex = pageIndex + 1, // 页码从 1 开始
             pageSize = pageSize,
             isFirst = pageIndex == 0,
