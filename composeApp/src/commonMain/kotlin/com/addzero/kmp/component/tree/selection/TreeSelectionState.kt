@@ -41,3 +41,13 @@ data class SelectionResult(
     val selectedLeafNodes: Set<Any>,
     val affectedParents: Set<Any>
 )
+
+/**
+ * 🎯 完整选择结果（包含推导的父节点）
+ */
+data class CompleteSelectionResult(
+    val directSelectedNodes: Set<Any>,      // 直接选中的节点ID
+    val indirectSelectedNodes: Set<Any>,    // 间接选中的父节点ID
+    val completeSelectedNodes: Set<Any>,    // 完整的选中节点ID（直接+间接）
+    val selectedNodeData: List<Any>         // 选中节点的完整数据
+)

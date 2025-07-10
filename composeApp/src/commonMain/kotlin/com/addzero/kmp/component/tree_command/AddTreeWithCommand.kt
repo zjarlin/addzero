@@ -15,6 +15,7 @@ import com.addzero.kmp.component.search_bar.AddSearchBar
 import com.addzero.kmp.component.tree.AddTree
 import com.addzero.kmp.component.tree.TreeViewModel
 import com.addzero.kmp.component.tree.rememberTreeViewModel
+import com.addzero.kmp.component.tree.selection.CompleteSelectionResult
 /**
  * 🚀 完全重构的支持命令的树组件 - 基于 TreeViewModel 架构
  *
@@ -37,6 +38,7 @@ import com.addzero.kmp.component.tree.rememberTreeViewModel
  * @param onNodeContextMenu 节点右键菜单回调
  * @param onCommandInvoke 命令执行回调
  * @param onSelectionChange 选择变化回调(多选模式)
+ * @param onCompleteSelectionChange 完整选择变化回调(包含推导的父节点)
  * @param onItemsChanged 过滤后项目变化回调
  */
 @Composable
@@ -54,6 +56,7 @@ fun <T> AddTreeWithCommand(
     onNodeContextMenu: (T) -> Unit = {},
     onCommandInvoke: (TreeCommand, Any?) -> Unit = { _, _ -> },
     onSelectionChange: (List<T>) -> Unit = {},
+    onCompleteSelectionChange: (CompleteSelectionResult) -> Unit = {},
     onItemsChanged: (List<T>) -> Unit = {}
 ) {
 
@@ -72,6 +75,7 @@ fun <T> AddTreeWithCommand(
         viewModel.onNodeClick = onNodeClick
         viewModel.onNodeContextMenu = onNodeContextMenu
         viewModel.onSelectionChange = onSelectionChange
+        viewModel.onCompleteSelectionChange = onCompleteSelectionChange
 
         viewModel.setItems(items, initiallyExpandedIds)
     }

@@ -34,6 +34,12 @@ class TreeViewModel<T> {
     // 📋 选中的项目 - 通过选择管理器获取
     val selectedItems: State<Set<Any>> = selectionManager.selectedLeafNodes
 
+    // 🎯 完整的选中项目（包含推导的父节点）
+    val completeSelectedItems: State<Set<Any>> = selectionManager.completeSelectedNodes
+
+    // 🎯 间接选中的父节点
+    val indirectSelectedItems: State<Set<Any>> = selectionManager.indirectSelectedNodes
+
     // 🔍 搜索状态
     var searchQuery by mutableStateOf("")
 
@@ -86,6 +92,7 @@ class TreeViewModel<T> {
     var onNodeClick: (T) -> Unit = {}
     var onNodeContextMenu: (T) -> Unit = {}
     var onSelectionChange: (List<T>) -> Unit = {}
+    var onCompleteSelectionChange: (CompleteSelectionResult) -> Unit = {}
 
     /**
      * 🚀 初始化树数据
@@ -105,6 +112,16 @@ class TreeViewModel<T> {
                 getChildren = getChildren,
                 onSelectionChanged = { selectedNodes ->
                     onSelectionChange(selectedNodes)
+                },
+                onCompleteSelectionChanged = { completeResult ->
+                    // 🎯 处理完整选择结果（包含推导的父节点）
+                    println("🎯 TreeViewModel 完整选择结果:")
+                    println("   直接选中: ${completeResult.directSelectedNodes}")
+                    println("   间接选中: ${completeResult.indirectSelectedNodes}")
+                    println("   完整选中: ${completeResult.completeSelectedNodes}")
+
+                    // 可以在这里添加额外的处理逻辑
+                    onCompleteSelectionChange(completeResult)
                 }
             )
         }
@@ -193,6 +210,27 @@ class TreeViewModel<T> {
 
     fun isItemSelected(nodeId: Any): Boolean {
         return selectionManager.isNodeSelected(nodeId)
+    }
+
+    /**
+     * 🎯 获取完整的选择结果（包含推导的父节点）
+     */
+    fun getCompleteSelectionResult(): CompleteSelectionResult {
+        return selectionManager.getCompleteSelectionResult()
+    }
+
+    /**
+     * 🎯 获取完整的选中节点ID（包含推导的父节点）
+     */
+    fun getCompleteSelectedNodeIds(): Set<Any> {
+        return selectionManager.getCompleteSelectedNodeIds()
+    }
+
+    /**
+     * 🎯 获取间接选中的父节点ID
+     */
+    fun getIndirectSelectedNodeIds(): Set<Any> {
+        return selectionManager.getIndirectSelectedNodeIds()
     }
 
     private fun notifySelectionChange() {

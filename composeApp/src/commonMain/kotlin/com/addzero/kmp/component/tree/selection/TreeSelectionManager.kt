@@ -21,9 +21,18 @@ class TreeSelectionManager<T>(
     // 选中的叶子节点
     private val _selectedLeafNodes = mutableStateOf<Set<Any>>(emptySet())
     val selectedLeafNodes: State<Set<Any>> = _selectedLeafNodes
-    
+
+    // 🎯 完整的选中节点（包含推导的父节点）
+    private val _completeSelectedNodes = mutableStateOf<Set<Any>>(emptySet())
+    val completeSelectedNodes: State<Set<Any>> = _completeSelectedNodes
+
+    // 🎯 间接选中的父节点
+    private val _indirectSelectedNodes = mutableStateOf<Set<Any>>(emptySet())
+    val indirectSelectedNodes: State<Set<Any>> = _indirectSelectedNodes
+
     // 选择变化回调
     private var onSelectionChanged: ((List<T>) -> Unit)? = null
+    private var onCompleteSelectionChanged: ((CompleteSelectionResult) -> Unit)? = null
     
     /**
      * 🔧 初始化树结构
@@ -32,13 +41,15 @@ class TreeSelectionManager<T>(
         items: List<T>,
         getId: (T) -> Any,
         getChildren: (T) -> List<T>,
-        onSelectionChanged: ((List<T>) -> Unit)? = null
+        onSelectionChanged: ((List<T>) -> Unit)? = null,
+        onCompleteSelectionChanged: ((CompleteSelectionResult) -> Unit)? = null
     ) {
         this.onSelectionChanged = onSelectionChanged
-        
+        this.onCompleteSelectionChanged = onCompleteSelectionChanged
+
         // 构建层次结构
         hierarchy.buildHierarchy(items, getId, getChildren)
-        
+
         // 初始化选择状态
         initializeSelections(items, getId, getChildren)
     }
@@ -117,18 +128,22 @@ class TreeSelectionManager<T>(
      */
     private fun processSelectionEvent(event: SelectionEvent) {
         val result = strategy.handleSelection(event, _selections, hierarchy)
-        
+
         // 更新选择状态
         result.updatedNodes.forEach { (nodeId, state) ->
-            _selections[nodeId] = _selections[nodeId]?.copy(state = state) 
+            _selections[nodeId] = _selections[nodeId]?.copy(state = state)
                 ?: createDefaultSelection(nodeId, state)
         }
-        
+
         // 更新选中的叶子节点
         _selectedLeafNodes.value = result.selectedLeafNodes
-        
+
+        // 🎯 计算完整的选择结果（包含推导的父节点）
+        updateCompleteSelection()
+
         // 触发回调
         notifySelectionChanged()
+        notifyCompleteSelectionChanged()
     }
     
     /**
@@ -145,6 +160,31 @@ class TreeSelectionManager<T>(
     }
     
     /**
+     * 🎯 更新完整的选择结果
+     */
+    private fun updateCompleteSelection() {
+        val directSelected = _selectedLeafNodes.value
+        val indirectSelected = mutableSetOf<Any>()
+
+        // 为每个直接选中的节点推导父节点
+        directSelected.forEach { nodeId ->
+            val ancestors = hierarchy.getAncestors(nodeId)
+            indirectSelected.addAll(ancestors)
+        }
+
+        val completeSelected = directSelected + indirectSelected
+
+        // 更新状态
+        _indirectSelectedNodes.value = indirectSelected
+        _completeSelectedNodes.value = completeSelected
+
+        println("🎯 完整选择结果:")
+        println("   直接选中: $directSelected")
+        println("   间接选中: $indirectSelected")
+        println("   完整选中: $completeSelected")
+    }
+
+    /**
      * 📢 通知选择变化
      */
     private fun notifySelectionChanged() {
@@ -153,6 +193,30 @@ class TreeSelectionManager<T>(
                 hierarchy.getNodeData(nodeId)
             }
             callback(selectedNodes)
+        }
+    }
+
+    /**
+     * 📢 通知完整选择变化
+     */
+    private fun notifyCompleteSelectionChanged() {
+        onCompleteSelectionChanged?.let { callback ->
+            val directSelected = _selectedLeafNodes.value
+            val indirectSelected = _indirectSelectedNodes.value
+            val completeSelected = _completeSelectedNodes.value
+
+            val selectedNodeData = completeSelected.mapNotNull { nodeId ->
+                hierarchy.getNodeData(nodeId)
+            }
+
+            val result = CompleteSelectionResult(
+                directSelectedNodes = directSelected,
+                indirectSelectedNodes = indirectSelected,
+                completeSelectedNodes = completeSelected,
+                selectedNodeData = selectedNodeData
+            )
+
+            callback(result)
         }
     }
     
@@ -187,10 +251,44 @@ class TreeSelectionManager<T>(
     }
     
     /**
-     * 🔍 获取选中的节点ID
+     * 🔍 获取选中的节点ID（仅叶子节点）
      */
     fun getSelectedNodeIds(): Set<Any> {
         return _selectedLeafNodes.value
+    }
+
+    /**
+     * 🎯 获取完整的选中节点ID（包含推导的父节点）
+     */
+    fun getCompleteSelectedNodeIds(): Set<Any> {
+        return _completeSelectedNodes.value
+    }
+
+    /**
+     * 🎯 获取间接选中的父节点ID
+     */
+    fun getIndirectSelectedNodeIds(): Set<Any> {
+        return _indirectSelectedNodes.value
+    }
+
+    /**
+     * 🎯 获取完整的选择结果
+     */
+    fun getCompleteSelectionResult(): CompleteSelectionResult {
+        val directSelected = _selectedLeafNodes.value
+        val indirectSelected = _indirectSelectedNodes.value
+        val completeSelected = _completeSelectedNodes.value
+
+        val selectedNodeData = completeSelected.mapNotNull { nodeId ->
+            hierarchy.getNodeData(nodeId)
+        }
+
+        return CompleteSelectionResult(
+            directSelectedNodes = directSelected,
+            indirectSelectedNodes = indirectSelected,
+            completeSelectedNodes = completeSelected,
+            selectedNodeData = selectedNodeData
+        )
     }
 }
 
