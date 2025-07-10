@@ -1,6 +1,22 @@
 plugins {
     `kotlin-dsl`
 }
+//val kotlinVersion = "2.2.0"
+//val kspVersion = "2.2.0-2.0.2"
+val kotlinVersion = libs.versions.kotlin.get()
+val jdkVersion = libs.versions.jdk.get().toInt()
+val kspVersion = libs.versions.ksp.get()
+
+// 🔧 配置 JVM 工具链，解决版本兼容性问题
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(jdkVersion))
+    }
+}
+
+kotlin {
+    jvmToolchain(jdkVersion)
+}
 
 repositories {
     mavenLocal()
@@ -11,10 +27,6 @@ repositories {
 
 
 
-//val kotlinVersion = "2.2.0"
-//val kspVersion = "2.2.0-2.0.2"
-val kotlinVersion = libs.versions.kotlin.get()
-val kspVersion = libs.versions.ksp.get()
 
 
 dependencies {

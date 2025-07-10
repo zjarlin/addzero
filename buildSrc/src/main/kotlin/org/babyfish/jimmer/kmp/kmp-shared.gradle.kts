@@ -1,4 +1,5 @@
 import org.babyfish.defIos
+import org.babyfish.doIos
 import org.babyfish.jimmer.Vars
 import org.babyfish.jimmer.Versions
 import org.babyfish.jimmer.Versions.javaVersion
@@ -23,6 +24,7 @@ kotlin {
     }
 
     val defIos = defIos()
+    doIos(defIos)
 
 
     jvm()

@@ -4,6 +4,7 @@
 #ksp = "2.2.0-2.0.2"
 
 [versions]
+jdk = "24"
 ksp = "2.2.0-2.0.2"
 # 构建工具版本
 filekitCompose = "0.8.8"
