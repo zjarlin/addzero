@@ -28,17 +28,17 @@ fun GradientThemeWrapper(
     val gradientConfig = AppThemes.getGradientConfig(themeType)
 
     if (gradientConfig != null && themeType.isGradient()) {
-        // 渐变主题 - 应用渐变背景
+        // 渐变主题 - 应用渐变背景（调整透明度，整体协调）
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .background(
                     brush = Brush.radialGradient(
                         colors = listOf(
-                            gradientConfig.colors.first().copy(alpha = 0.15f),
-                            gradientConfig.colors[1].copy(alpha = 0.1f),
-                            gradientConfig.colors.getOrNull(2)?.copy(alpha = 0.08f) ?: Color.Transparent,
-                            MaterialTheme.colorScheme.background.copy(alpha = 0.95f)
+                            gradientConfig.colors.first().copy(alpha = 0.08f),  // 🎨 降低透明度
+                            gradientConfig.colors[1].copy(alpha = 0.06f),       // 🎨 降低透明度
+                            gradientConfig.colors.getOrNull(2)?.copy(alpha = 0.04f) ?: Color.Transparent, // 🎨 降低透明度
+                            MaterialTheme.colorScheme.background.copy(alpha = 0.98f) // 🎨 提高背景透明度
                         ),
                         radius = 1500f
                     )
@@ -65,16 +65,16 @@ fun SidebarGradientBackground(
     val gradientConfig = AppThemes.getGradientConfig(themeType)
 
     if (gradientConfig != null && themeType.isGradient()) {
-        // 渐变主题 - 应用侧边栏渐变
+        // 渐变主题 - 应用侧边栏渐变（调整透明度，与主内容区协调）
         Box(
             modifier = modifier
                 .background(
                     brush = Brush.verticalGradient(
                         colors = listOf(
-                            gradientConfig.colors.first().copy(alpha = 0.25f),
-                            gradientConfig.colors[1].copy(alpha = 0.15f),
-                            gradientConfig.colors.last().copy(alpha = 0.08f),
-                            MaterialTheme.colorScheme.surface.copy(alpha = 0.9f)
+                            gradientConfig.colors.first().copy(alpha = 0.12f), // 🎨 降低透明度
+                            gradientConfig.colors[1].copy(alpha = 0.08f),      // 🎨 降低透明度
+                            gradientConfig.colors.last().copy(alpha = 0.04f),  // 🎨 降低透明度
+                            MaterialTheme.colorScheme.surface.copy(alpha = 0.95f) // 🎨 提高背景透明度
                         )
                     )
                 )
@@ -237,15 +237,16 @@ fun MainContentGradientBackground(
     val gradientConfig = AppThemes.getGradientConfig(themeType)
 
     if (gradientConfig != null && themeType.isGradient()) {
-        // 渐变主题 - 应用主内容渐变
+        // 渐变主题 - 应用主内容渐变（调整透明度，与侧边栏协调）
         Box(
             modifier = modifier
                 .background(
                     brush = Brush.linearGradient(
                         colors = listOf(
                             Color.Transparent,
-                            gradientConfig.colors.last().copy(alpha = 0.05f),
-                            gradientConfig.colors.first().copy(alpha = 0.03f),
+                            gradientConfig.colors.last().copy(alpha = 0.08f),  // 🎨 提高透明度
+                            gradientConfig.colors.first().copy(alpha = 0.06f), // 🎨 提高透明度
+                            gradientConfig.colors[1].copy(alpha = 0.04f),       // 🎨 添加中间色
                             Color.Transparent
                         ),
                         start = androidx.compose.ui.geometry.Offset(0f, 0f),

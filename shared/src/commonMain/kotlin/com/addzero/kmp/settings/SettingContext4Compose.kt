@@ -3,6 +3,7 @@ package com.addzero.kmp.settings
 import com.addzero.kmp.generated.enums.EnumSysTheme
 
 object SettingContext4Compose {
+    const val APP_NAME="Addzero"
     const val WELCOME_MSG = "登陆成功,欢迎回来!"
 
     const val AI_SYS_PROMT = "你是后台管理助手,你的回答应该遵循标准Markdown格式"

@@ -35,75 +35,74 @@ import com.addzero.kmp.ui.infra.theme.*
 fun SideMenu() {
     val currentTheme = ThemeViewModel.currentTheme
 
-    // 侧边菜单 - 美化设计，支持渐变主题
-    SidebarGradientBackground(
-        themeType = currentTheme,
+    // 🚀 纯粹的 AddTree 组件，使用 Surface 控制大小和样式
+    Surface(
         modifier = Modifier
             .width(if (isExpand) 240.dp else 56.dp)
-            .fillMaxHeight()
+            .fillMaxHeight(),
+        color = when (currentTheme) {
+            AppThemeType.GRADIENT_RAINBOW,
+            AppThemeType.GRADIENT_SUNSET,
+            AppThemeType.GRADIENT_OCEAN,
+            AppThemeType.GRADIENT_FOREST,
+            AppThemeType.GRADIENT_AURORA,
+            AppThemeType.GRADIENT_NEON -> Color.Transparent
+            else -> MaterialTheme.colorScheme.surface
+        },
+        tonalElevation = if (currentTheme.isGradient()) 0.dp else 2.dp
     ) {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = Color.Transparent, // 透明背景，显示渐变
-            tonalElevation = 0.dp
-        ) {
-        Column {
-            // 菜单标题 - 减少内边距
-            if (isExpand) {
-                Text(
-                    text = "导航菜单",
-                    style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
-                )
-                // 添加分隔线
-                HorizontalDivider(
-                    modifier = Modifier.padding(horizontal = 8.dp),
-                    thickness = 0.5.dp,
-                    color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f)
-                )
-            }
-
-            // 使用AddTree组件渲染菜单树 - 减少内边距，使用 Surface 而不是 Box
-            Surface(
-                modifier = Modifier.fillMaxSize().padding(horizontal = 4.dp, vertical = 4.dp),
-                color = MaterialTheme.colorScheme.surface
+        // 如果是渐变主题，添加渐变背景
+        if (currentTheme.isGradient()) {
+            SidebarGradientBackground(
+                themeType = currentTheme,
+                modifier = Modifier.fillMaxSize()
             ) {
-                // 🎯 使用新的 TreeViewModel API
-                val viewModel = rememberTreeViewModel<SysMenuVO>()
-
-                // 配置 ViewModel
-                LaunchedEffect(MenuViewModel.menuItems) {
-                    viewModel.configure(
-                        getId = { it.path },
-                        getLabel = { it.title },
-                        getChildren = { it.children },
-                        getIcon = { getMenuIcon(it) }
-                    )
-                    viewModel.onNodeClick = { selectedMenu ->
-                        // 处理菜单项点击
-                        if (selectedMenu.enumSysMenuType == EnumSysMenuType.SCREEN && selectedMenu.children.isEmpty()) {
-                            // 如果是页面类型且没有子项，才进行导航
-                            MenuViewModel.updateRoute(selectedMenu.path)
-                        }
-                        // 注意：折叠/展开状态由AddTree内部管理，这里不需要手动处理
-                    }
-                    viewModel.setItems(
-                        MenuViewModel.menuItems,
-                        setOf(RouteKeys.HOME_SCREEN)
-                    )
-                }
-
-                AddTree(
-                    viewModel = viewModel,
-                    modifier = Modifier.fillMaxSize(),
-                    compactMode = !isExpand // 🚀 传递收起状态，启用紧凑模式
-                )
+                TreeContent()
             }
-        }
+        } else {
+            TreeContent()
         }
     }
 }
+
+/**
+ * 🚀 纯粹的树组件内容
+ */
+@Composable
+private fun TreeContent() {
+    // 🎯 使用新的 TreeViewModel API
+    val viewModel = rememberTreeViewModel<SysMenuVO>()
+
+    // 配置 ViewModel
+    LaunchedEffect(MenuViewModel.menuItems) {
+        viewModel.configure(
+            getId = { it.path },
+            getLabel = { it.title },
+            getChildren = { it.children },
+            getIcon = { getMenuIcon(it) }
+        )
+        viewModel.onNodeClick = { selectedMenu ->
+            // 处理菜单项点击
+            if (selectedMenu.enumSysMenuType == EnumSysMenuType.SCREEN && selectedMenu.children.isEmpty()) {
+                // 如果是页面类型且没有子项，才进行导航
+                MenuViewModel.updateRoute(selectedMenu.path)
+            }
+            // 注意：折叠/展开状态由AddTree内部管理，这里不需要手动处理
+        }
+        viewModel.setItems(
+            MenuViewModel.menuItems,
+            setOf(RouteKeys.HOME_SCREEN)
+        )
+    }
+
+    AddTree(
+        viewModel = viewModel,
+        modifier = Modifier.fillMaxSize(),
+        compactMode = !isExpand // 🚀 传递收起状态，启用紧凑模式
+    )
+}
+
+// 🎨 AppThemeType 已经有内置的 isGradient() 方法，无需重复定义
 
 @Composable
 private fun getMenuIcon(vO: SysMenuVO): ImageVector? {

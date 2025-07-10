@@ -1,21 +1,11 @@
 package com.addzero.kmp.ui.infra
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CloudUpload
 import androidx.compose.material.icons.filled.SmartToy
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -27,6 +17,7 @@ import com.addzero.kmp.component.button.AddIconButton
 import com.addzero.kmp.component.theme.QuickThemeToggle
 import com.addzero.kmp.component.upload_manager.GlobalUploadManager
 import com.addzero.kmp.component.upload_manager.UploadManagerUI
+import com.addzero.kmp.settings.SettingContext4Compose.APP_NAME
 import com.addzero.kmp.ui.infra.model.menu.MenuLayoutToggleButton
 import com.addzero.kmp.ui.infra.model.menu.MenuViewModel
 import com.addzero.kmp.ui.infra.model.menu.SysUserCenterScreen
@@ -57,23 +48,36 @@ fun SysTopBar(
     var showUploadManager by remember { mutableStateOf(false) }
 
     TopAppBar(
-        title = { Text("AddzeroKmp") },
+        title = {
+            // 🎨 美化的标题组件
+            BeautifulTitle(appName = APP_NAME, currentTheme = currentTheme)
+        },
         navigationIcon = {
-            // 导航栏横纵切换按钮（点击时切换侧边栏展开状态）
-            MenuLayoutToggleButton(
-                isExpanded = MenuViewModel.isExpand,
-                onToggle = { MenuViewModel.isExpand = !MenuViewModel.isExpand }
-            )
+
+
+            Row(
+                horizontalArrangement = Arrangement.Start,
+                modifier = Modifier
+            ) {
+                // 导航栏横纵切换按钮（点击时切换侧边栏展开状态）
+                MenuLayoutToggleButton(
+                    isExpanded = MenuViewModel.isExpand,
+                    onToggle = { MenuViewModel.isExpand = !MenuViewModel.isExpand }
+                )
+
+                // 间距
+                Spacer(modifier = Modifier.width(8.dp))
+
+                // 快速主题切换按钮 - 用于测试渐变效果
+                QuickThemeToggle()
+
+            }
+
         },
         actions = {
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-
-                // 快速主题切换按钮 - 用于测试渐变效果
-                QuickThemeToggle()
-                // 间距
-                Spacer(modifier = Modifier.width(8.dp))
 
 
                 // 主题明暗切换按钮 - 仅在非渐变主题时显示
@@ -97,7 +101,6 @@ fun SysTopBar(
                 )
                 // 间距
                 Spacer(modifier = Modifier.width(8.dp))
-
 
 
                 // 用户中心
@@ -176,3 +179,4 @@ fun SysTopBar(
         }
     }
 }
+
