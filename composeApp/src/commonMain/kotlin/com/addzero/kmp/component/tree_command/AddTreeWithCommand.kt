@@ -1,7 +1,6 @@
 package com.addzero.kmp.component.tree_command
 
 import androidx.compose.animation.*
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -9,31 +8,28 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.addzero.kmp.anno.Good
 import com.addzero.kmp.component.search_bar.AddSearchBar
 import com.addzero.kmp.component.tree.AddTree
-import com.addzero.kmp.component.tree.DefaultNodeRender
-import com.addzero.kmp.component.tree.TreeNodeInfo
 import com.addzero.kmp.component.tree.TreeViewModel
 import com.addzero.kmp.component.tree.rememberTreeViewModel
 
 /**
- * 🚀 重构后的支持命令的树组件 - 基于新的设计理念
+ * 🚀 完全重构的支持命令的树组件 - 基于 TreeViewModel 架构
  *
  * 🎯 设计理念：
+ * - 完全基于 TreeViewModel，移除 TreeNodeInfo 依赖
  * - 头部和尾部内容在外部声明，不使用插槽
- * - 只保留必要的内部插槽（如 contextMenu）
- * - 使用 AddSearchBar 组件增强搜索体验
+ * - 使用 AddSearchBar 组件和 TreeSearch 算法
  * - 清晰的职责分离：命令处理 vs 树渲染
  *
  * @param items 树形结构数据列表
  * @param getId 获取节点ID的函数
  * @param getLabel 获取节点标签的函数
  * @param getChildren 获取子节点的函数
+ * @param modifier 修饰符
  * @param getNodeType 获取节点类型的函数
  * @param getIcon 获取节点图标的函数
  * @param initiallyExpandedIds 初始展开的节点ID列表
@@ -43,11 +39,8 @@ import com.addzero.kmp.component.tree.rememberTreeViewModel
  * @param onCommandInvoke 命令执行回调
  * @param onSelectionChange 选择变化回调(多选模式)
  * @param onItemsChanged 过滤后项目变化回调
- * @param nodeRender 节点渲染函数
- * @param contextMenuContent 右键菜单内容
  */
 @Composable
-@Good
 fun <T> AddTreeWithCommand(
     items: List<T>,
     getId: (T) -> Any,
@@ -62,10 +55,7 @@ fun <T> AddTreeWithCommand(
     onNodeContextMenu: (T) -> Unit = {},
     onCommandInvoke: (TreeCommand, Any?) -> Unit = { _, _ -> },
     onSelectionChange: (List<T>) -> Unit = {},
-    onItemsChanged: (List<T>) -> Unit = {},
-    // ⚠️ nodeRender 参数已废弃，新的 AddTree 使用内置渲染
-    nodeRender: @Composable (TreeNodeInfo<T>) -> Unit = { DefaultNodeRender(it) },
-    contextMenuContent: @Composable (T) -> Unit = {}
+    onItemsChanged: (List<T>) -> Unit = {}
 ) {
 
     // 🎯 创建和配置 TreeViewModel
@@ -173,7 +163,7 @@ fun <T> AddTreeWithCommand(
             }
         }
 
-        // 🌳 树组件（使用 TreeViewModel）
+        // 🌳 树组件（完全基于 TreeViewModel）
         AddTree(
             viewModel = viewModel,
             modifier = Modifier.weight(1f)
@@ -229,72 +219,7 @@ private fun SearchBar(
     )
 }
 
-/**
- * 多选模式下的节点渲染
- */
-@Composable
-private fun <T> MultiSelectNodeRender(
-    nodeInfo: TreeNodeInfo<T>,
-    isSelected: Boolean,
-    onSelectionToggle: (Boolean) -> Unit
-) {
-    val backgroundColor = when {
-        nodeInfo.isSelected -> MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.7f)
-        nodeInfo.level == 0 -> MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.2f)
-        else -> MaterialTheme.colorScheme.surface
-    }
 
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(MaterialTheme.shapes.small)
-            .background(backgroundColor)
-            .padding(start = (nodeInfo.level * 16).dp, end = 8.dp, top = 8.dp, bottom = 8.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        // 多选框
-        IconButton(
-            onClick = { onSelectionToggle(!isSelected) },
-            modifier = Modifier.size(32.dp)
-        ) {
-            Icon(
-                imageVector = if (isSelected) Icons.Default.CheckBox else Icons.Default.CheckBoxOutlineBlank,
-                contentDescription = if (isSelected) "取消选择" else "选择",
-                tint = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
-                modifier = Modifier.size(20.dp)
-            )
-        }
-
-        // 图标
-        Icon(
-            imageVector = nodeInfo.icon ?: Icons.Default.Folder,
-            contentDescription = null,
-            modifier = Modifier.size(20.dp)
-        )
-
-        Spacer(modifier = Modifier.width(8.dp))
-
-        // 节点文本
-        Text(
-            text = nodeInfo.label,
-            style = MaterialTheme.typography.bodyMedium,
-            overflow = TextOverflow.Ellipsis,
-            maxLines = 1,
-            modifier = Modifier.weight(1f)
-        )
-
-        // 显示节点类型
-        if (nodeInfo.nodeType.isNotEmpty()) {
-            Text(
-                text = nodeInfo.nodeType,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.outline,
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 1
-            )
-        }
-    }
-}
 
 /**
  * 底部选择工具栏
@@ -372,48 +297,5 @@ private fun <T> getAllIds(
     return result
 }
 
-/**
- * 🎯 搜索时自动展开包含匹配项的父节点
- */
-private fun <T> expandMatchingParents(
-    items: List<T>,
-    query: String,
-    getId: (T) -> Any,
-    getLabel: (T) -> String,
-    getChildren: (T) -> List<T>,
-    onExpandIds: (Set<Any>) -> Unit
-) {
-    val matchingParentIds = mutableSetOf<Any>()
-    val lowerQuery = query.trim().lowercase()
 
-    fun findMatchingNodes(nodes: List<T>, parentPath: List<Any> = emptyList()) {
-        nodes.forEach { node ->
-            val nodeId = getId(node)
-            val currentPath = parentPath + nodeId
-            val children = getChildren(node)
-
-            // 检查当前节点是否匹配
-            val nodeMatches = getLabel(node).lowercase().contains(lowerQuery)
-
-            // 递归检查子节点
-            var hasMatchingChildren = false
-            if (children.isNotEmpty()) {
-                val childrenBefore = matchingParentIds.size
-                findMatchingNodes(children, currentPath)
-                hasMatchingChildren = matchingParentIds.size > childrenBefore
-            }
-
-            // 如果当前节点匹配或有匹配的子节点，展开所有父节点
-            if (nodeMatches || hasMatchingChildren) {
-                matchingParentIds.addAll(parentPath)
-            }
-        }
-    }
-
-    findMatchingNodes(items)
-
-    if (matchingParentIds.isNotEmpty()) {
-        onExpandIds(matchingParentIds)
-    }
-}
 

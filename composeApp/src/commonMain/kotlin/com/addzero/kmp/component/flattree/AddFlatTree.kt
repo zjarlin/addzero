@@ -4,9 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import com.addzero.kmp.component.tree.AddTree
-import com.addzero.kmp.component.tree.DefaultNodeRender
 import com.addzero.kmp.component.tree.NodeType
-import com.addzero.kmp.component.tree.TreeNodeInfo
 import com.addzero.kmp.component.tree.rememberTreeViewModel
 import com.addzero.kmp.util.data_structure.tree.List2TreeUtil
 
@@ -51,7 +49,7 @@ fun <T> AddFlatTree(
     modifier: Modifier = Modifier,
     initiallyExpandedIds: Set<Any> = emptySet(),
     onNodeClick: (T) -> Unit = {},
-    nodeRender: @Composable (TreeNodeInfo<TreeNode<T>>) -> Unit = { DefaultNodeRender(it) }
+    // nodeRender 已移除，使用 AddTree 内置渲染
 ) {
     // 将扁平结构转换为树形结构
     // 先将原始数据转换为TreeNode
