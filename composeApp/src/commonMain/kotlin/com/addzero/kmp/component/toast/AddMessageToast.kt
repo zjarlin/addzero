@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 
@@ -66,7 +67,9 @@ fun AddMessageToast(
         exit = fadeOut(tween(200)) + slideOutVertically(tween(200)) { -it }
     ) {
         Box(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp), // 🎨 添加水平边距，确保不会贴边
             contentAlignment = Alignment.TopCenter
         ) {
             message?.let {
@@ -91,14 +94,14 @@ private fun MessageCard(
 ) {
     Card(
         modifier = Modifier
-            .fillMaxWidth(0.8f)
+            .fillMaxWidth(0.4f) // 🎨 减少宽度从80%到40%，避免挡到标题栏
             .padding(top = 16.dp)
     ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(backgroundColor)
-                .padding(16.dp),
+                .padding(horizontal = 16.dp, vertical = 12.dp), // 🎨 减少垂直内边距，让Toast更紧凑
             contentAlignment = Alignment.CenterStart
         ) {
             Row(
@@ -112,8 +115,10 @@ private fun MessageCard(
 
                 Text(
                     text = message,
-                    style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.padding(start = 12.dp)
+                    style = MaterialTheme.typography.bodyMedium, // 🎨 使用更小的字体
+                    modifier = Modifier.padding(start = 8.dp), // 🎨 减少图标和文字的间距
+                    maxLines = 2, // 🎨 限制最多显示2行，避免过长
+                    overflow = TextOverflow.Ellipsis // 🎨 超长文字显示省略号
                 )
             }
         }
