@@ -3,6 +3,7 @@ package com.addzero.kmp.component.tree
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.addzero.kmp.util.data_structure.tree.TreeSearch
+import com.addzero.kmp.component.tree.selection.*
 
 /**
  * 🎯 树组件的 ViewModel - 管理所有响应式状态
@@ -27,7 +28,11 @@ class TreeViewModel<T> {
     // 🔄 多选状态
     var multiSelectMode by mutableStateOf(false)
 
-    var selectedItems by mutableStateOf<Set<Any>>(emptySet())
+    // 🎯 选择管理器 - 使用设计模式管理复杂的选择逻辑
+    private val selectionManager = TreeSelectionManager<T>(CascadingSelectionStrategy())
+
+    // 📋 选中的项目 - 通过选择管理器获取
+    val selectedItems: State<Set<Any>> = selectionManager.selectedLeafNodes
 
     // 🔍 搜索状态
     var searchQuery by mutableStateOf("")
@@ -91,6 +96,18 @@ class TreeViewModel<T> {
     ) {
         items = newItems
         expandedIds = initiallyExpandedIds
+
+        // 🎯 初始化选择管理器
+        if (isConfigured) {
+            selectionManager.initialize(
+                items = newItems,
+                getId = getId,
+                getChildren = getChildren,
+                onSelectionChanged = { selectedNodes ->
+                    onSelectionChange(selectedNodes)
+                }
+            )
+        }
     }
 
     /**
@@ -144,37 +161,44 @@ class TreeViewModel<T> {
     fun updateMultiSelectMode(enabled: Boolean) {
         multiSelectMode = enabled
         if (!enabled) {
-            selectedItems = emptySet()
+            selectionManager.clearAllSelections()
         }
     }
 
     fun toggleItemSelection(nodeId: Any) {
         if (!multiSelectMode) return
 
-        val currentSelected = selectedItems.toMutableSet()
-        if (nodeId in currentSelected) {
-            currentSelected.remove(nodeId)
-        } else {
-            currentSelected.add(nodeId)
-        }
-        selectedItems = currentSelected
-
-        // 🚀 性能优化：使用缓存的节点映射避免重复遍历
-        notifySelectionChange()
+        // 🎯 使用选择管理器处理复杂的选择逻辑
+        selectionManager.handleNodeClick(nodeId)
     }
 
-    // 🎯 缓存所有节点的映射，避免重复计算
-    private val allNodesCache by derivedStateOf {
-        items.flatMap { getAllNodes(it) }
+    /**
+     * 🎯 高级选择操作 - 使用选择管理器
+     */
+    fun getNodeSelectionState(nodeId: Any): SelectionState {
+        return selectionManager.getNodeState(nodeId)
     }
 
-    private fun notifySelectionChange() {
-        val selectedNodes = allNodesCache.filter { getId(it) in selectedItems }
-        onSelectionChange(selectedNodes)
+    fun isNodeIndeterminate(nodeId: Any): Boolean {
+        return selectionManager.isNodeIndeterminate(nodeId)
+    }
+
+    fun clearAllSelections() {
+        selectionManager.clearAllSelections()
+    }
+
+    fun selectAllNodes() {
+        selectionManager.selectAll()
     }
 
     fun isItemSelected(nodeId: Any): Boolean {
-        return nodeId in selectedItems
+        return selectionManager.isNodeSelected(nodeId)
+    }
+
+    private fun notifySelectionChange() {
+        // 使用选择管理器获取选中的节点
+        val selectedNodes = selectionManager.getSelectedNodes()
+        onSelectionChange(selectedNodes)
     }
 
     /**
@@ -258,14 +282,7 @@ class TreeViewModel<T> {
         return result
     }
 
-    private fun getAllNodes(node: T): List<T> {
-        val result = mutableListOf<T>()
-        result.add(node)
-        getChildren(node).forEach { child ->
-            result.addAll(getAllNodes(child))
-        }
-        return result
-    }
+
 
     fun isExpanded(nodeId: Any): Boolean {
         return nodeId in expandedIds

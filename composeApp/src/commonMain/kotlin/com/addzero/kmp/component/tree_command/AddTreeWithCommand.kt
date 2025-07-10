@@ -177,7 +177,6 @@ fun <T> AddTreeWithCommand(
             SelectedItemsBar(
                 onClearSelection = {
                     viewModel.updateMultiSelectMode(false)
-                    viewModel.selectedItems = emptySet()
                     onSelectionChange(emptyList())
                 }
             )

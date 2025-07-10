@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.unit.dp
 import com.addzero.kmp.component.search_bar.AddSearchBar
 
@@ -250,11 +251,17 @@ private fun <T> TreeNodeContent(
                 .padding(horizontal = 12.dp, vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // 🔄 多选模式复选框
+            // 🔄 多选模式复选框 - 支持半选状态
             if (viewModel.multiSelectMode) {
-                Checkbox(
-                    checked = isItemSelected,
-                    onCheckedChange = { viewModel.toggleItemSelection(nodeId) }
+                val selectionState = viewModel.getNodeSelectionState(nodeId)
+
+                TriStateCheckbox(
+                    state = when (selectionState) {
+                        com.addzero.kmp.component.tree.selection.SelectionState.SELECTED -> ToggleableState.On
+                        com.addzero.kmp.component.tree.selection.SelectionState.INDETERMINATE -> ToggleableState.Indeterminate
+                        com.addzero.kmp.component.tree.selection.SelectionState.UNSELECTED -> ToggleableState.Off
+                    },
+                    onClick = { viewModel.toggleItemSelection(nodeId) }
                 )
                 Spacer(modifier = Modifier.width(8.dp))
             }
