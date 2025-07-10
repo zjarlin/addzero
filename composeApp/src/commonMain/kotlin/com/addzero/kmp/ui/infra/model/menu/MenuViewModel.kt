@@ -1,16 +1,15 @@
 package com.addzero.kmp.ui.infra.model.menu
 
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
 import com.addzero.kmp.di.NavgationService
 import com.addzero.kmp.entity.sys.menu.EnumSysMenuType
 import com.addzero.kmp.entity.sys.menu.SysMenuVO
 import com.addzero.kmp.generated.RouteKeys
 import com.addzero.kmp.generated.RouteTable
 import com.addzero.kmp.util.data_structure.tree.List2TreeUtil
-import org.koin.android.annotation.KoinViewModel
 
 object MenuViewModel {
 
@@ -25,6 +24,54 @@ object MenuViewModel {
     var currentRoute by mutableStateOf(RouteKeys.HOME_SCREEN)
     var keyword by mutableStateOf("")
         private set
+
+    /**
+     * 🎯 当前路由的元数据
+     * 使用 derivedStateOf 确保只有当 currentRoute 变化时才重新计算
+     */
+    val currentRouteMetadata by derivedStateOf {
+        RouteTable.allMeta.find { it.routePath == currentRoute }
+    }
+
+    /**
+     * 🏷️ 当前路由的标题
+     * 使用 derivedStateOf 基于 currentRouteMetadata 计算
+     */
+    val currentRouteTitle by derivedStateOf {
+        currentRouteMetadata?.title ?: "未知页面"
+    }
+
+    /**
+     * 🎨 当前路由的图标
+     * 使用 derivedStateOf 基于 currentRouteMetadata 计算
+     */
+    val currentRouteIcon by derivedStateOf {
+        currentRouteMetadata?.icon ?: ""
+    }
+
+    /**
+     * 📂 当前路由的分组
+     * 使用 derivedStateOf 基于 currentRouteMetadata 计算
+     */
+    val currentRouteGroup by derivedStateOf {
+        currentRouteMetadata?.value ?: ""
+    }
+
+    /**
+     * 🔢 当前路由的排序
+     * 使用 derivedStateOf 基于 currentRouteMetadata 计算
+     */
+    val currentRouteOrder by derivedStateOf {
+        currentRouteMetadata?.order ?: 0.0
+    }
+
+    /**
+     * 🔗 当前路由的完全限定名
+     * 使用 derivedStateOf 基于 currentRouteMetadata 计算
+     */
+    val currentRouteQualifiedName by derivedStateOf {
+        currentRouteMetadata?.qualifiedName ?: ""
+    }
 
     var cacleBreadcrumb by mutableStateOf(run {
 
@@ -116,10 +163,35 @@ object MenuViewModel {
 //        return flatMenuList
     }
 
-    fun getRouteByKey(string: String): String {
-        val associate = RouteTable.allMeta.associate { it.routePath to it }
-        val route = associate[string] ?: throw RuntimeException("Route not found: $string")
-        return route.title
+    /**
+     * 🗺️ 路由元数据映射表
+     * 使用 derivedStateOf 缓存路由映射，避免重复查找
+     */
+    private val routeMetadataMap by derivedStateOf {
+        RouteTable.allMeta.associateBy { it.routePath }
+    }
+
+    /**
+     * 🔍 根据路由键获取菜单项
+     * 基于缓存的元数据创建菜单项
+     */
+    fun getRouteByKey(routeKey: String): SysMenuVO? {
+        val metadata = routeMetadataMap[routeKey] ?: return null
+        return SysMenuVO(
+            path = metadata.routePath,
+            title = metadata.title,
+            icon = metadata.icon,
+            sort = metadata.order,
+            enumSysMenuType = EnumSysMenuType.SCREEN
+        )
+    }
+
+    /**
+     * 🏷️ 根据路由键获取路由标题（兼容旧版本）
+     * 使用缓存的映射表快速获取标题
+     */
+    fun getRouteTitleByKey(routeKey: String): String {
+        return routeMetadataMap[routeKey]?.title ?: "未知页面"
     }
 
 

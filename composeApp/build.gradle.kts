@@ -1,5 +1,5 @@
 import org.babyfish.jimmer.Versions
-import org.gradle.kotlin.dsl.getByType
+import org.babyfish.jimmer.Versions.kotlinxCoroutinesVersion
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 plugins {
@@ -10,11 +10,11 @@ plugins {
 }
 
 dependencies {
-   kspCommonMainMetadata(projects.lib.addzeroRouteProcessor)
-   kspCommonMainMetadata(projects.lib.addzeroComposePropsProcessor)
-    kspCommonMainMetadata("io.insert-koin:koin-ksp-compiler:+")
-}
+    kspCommonMainMetadata(projects.lib.addzeroRouteProcessor)
+    kspCommonMainMetadata(projects.lib.addzeroComposePropsProcessor)
+    kspCommonMainMetadata("io.insert-koin:koin-ksp-compiler:${Versions.koinVersion}")
 
+}
 
 
 //dependencies {
@@ -65,13 +65,12 @@ kotlin {
             implementation("io.github.vinceglb:filekit-compose:${Versions.fileKitVersion}")
             // Enables FileKit with Composable utilities
 //            implementation("io.github.vinceglb:filekit-compose:+")
-            implementation("io.github.vinceglb:filekit-compose:0.8.8")
 
 
             //日志库
 //            implementation("co.touchlab:kermit:+") // 基础库
             // 添加SLF4J实现
-            implementation("org.slf4j:slf4j-simple:+")
+//            implementation("org.slf4j:slf4j-simple:+")
 
 
             //注解处理器核心包
@@ -85,7 +84,7 @@ kotlin {
             // 添加 Skia 依赖
 //            implementation("org.jetbrains.skia:skia:+")
             // 协程相关依赖
-            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion")
             //时间依赖
             implementation("org.jetbrains.kotlinx:kotlinx-datetime:+")
 

@@ -31,6 +31,8 @@ object Vars {
 }
 
 object Versions {
+    const val kotlinxCoroutinesVersion = "1.7.3"
+    const val koinVersion = "2.1.0"
     const val ktorVersion="3.2.1"
     const val pinyin4jVersion = "2.5.1"
 

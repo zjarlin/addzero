@@ -105,7 +105,7 @@ private fun TreeContent() {
 // 🎨 AppThemeType 已经有内置的 isGradient() 方法，无需重复定义
 
 @Composable
-private fun getMenuIcon(vO: SysMenuVO): ImageVector? {
+fun getMenuIcon(vO: SysMenuVO): ImageVector? {
     val path = vO.path
     return if (vO.icon.isNotBlank()) {
         val vector = IconMap[vO.icon].vector
