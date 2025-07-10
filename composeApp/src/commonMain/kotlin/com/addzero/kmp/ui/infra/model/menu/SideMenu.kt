@@ -96,7 +96,8 @@ fun SideMenu() {
 
                 AddTree(
                     viewModel = viewModel,
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
+                    compactMode = !isExpand // 🚀 传递收起状态，启用紧凑模式
                 )
             }
         }

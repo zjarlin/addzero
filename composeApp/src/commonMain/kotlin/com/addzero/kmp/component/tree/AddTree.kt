@@ -18,6 +18,7 @@ import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.unit.dp
 import com.addzero.kmp.component.search_bar.AddSearchBar
 import com.addzero.kmp.component.tree.NodeType
+import com.addzero.kmp.component.button.AddIconButton
 
 /**
  * 🚀 优化版树组件 - 使用 ViewModel 管理状态
@@ -42,6 +43,7 @@ import com.addzero.kmp.component.tree.NodeType
 fun <T> AddTree(
     viewModel: TreeViewModel<T>,
     modifier: Modifier = Modifier,
+    compactMode: Boolean = false, // 🚀 紧凑模式：只显示图标，不显示文本
     content: @Composable TreeScope<T>.() -> Unit = {}
 ) {
     // 🎯 创建树作用域
@@ -67,7 +69,8 @@ fun <T> AddTree(
                     TreeNodeRenderer(
                         node = item,
                         viewModel = viewModel,
-                        level = 0
+                        level = 0,
+                        compactMode = compactMode
                     )
                 }
             }
@@ -171,7 +174,8 @@ private class TreeScopeImpl<T>(
 private fun <T> TreeNodeRenderer(
     node: T,
     viewModel: TreeViewModel<T>,
-    level: Int
+    level: Int,
+    compactMode: Boolean = false
 ) {
     val nodeId = viewModel.getId(node)
     val isExpanded = viewModel.isExpanded(nodeId)
@@ -187,6 +191,7 @@ private fun <T> TreeNodeRenderer(
         isExpanded = isExpanded,
         isSelected = isSelected,
         hasChildren = hasChildren,
+        compactMode = compactMode,
         onToggleExpanded = { viewModel.toggleExpanded(nodeId) },
         onClick = { viewModel.clickNode(node) }
     )
@@ -197,7 +202,8 @@ private fun <T> TreeNodeRenderer(
             TreeNodeRenderer(
                 node = child,
                 viewModel = viewModel,
-                level = level + 1
+                level = level + 1,
+                compactMode = compactMode
             )
         }
     }
@@ -214,6 +220,7 @@ private fun <T> TreeNodeContent(
     isExpanded: Boolean,
     isSelected: Boolean,
     hasChildren: Boolean,
+    compactMode: Boolean = false,
     onToggleExpanded: () -> Unit,
     onClick: () -> Unit
 ) {
@@ -225,17 +232,24 @@ private fun <T> TreeNodeContent(
         modifier = Modifier
             .fillMaxWidth()
             .padding(
-                start = (level * 16 + 6).dp,
+                start = if (compactMode) 6.dp else (level * 16 + 6).dp, // 🚀 紧凑模式下减少缩进
                 end = 6.dp,
                 top = 2.dp,
                 bottom = 2.dp
             )
-            .clickable {
-                // 🔄 原来的行为：点击整个菜单项控制展开/收起
-                if (hasChildren) {
-                    onToggleExpanded() // 有子节点：切换展开状态
+            .let { modifier ->
+                // 🚀 紧凑模式下点击事件由 AddIconButton 处理，展开模式下使用 clickable
+                if (compactMode) {
+                    modifier // 紧凑模式下不添加 clickable，避免重复处理
+                } else {
+                    modifier.clickable {
+                        // 🔄 原来的行为：点击整个菜单项控制展开/收起
+                        if (hasChildren) {
+                            onToggleExpanded() // 有子节点：切换展开状态
+                        }
+                        onClick() // 总是触发点击回调
+                    }
                 }
-                onClick() // 总是触发点击回调
             },
         shape = RectangleShape, // 🎨 扁平化设计，不使用圆角
         tonalElevation = if (isSelected) 2.dp else 0.dp,
@@ -249,11 +263,15 @@ private fun <T> TreeNodeContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(40.dp)
-                .padding(horizontal = 12.dp, vertical = 8.dp),
-            verticalAlignment = Alignment.CenterVertically
+                .padding(
+                    horizontal = if (compactMode) 4.dp else 12.dp, // 🚀 紧凑模式下减少水平内边距
+                    vertical = 8.dp
+                ),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = if (compactMode) Arrangement.Center else Arrangement.Start // 🚀 紧凑模式下居中显示
         ) {
-            // 🔄 多选模式复选框 - 支持半选状态
-            if (viewModel.multiSelectMode) {
+            // 🔄 多选模式复选框 - 支持半选状态（紧凑模式下隐藏）
+            if (viewModel.multiSelectMode && !compactMode) {
                 val selectionState = viewModel.getNodeSelectionState(nodeId)
 
                 TriStateCheckbox(
@@ -267,37 +285,61 @@ private fun <T> TreeNodeContent(
                 Spacer(modifier = Modifier.width(8.dp))
             }
 
-            // 🎨 节点图标 - 使用 ViewModel 的缓存图标方法
+            // 🎨 节点图标 - 紧凑模式下使用 AddIconButton，展开模式下使用普通 Icon
             val icon = viewModel.getIconCached(node)
 
             if (icon != null) {
-                Icon(
-                    imageVector = icon,
-                    contentDescription = null,
-                    modifier = Modifier.size(20.dp),
-                    tint = if (isSelected) {
+                if (compactMode) {
+                    // 🚀 紧凑模式：使用 AddIconButton 提供 Tooltip 支持
+                    AddIconButton(
+                        text = viewModel.getLabelCached(node),
+                        imageVector = icon,
+                        tint = if (isSelected) {
+                            MaterialTheme.colorScheme.primary
+                        } else {
+                            MaterialTheme.colorScheme.onSurface
+                        },
+                        modifier = Modifier.size(32.dp), // 🚀 紧凑模式下使用更大的点击区域
+                        onClick = {
+                            // 🔄 处理点击事件
+                            if (hasChildren) {
+                                onToggleExpanded() // 有子节点：切换展开状态
+                            }
+                            onClick() // 总是触发点击回调
+                        }
+                    )
+                } else {
+                    // 🎨 展开模式：使用普通 Icon
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = null,
+                        modifier = Modifier.size(20.dp),
+                        tint = if (isSelected) {
+                            MaterialTheme.colorScheme.primary
+                        } else {
+                            MaterialTheme.colorScheme.onSurface
+                        }
+                    )
+                    Spacer(modifier = Modifier.width(12.dp))
+                }
+            }
+
+            // 📝 节点标签（紧凑模式下隐藏）
+            if (!compactMode) {
+                Text(
+                    text = viewModel.getLabelCached(node),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = if (isSelected) {
                         MaterialTheme.colorScheme.primary
                     } else {
                         MaterialTheme.colorScheme.onSurface
-                    }
+                    },
+                    modifier = Modifier.weight(1f)
                 )
-                Spacer(modifier = Modifier.width(12.dp))
             }
 
-            // 📝 节点标签
-            Text(
-                text = viewModel.getLabelCached(node),
-                style = MaterialTheme.typography.bodyMedium,
-                color = if (isSelected) {
-                    MaterialTheme.colorScheme.primary
-                } else {
-                    MaterialTheme.colorScheme.onSurface
-                },
-                modifier = Modifier.weight(1f)
-            )
-
-            // 📂 展开/折叠箭头（只有子节点才显示）
-            if (hasChildren) {
+            // 📂 展开/折叠箭头（只有子节点才显示，紧凑模式下隐藏）
+            if (hasChildren && !compactMode) {
                 Icon(
                     imageVector = if (isExpanded) {
                         Icons.Default.KeyboardArrowDown
@@ -329,6 +371,7 @@ fun <T> AddTree(
     getLabel: (T) -> String,
     getChildren: (T) -> List<T>,
     modifier: Modifier = Modifier,
+    compactMode: Boolean = false,
     getNodeType: (T) -> String = { "" },
     getIcon: @Composable (T) -> ImageVector? = { node ->
         // 🚀 默认使用 NodeType 推测图标
@@ -365,6 +408,7 @@ fun <T> AddTree(
     AddTree(
         viewModel = viewModel,
         modifier = modifier,
+        compactMode = compactMode,
         content = content
     )
 }
