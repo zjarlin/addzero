@@ -1,6 +1,7 @@
 package com.addzero.kmp.api
 
 import de.jensklingenberg.ktorfit.http.*
+import com.addzero.kmp.entity.PageResult
 
 /**
  * Ktorfit接口 - 由KSP自动生成
@@ -14,9 +15,9 @@ interface SysUserApi {
  * page
  * HTTP方法: GET
  * 路径: /sysUser/page
- * 返回类型: kotlin.Unit
+ * 返回类型: com.addzero.kmp.entity.PageResult<com.addzero.kmp.isomorphic.SysUserIso>
  */
-    @GET("/sysUser/page")    suspend fun page(): kotlin.Unit
+    @GET("/sysUser/page")    suspend fun page(): com.addzero.kmp.entity.PageResult<com.addzero.kmp.isomorphic.SysUserIso>
 
 /**
  * save
