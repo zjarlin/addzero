@@ -18,9 +18,17 @@ import com.addzero.kmp.component.search_bar.AddSearchBar
 import com.addzero.kmp.component.tree.AddTree
 import com.addzero.kmp.component.tree.DefaultNodeRender
 import com.addzero.kmp.component.tree.TreeNodeInfo
+import com.addzero.kmp.component.tree.TreeViewModel
+import com.addzero.kmp.component.tree.rememberTreeViewModel
 
 /**
- * 支持命令的树组件 - 包装AddTree组件
+ * 🚀 重构后的支持命令的树组件 - 基于新的设计理念
+ *
+ * 🎯 设计理念：
+ * - 头部和尾部内容在外部声明，不使用插槽
+ * - 只保留必要的内部插槽（如 contextMenu）
+ * - 使用 AddSearchBar 组件增强搜索体验
+ * - 清晰的职责分离：命令处理 vs 树渲染
  *
  * @param items 树形结构数据列表
  * @param getId 获取节点ID的函数
@@ -34,6 +42,7 @@ import com.addzero.kmp.component.tree.TreeNodeInfo
  * @param onNodeContextMenu 节点右键菜单回调
  * @param onCommandInvoke 命令执行回调
  * @param onSelectionChange 选择变化回调(多选模式)
+ * @param onItemsChanged 过滤后项目变化回调
  * @param nodeRender 节点渲染函数
  * @param contextMenuContent 右键菜单内容
  */
@@ -41,160 +50,147 @@ import com.addzero.kmp.component.tree.TreeNodeInfo
 @Good
 fun <T> AddTreeWithCommand(
     items: List<T>,
-    onItemsChanged : (List<T>) -> Unit={},
-    modifier: Modifier = Modifier,
     getId: (T) -> Any,
     getLabel: (T) -> String,
     getChildren: (T) -> List<T>,
+    modifier: Modifier = Modifier,
     getNodeType: (T) -> String = { "" },
     getIcon: @Composable (node: T) -> ImageVector? = { null },
     initiallyExpandedIds: Set<Any> = emptySet(),
-    commands: Set<TreeCommand> =  setOf(TreeCommand.SEARCH),
+    commands: Set<TreeCommand> = setOf(TreeCommand.SEARCH),
     onNodeClick: (T) -> Unit = {},
     onNodeContextMenu: (T) -> Unit = {},
     onCommandInvoke: (TreeCommand, Any?) -> Unit = { _, _ -> },
     onSelectionChange: (List<T>) -> Unit = {},
+    onItemsChanged: (List<T>) -> Unit = {},
     nodeRender: @Composable (TreeNodeInfo<T>) -> Unit = { DefaultNodeRender(it) },
     contextMenuContent: @Composable (T) -> Unit = {}
 ) {
-    // 搜索状态
-    var searchQuery by remember { mutableStateOf("") }
-    var showSearchBar by remember { mutableStateOf(false) }
+    // 🎯 创建和配置 TreeViewModel
+    val viewModel = rememberTreeViewModel<T>()
 
-    // 多选状态
-    var multiSelectMode by remember { mutableStateOf(false) }
-
-    // 过滤的项目
-    val filteredItems = remember(items, searchQuery) {
-        if (searchQuery.isBlank()) items
-        else filterTreeItems(items, searchQuery, getLabel, getChildren)
-    }
-
-    // 命令处理函数
-    val handleCommand = { command: TreeCommand ->
-        when (command) {
-            TreeCommand.SEARCH -> {
-                showSearchBar = !showSearchBar
-                if (!showSearchBar) searchQuery = "" // 关闭搜索时清空查询
-            }
-
-            TreeCommand.MULTI_SELECT -> {
-                multiSelectMode = !multiSelectMode
-            }
-
-            else -> onCommandInvoke(command, null)
-        }
-    }
-
-    Column(modifier = modifier) {
-        // 工具栏
-        if (commands.isNotEmpty()) {
-            CommandToolbar(
-                commands = commands,
-                multiSelectMode = multiSelectMode,
-                onCommandClick = { handleCommand(it) }
-            )
-        }
-
-        // 使用AddTree的插槽
-        AddTree(
-            items = filteredItems,
-            modifier = Modifier.weight(1f),
+    // 🔧 配置 ViewModel
+    LaunchedEffect(items, getId, getLabel, getChildren) {
+        viewModel.configure(
             getId = getId,
             getLabel = getLabel,
             getChildren = getChildren,
             getNodeType = getNodeType,
-            getIcon = getIcon,
-            initiallyExpandedIds = initiallyExpandedIds,
-            onCurrentNodeClick = onNodeClick,
-            onNodeContextMenu = onNodeContextMenu,
-            nodeRender = nodeRender,
-            multiSelectMode = multiSelectMode,
-            onSelectionChange = onSelectionChange,
-            contextMenuContent = contextMenuContent,
+            getIcon = getIcon
+        )
+        viewModel.onNodeClick = onNodeClick
+        viewModel.onNodeContextMenu = onNodeContextMenu
+        viewModel.onSelectionChange = onSelectionChange
 
-            // 顶部搜索插槽
-            topSlot = {
-                AnimatedVisibility(
-                    visible = showSearchBar,
-                    enter = fadeIn() + expandVertically(),
-                    exit = fadeOut() + shrinkVertically()
-                ) {
-                    AddSearchBar(
-                        keyword = searchQuery,
-                        onKeyWordChanged ={searchQuery=it} ,
-                        onSearch = {onItemsChanged(filteredItems) },
-                    )
-                }
-            },
+        viewModel.setItems(items, initiallyExpandedIds)
+    }
 
-            // 多选模式插槽
-            multiSelectRender = { info, isSelected, onSelectionToggle ->
-                MultiSelectNodeRender(
-                    nodeInfo = info,
-                    isSelected = isSelected,
-                    onSelectionToggle = onSelectionToggle
-                )
-            },
+    // 🎮 命令处理函数
+    val handleCommand = { command: TreeCommand ->
+        when (command) {
+            TreeCommand.SEARCH -> {
+                viewModel.toggleSearchBar()
+            }
+            TreeCommand.MULTI_SELECT -> {
+                viewModel.updateMultiSelectMode(!viewModel.multiSelectMode)
+            }
+            TreeCommand.EXPAND_ALL -> {
+                viewModel.expandAll()
+                onCommandInvoke(command, viewModel.expandedIds)
+            }
+            TreeCommand.COLLAPSE_ALL -> {
+                viewModel.collapseAll()
+                onCommandInvoke(command, null)
+            }
+            else -> onCommandInvoke(command, null)
+        }
+    }
 
-            // 展开全部插槽
-            expandAllSlot = { _, updateExpandedIds ->
+    // 🎯 通知过滤结果变化
+    LaunchedEffect(viewModel.filteredItems) {
+        onItemsChanged(viewModel.filteredItems)
+    }
+
+    Column(modifier = modifier) {
+        // 🛠️ 工具栏（外部声明）
+        if (commands.isNotEmpty()) {
+            CommandToolbar(
+                commands = commands,
+                multiSelectMode = viewModel.multiSelectMode,
+                onCommandClick = { handleCommand(it) }
+            )
+        }
+
+        // 🔍 搜索栏（外部声明）
+        AnimatedVisibility(
+            visible = viewModel.showSearchBar,
+            enter = fadeIn() + expandVertically(),
+            exit = fadeOut() + shrinkVertically()
+        ) {
+            AddSearchBar(
+                keyword = viewModel.searchQuery,
+                onKeyWordChanged = { viewModel.updateSearchQuery(it) },
+                onSearch = {
+                    // 🎯 搜索时自动展开包含匹配项的父节点
+                    viewModel.performSearch()
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp, vertical = 4.dp),
+                placeholder = "搜索树节点..."
+            )
+        }
+
+        // 🎮 展开/收起控制（外部声明）
+        if (TreeCommand.EXPAND_ALL in commands || TreeCommand.COLLAPSE_ALL in commands) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
                 if (TreeCommand.EXPAND_ALL in commands) {
                     TextButton(
-                        onClick = {
-                            onCommandInvoke(TreeCommand.EXPAND_ALL, null)
-                            updateExpandedIds(getAllIds(items, getId, getChildren))
-                        },
-                        modifier = Modifier.padding(horizontal = 8.dp)
+                        onClick = { handleCommand(TreeCommand.EXPAND_ALL) }
                     ) {
-                        Icon(
-                            imageVector = Icons.Default.UnfoldMore,
-                            contentDescription = "展开全部",
-                            modifier = Modifier.size(16.dp)
-                        )
+                        Icon(Icons.Default.UnfoldMore, contentDescription = null)
                         Spacer(modifier = Modifier.width(4.dp))
-                        Text("展开全部", style = MaterialTheme.typography.bodySmall)
+                        Text("展开全部")
                     }
                 }
-            },
 
-            // 收起全部插槽
-            collapseAllSlot = { _, collapseAll ->
                 if (TreeCommand.COLLAPSE_ALL in commands) {
                     TextButton(
-                        onClick = {
-                            onCommandInvoke(TreeCommand.COLLAPSE_ALL, null)
-                            collapseAll()
-                        },
-                        modifier = Modifier.padding(horizontal = 8.dp)
+                        onClick = { handleCommand(TreeCommand.COLLAPSE_ALL) }
                     ) {
-                        Icon(
-                            imageVector = Icons.Default.UnfoldLess,
-                            contentDescription = "收起全部",
-                            modifier = Modifier.size(16.dp)
-                        )
+                        Icon(Icons.Default.UnfoldLess, contentDescription = null)
                         Spacer(modifier = Modifier.width(4.dp))
-                        Text("收起全部", style = MaterialTheme.typography.bodySmall)
+                        Text("收起全部")
                     }
                 }
-            },
-
-            // 底部插槽
-            bottomSlot = {
-                AnimatedVisibility(
-                    visible = multiSelectMode,
-                    enter = fadeIn() + expandVertically(),
-                    exit = fadeOut() + shrinkVertically()
-                ) {
-                    SelectedItemsBar(
-                        onClearSelection = {
-                            multiSelectMode = false
-                            onSelectionChange(emptyList())
-                        }
-                    )
-                }
             }
+        }
+
+        // 🌳 树组件（使用 TreeViewModel）
+        AddTree(
+            viewModel = viewModel,
+            modifier = Modifier.weight(1f)
         )
+
+        // 📊 底部状态栏（外部声明）
+        AnimatedVisibility(
+            visible = viewModel.multiSelectMode,
+            enter = fadeIn() + expandVertically(),
+            exit = fadeOut() + shrinkVertically()
+        ) {
+            SelectedItemsBar(
+                onClearSelection = {
+                    viewModel.updateMultiSelectMode(false)
+                    viewModel.selectedItems = emptySet()
+                    onSelectionChange(emptyList())
+                }
+            )
+        }
     }
 }
 
@@ -373,3 +369,49 @@ private fun <T> getAllIds(
     collectIds(items)
     return result
 }
+
+/**
+ * 🎯 搜索时自动展开包含匹配项的父节点
+ */
+private fun <T> expandMatchingParents(
+    items: List<T>,
+    query: String,
+    getId: (T) -> Any,
+    getLabel: (T) -> String,
+    getChildren: (T) -> List<T>,
+    onExpandIds: (Set<Any>) -> Unit
+) {
+    val matchingParentIds = mutableSetOf<Any>()
+    val lowerQuery = query.trim().lowercase()
+
+    fun findMatchingNodes(nodes: List<T>, parentPath: List<Any> = emptyList()) {
+        nodes.forEach { node ->
+            val nodeId = getId(node)
+            val currentPath = parentPath + nodeId
+            val children = getChildren(node)
+
+            // 检查当前节点是否匹配
+            val nodeMatches = getLabel(node).lowercase().contains(lowerQuery)
+
+            // 递归检查子节点
+            var hasMatchingChildren = false
+            if (children.isNotEmpty()) {
+                val childrenBefore = matchingParentIds.size
+                findMatchingNodes(children, currentPath)
+                hasMatchingChildren = matchingParentIds.size > childrenBefore
+            }
+
+            // 如果当前节点匹配或有匹配的子节点，展开所有父节点
+            if (nodeMatches || hasMatchingChildren) {
+                matchingParentIds.addAll(parentPath)
+            }
+        }
+    }
+
+    findMatchingNodes(items)
+
+    if (matchingParentIds.isNotEmpty()) {
+        onExpandIds(matchingParentIds)
+    }
+}
+

@@ -1,327 +1,356 @@
 package com.addzero.kmp.component.tree
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.addzero.kmp.anno.Good
-import com.addzero.kmp.annotation.ComposeAssist
-import com.addzero.kmp.component.tree.NodeType.Companion.guessIcon
+import androidx.compose.ui.unit.dp
+import com.addzero.kmp.component.search_bar.AddSearchBar
 
 /**
- * 树形组件 - 核心渲染逻辑
- * @param items 树形结构数据列表
- * @param getId 获取节点ID的函数
- * @param getLabel 获取节点标签的函数
- * @param getChildren 获取子节点的函数
- * @param getNodeType 获取节点类型的函数
- * @param getIcon 获取节点图标的函数
- * @param initiallyExpandedIds 初始展开的节点ID列表
- * @param onCurrentNodeClick 节点点击回调
- * @param onNodeContextMenu 节点右键菜单回调
- * @param nodeRender 节点渲染函数
- * @param topSlot 顶部插槽（通常用于搜索）
- * @param multiSelectRender 多选模式插槽
- * @param expandAllSlot 展开全部插槽
- * @param collapseAllSlot 收起全部插槽
- * @param bottomSlot 底部插槽
- * @param contextMenuContent 右键菜单内容插槽
+ * 🚀 优化版树组件 - 使用 ViewModel 管理状态
+ *
+ * ⚠️ 注意：此组件仍使用旧的插槽设计，建议使用重构后的 AddTree
+ *
+ * 🎯 核心改进：
+ * - 参数从18个减少到3个（减少83%）
+ * - 使用 TreeViewModel 管理所有响应式状态
+ * - 清晰的职责分离：UI渲染 vs 状态管理
+ * - 更好的可测试性和可维护性
+ *
+ * 🔄 插槽设计问题：
+ * - TopSlot/BottomSlot 应该在外部声明，不需要插槽
+ * - 只有内部插槽（如 contextMenu）才是必要的
+ *
+ * @param viewModel 树的状态管理器
+ * @param modifier UI修饰符
+ * @param content 自定义内容插槽（建议重构为外部声明）
  */
-@ComposeAssist
 @Composable
-@Good
 fun <T> AddTree(
-    items: List<T>,
+    viewModel: TreeViewModel<T>,
     modifier: Modifier = Modifier,
-    getId: (T) -> Any,
-    getLabel: (T) -> String,
-    getChildren: (T) -> List<T>,
-    getNodeType: (T) -> String = { "" },
-    getIcon: @Composable (node: T) -> ImageVector? = {
-        guessIcon(getChildren, it, getLabel)
-    },
-    initiallyExpandedIds: Set<Any> = emptySet(),
-    onCurrentNodeClick: (T) -> Unit = {},
-    onNodeContextMenu: (T) -> Unit = {},
-    nodeRender: @Composable (TreeNodeInfo<T>) -> Unit = {
-        DefaultNodeRender(it)
-    },
-    // 插槽组件
-    topSlot: @Composable () -> Unit = {},
-    multiSelectRender: @Composable (TreeNodeInfo<T>, Boolean, (Boolean) -> Unit) -> Unit = { _, _, _ -> },
-    expandAllSlot: @Composable (Set<Any>, (Set<Any>) -> Unit) -> Unit = { _, _ -> },
-    collapseAllSlot: @Composable (Set<Any>, () -> Unit) -> Unit = { _, _ -> },
-    bottomSlot: @Composable () -> Unit = {},
-    contextMenuContent: @Composable (T) -> Unit = {},
-    // 多选模式
-    multiSelectMode: Boolean = false,
-    onSelectionChange: (List<T>) -> Unit = { _ -> },
+    content: @Composable TreeScope<T>.() -> Unit = {}
 ) {
-    // 全局树状态
-    val treeState = remember {
-        TreeState(
-            selectedNodeId = null,
-            expandedIds = initiallyExpandedIds.toMutableSet()
-        )
-    }
-
-    // 状态委托
-    var selectedNodeId: Any? by remember { mutableStateOf(treeState.selectedNodeId) }
-    var expandedIds by remember { mutableStateOf(treeState.expandedIds) }
-    var selectedItems by remember { mutableStateOf(setOf<Any>()) }
-
-    // 用于多选模式
-    LaunchedEffect(selectedItems, multiSelectMode) {
-        if (multiSelectMode) {
-            val selectedNodes = items.flatMap { getAllNodes(it, getChildren) }
-                .filter { getId(it) in selectedItems }
-            onSelectionChange(selectedNodes)
-        }
-    }
-
-    // 展开全部函数
-    val expandAll = {
-        expandedIds = getAllIds(items, getId, getChildren).toMutableSet()
-    }
-
-    // 折叠全部函数
-    val collapseAll = {
-        expandedIds = mutableSetOf()
-    }
+    // 🎯 创建树作用域
+    val treeScope = remember(viewModel) { TreeScopeImpl(viewModel) }
 
     Column(modifier = modifier) {
-        // 顶部插槽 (搜索等)
-        topSlot()
+        // 🎨 自定义内容插槽（应该在外部声明）
+        treeScope.content()
 
-        // 展开/折叠全部控制
-        Box(modifier = Modifier.fillMaxWidth()) {
-            Box(modifier = Modifier.align(Alignment.CenterStart)) {
-                expandAllSlot(expandedIds) { expandedIds = it }
-            }
-            Box(modifier = Modifier.align(Alignment.CenterEnd)) {
-                collapseAllSlot(expandedIds) { collapseAll() }
-            }
-        }
-
-        // 树形结构
-        Box(
+        // 🌳 树形结构渲染 - 使用 Surface 而不是 Box
+        Surface(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(rememberScrollState()),
+            color = MaterialTheme.colorScheme.surface
         ) {
             Column {
-                // 递归渲染顶层节点
-                items.forEach { node ->
-                    TreeNode(
-                        node = node,
-                        getId = getId,
-                        getLabel = getLabel,
-                        getChildren = getChildren,
-                        getNodeType = getNodeType,
-                        getIcon = getIcon,
-                        level = 0,
-                        selectedNodeId = selectedNodeId,
-                        expandedIds = expandedIds,
-                        onNodeClick = { clickedNode ->
-                            val nodeId = getId(clickedNode)
-                            if (multiSelectMode) {
-                                // 多选模式：切换选择状态
-                                selectedItems = if (selectedItems.contains(nodeId)) {
-                                    selectedItems - nodeId
-                                } else {
-                                    selectedItems + nodeId
-                                }
-                            } else {
-                                // 单选模式：设置选中节点
-                                selectedNodeId = nodeId
-                                onCurrentNodeClick(clickedNode)
-                            }
-
-                            // 如果有子节点，切换展开状态
-                            if (getChildren(clickedNode).isNotEmpty()) {
-                                expandedIds = if (expandedIds.contains(nodeId)) {
-                                    expandedIds - nodeId
-                                } else {
-                                    expandedIds + nodeId
-                                }
-                            }
-                        },
-                        onNodeContextMenu = onNodeContextMenu,
-                        nodeRender = nodeRender,
-                        contextMenuContent = contextMenuContent,
-                        multiSelectMode = multiSelectMode,
-                        multiSelectRender = multiSelectRender,
-                        selectedItems = selectedItems,
-                        onSelectionChange = { id, selected ->
-                            selectedItems = if (selected) {
-                                selectedItems + id
-                            } else {
-                                selectedItems - id
-                            }
-                        }
+                // 使用过滤后的数据渲染
+                val items = viewModel.filteredItems
+                // 🚀 TODO: 对于大量数据，考虑使用 LazyColumn 和虚拟化
+                items.forEach { item ->
+                    TreeNodeRenderer(
+                        node = item,
+                        viewModel = viewModel,
+                        level = 0
                     )
                 }
             }
         }
-
-        // 底部插槽
-        bottomSlot()
     }
 }
 
 /**
- * 保存树状态的内部类
+ * 🎭 树作用域 - 提供插槽化扩展能力
  */
-private class TreeState<T>(
-    var selectedNodeId: T?,
-    var expandedIds: Set<Any>
-)
+interface TreeScope<T> {
+    val viewModel: TreeViewModel<T>
+
+    @Composable
+    fun TopSlot(content: @Composable () -> Unit)
+
+    @Composable
+    fun ControlsSlot(content: @Composable () -> Unit)
+
+    @Composable
+    fun BottomSlot(content: @Composable () -> Unit)
+
+    @Composable
+    fun SearchBar()
+
+    @Composable
+    fun ExpandCollapseControls()
+}
 
 /**
- * 获取树中所有节点的ID
+ * 🎭 树作用域实现
  */
-private fun <T> getAllIds(
-    items: List<T>,
-    getId: (T) -> Any,
-    getChildren: (T) -> List<T>
-): Set<Any> {
-    val result = mutableSetOf<Any>()
+private class TreeScopeImpl<T>(
+    override val viewModel: TreeViewModel<T>
+) : TreeScope<T> {
 
-    fun collectIds(nodes: List<T>) {
-        nodes.forEach { node ->
-            result.add(getId(node))
-            collectIds(getChildren(node))
+    @Composable
+    override fun TopSlot(content: @Composable () -> Unit) {
+        content()
+    }
+
+    @Composable
+    override fun ControlsSlot(content: @Composable () -> Unit) {
+        Surface(
+            modifier = Modifier.fillMaxWidth(),
+            color = MaterialTheme.colorScheme.surface
+        ) {
+            content()
         }
     }
 
-    collectIds(items)
-    return result
-}
+    @Composable
+    override fun BottomSlot(content: @Composable () -> Unit) {
+        content()
+    }
 
-/**
- * 获取树中所有节点
- */
-private fun <T> getAllNodes(
-    root: T,
-    getChildren: (T) -> List<T>
-): List<T> {
-    val result = mutableListOf<T>()
-
-    fun collect(node: T) {
-        result.add(node)
-        getChildren(node).forEach { child ->
-            collect(child)
+    @Composable
+    override fun SearchBar() {
+        if (viewModel.showSearchBar) {
+            // 🚀 使用现有的 AddSearchBar 组件，功能更丰富
+            AddSearchBar(
+                keyword = viewModel.searchQuery,
+                onKeyWordChanged = { viewModel.updateSearchQuery(it) },
+                onSearch = {
+                    // 🎯 执行搜索：自动展开包含匹配项的节点
+                    viewModel.performSearch()
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp, vertical = 4.dp),
+                placeholder = "搜索树节点..."
+            )
         }
     }
 
-    collect(root)
-    return result
+    @Composable
+    override fun ExpandCollapseControls() {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            TextButton(
+                onClick = { viewModel.expandAll() }
+            ) {
+                Text("展开全部")
+            }
+
+            TextButton(
+                onClick = { viewModel.collapseAll() }
+            ) {
+                Text("收起全部")
+            }
+        }
+    }
 }
 
 /**
- * 单个树节点及其子节点的递归渲染
+ * 🌳 树节点渲染器
  */
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun <T> TreeNode(
+private fun <T> TreeNodeRenderer(
     node: T,
-    getId: (T) -> Any,
-    getLabel: (T) -> String,
-    getChildren: (T) -> List<T>,
-    getNodeType: (T) -> String,
-    getIcon: @Composable ((T) -> ImageVector?),
-    level: Int,
-    selectedNodeId: Any?,
-    expandedIds: Set<Any>,
-    onNodeClick: (T) -> Unit,
-    onNodeContextMenu: (T) -> Unit,
-    nodeRender: @Composable ((TreeNodeInfo<T>) -> Unit),
-    contextMenuContent: @Composable (T) -> Unit,
-    multiSelectMode: Boolean,
-    multiSelectRender: @Composable (TreeNodeInfo<T>, Boolean, (Boolean) -> Unit) -> Unit,
-    selectedItems: Set<Any>,
-    onSelectionChange: (Any, Boolean) -> Unit
+    viewModel: TreeViewModel<T>,
+    level: Int
 ) {
-    val nodeId = getId(node)
-    val children = getChildren(node)
+    val nodeId = viewModel.getId(node)
+    val isExpanded = viewModel.isExpanded(nodeId)
+    val isSelected = viewModel.isSelected(nodeId)
+    val children = viewModel.getChildren(node)
     val hasChildren = children.isNotEmpty()
-    val isExpanded = expandedIds.contains(nodeId)
-    val isSelected = if (multiSelectMode) {
-        nodeId in selectedItems
-    } else {
-        nodeId == selectedNodeId
-    }
-    val nodeType = getNodeType(node)
-    val icon = getIcon(node)
 
-    // 构建节点信息
-    val nodeInfo = TreeNodeInfo(
+    // 🎯 节点内容
+    TreeNodeContent(
         node = node,
-        id = nodeId,
-        label = getLabel(node),
-        hasChildren = hasChildren,
+        viewModel = viewModel,
+        level = level,
         isExpanded = isExpanded,
         isSelected = isSelected,
-        level = level,
-        nodeType = nodeType,
-        icon = icon,
-        onNodeClick = onNodeClick
+        hasChildren = hasChildren,
+        onToggleExpanded = { viewModel.toggleExpanded(nodeId) },
+        onClick = { viewModel.clickNode(node) }
     )
 
-    // 显示右键菜单状态
-    var showContextMenu by remember { mutableStateOf(false) }
-
-    Column {
-        // 显示右键菜单
-        if (showContextMenu) {
-            contextMenuContent(node)
-            showContextMenu = false
-        }
-
-        // 直接渲染节点，使用节点自身的交互功能
-        if (multiSelectMode) {
-            // 多选模式渲染
-            multiSelectRender(
-                nodeInfo,
-                nodeId in selectedItems,
-                { selected -> onSelectionChange(nodeId, selected) }
+    // 🌿 子节点渲染
+    if (hasChildren && isExpanded) {
+        children.forEach { child ->
+            TreeNodeRenderer(
+                node = child,
+                viewModel = viewModel,
+                level = level + 1
             )
-        } else {
-            // 标准节点渲染
-            nodeRender(nodeInfo)
         }
+    }
+}
 
-        // 如果展开且有子节点，渲染子节点
-        if (isExpanded && hasChildren) {
-            children.forEach { childNode ->
-                TreeNode(
-                    node = childNode,
-                    getId = getId,
-                    getLabel = getLabel,
-                    getChildren = getChildren,
-                    getNodeType = getNodeType,
-                    getIcon = getIcon,
-                    level = level + 1,
-                    selectedNodeId = selectedNodeId,
-                    expandedIds = expandedIds,
-                    onNodeClick = onNodeClick,
-                    onNodeContextMenu = onNodeContextMenu,
-                    nodeRender = nodeRender,
-                    contextMenuContent = contextMenuContent,
-                    multiSelectMode = multiSelectMode,
-                    multiSelectRender = multiSelectRender,
-                    selectedItems = selectedItems,
-                    onSelectionChange = onSelectionChange
+/**
+ * 🎨 树节点内容渲染 - 恢复原来的菜单项行为
+ */
+@Composable
+private fun <T> TreeNodeContent(
+    node: T,
+    viewModel: TreeViewModel<T>,
+    level: Int,
+    isExpanded: Boolean,
+    isSelected: Boolean,
+    hasChildren: Boolean,
+    onToggleExpanded: () -> Unit,
+    onClick: () -> Unit
+) {
+    val nodeId = viewModel.getId(node)
+    val isItemSelected = viewModel.isItemSelected(nodeId)
+
+    // 🎯 使用 Surface 而不是 Box，扁平化设计
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                start = (level * 16 + 6).dp,
+                end = 6.dp,
+                top = 2.dp,
+                bottom = 2.dp
+            )
+            .clickable {
+                // 🔄 原来的行为：点击整个菜单项控制展开/收起
+                if (hasChildren) {
+                    onToggleExpanded() // 有子节点：切换展开状态
+                }
+                onClick() // 总是触发点击回调
+            },
+        shape = RectangleShape, // 🎨 扁平化设计，不使用圆角
+        tonalElevation = if (isSelected) 2.dp else 0.dp,
+        color = if (isSelected) {
+            MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f)
+        } else {
+            Color.Transparent
+        }
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(40.dp)
+                .padding(horizontal = 12.dp, vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // 🔄 多选模式复选框
+            if (viewModel.multiSelectMode) {
+                Checkbox(
+                    checked = isItemSelected,
+                    onCheckedChange = { viewModel.toggleItemSelection(nodeId) }
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+            }
+
+            // 🎨 节点图标
+            val icon = viewModel.getIcon(node)
+            if (icon != null) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp),
+                    tint = if (isSelected) {
+                        MaterialTheme.colorScheme.primary
+                    } else {
+                        MaterialTheme.colorScheme.onSurface
+                    }
+                )
+                Spacer(modifier = Modifier.width(12.dp))
+            }
+
+            // 📝 节点标签
+            Text(
+                text = viewModel.getLabel(node),
+                style = MaterialTheme.typography.bodyMedium,
+                color = if (isSelected) {
+                    MaterialTheme.colorScheme.primary
+                } else {
+                    MaterialTheme.colorScheme.onSurface
+                },
+                modifier = Modifier.weight(1f)
+            )
+
+            // 📂 展开/折叠箭头（只有子节点才显示）
+            if (hasChildren) {
+                Icon(
+                    imageVector = if (isExpanded) {
+                        Icons.Default.KeyboardArrowDown
+                    } else {
+                        Icons.AutoMirrored.Filled.KeyboardArrowRight
+                    },
+                    contentDescription = if (isExpanded) "折叠" else "展开",
+                    modifier = Modifier.size(18.dp),
+                    tint = if (isSelected) {
+                        MaterialTheme.colorScheme.primary.copy(alpha = 0.7f)
+                    } else {
+                        MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                    }
                 )
             }
         }
     }
 }
 
+/**
+ * 🎯 便捷构造函数 - 快速创建树组件
+ *
+ * ⚠️ 问题：函数名冲突，应该重命名避免混淆
+ */
+@Composable
+fun <T> AddTree(
+    items: List<T>,
+    getId: (T) -> Any,
+    getLabel: (T) -> String,
+    getChildren: (T) -> List<T>,
+    modifier: Modifier = Modifier,
+    getNodeType: (T) -> String = { "" },
+    getIcon: @Composable (T) -> ImageVector? = { null },
+    initiallyExpandedIds: Set<Any> = emptySet(),
+    onNodeClick: (T) -> Unit = {},
+    onNodeContextMenu: (T) -> Unit = {},
+    onSelectionChange: (List<T>) -> Unit = {},
+    content: @Composable TreeScope<T>.() -> Unit = {}
+) {
+    // 🎯 创建和配置 ViewModel
+    val viewModel = rememberTreeViewModel<T>()
+
+    // 🔧 优化：使用新的配置方法
+    LaunchedEffect(items, getId, getLabel, getChildren) {
+        viewModel.configure(
+            getId = getId,
+            getLabel = getLabel,
+            getChildren = getChildren,
+            getNodeType = getNodeType,
+            getIcon = getIcon
+        )
+        viewModel.onNodeClick = onNodeClick
+        viewModel.onNodeContextMenu = onNodeContextMenu
+        viewModel.onSelectionChange = onSelectionChange
+
+        viewModel.setItems(items, initiallyExpandedIds)
+    }
+
+    // 🚀 渲染优化版树组件
+    AddTree(
+        viewModel = viewModel,
+        modifier = modifier,
+        content = content
+    )
+}

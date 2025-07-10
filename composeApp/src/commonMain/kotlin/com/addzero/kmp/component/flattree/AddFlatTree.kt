@@ -1,11 +1,13 @@
 package com.addzero.kmp.component.flattree
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import com.addzero.kmp.component.tree.AddTree
 import com.addzero.kmp.component.tree.DefaultNodeRender
 import com.addzero.kmp.component.tree.NodeType
 import com.addzero.kmp.component.tree.TreeNodeInfo
+import com.addzero.kmp.component.tree.rememberTreeViewModel
 import com.addzero.kmp.util.data_structure.tree.List2TreeUtil
 
 /**
@@ -80,20 +82,27 @@ fun <T> AddFlatTree(
 //        setChildren = { children -> this.children = children }
 //    )
 
-    // 使用AddTree组件渲染树结构
-    AddTree(
-        items = treeData,
-        modifier = modifier,
-        getId = { it.id },
-        getLabel = { it.name },
-        getChildren = { it.children },
-        getNodeType = { it.nodeType },
-        initiallyExpandedIds = initiallyExpandedIds,
-        onCurrentNodeClick = { treeNode ->
+    // 使用AddTree组件渲染树结构（使用新的 TreeViewModel API）
+    val viewModel = rememberTreeViewModel<TreeNode<T>>()
+
+    // 配置 ViewModel
+    LaunchedEffect(treeData) {
+        viewModel.configure(
+            getId = { it.id },
+            getLabel = { it.name },
+            getChildren = { it.children },
+            getNodeType = { it.nodeType }
+        )
+        viewModel.onNodeClick = { treeNode ->
             // 直接传递原始数据进行回调
             onNodeClick(treeNode.data)
-        },
-        nodeRender = nodeRender
+        }
+        viewModel.setItems(treeData, initiallyExpandedIds)
+    }
+
+    AddTree(
+        viewModel = viewModel,
+        modifier = modifier
     )
 }
 

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.context.request.WebRequest
+import java.lang.invoke.MethodHandle
 
 @ControllerAdvice
 class GlobalExceptionHandler {
@@ -18,7 +19,8 @@ class GlobalExceptionHandler {
     @ExceptionHandler(BizException::class)
     fun handleBusinessException(
         exception: BizException,
-        request: WebRequest,
+//        request: WebRequest,
+//        methodhandler: MethodHandle
     ): Any {
         val buildMessage = exception.buildMessage()
         val fail = Res.fail(buildMessage).buidResponseEntity()

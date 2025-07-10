@@ -1,6 +1,5 @@
 package com.addzero.kmp.ui.infra.model.menu
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -9,15 +8,15 @@ import androidx.compose.material.icons.automirrored.filled.*
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.addzero.kmp.component.tree.AddTree
 import com.addzero.kmp.component.tree.TreeNodeInfo
+import com.addzero.kmp.component.tree.rememberTreeViewModel
 import com.addzero.kmp.compose.icons.IconMap
 import com.addzero.kmp.entity.sys.menu.EnumSysMenuType
 import com.addzero.kmp.entity.sys.menu.SysMenuVO
@@ -66,33 +65,39 @@ fun SideMenu() {
                 )
             }
 
-            // 使用AddTree组件渲染菜单树 - 减少内边距
-            Box(modifier = Modifier.fillMaxSize().padding(horizontal = 4.dp, vertical = 4.dp)) {
-                AddTree(
-                    items = MenuViewModel.menuItems,
-                    getId = { it.path },
-                    getLabel = { it.title },
-                    getChildren = { it.children },
-                    getIcon = {
-                        getMenuIcon(it)
-                    },
-//                    getNodeType = { getMenuNodeType(it) },
-                    initiallyExpandedIds = setOf(
-                        RouteKeys.HOME_SCREEN
-//                    , RoutePaths.Group.SYS_MANAGE
-                    ),
-                    onCurrentNodeClick = { selectedMenu ->
+            // 使用AddTree组件渲染菜单树 - 减少内边距，使用 Surface 而不是 Box
+            Surface(
+                modifier = Modifier.fillMaxSize().padding(horizontal = 4.dp, vertical = 4.dp),
+                color = MaterialTheme.colorScheme.surface
+            ) {
+                // 🎯 使用新的 TreeViewModel API
+                val viewModel = rememberTreeViewModel<SysMenuVO>()
+
+                // 配置 ViewModel
+                LaunchedEffect(MenuViewModel.menuItems) {
+                    viewModel.configure(
+                        getId = { it.path },
+                        getLabel = { it.title },
+                        getChildren = { it.children },
+                        getIcon = { getMenuIcon(it) }
+                    )
+                    viewModel.onNodeClick = { selectedMenu ->
                         // 处理菜单项点击
                         if (selectedMenu.enumSysMenuType == EnumSysMenuType.SCREEN && selectedMenu.children.isEmpty()) {
                             // 如果是页面类型且没有子项，才进行导航
                             MenuViewModel.updateRoute(selectedMenu.path)
                         }
                         // 注意：折叠/展开状态由AddTree内部管理，这里不需要手动处理
-                    },
-                    nodeRender = { nodeInfo ->
-                        // 自定义菜单项渲染
-                        customRender4SysMenu(nodeInfo)
                     }
+                    viewModel.setItems(
+                        MenuViewModel.menuItems,
+                        setOf(RouteKeys.HOME_SCREEN)
+                    )
+                }
+
+                AddTree(
+                    viewModel = viewModel,
+                    modifier = Modifier.fillMaxSize()
                 )
             }
         }

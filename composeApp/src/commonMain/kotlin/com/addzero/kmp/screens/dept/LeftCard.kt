@@ -29,7 +29,7 @@ fun LeftCard(
             getId = { it.id!! },
             getLabel = { it.name },
             getChildren = { it.children },
-            onCurrentNodeClick = onNodeClick,
+            onNodeClick = onNodeClick,
         )
 
 
