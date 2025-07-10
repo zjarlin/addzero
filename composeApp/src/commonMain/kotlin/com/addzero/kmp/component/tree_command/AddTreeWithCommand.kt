@@ -63,9 +63,11 @@ fun <T> AddTreeWithCommand(
     onCommandInvoke: (TreeCommand, Any?) -> Unit = { _, _ -> },
     onSelectionChange: (List<T>) -> Unit = {},
     onItemsChanged: (List<T>) -> Unit = {},
+    // ⚠️ nodeRender 参数已废弃，新的 AddTree 使用内置渲染
     nodeRender: @Composable (TreeNodeInfo<T>) -> Unit = { DefaultNodeRender(it) },
     contextMenuContent: @Composable (T) -> Unit = {}
 ) {
+
     // 🎯 创建和配置 TreeViewModel
     val viewModel = rememberTreeViewModel<T>()
 

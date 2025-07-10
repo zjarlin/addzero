@@ -20,11 +20,22 @@ import androidx.compose.ui.unit.dp
  * 默认树节点渲染函数
  * 参考 Android 官方文档样式，提供现代化的选中效果
  *
+ * ⚠️ 已废弃：依赖已废弃的 TreeNodeInfo，新的 AddTree 使用内置渲染
+ *
+ * 迁移指南：
+ * - 新的 AddTree 组件有内置的节点渲染逻辑
+ * - 如需自定义，可以通过 TreeViewModel 的配置实现
+ *
  * @param nodeInfo 节点信息，包含标签、层级、是否可展开、是否已选中等
  * @param showType 是否显示节点类型标签，默认为false
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+@Deprecated(
+    message = "DefaultNodeRender 已废弃，新的 AddTree 使用内置渲染",
+    replaceWith = ReplaceWith("AddTree 内置渲染"),
+    level = DeprecationLevel.WARNING
+)
 fun <T> DefaultNodeRender(
     nodeInfo: TreeNodeInfo<T>,
     showType: Boolean = false

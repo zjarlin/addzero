@@ -2,6 +2,7 @@ package com.addzero.kmp.component.tree
 
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.addzero.kmp.util.data_structure.tree.TreeSearch
 
 /**
  * 🎯 树组件的 ViewModel - 管理所有响应式状态
@@ -33,17 +34,20 @@ class TreeViewModel<T> {
 
     var showSearchBar by mutableStateOf(false)
 
-    // 📋 过滤后的数据 - 使用 derivedStateOf 实现响应式过滤
+    // 📋 过滤后的数据 - 使用 TreeSearch 实现正确的树搜索
     val filteredItems by derivedStateOf {
         if (searchQuery.isBlank()) {
             items
         } else {
-            filterTreeItems(
-                items = items,
-                query = searchQuery,
-                getLabel = getLabel,
-                getChildren = getChildren
+            // 🚀 使用 TreeSearch 的正确算法
+            val mutableItems = items.toMutableList()
+            TreeSearch.preserveParentNode(
+                trees = mutableItems,
+                getChildrenFun = { getChildren(it) },
+                getKeyFun = { getLabel(it) },
+                key = searchQuery
             )
+            mutableItems
         }
     }
 
@@ -280,28 +284,4 @@ fun <T> rememberTreeViewModel(): TreeViewModel<T> {
     return remember { TreeViewModel<T>() }
 }
 
-/**
- * 🔍 递归过滤树节点
- */
-private fun <T> filterTreeItems(
-    items: List<T>,
-    query: String,
-    getLabel: (T) -> String,
-    getChildren: (T) -> List<T>
-): List<T> {
-    if (query.isBlank()) return items
 
-    val lowerQuery = query.trim().lowercase()
-
-    return items.mapNotNull { item ->
-        val labelMatches = getLabel(item).lowercase().contains(lowerQuery)
-        val children = getChildren(item)
-        val filteredChildren = filterTreeItems(children, query, getLabel, getChildren)
-
-        when {
-            labelMatches -> item // 节点本身匹配，保留整个节点
-            filteredChildren.isNotEmpty() -> item // 子节点有匹配，保留节点
-            else -> null // 节点和子节点都不匹配，过滤掉
-        }
-    }
-}
