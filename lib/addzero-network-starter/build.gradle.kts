@@ -1,5 +1,5 @@
 plugins {
-    id("kmp-core")
+    id("kmp-shared")
 }
 kotlin {
     sourceSets {

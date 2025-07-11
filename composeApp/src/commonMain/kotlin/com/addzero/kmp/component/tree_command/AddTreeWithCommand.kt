@@ -40,6 +40,8 @@ import com.addzero.kmp.component.tree.selection.CompleteSelectionResult
  * @param onSelectionChange 选择变化回调(多选模式)
  * @param onCompleteSelectionChange 完整选择变化回调(包含推导的父节点)
  * @param onItemsChanged 过滤后项目变化回调
+ * @param autoEnableMultiSelect 自动开启多选模式
+ * @param multiSelectClickToToggle 多选模式下点击节点直接切换选中状态
  */
 @Composable
 fun <T> AddTreeWithCommand(
@@ -57,14 +59,16 @@ fun <T> AddTreeWithCommand(
     onCommandInvoke: (TreeCommand, Any?) -> Unit = { _, _ -> },
     onSelectionChange: (List<T>) -> Unit = {},
     onCompleteSelectionChange: (CompleteSelectionResult) -> Unit = {},
-    onItemsChanged: (List<T>) -> Unit = {}
+    onItemsChanged: (List<T>) -> Unit = {},
+    autoEnableMultiSelect: Boolean = false,
+    multiSelectClickToToggle: Boolean = false
 ) {
 
     // 🎯 创建和配置 TreeViewModel
     val viewModel = rememberTreeViewModel<T>()
 
     // 🔧 配置 ViewModel
-    LaunchedEffect(items, getId, getLabel, getChildren) {
+    LaunchedEffect(items, getId, getLabel, getChildren, autoEnableMultiSelect, multiSelectClickToToggle) {
         viewModel.configure(
             getId = getId,
             getLabel = getLabel,
@@ -72,6 +76,13 @@ fun <T> AddTreeWithCommand(
             getNodeType = getNodeType,
             getIcon = getIcon
         )
+
+        // 🎯 配置多选行为
+        viewModel.configureMultiSelect(
+            autoEnable = autoEnableMultiSelect,
+            clickToToggle = multiSelectClickToToggle
+        )
+
         viewModel.onNodeClick = onNodeClick
         viewModel.onNodeContextMenu = onNodeContextMenu
         viewModel.onSelectionChange = onSelectionChange

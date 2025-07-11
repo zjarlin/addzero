@@ -71,4 +71,4 @@ findProject(":lib:addzero-compose-props-annotations")?.name = "addzero-compose-p
 include("lib:addzero-compose-props-processor")
 findProject(":lib:addzero-compose-props-processor")?.name = "addzero-compose-props-processor"
 
-include("lib:addzero-network-starter")
+//include("lib:addzero-network-starter")

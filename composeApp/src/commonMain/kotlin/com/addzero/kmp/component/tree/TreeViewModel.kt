@@ -28,6 +28,10 @@ class TreeViewModel<T> {
     // 🔄 多选状态
     var multiSelectMode by mutableStateOf(false)
 
+    // 🎯 多选配置
+    var autoEnableMultiSelect by mutableStateOf(false)
+    var multiSelectClickToToggle by mutableStateOf(false)
+
     // 🎯 选择管理器 - 使用设计模式管理复杂的选择逻辑
     private val selectionManager = TreeSelectionManager<T>(CascadingSelectionStrategy())
 
@@ -93,6 +97,22 @@ class TreeViewModel<T> {
         isConfigured = true
     }
 
+    /**
+     * 🎯 配置多选行为
+     */
+    fun configureMultiSelect(
+        autoEnable: Boolean = false,
+        clickToToggle: Boolean = false
+    ) {
+        autoEnableMultiSelect = autoEnable
+        multiSelectClickToToggle = clickToToggle
+
+        // 如果设置了自动开启多选，立即开启
+        if (autoEnable) {
+            multiSelectMode = true
+        }
+    }
+
     // 🎭 事件回调
     var onNodeClick: (T) -> Unit = {}
     var onNodeContextMenu: (T) -> Unit = {}
@@ -123,10 +143,10 @@ class TreeViewModel<T> {
                 },
                 onCompleteSelectionChanged = { completeResult ->
                     // 🎯 处理完整选择结果（包含推导的父节点）
-                    println("🎯 TreeViewModel 完整选择结果:")
-                    println("   直接选中: ${completeResult.directSelectedNodes}")
-                    println("   间接选中: ${completeResult.indirectSelectedNodes}")
-                    println("   完整选中: ${completeResult.completeSelectedNodes}")
+//                    println("🎯 TreeViewModel 完整选择结果:")
+//                    println("   直接选中: ${completeResult.directSelectedNodes}")
+//                    println("   间接选中: ${completeResult.indirectSelectedNodes}")
+//                    println("   完整选中: ${completeResult.completeSelectedNodes}")
 
                     // 可以在这里添加额外的处理逻辑
                     onCompleteSelectionChange(completeResult)
@@ -204,7 +224,14 @@ class TreeViewModel<T> {
         val nodeId = getId(node)
         val hasChildren = getChildren(node).isNotEmpty()
 
-        // 🎯 恢复原来的行为：
+        // 🎯 多选模式下的特殊处理
+        if (multiSelectMode && multiSelectClickToToggle) {
+            // 多选模式下点击节点直接切换选中状态
+            toggleItemSelection(nodeId)
+            return
+        }
+
+        // 🎯 原来的单选行为：
         // - 有子节点：选中但不触发业务回调（展开/收起由 UI 层处理）
         // - 叶子节点：选中并触发业务回调（如导航）
         selectNode(nodeId)
