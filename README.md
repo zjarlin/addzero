@@ -992,3 +992,8 @@ fun renderNavContent(navController: NavHostController) {
 ---
 
 **🎯 核心价值：通过 KSP 实现前后端完美一致性，让开发者专注于业务逻辑而非重复性代码编写**
+
+[//]: # (https://www.star-history.com/#zjarlin/addzero.git&Timeline)
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=zjarlin/addzero.git&type=Date)](https://www.star-history.com/#zjarlin/addzero.git&Date)
