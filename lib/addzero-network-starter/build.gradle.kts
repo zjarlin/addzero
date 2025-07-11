@@ -6,13 +6,13 @@ plugins {
 kotlin {
     sourceSets {
         jvmMain.dependencies {
-            implementation("io.ktor:ktor-client-cio:${ktorVersion}")
+            implementation(libs.ktor.client.cio)
         }
         commonMain.dependencies {
-            implementation("io.ktor:ktor-client-core:${ktorVersion}")
-            implementation("io.ktor:ktor-client-content-negotiation:${ktorVersion}")
-            implementation("io.ktor:ktor-serialization-kotlinx-json:${ktorVersion}")
-            implementation("io.ktor:ktor-client-logging:${ktorVersion}")
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.serialization.kotlinx.json)
+            implementation(libs.ktor.client.logging)
         }
     }
 }

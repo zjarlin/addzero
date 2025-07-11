@@ -62,9 +62,9 @@ kotlin {
             implementation(projects.shared)
             implementation(projects.lib.addzeroTool)
             // Enables FileKit with Composable utilities
-            implementation("io.github.vinceglb:filekit-compose:${Versions.fileKitVersion}")
+            implementation(libs.filekit.compose)
             // Enables FileKit with Composable utilities
-//            implementation("io.github.vinceglb:filekit-compose:+")
+//            implementation(libs.filekit.compose)
 
 
             //日志库
@@ -83,12 +83,12 @@ kotlin {
             // 添加 Skia 依赖
 //            implementation("org.jetbrains.skia:skia:+")
             // 协程相关依赖
-            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion")
+            implementation(libs.kotlinx.coroutines.core)
             //时间依赖
             implementation(libs.kotlinx.datetime)
 
             // 通用UI组件
-            implementation("com.mikepenz:multiplatform-markdown-renderer-m3:0.36.0-b02")
+            implementation(libs.multiplatform.markdown.renderer.m3)
             implementation(libs.navigation.compose)
 
             //图片加载库
@@ -96,14 +96,13 @@ kotlin {
             implementation(libs.coil.network.ktor3)
 
             //拖拽库
-
-            implementation("com.mohamedrejeb.dnd:compose-dnd:0.3.0")
+            implementation(libs.compose.dnd)
 
             //富文本 see https://klibs.io/project/MohamedRejeb/compose-rich-editor
-            implementation("com.mohamedrejeb.richeditor:richeditor-compose:1.0.0-rc11")
+            implementation(libs.richeditor.compose)
 //            fluent-ui
-//            implementation("com.konyaco:fluent:0.0.1-dev.8")
-//            implementation("com.konyaco:fluent-icons-extended:0.0.1-dev.8") // If you want to use full fluent icons.
+//            implementation(libs.fluent)
+//            implementation(libs.fluent.icons.extended) // If you want to use full fluent icons.
 
 
             // Provides the core functions of Sketch as well as singletons and extension
@@ -125,19 +124,19 @@ kotlin {
             // Koin Annotations
 
 
-           implementation(project.dependencies.platform("io.insert-koin:koin-bom:4.1.0"))
+           implementation(project.dependencies.platform(libs.koin.bom))
 
-            implementation("io.insert-koin:koin-annotations:2.1.0")
-//            implementation("io.insert-koin:koin-core:4.1.0")
-//            implementation("io.insert-koin:koin-compose:4.1.0")
-//            implementation("io.insert-koin:koin-compose-viewmodel:4.1.0")
-//            implementation("io.insert-koin:koin-compose-viewmodel-navigation:4.1.0")
+            implementation(libs.koin.annotations)
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
+            implementation(libs.koin.compose.viewmodel.navigation)
 
 
-            implementation("io.insert-koin:koin-core")
-            implementation("io.insert-koin:koin-compose")
-            implementation("io.insert-koin:koin-compose-viewmodel")
-            implementation("io.insert-koin:koin-compose-viewmodel-navigation")
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
+            implementation(libs.koin.compose.viewmodel.navigation)
 
 
         }

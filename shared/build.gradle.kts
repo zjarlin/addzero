@@ -45,21 +45,21 @@ kotlin {
             implementation(libs.kotlinx.datetime)
             implementation(projects.lib.addzeroTool)
             implementation(libs.ktorfit.lib)
-            implementation("io.ktor:ktor-client-core:${Versions.ktorVersion}")
-            implementation("io.ktor:ktor-client-content-negotiation:${Versions.ktorVersion}")
-            implementation("io.ktor:ktor-serialization-kotlinx-json:${Versions.ktorVersion}")
-            implementation("io.ktor:ktor-client-logging:${Versions.ktorVersion}")
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.serialization.kotlinx.json)
+            implementation(libs.ktor.client.logging)
 
             //懒人http
-//            implementation("io.github.ltttttttttttt:LazyPeopleHttp-lib:2.2.2")
+//            implementation(libs.lazy.people.http)
             androidMain.dependencies {
-                implementation("io.ktor:ktor-client-cio:${Versions.ktorVersion}")
+                implementation(libs.ktor.client.cio)
             }
             jvmMain.dependencies {
-                implementation("io.ktor:ktor-client-cio:${Versions.ktorVersion}")
+                implementation(libs.ktor.client.cio)
             }
             wasmJsMain.dependencies {
-                implementation("io.ktor:ktor-client-js:${Versions.ktorVersion}")
+                implementation(libs.ktor.client.js)
             }
 
         }

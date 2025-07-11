@@ -124,9 +124,9 @@ dependencies {
 
 // 引入数据库驱动
 
-    runtimeOnly(libs.postgresql)
+    runtimeOnly(libs.postgresql.driver)
 
-    runtimeOnly(libs.mysql.connector.j)
+    runtimeOnly(libs.mysql.connector.java)
 
 
     runtimeOnly(libs.dameng.jdbc.driver)
