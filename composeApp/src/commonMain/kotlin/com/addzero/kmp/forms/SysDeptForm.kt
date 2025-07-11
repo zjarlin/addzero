@@ -18,6 +18,106 @@ import com.addzero.kmp.component.form.date.*
             import androidx.compose.ui.Alignment
             import com.addzero.kmp.core.ext.parseObjectByKtx
             import com.addzero.kmp.isomorphic.*
+                @Composable
+     fun SysDeptForm(
+     state: MutableState<SysDeptIso>,
+visible: Boolean,
+         title: String,
+ onClose: () -> Unit,
+ onSubmit: () -> Unit,
+ confirmEnabled: Boolean = true,
+  dslConfig: SysDeptFormDsl.() -> Unit = {}
+     
+     ) {
+     
+
+     
+        AddDrawer(
+     visible = visible,
+     title = title,
+     onClose = onClose,
+     onSubmit = onSubmit,
+     confirmEnabled = confirmEnabled,
+
+     ) {
+           SysDeptFormOriginal(
+         state, dslConfig,
+     ) 
+     }
+     }
+
+              @Composable
+        fun SysDeptFormOriginal(
+        state: MutableState<SysDeptIso>,
+     dslConfig: SysDeptFormDsl.() -> Unit = {}
+        ) {
+        
+           val renderMap = remember { mutableMapOf<String, @Composable () -> Unit>() }
+    SysDeptFormDsl(state, renderMap).apply(dslConfig) 
+        
+        
+                     val defaultRenderMap = mutableMapOf<String, @Composable () -> Unit>(
+            SysDeptFormProps.name to { AddTextField(
+    value = state.value.name?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(name = if (it.isBlank()) "" else it.parseObjectByKtx())
+    },
+    label = "部门名称",
+    isRequired = true
+) }
+        ,
+            SysDeptFormProps.parent to { AddSingleDeptSelector(
+    selectedDept = state.value.parent,
+    onValueChange = { selectedDept ->
+        state.value = state.value.copy(parent = selectedDept)
+    },
+    allowClear = true
+) }
+        ,
+            SysDeptFormProps.children to { AddTextField(
+    value = state.value.children?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(children = if (it.isBlank()) emptyList() else it.parseObjectByKtx())
+    },
+    label = "children",
+    isRequired = true
+) }
+        ,
+            SysDeptFormProps.sysUsers to { AddTextField(
+    value = state.value.sysUsers?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(sysUsers = if (it.isBlank()) emptyList() else it.parseObjectByKtx())
+    },
+    label = "部门用户",
+    isRequired = true
+) }
+         
+ ) 
+       
+          val finalItems = remember(renderMap) {
+        defaultRenderMap
+            .filterKeys { it !in renderMap } // 未被DSL覆盖的字段
+            .plus(renderMap.filterValues { it != {} }) // 添加非隐藏的自定义字段
+    }.values.toList() 
+       
+       
+    val items = finalItems
+ 
+            AddMultiColumnContainer(
+                howMuchColumn = 2,
+                items =items
+            )
+        
+ 
+        
+        
+        
+        }
+ 
+        
+        
+ 
+            
         class SysDeptFormDsl(
             val state: MutableState<SysDeptIso>,
             private val renderMap: MutableMap<String, @Composable () -> Unit>
@@ -154,102 +254,3 @@ const val sysUsers = "sysUsers"
 fun rememberSysDeptFormState(current:SysDeptIso?=null): MutableState<SysDeptIso> {
     return remember (current){ mutableStateOf(current?: SysDeptIso ()) }
 }
-     @Composable
-     fun SysDeptForm(
-     state: MutableState<SysDeptIso>,
-visible: Boolean,
-         title: String,
- onClose: () -> Unit,
- onSubmit: () -> Unit,
- confirmEnabled: Boolean = true,
-  dslConfig: SysDeptFormDsl.() -> Unit = {}
-     
-     ) {
-     
-
-     
-        AddDrawer(
-     visible = visible,
-     title = title,
-     onClose = onClose,
-     onSubmit = onSubmit,
-     confirmEnabled = confirmEnabled,
-
-     ) {
-           SysDeptFormOriginal(
-         state, dslConfig,
-     ) 
-     }
-     }
-
-              @Composable
-        fun SysDeptFormOriginal(
-        state: MutableState<SysDeptIso>,
-     dslConfig: SysDeptFormDsl.() -> Unit = {}
-        ) {
-        
-           val renderMap = remember { mutableMapOf<String, @Composable () -> Unit>() }
-    SysDeptFormDsl(state, renderMap).apply(dslConfig) 
-        
-        
-                     val defaultRenderMap = mutableMapOf<String, @Composable () -> Unit>(
-            SysDeptFormProps.name to { AddTextField(
-    value = state.value.name?.toString() ?: "",
-    onValueChange = {
-        state.value = state.value.copy(name = if (it.isBlank()) "" else it.parseObjectByKtx())
-    },
-    label = "部门名称",
-    isRequired = true
-) }
-        ,
-            SysDeptFormProps.parent to { AddTextField(
-    value = state.value.parent?.toString() ?: "",
-    onValueChange = {
-        state.value = state.value.copy(parent = if (it.isBlank()) null else it.parseObjectByKtx())
-    },
-    label = "parent",
-    isRequired = false
-) }
-        ,
-            SysDeptFormProps.children to { AddTextField(
-    value = state.value.children?.toString() ?: "",
-    onValueChange = {
-        state.value = state.value.copy(children = if (it.isBlank()) emptyList() else it.parseObjectByKtx())
-    },
-    label = "children",
-    isRequired = true
-) }
-        ,
-            SysDeptFormProps.sysUsers to { AddTextField(
-    value = state.value.sysUsers?.toString() ?: "",
-    onValueChange = {
-        state.value = state.value.copy(sysUsers = if (it.isBlank()) emptyList() else it.parseObjectByKtx())
-    },
-    label = "部门用户",
-    isRequired = true
-) }
-         
- ) 
-       
-          val finalItems = remember(renderMap) {
-        defaultRenderMap
-            .filterKeys { it !in renderMap } // 未被DSL覆盖的字段
-            .plus(renderMap.filterValues { it != {} }) // 添加非隐藏的自定义字段
-    }.values.toList() 
-       
-       
-    val items = finalItems
- 
-            AddMultiColumnContainer(
-                howMuchColumn = 2,
-                items =items
-            )
-        
- 
-        
-        
-        
-        }
- 
-        
-        

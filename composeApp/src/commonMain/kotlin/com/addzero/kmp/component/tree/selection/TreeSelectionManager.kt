@@ -4,20 +4,20 @@ import androidx.compose.runtime.*
 
 /**
  * 🎯 树选择管理器
- * 
+ *
  * 统一管理树形结构的选择状态，支持多种选择策略
  */
 class TreeSelectionManager<T>(
     private val strategy: TreeSelectionStrategy = CascadingSelectionStrategy()
 ) {
-    
+
     // 节点层次结构
     private val hierarchy = TreeNodeHierarchy<T>()
-    
+
     // 当前选择状态
     private val _selections = mutableStateMapOf<Any, TreeNodeSelection>()
     val selections: Map<Any, TreeNodeSelection> = _selections
-    
+
     // 选中的叶子节点
     private val _selectedLeafNodes = mutableStateOf<Set<Any>>(emptySet())
     val selectedLeafNodes: State<Set<Any>> = _selectedLeafNodes
@@ -33,7 +33,7 @@ class TreeSelectionManager<T>(
     // 选择变化回调
     private var onSelectionChanged: ((List<T>) -> Unit)? = null
     private var onCompleteSelectionChanged: ((CompleteSelectionResult) -> Unit)? = null
-    
+
     /**
      * 🔧 初始化树结构
      */
@@ -53,7 +53,7 @@ class TreeSelectionManager<T>(
         // 初始化选择状态
         initializeSelections(items, getId, getChildren)
     }
-    
+
     /**
      * 🔧 初始化选择状态
      */
@@ -63,12 +63,12 @@ class TreeSelectionManager<T>(
         getChildren: (T) -> List<T>
     ) {
         _selections.clear()
-        
+
         fun initializeNode(node: T, parentId: Any?) {
             val nodeId = getId(node)
             val children = getChildren(node)
             val childrenIds = children.map { getId(it) }.toSet()
-            
+
             _selections[nodeId] = TreeNodeSelection(
                 nodeId = nodeId,
                 state = SelectionState.UNSELECTED,
@@ -76,20 +76,20 @@ class TreeSelectionManager<T>(
                 parentId = parentId,
                 childrenIds = childrenIds
             )
-            
+
             // 递归初始化子节点
             children.forEach { child ->
                 initializeNode(child, nodeId)
             }
         }
-        
+
         items.forEach { item ->
             initializeNode(item, null)
         }
-        
+
         _selectedLeafNodes.value = emptySet()
     }
-    
+
     /**
      * 🖱️ 处理节点点击
      */
@@ -97,7 +97,7 @@ class TreeSelectionManager<T>(
         val event = SelectionEvent.NodeClicked(nodeId)
         processSelectionEvent(event)
     }
-    
+
     /**
      * 🔄 切换节点选择状态
      */
@@ -105,7 +105,7 @@ class TreeSelectionManager<T>(
         val event = SelectionEvent.NodeToggled(nodeId, newState)
         processSelectionEvent(event)
     }
-    
+
     /**
      * 🧹 清除所有选择
      */
@@ -113,7 +113,7 @@ class TreeSelectionManager<T>(
         val event = SelectionEvent.ClearAll
         processSelectionEvent(event)
     }
-    
+
     /**
      * ✅ 全选
      */
@@ -122,7 +122,7 @@ class TreeSelectionManager<T>(
         val event = SelectionEvent.SelectAll(rootIds)
         processSelectionEvent(event)
     }
-    
+
     /**
      * 🔄 处理选择事件
      */
@@ -145,7 +145,7 @@ class TreeSelectionManager<T>(
         notifySelectionChanged()
         notifyCompleteSelectionChanged()
     }
-    
+
     /**
      * 🔧 创建默认选择状态
      */
@@ -158,7 +158,7 @@ class TreeSelectionManager<T>(
             childrenIds = hierarchy.getChildren(nodeId)
         )
     }
-    
+
     /**
      * 🎯 更新完整的选择结果
      */
@@ -178,10 +178,10 @@ class TreeSelectionManager<T>(
         _indirectSelectedNodes.value = indirectSelected
         _completeSelectedNodes.value = completeSelected
 
-        println("🎯 完整选择结果:")
-        println("   直接选中: $directSelected")
-        println("   间接选中: $indirectSelected")
-        println("   完整选中: $completeSelected")
+//        println("🎯 完整选择结果:")
+//        println("   直接选中: $directSelected")
+//        println("   间接选中: $indirectSelected")
+//        println("   完整选中: $completeSelected")
     }
 
     /**
@@ -219,28 +219,28 @@ class TreeSelectionManager<T>(
             callback(result)
         }
     }
-    
+
     /**
      * 🔍 获取节点选择状态
      */
     fun getNodeState(nodeId: Any): SelectionState {
         return _selections[nodeId]?.state ?: SelectionState.UNSELECTED
     }
-    
+
     /**
      * 🔍 判断节点是否选中
      */
     fun isNodeSelected(nodeId: Any): Boolean {
         return getNodeState(nodeId) == SelectionState.SELECTED
     }
-    
+
     /**
      * 🔍 判断节点是否半选
      */
     fun isNodeIndeterminate(nodeId: Any): Boolean {
         return getNodeState(nodeId) == SelectionState.INDETERMINATE
     }
-    
+
     /**
      * 🔍 获取选中的节点数据
      */
@@ -249,7 +249,7 @@ class TreeSelectionManager<T>(
             hierarchy.getNodeData(nodeId)
         }
     }
-    
+
     /**
      * 🔍 获取选中的节点ID（仅叶子节点）
      */

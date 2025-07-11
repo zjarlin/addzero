@@ -18,6 +18,107 @@ import com.addzero.kmp.component.form.date.*
             import androidx.compose.ui.Alignment
             import com.addzero.kmp.core.ext.parseObjectByKtx
             import com.addzero.kmp.isomorphic.*
+                @Composable
+     fun SysDictForm(
+     state: MutableState<SysDictIso>,
+visible: Boolean,
+         title: String,
+ onClose: () -> Unit,
+ onSubmit: () -> Unit,
+ confirmEnabled: Boolean = true,
+  dslConfig: SysDictFormDsl.() -> Unit = {}
+     
+     ) {
+     
+
+     
+        AddDrawer(
+     visible = visible,
+     title = title,
+     onClose = onClose,
+     onSubmit = onSubmit,
+     confirmEnabled = confirmEnabled,
+
+     ) {
+           SysDictFormOriginal(
+         state, dslConfig,
+     ) 
+     }
+     }
+
+              @Composable
+        fun SysDictFormOriginal(
+        state: MutableState<SysDictIso>,
+     dslConfig: SysDictFormDsl.() -> Unit = {}
+        ) {
+        
+           val renderMap = remember { mutableMapOf<String, @Composable () -> Unit>() }
+    SysDictFormDsl(state, renderMap).apply(dslConfig) 
+        
+        
+                     val defaultRenderMap = mutableMapOf<String, @Composable () -> Unit>(
+            SysDictFormProps.dictName to { AddTextField(
+    value = state.value.dictName?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(dictName = if (it.isBlank()) "" else it.parseObjectByKtx())
+    },
+    label = "字典名称",
+    isRequired = true
+) }
+        ,
+            SysDictFormProps.dictCode to { AddTextField(
+    value = state.value.dictCode?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(dictCode = if (it.isBlank()) "" else it.parseObjectByKtx())
+    },
+    label = "字典编码",
+    isRequired = true
+) }
+        ,
+            SysDictFormProps.description to { AddTextField(
+    value = state.value.description?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(description = if (it.isBlank()) null else it.parseObjectByKtx())
+    },
+    label = "描述",
+    isRequired = false
+) }
+        ,
+            SysDictFormProps.sysDictItems to { AddTextField(
+    value = state.value.sysDictItems?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(sysDictItems = if (it.isBlank()) emptyList() else it.parseObjectByKtx())
+    },
+    label = "sysDictItems",
+    isRequired = true
+) }
+         
+ ) 
+       
+          val finalItems = remember(renderMap) {
+        defaultRenderMap
+            .filterKeys { it !in renderMap } // 未被DSL覆盖的字段
+            .plus(renderMap.filterValues { it != {} }) // 添加非隐藏的自定义字段
+    }.values.toList() 
+       
+       
+    val items = finalItems
+ 
+            AddMultiColumnContainer(
+                howMuchColumn = 2,
+                items =items
+            )
+        
+ 
+        
+        
+        
+        }
+ 
+        
+        
+ 
+            
         class SysDictFormDsl(
             val state: MutableState<SysDictIso>,
             private val renderMap: MutableMap<String, @Composable () -> Unit>
@@ -167,102 +268,3 @@ const val sysDictItems = "sysDictItems"
 fun rememberSysDictFormState(current:SysDictIso?=null): MutableState<SysDictIso> {
     return remember (current){ mutableStateOf(current?: SysDictIso ()) }
 }
-     @Composable
-     fun SysDictForm(
-     state: MutableState<SysDictIso>,
-visible: Boolean,
-         title: String,
- onClose: () -> Unit,
- onSubmit: () -> Unit,
- confirmEnabled: Boolean = true,
-  dslConfig: SysDictFormDsl.() -> Unit = {}
-     
-     ) {
-     
-
-     
-        AddDrawer(
-     visible = visible,
-     title = title,
-     onClose = onClose,
-     onSubmit = onSubmit,
-     confirmEnabled = confirmEnabled,
-
-     ) {
-           SysDictFormOriginal(
-         state, dslConfig,
-     ) 
-     }
-     }
-
-              @Composable
-        fun SysDictFormOriginal(
-        state: MutableState<SysDictIso>,
-     dslConfig: SysDictFormDsl.() -> Unit = {}
-        ) {
-        
-           val renderMap = remember { mutableMapOf<String, @Composable () -> Unit>() }
-    SysDictFormDsl(state, renderMap).apply(dslConfig) 
-        
-        
-                     val defaultRenderMap = mutableMapOf<String, @Composable () -> Unit>(
-            SysDictFormProps.dictName to { AddTextField(
-    value = state.value.dictName?.toString() ?: "",
-    onValueChange = {
-        state.value = state.value.copy(dictName = if (it.isBlank()) "" else it.parseObjectByKtx())
-    },
-    label = "字典名称",
-    isRequired = true
-) }
-        ,
-            SysDictFormProps.dictCode to { AddTextField(
-    value = state.value.dictCode?.toString() ?: "",
-    onValueChange = {
-        state.value = state.value.copy(dictCode = if (it.isBlank()) "" else it.parseObjectByKtx())
-    },
-    label = "字典编码",
-    isRequired = true
-) }
-        ,
-            SysDictFormProps.description to { AddTextField(
-    value = state.value.description?.toString() ?: "",
-    onValueChange = {
-        state.value = state.value.copy(description = if (it.isBlank()) null else it.parseObjectByKtx())
-    },
-    label = "描述",
-    isRequired = false
-) }
-        ,
-            SysDictFormProps.sysDictItems to { AddTextField(
-    value = state.value.sysDictItems?.toString() ?: "",
-    onValueChange = {
-        state.value = state.value.copy(sysDictItems = if (it.isBlank()) emptyList() else it.parseObjectByKtx())
-    },
-    label = "sysDictItems",
-    isRequired = true
-) }
-         
- ) 
-       
-          val finalItems = remember(renderMap) {
-        defaultRenderMap
-            .filterKeys { it !in renderMap } // 未被DSL覆盖的字段
-            .plus(renderMap.filterValues { it != {} }) // 添加非隐藏的自定义字段
-    }.values.toList() 
-       
-       
-    val items = finalItems
- 
-            AddMultiColumnContainer(
-                howMuchColumn = 2,
-                items =items
-            )
-        
- 
-        
-        
-        
-        }
- 
-        
-        

@@ -18,91 +18,7 @@ import com.addzero.kmp.component.form.date.*
             import androidx.compose.ui.Alignment
             import com.addzero.kmp.core.ext.parseObjectByKtx
             import com.addzero.kmp.isomorphic.*
-        class SysAreaFormDsl(
-            val state: MutableState<SysAreaIso>,
-            private val renderMap: MutableMap<String, @Composable () -> Unit>
-        ) {
-            fun id(
-    hidden: Boolean = false,
-    render:  (@Composable ( MutableState<SysAreaIso>) -> Unit)? = null
-) {
-    when {
-        hidden -> renderMap["id"] = {}
-        render != null -> renderMap["id"] = {
-               render(state)
-        }
-    }
-}
-
-
-fun parentId(
-    hidden: Boolean = false,
-    render:  (@Composable ( MutableState<SysAreaIso>) -> Unit)? = null
-) {
-    when {
-        hidden -> renderMap["parentId"] = {}
-        render != null -> renderMap["parentId"] = {
-               render(state)
-        }
-    }
-}
-
-
-fun nodeType(
-    hidden: Boolean = false,
-    render:  (@Composable ( MutableState<SysAreaIso>) -> Unit)? = null
-) {
-    when {
-        hidden -> renderMap["nodeType"] = {}
-        render != null -> renderMap["nodeType"] = {
-               render(state)
-        }
-    }
-}
-
-
-fun name(
-    hidden: Boolean = false,
-    render:  (@Composable ( MutableState<SysAreaIso>) -> Unit)? = null
-) {
-    when {
-        hidden -> renderMap["name"] = {}
-        render != null -> renderMap["name"] = {
-               render(state)
-        }
-    }
-}
-
-
-fun areaCode(
-    hidden: Boolean = false,
-    render:  (@Composable ( MutableState<SysAreaIso>) -> Unit)? = null
-) {
-    when {
-        hidden -> renderMap["areaCode"] = {}
-        render != null -> renderMap["areaCode"] = {
-               render(state)
-        }
-    }
-}
-
-
-            
-            fun hide(vararg fields: String) {
-                fields.forEach { renderMap[it] = {} }
-            }
-        }
-object SysAreaFormProps {
-const val parentId = "parentId"
-const val nodeType = "nodeType"
-const val name = "name"
-const val areaCode = "areaCode"
-}
-@Composable
-fun rememberSysAreaFormState(current:SysAreaIso?=null): MutableState<SysAreaIso> {
-    return remember (current){ mutableStateOf(current?: SysAreaIso ()) }
-}
-     @Composable
+                @Composable
      fun SysAreaForm(
      state: MutableState<SysAreaIso>,
 visible: Boolean,
@@ -201,3 +117,89 @@ visible: Boolean,
  
         
         
+ 
+            
+        class SysAreaFormDsl(
+            val state: MutableState<SysAreaIso>,
+            private val renderMap: MutableMap<String, @Composable () -> Unit>
+        ) {
+            fun id(
+    hidden: Boolean = false,
+    render:  (@Composable ( MutableState<SysAreaIso>) -> Unit)? = null
+) {
+    when {
+        hidden -> renderMap["id"] = {}
+        render != null -> renderMap["id"] = {
+               render(state)
+        }
+    }
+}
+
+
+fun parentId(
+    hidden: Boolean = false,
+    render:  (@Composable ( MutableState<SysAreaIso>) -> Unit)? = null
+) {
+    when {
+        hidden -> renderMap["parentId"] = {}
+        render != null -> renderMap["parentId"] = {
+               render(state)
+        }
+    }
+}
+
+
+fun nodeType(
+    hidden: Boolean = false,
+    render:  (@Composable ( MutableState<SysAreaIso>) -> Unit)? = null
+) {
+    when {
+        hidden -> renderMap["nodeType"] = {}
+        render != null -> renderMap["nodeType"] = {
+               render(state)
+        }
+    }
+}
+
+
+fun name(
+    hidden: Boolean = false,
+    render:  (@Composable ( MutableState<SysAreaIso>) -> Unit)? = null
+) {
+    when {
+        hidden -> renderMap["name"] = {}
+        render != null -> renderMap["name"] = {
+               render(state)
+        }
+    }
+}
+
+
+fun areaCode(
+    hidden: Boolean = false,
+    render:  (@Composable ( MutableState<SysAreaIso>) -> Unit)? = null
+) {
+    when {
+        hidden -> renderMap["areaCode"] = {}
+        render != null -> renderMap["areaCode"] = {
+               render(state)
+        }
+    }
+}
+
+
+            
+            fun hide(vararg fields: String) {
+                fields.forEach { renderMap[it] = {} }
+            }
+        }
+object SysAreaFormProps {
+const val parentId = "parentId"
+const val nodeType = "nodeType"
+const val name = "name"
+const val areaCode = "areaCode"
+}
+@Composable
+fun rememberSysAreaFormState(current:SysAreaIso?=null): MutableState<SysAreaIso> {
+    return remember (current){ mutableStateOf(current?: SysAreaIso ()) }
+}

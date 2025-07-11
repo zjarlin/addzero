@@ -18,6 +18,162 @@ import com.addzero.kmp.component.form.date.*
             import androidx.compose.ui.Alignment
             import com.addzero.kmp.core.ext.parseObjectByKtx
             import com.addzero.kmp.isomorphic.*
+                @Composable
+     fun BizNoteForm(
+     state: MutableState<BizNoteIso>,
+visible: Boolean,
+         title: String,
+ onClose: () -> Unit,
+ onSubmit: () -> Unit,
+ confirmEnabled: Boolean = true,
+  dslConfig: BizNoteFormDsl.() -> Unit = {}
+     
+     ) {
+     
+
+     
+        AddDrawer(
+     visible = visible,
+     title = title,
+     onClose = onClose,
+     onSubmit = onSubmit,
+     confirmEnabled = confirmEnabled,
+
+     ) {
+           BizNoteFormOriginal(
+         state, dslConfig,
+     ) 
+     }
+     }
+
+              @Composable
+        fun BizNoteFormOriginal(
+        state: MutableState<BizNoteIso>,
+     dslConfig: BizNoteFormDsl.() -> Unit = {}
+        ) {
+        
+           val renderMap = remember { mutableMapOf<String, @Composable () -> Unit>() }
+    BizNoteFormDsl(state, renderMap).apply(dslConfig) 
+        
+        
+                     val defaultRenderMap = mutableMapOf<String, @Composable () -> Unit>(
+            BizNoteFormProps.leafFlag to {     
+Row(verticalAlignment = Alignment.CenterVertically) {
+Text("leafFlag")
+    Switch(
+        checked = state.value.leafFlag ?: false,
+        onCheckedChange = {
+            state.value = state.value.copy(leafFlag = it)
+        },
+    )
+    
+    Text(
+        text = if (  state.value as? Boolean == true) "是" else "否",
+        modifier = Modifier.width(40.dp)
+    )
+
+}
+     }
+        ,
+            BizNoteFormProps.children to { AddTextField(
+    value = state.value.children?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(children = if (it.isBlank()) emptyList() else it.parseObjectByKtx())
+    },
+    label = "笔记的子节点列表，表示当前笔记的子笔记。通过{@linkOneToMany}注解与父笔记关联。@return子笔记列表",
+    isRequired = true
+) }
+        ,
+            BizNoteFormProps.parent to { AddTextField(
+    value = state.value.parent?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(parent = if (it.isBlank()) null else it.parseObjectByKtx())
+    },
+    label = "笔记的父节点，表示当前笔记的父笔记。通过{@linkManyToOne}注解与子笔记关联。@return父笔记，如果没有父笔记则返回null",
+    isRequired = false
+) }
+        ,
+            BizNoteFormProps.title to { AddTextField(
+    value = state.value.title?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(title = if (it.isBlank()) "" else it.parseObjectByKtx())
+    },
+    label = "标题",
+    isRequired = true
+) }
+        ,
+            BizNoteFormProps.content to { AddTextField(
+    value = state.value.content?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(content = if (it.isBlank()) "" else it.parseObjectByKtx())
+    },
+    label = "内容",
+    isRequired = true
+) }
+        ,
+            BizNoteFormProps.type to { AddTextField(
+    value = state.value.type?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(type = if (it.isBlank()) null else it.parseObjectByKtx())
+    },
+    label = "类型1=markdown2=pdf3=word4=excel@return笔记类型",
+    isRequired = false
+) }
+        ,
+            BizNoteFormProps.tags to { AddTextField(
+    value = state.value.tags?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(tags = if (it.isBlank()) emptyList() else it.parseObjectByKtx())
+    },
+    label = "笔记的标签列表，用于分类和检索。通过中间表实现与标签的多对多关系@return标签列表",
+    isRequired = true
+) }
+        ,
+            BizNoteFormProps.path to { AddTextField(
+    value = state.value.path?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(path = if (it.isBlank()) null else it.parseObjectByKtx())
+    },
+    label = "笔记的路径@return笔记路径",
+    isRequired = false
+) }
+        ,
+            BizNoteFormProps.fileUrl to { AddTextField(
+    value = state.value.fileUrl?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(fileUrl = if (it.isBlank()) null else it.parseObjectByKtx())
+    },
+    label = "笔记关联的文件链接（可选）。",
+    isRequired = false,
+    regexEnum = RegexEnum.URL
+) }
+         
+ ) 
+       
+          val finalItems = remember(renderMap) {
+        defaultRenderMap
+            .filterKeys { it !in renderMap } // 未被DSL覆盖的字段
+            .plus(renderMap.filterValues { it != {} }) // 添加非隐藏的自定义字段
+    }.values.toList() 
+       
+       
+    val items = finalItems
+ 
+            AddMultiColumnContainer(
+                howMuchColumn = 2,
+                items =items
+            )
+        
+ 
+        
+        
+        
+        }
+ 
+        
+        
+ 
+            
         class BizNoteFormDsl(
             val state: MutableState<BizNoteIso>,
             private val renderMap: MutableMap<String, @Composable () -> Unit>
@@ -224,157 +380,3 @@ const val fileUrl = "fileUrl"
 fun rememberBizNoteFormState(current:BizNoteIso?=null): MutableState<BizNoteIso> {
     return remember (current){ mutableStateOf(current?: BizNoteIso ()) }
 }
-     @Composable
-     fun BizNoteForm(
-     state: MutableState<BizNoteIso>,
-visible: Boolean,
-         title: String,
- onClose: () -> Unit,
- onSubmit: () -> Unit,
- confirmEnabled: Boolean = true,
-  dslConfig: BizNoteFormDsl.() -> Unit = {}
-     
-     ) {
-     
-
-     
-        AddDrawer(
-     visible = visible,
-     title = title,
-     onClose = onClose,
-     onSubmit = onSubmit,
-     confirmEnabled = confirmEnabled,
-
-     ) {
-           BizNoteFormOriginal(
-         state, dslConfig,
-     ) 
-     }
-     }
-
-              @Composable
-        fun BizNoteFormOriginal(
-        state: MutableState<BizNoteIso>,
-     dslConfig: BizNoteFormDsl.() -> Unit = {}
-        ) {
-        
-           val renderMap = remember { mutableMapOf<String, @Composable () -> Unit>() }
-    BizNoteFormDsl(state, renderMap).apply(dslConfig) 
-        
-        
-                     val defaultRenderMap = mutableMapOf<String, @Composable () -> Unit>(
-            BizNoteFormProps.leafFlag to {     
-Row(verticalAlignment = Alignment.CenterVertically) {
-Text("leafFlag")
-    Switch(
-        checked = state.value.leafFlag ?: false,
-        onCheckedChange = {
-            state.value = state.value.copy(leafFlag = it)
-        },
-    )
-    
-    Text(
-        text = if (  state.value as? Boolean == true) "是" else "否",
-        modifier = Modifier.width(40.dp)
-    )
-
-}
-     }
-        ,
-            BizNoteFormProps.children to { AddTextField(
-    value = state.value.children?.toString() ?: "",
-    onValueChange = {
-        state.value = state.value.copy(children = if (it.isBlank()) emptyList() else it.parseObjectByKtx())
-    },
-    label = "笔记的子节点列表，表示当前笔记的子笔记。通过{@linkOneToMany}注解与父笔记关联。@return子笔记列表",
-    isRequired = true
-) }
-        ,
-            BizNoteFormProps.parent to { AddTextField(
-    value = state.value.parent?.toString() ?: "",
-    onValueChange = {
-        state.value = state.value.copy(parent = if (it.isBlank()) null else it.parseObjectByKtx())
-    },
-    label = "笔记的父节点，表示当前笔记的父笔记。通过{@linkManyToOne}注解与子笔记关联。@return父笔记，如果没有父笔记则返回null",
-    isRequired = false
-) }
-        ,
-            BizNoteFormProps.title to { AddTextField(
-    value = state.value.title?.toString() ?: "",
-    onValueChange = {
-        state.value = state.value.copy(title = if (it.isBlank()) "" else it.parseObjectByKtx())
-    },
-    label = "标题",
-    isRequired = true
-) }
-        ,
-            BizNoteFormProps.content to { AddTextField(
-    value = state.value.content?.toString() ?: "",
-    onValueChange = {
-        state.value = state.value.copy(content = if (it.isBlank()) "" else it.parseObjectByKtx())
-    },
-    label = "内容",
-    isRequired = true
-) }
-        ,
-            BizNoteFormProps.type to { AddTextField(
-    value = state.value.type?.toString() ?: "",
-    onValueChange = {
-        state.value = state.value.copy(type = if (it.isBlank()) null else it.parseObjectByKtx())
-    },
-    label = "类型1=markdown2=pdf3=word4=excel@return笔记类型",
-    isRequired = false
-) }
-        ,
-            BizNoteFormProps.tags to { AddTextField(
-    value = state.value.tags?.toString() ?: "",
-    onValueChange = {
-        state.value = state.value.copy(tags = if (it.isBlank()) emptyList() else it.parseObjectByKtx())
-    },
-    label = "笔记的标签列表，用于分类和检索。通过中间表实现与标签的多对多关系@return标签列表",
-    isRequired = true
-) }
-        ,
-            BizNoteFormProps.path to { AddTextField(
-    value = state.value.path?.toString() ?: "",
-    onValueChange = {
-        state.value = state.value.copy(path = if (it.isBlank()) null else it.parseObjectByKtx())
-    },
-    label = "笔记的路径@return笔记路径",
-    isRequired = false
-) }
-        ,
-            BizNoteFormProps.fileUrl to { AddTextField(
-    value = state.value.fileUrl?.toString() ?: "",
-    onValueChange = {
-        state.value = state.value.copy(fileUrl = if (it.isBlank()) null else it.parseObjectByKtx())
-    },
-    label = "笔记关联的文件链接（可选）。",
-    isRequired = false,
-    regexEnum = RegexEnum.URL
-) }
-         
- ) 
-       
-          val finalItems = remember(renderMap) {
-        defaultRenderMap
-            .filterKeys { it !in renderMap } // 未被DSL覆盖的字段
-            .plus(renderMap.filterValues { it != {} }) // 添加非隐藏的自定义字段
-    }.values.toList() 
-       
-       
-    val items = finalItems
- 
-            AddMultiColumnContainer(
-                howMuchColumn = 2,
-                items =items
-            )
-        
- 
-        
-        
-        
-        }
- 
-        
-        

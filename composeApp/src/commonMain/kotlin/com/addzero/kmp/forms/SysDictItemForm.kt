@@ -18,185 +18,7 @@ import com.addzero.kmp.component.form.date.*
             import androidx.compose.ui.Alignment
             import com.addzero.kmp.core.ext.parseObjectByKtx
             import com.addzero.kmp.isomorphic.*
-        class SysDictItemFormDsl(
-            val state: MutableState<SysDictItemIso>,
-            private val renderMap: MutableMap<String, @Composable () -> Unit>
-        ) {
-            fun itemText(
-    hidden: Boolean = false,
-    render:  (@Composable ( MutableState<SysDictItemIso>) -> Unit)? = null
-) {
-    when {
-        hidden -> renderMap["itemText"] = {}
-        render != null -> renderMap["itemText"] = {
-               render(state)
-        }
-    }
-}
-
-
-fun itemValue(
-    hidden: Boolean = false,
-    render:  (@Composable ( MutableState<SysDictItemIso>) -> Unit)? = null
-) {
-    when {
-        hidden -> renderMap["itemValue"] = {}
-        render != null -> renderMap["itemValue"] = {
-               render(state)
-        }
-    }
-}
-
-
-fun description(
-    hidden: Boolean = false,
-    render:  (@Composable ( MutableState<SysDictItemIso>) -> Unit)? = null
-) {
-    when {
-        hidden -> renderMap["description"] = {}
-        render != null -> renderMap["description"] = {
-               render(state)
-        }
-    }
-}
-
-
-fun sortOrder(
-    hidden: Boolean = false,
-    render:  (@Composable ( MutableState<SysDictItemIso>) -> Unit)? = null
-) {
-    when {
-        hidden -> renderMap["sortOrder"] = {}
-        render != null -> renderMap["sortOrder"] = {
-               render(state)
-        }
-    }
-}
-
-
-fun status(
-    hidden: Boolean = false,
-    render:  (@Composable ( MutableState<SysDictItemIso>) -> Unit)? = null
-) {
-    when {
-        hidden -> renderMap["status"] = {}
-        render != null -> renderMap["status"] = {
-               render(state)
-        }
-    }
-}
-
-
-fun sysDict(
-    hidden: Boolean = false,
-    render:  (@Composable ( MutableState<SysDictItemIso>) -> Unit)? = null
-) {
-    when {
-        hidden -> renderMap["sysDict"] = {}
-        render != null -> renderMap["sysDict"] = {
-               render(state)
-        }
-    }
-}
-
-
-fun dictId(
-    hidden: Boolean = false,
-    render:  (@Composable ( MutableState<SysDictItemIso>) -> Unit)? = null
-) {
-    when {
-        hidden -> renderMap["dictId"] = {}
-        render != null -> renderMap["dictId"] = {
-               render(state)
-        }
-    }
-}
-
-
-fun id(
-    hidden: Boolean = false,
-    render:  (@Composable ( MutableState<SysDictItemIso>) -> Unit)? = null
-) {
-    when {
-        hidden -> renderMap["id"] = {}
-        render != null -> renderMap["id"] = {
-               render(state)
-        }
-    }
-}
-
-
-fun updateBy(
-    hidden: Boolean = false,
-    render:  (@Composable ( MutableState<SysDictItemIso>) -> Unit)? = null
-) {
-    when {
-        hidden -> renderMap["updateBy"] = {}
-        render != null -> renderMap["updateBy"] = {
-               render(state)
-        }
-    }
-}
-
-
-fun createBy(
-    hidden: Boolean = false,
-    render:  (@Composable ( MutableState<SysDictItemIso>) -> Unit)? = null
-) {
-    when {
-        hidden -> renderMap["createBy"] = {}
-        render != null -> renderMap["createBy"] = {
-               render(state)
-        }
-    }
-}
-
-
-fun createTime(
-    hidden: Boolean = false,
-    render:  (@Composable ( MutableState<SysDictItemIso>) -> Unit)? = null
-) {
-    when {
-        hidden -> renderMap["createTime"] = {}
-        render != null -> renderMap["createTime"] = {
-               render(state)
-        }
-    }
-}
-
-
-fun updateTime(
-    hidden: Boolean = false,
-    render:  (@Composable ( MutableState<SysDictItemIso>) -> Unit)? = null
-) {
-    when {
-        hidden -> renderMap["updateTime"] = {}
-        render != null -> renderMap["updateTime"] = {
-               render(state)
-        }
-    }
-}
-
-
-            
-            fun hide(vararg fields: String) {
-                fields.forEach { renderMap[it] = {} }
-            }
-        }
-object SysDictItemFormProps {
-const val itemText = "itemText"
-const val itemValue = "itemValue"
-const val description = "description"
-const val sortOrder = "sortOrder"
-const val status = "status"
-const val sysDict = "sysDict"
-const val dictId = "dictId"
-}
-@Composable
-fun rememberSysDictItemFormState(current:SysDictItemIso?=null): MutableState<SysDictItemIso> {
-    return remember (current){ mutableStateOf(current?: SysDictItemIso ()) }
-}
-     @Composable
+                @Composable
      fun SysDictItemForm(
      state: MutableState<SysDictItemIso>,
 visible: Boolean,
@@ -288,15 +110,6 @@ visible: Boolean,
     label = "sysDict",
     isRequired = false
 ) }
-        ,
-            SysDictItemFormProps.dictId to {          AddIntegerField(
-    value = state.value.dictId?.toString() ?: "",
-    onValueChange = {
-        state.value = state.value.copy(dictId = if (it.isBlank()) null else it.parseObjectByKtx())
-    },
-    label = "dictId",
-    isRequired = false
-) }
          
  ) 
        
@@ -322,3 +135,169 @@ visible: Boolean,
  
         
         
+ 
+            
+        class SysDictItemFormDsl(
+            val state: MutableState<SysDictItemIso>,
+            private val renderMap: MutableMap<String, @Composable () -> Unit>
+        ) {
+            fun itemText(
+    hidden: Boolean = false,
+    render:  (@Composable ( MutableState<SysDictItemIso>) -> Unit)? = null
+) {
+    when {
+        hidden -> renderMap["itemText"] = {}
+        render != null -> renderMap["itemText"] = {
+               render(state)
+        }
+    }
+}
+
+
+fun itemValue(
+    hidden: Boolean = false,
+    render:  (@Composable ( MutableState<SysDictItemIso>) -> Unit)? = null
+) {
+    when {
+        hidden -> renderMap["itemValue"] = {}
+        render != null -> renderMap["itemValue"] = {
+               render(state)
+        }
+    }
+}
+
+
+fun description(
+    hidden: Boolean = false,
+    render:  (@Composable ( MutableState<SysDictItemIso>) -> Unit)? = null
+) {
+    when {
+        hidden -> renderMap["description"] = {}
+        render != null -> renderMap["description"] = {
+               render(state)
+        }
+    }
+}
+
+
+fun sortOrder(
+    hidden: Boolean = false,
+    render:  (@Composable ( MutableState<SysDictItemIso>) -> Unit)? = null
+) {
+    when {
+        hidden -> renderMap["sortOrder"] = {}
+        render != null -> renderMap["sortOrder"] = {
+               render(state)
+        }
+    }
+}
+
+
+fun status(
+    hidden: Boolean = false,
+    render:  (@Composable ( MutableState<SysDictItemIso>) -> Unit)? = null
+) {
+    when {
+        hidden -> renderMap["status"] = {}
+        render != null -> renderMap["status"] = {
+               render(state)
+        }
+    }
+}
+
+
+fun sysDict(
+    hidden: Boolean = false,
+    render:  (@Composable ( MutableState<SysDictItemIso>) -> Unit)? = null
+) {
+    when {
+        hidden -> renderMap["sysDict"] = {}
+        render != null -> renderMap["sysDict"] = {
+               render(state)
+        }
+    }
+}
+
+
+fun id(
+    hidden: Boolean = false,
+    render:  (@Composable ( MutableState<SysDictItemIso>) -> Unit)? = null
+) {
+    when {
+        hidden -> renderMap["id"] = {}
+        render != null -> renderMap["id"] = {
+               render(state)
+        }
+    }
+}
+
+
+fun updateBy(
+    hidden: Boolean = false,
+    render:  (@Composable ( MutableState<SysDictItemIso>) -> Unit)? = null
+) {
+    when {
+        hidden -> renderMap["updateBy"] = {}
+        render != null -> renderMap["updateBy"] = {
+               render(state)
+        }
+    }
+}
+
+
+fun createBy(
+    hidden: Boolean = false,
+    render:  (@Composable ( MutableState<SysDictItemIso>) -> Unit)? = null
+) {
+    when {
+        hidden -> renderMap["createBy"] = {}
+        render != null -> renderMap["createBy"] = {
+               render(state)
+        }
+    }
+}
+
+
+fun createTime(
+    hidden: Boolean = false,
+    render:  (@Composable ( MutableState<SysDictItemIso>) -> Unit)? = null
+) {
+    when {
+        hidden -> renderMap["createTime"] = {}
+        render != null -> renderMap["createTime"] = {
+               render(state)
+        }
+    }
+}
+
+
+fun updateTime(
+    hidden: Boolean = false,
+    render:  (@Composable ( MutableState<SysDictItemIso>) -> Unit)? = null
+) {
+    when {
+        hidden -> renderMap["updateTime"] = {}
+        render != null -> renderMap["updateTime"] = {
+               render(state)
+        }
+    }
+}
+
+
+            
+            fun hide(vararg fields: String) {
+                fields.forEach { renderMap[it] = {} }
+            }
+        }
+object SysDictItemFormProps {
+const val itemText = "itemText"
+const val itemValue = "itemValue"
+const val description = "description"
+const val sortOrder = "sortOrder"
+const val status = "status"
+const val sysDict = "sysDict"
+}
+@Composable
+fun rememberSysDictItemFormState(current:SysDictItemIso?=null): MutableState<SysDictItemIso> {
+    return remember (current){ mutableStateOf(current?: SysDictItemIso ()) }
+}

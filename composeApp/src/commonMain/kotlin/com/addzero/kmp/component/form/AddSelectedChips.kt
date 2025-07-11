@@ -1,4 +1,4 @@
-package com.addzero.kmp.component.common
+package com.addzero.kmp.component.form
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow

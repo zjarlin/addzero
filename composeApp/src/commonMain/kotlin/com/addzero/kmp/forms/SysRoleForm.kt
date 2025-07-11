@@ -18,6 +18,125 @@ import com.addzero.kmp.component.form.date.*
             import androidx.compose.ui.Alignment
             import com.addzero.kmp.core.ext.parseObjectByKtx
             import com.addzero.kmp.isomorphic.*
+                @Composable
+     fun SysRoleForm(
+     state: MutableState<SysRoleIso>,
+visible: Boolean,
+         title: String,
+ onClose: () -> Unit,
+ onSubmit: () -> Unit,
+ confirmEnabled: Boolean = true,
+  dslConfig: SysRoleFormDsl.() -> Unit = {}
+     
+     ) {
+     
+
+     
+        AddDrawer(
+     visible = visible,
+     title = title,
+     onClose = onClose,
+     onSubmit = onSubmit,
+     confirmEnabled = confirmEnabled,
+
+     ) {
+           SysRoleFormOriginal(
+         state, dslConfig,
+     ) 
+     }
+     }
+
+              @Composable
+        fun SysRoleFormOriginal(
+        state: MutableState<SysRoleIso>,
+     dslConfig: SysRoleFormDsl.() -> Unit = {}
+        ) {
+        
+           val renderMap = remember { mutableMapOf<String, @Composable () -> Unit>() }
+    SysRoleFormDsl(state, renderMap).apply(dslConfig) 
+        
+        
+                     val defaultRenderMap = mutableMapOf<String, @Composable () -> Unit>(
+            SysRoleFormProps.roleCode to { AddTextField(
+    value = state.value.roleCode?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(roleCode = if (it.isBlank()) "" else it.parseObjectByKtx())
+    },
+    label = "角色编码",
+    isRequired = true
+) }
+        ,
+            SysRoleFormProps.roleName to { AddTextField(
+    value = state.value.roleName?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(roleName = if (it.isBlank()) "" else it.parseObjectByKtx())
+    },
+    label = "角色名称",
+    isRequired = true
+) }
+        ,
+            SysRoleFormProps.systemFlag to {     
+Row(verticalAlignment = Alignment.CenterVertically) {
+Text("是否为系统角色")
+    Switch(
+        checked = state.value.systemFlag ?: false,
+        onCheckedChange = {
+            state.value = state.value.copy(systemFlag = it)
+        },
+    )
+    
+    Text(
+        text = if (  state.value as? Boolean == true) "是" else "否",
+        modifier = Modifier.width(40.dp)
+    )
+
+}
+     }
+        ,
+            SysRoleFormProps.status to { AddTextField(
+    value = state.value.status?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(status = if (it.isBlank()) com.addzero.kmp.generated.enums.EnumSysToggle.entries.first() else it.parseObjectByKtx())
+    },
+    label = "角色状态",
+    isRequired = true
+) }
+        ,
+            SysRoleFormProps.sysUsers to { AddTextField(
+    value = state.value.sysUsers?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(sysUsers = if (it.isBlank()) emptyList() else it.parseObjectByKtx())
+    },
+    label = "sysUsers",
+    isRequired = true
+) }
+         
+ ) 
+       
+          val finalItems = remember(renderMap) {
+        defaultRenderMap
+            .filterKeys { it !in renderMap } // 未被DSL覆盖的字段
+            .plus(renderMap.filterValues { it != {} }) // 添加非隐藏的自定义字段
+    }.values.toList() 
+       
+       
+    val items = finalItems
+ 
+            AddMultiColumnContainer(
+                howMuchColumn = 2,
+                items =items
+            )
+        
+ 
+        
+        
+        
+        }
+ 
+        
+        
+ 
+            
         class SysRoleFormDsl(
             val state: MutableState<SysRoleIso>,
             private val renderMap: MutableMap<String, @Composable () -> Unit>
@@ -168,120 +287,3 @@ const val sysUsers = "sysUsers"
 fun rememberSysRoleFormState(current:SysRoleIso?=null): MutableState<SysRoleIso> {
     return remember (current){ mutableStateOf(current?: SysRoleIso ()) }
 }
-     @Composable
-     fun SysRoleForm(
-     state: MutableState<SysRoleIso>,
-visible: Boolean,
-         title: String,
- onClose: () -> Unit,
- onSubmit: () -> Unit,
- confirmEnabled: Boolean = true,
-  dslConfig: SysRoleFormDsl.() -> Unit = {}
-     
-     ) {
-     
-
-     
-        AddDrawer(
-     visible = visible,
-     title = title,
-     onClose = onClose,
-     onSubmit = onSubmit,
-     confirmEnabled = confirmEnabled,
-
-     ) {
-           SysRoleFormOriginal(
-         state, dslConfig,
-     ) 
-     }
-     }
-
-              @Composable
-        fun SysRoleFormOriginal(
-        state: MutableState<SysRoleIso>,
-     dslConfig: SysRoleFormDsl.() -> Unit = {}
-        ) {
-        
-           val renderMap = remember { mutableMapOf<String, @Composable () -> Unit>() }
-    SysRoleFormDsl(state, renderMap).apply(dslConfig) 
-        
-        
-                     val defaultRenderMap = mutableMapOf<String, @Composable () -> Unit>(
-            SysRoleFormProps.roleCode to { AddTextField(
-    value = state.value.roleCode?.toString() ?: "",
-    onValueChange = {
-        state.value = state.value.copy(roleCode = if (it.isBlank()) "" else it.parseObjectByKtx())
-    },
-    label = "角色编码",
-    isRequired = true
-) }
-        ,
-            SysRoleFormProps.roleName to { AddTextField(
-    value = state.value.roleName?.toString() ?: "",
-    onValueChange = {
-        state.value = state.value.copy(roleName = if (it.isBlank()) "" else it.parseObjectByKtx())
-    },
-    label = "角色名称",
-    isRequired = true
-) }
-        ,
-            SysRoleFormProps.systemFlag to {     
-Row(verticalAlignment = Alignment.CenterVertically) {
-Text("是否为系统角色")
-    Switch(
-        checked = state.value.systemFlag ?: false,
-        onCheckedChange = {
-            state.value = state.value.copy(systemFlag = it)
-        },
-    )
-    
-    Text(
-        text = if (  state.value as? Boolean == true) "是" else "否",
-        modifier = Modifier.width(40.dp)
-    )
-
-}
-     }
-        ,
-            SysRoleFormProps.status to { AddTextField(
-    value = state.value.status?.toString() ?: "",
-    onValueChange = {
-        state.value = state.value.copy(status = if (it.isBlank()) com.addzero.kmp.generated.enums.EnumSysToggle.entries.first() else it.parseObjectByKtx())
-    },
-    label = "角色状态",
-    isRequired = true
-) }
-        ,
-            SysRoleFormProps.sysUsers to { AddTextField(
-    value = state.value.sysUsers?.toString() ?: "",
-    onValueChange = {
-        state.value = state.value.copy(sysUsers = if (it.isBlank()) emptyList() else it.parseObjectByKtx())
-    },
-    label = "sysUsers",
-    isRequired = true
-) }
-         
- ) 
-       
-          val finalItems = remember(renderMap) {
-        defaultRenderMap
-            .filterKeys { it !in renderMap } // 未被DSL覆盖的字段
-            .plus(renderMap.filterValues { it != {} }) // 添加非隐藏的自定义字段
-    }.values.toList() 
-       
-       
-    val items = finalItems
- 
-            AddMultiColumnContainer(
-                howMuchColumn = 2,
-                items =items
-            )
-        
- 
-        
-        
-        
-        }
- 
-        
-        

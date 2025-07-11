@@ -1,24 +1,22 @@
 package com.addzero.kmp.screens.dept
 
 import androidx.compose.runtime.Composable
-import com.addzero.kmp.forms.SysDeptForm
-import com.addzero.kmp.forms.rememberSysDeptFormState
+// import com.addzero.kmp.forms.SysDeptForm
+// import com.addzero.kmp.forms.rememberSysDeptFormState
 import com.addzero.kmp.viewmodel.SysDeptViewModel
 
 @Composable
 fun RenderDeptForm(vm: SysDeptViewModel) {
-
-    val state = rememberSysDeptFormState()
-    SysDeptForm(state = state, visible = vm.showForm, title = "部门表单", onClose = { vm.showForm = false }, onSubmit = { vm.onSave(state.value) }) {
-        parent {
-            val sysDeptViewModel = SysDeptViewModel()
-            LeftCard(sysDeptViewModel)
-//        renderParent(state)
-
-        }
-        children(true)
-        sysUsers(true)
-    }
+    // TODO: 重新生成表单后取消注释
+    // val state = rememberSysDeptFormState()
+    // SysDeptForm(state = state, visible = vm.showForm, title = "部门表单", onClose = { vm.showForm = false }, onSubmit = { vm.onSave(state.value) }) {
+    //     parent {
+    //         val sysDeptViewModel = SysDeptViewModel()
+    //         LeftCard(sysDeptViewModel)
+    //     }
+    //     children(true)
+    //     sysUsers(true)
+    // }
 }
 
 //private fun SysDeptFormDsl.renderParent(vm: SysDeptViewModel) {

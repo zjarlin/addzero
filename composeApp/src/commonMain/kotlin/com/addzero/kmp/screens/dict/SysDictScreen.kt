@@ -153,7 +153,6 @@ fun DictManagerScreen() {
             }
         ) {
             sysDict(true)
-            dictId(true)
         }
 
 

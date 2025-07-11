@@ -1,4 +1,4 @@
-package com.addzero.kmp.component.dept_selector
+package com.addzero.kmp.component.form.dept_selector
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons

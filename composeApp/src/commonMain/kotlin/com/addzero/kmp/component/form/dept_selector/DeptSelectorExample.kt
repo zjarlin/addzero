@@ -1,16 +1,9 @@
-package com.addzero.kmp.component.dept_selector
+package com.addzero.kmp.component.form.dept_selector
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import com.addzero.kmp.annotation.Route
+import com.addzero.kmp.component.form.AddDeptSelector
 import com.addzero.kmp.isomorphic.SysDeptIso
 
 /**

@@ -1,50 +1,42 @@
-package com.addzero.kmp.component.dept_selector
+package com.addzero.kmp.component.form
 
-import androidx.compose.animation.*
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.addzero.kmp.api.ApiProvider.sysDeptApi
-import com.addzero.kmp.api.SysDeptApi
 import com.addzero.kmp.component.tree_command.AddTreeWithCommand
 import com.addzero.kmp.component.tree_command.TreeCommand
-import com.addzero.kmp.component.tree.selection.CompleteSelectionResult
-import com.addzero.kmp.component.common.AddSelectedChips
 import com.addzero.kmp.isomorphic.SysDeptIso
 import kotlinx.coroutines.launch
-import org.koin.compose.koinInject
 
 /**
- * 🏢 部门选择组件
+ * 🏢 单选部门选择组件
  *
- * 基于 AddTreeWithCommand 封装的部门多选组件
+ * 基于 AddDeptSelector 派生的单选版本，选择一个部门后立即关闭并确认
  *
- * @param selectedDepts 当前选中的部门列表
- * @param onValueChange 选择变化回调，返回选中的部门列表
+ * @param selectedDept 当前选中的部门
+ * @param onValueChange 选择变化回调，返回选中的部门（可为null）
  * @param modifier 修饰符
  * @param placeholder 占位符文本
  * @param enabled 是否启用
- * @param showConfirmButton 是否显示确认按钮
  * @param maxHeight 最大高度
+ * @param allowClear 是否允许清除选择
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddDeptSelector(
-    selectedDepts: List<SysDeptIso> = emptyList(),
-    onValueChange: (List<SysDeptIso>) -> Unit,
+fun AddSingleDeptSelector(
+    selectedDept: SysDeptIso? = null,
+    onValueChange: (SysDeptIso?) -> Unit,
     modifier: Modifier = Modifier,
     placeholder: String = "请选择部门",
     enabled: Boolean = true,
-    showConfirmButton: Boolean = true,
-    maxHeight: androidx.compose.ui.unit.Dp = 400.dp
+    maxHeight: androidx.compose.ui.unit.Dp = 400.dp,
+    allowClear: Boolean = true
 ) {
     // 🔧 依赖注入
     val deptApi = sysDeptApi
@@ -55,7 +47,6 @@ fun AddDeptSelector(
     var deptTree by remember { mutableStateOf<List<SysDeptIso>>(emptyList()) }
     var isLoading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf<String?>(null) }
-    var tempSelectedDepts by remember { mutableStateOf(selectedDepts) }
 
     // 🔄 加载部门树数据
     LaunchedEffect(isExpanded) {
@@ -72,11 +63,6 @@ fun AddDeptSelector(
         }
     }
 
-    // 🎯 同步外部选中状态
-    LaunchedEffect(selectedDepts) {
-        tempSelectedDepts = selectedDepts
-    }
-
     Column(modifier = modifier) {
         // 📝 选择器输入框
         ExposedDropdownMenuBox(
@@ -88,48 +74,27 @@ fun AddDeptSelector(
             }
         ) {
             OutlinedTextField(
-                value = "", // 始终为空，内容由 leadingIcon 显示
+                value = selectedDept?.name ?: "",
                 onValueChange = { },
                 readOnly = true,
                 enabled = enabled,
-                placeholder = if (selectedDepts.isEmpty()) {
-                    { Text(placeholder) }
-                } else null, // 有选择时不显示占位符
-                leadingIcon = if (selectedDepts.isNotEmpty()) {
-                    {
-                        // 在输入框内显示选择的标签
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth(0.7f) // 占用大部分宽度，为尾部图标留空间
-                                .padding(start = 4.dp)
-                        ) {
-                            AddSelectedChips(
-                                selectedItems = selectedDepts,
-                                onRemoveItem = { deptToRemove ->
-                                    val newSelection = selectedDepts.filter { it.id != deptToRemove.id }
-                                    tempSelectedDepts = newSelection
-                                    onValueChange(newSelection)
-                                },
-                                getLabel = { it.name },
-                                getId = { it.id ?: 0L },
-                                enabled = enabled,
-                                maxItems = 3, // 在输入框内最多显示3个
-                                contentPadding = PaddingValues(0.dp),
-                                itemSpacing = 4.dp
-                            )
-                        }
-                    }
-                } else null,
+                placeholder = { Text(placeholder) },
+                leadingIcon = {
+                    Icon(
+                        Icons.Default.Business,
+                        contentDescription = "部门",
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                },
                 trailingIcon = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         // 清除按钮
-                        if (selectedDepts.isNotEmpty() && enabled) {
+                        if (selectedDept != null && enabled && allowClear) {
                             IconButton(
                                 onClick = {
-                                    tempSelectedDepts = emptyList()
-                                    onValueChange(emptyList())
+                                    onValueChange(null)
                                 }
                             ) {
                                 Icon(
@@ -214,26 +179,13 @@ fun AddDeptSelector(
                     }
 
                     deptTree.isNotEmpty() -> {
-                        // 🌳 部门树选择器
-                        DeptTreeSelector(
+                        // 🌳 单选部门树选择器
+                        SingleDeptTreeSelector(
                             deptTree = deptTree,
-                            selectedDepts = tempSelectedDepts,
-                            onSelectionChange = { newSelection ->
-                                tempSelectedDepts = newSelection
-                                if (!showConfirmButton) {
-                                    // 如果不显示确认按钮，立即回调
-                                    onValueChange(newSelection)
-                                }
-                            },
-                            onConfirm = if (showConfirmButton) {
-                                {
-                                    onValueChange(tempSelectedDepts)
-                                    isExpanded = false
-                                }
-                            } else null,
-                            onCancel = {
-                                tempSelectedDepts = selectedDepts
-                                isExpanded = false
+                            selectedDept = selectedDept,
+                            onDeptSelected = { dept ->
+                                onValueChange(dept)
+                                isExpanded = false // 选择后立即关闭
                             }
                         )
                     }
@@ -256,9 +208,102 @@ fun AddDeptSelector(
                 }
             }
         }
-
-
     }
 }
 
+/**
+ * 🌳 单选部门树选择器
+ *
+ * 专门用于单选模式的部门树组件
+ *
+ * @param deptTree 部门树数据
+ * @param selectedDept 当前选中的部门
+ * @param onDeptSelected 部门选择回调
+ */
+@Composable
+private fun SingleDeptTreeSelector(
+    deptTree: List<SysDeptIso>,
+    selectedDept: SysDeptIso?,
+    onDeptSelected: (SysDeptIso) -> Unit
+) {
+    // 🔧 获取部门图标
+    val getDeptIcon: @Composable (SysDeptIso) -> androidx.compose.ui.graphics.vector.ImageVector? = { dept ->
+        when {
+            dept.children.isNotEmpty() -> Icons.Default.Business // 有子部门的用企业图标
+            else -> Icons.Default.Group // 叶子部门用团队图标
+        }
+    }
 
+    // 🎯 获取初始展开的节点ID
+    val initiallyExpandedIds = remember(deptTree) {
+        buildSet {
+            fun collectExpandedIds(depts: List<SysDeptIso>) {
+                depts.forEach { dept ->
+                    if (dept.children.isNotEmpty()) {
+                        dept.id?.let { add(it) }
+                        collectExpandedIds(dept.children)
+                    }
+                }
+            }
+            collectExpandedIds(deptTree)
+        }
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp)
+    ) {
+        // 🛠️ 操作提示
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "选择部门",
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            
+            Text(
+                text = "点击部门名称即可选择",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+
+        Divider(modifier = Modifier.padding(bottom = 8.dp))
+
+        // 🌳 部门树组件 - 单选模式
+        AddTreeWithCommand(
+            items = deptTree,
+            getId = { it.id ?: 0L },
+            getLabel = { it.name },
+            getChildren = { it.children },
+            getNodeType = { "department" },
+            getIcon = getDeptIcon,
+            initiallyExpandedIds = initiallyExpandedIds,
+            commands = setOf(
+                TreeCommand.SEARCH,
+                TreeCommand.EXPAND_ALL,
+                TreeCommand.COLLAPSE_ALL
+                // 注意：不包含 MULTI_SELECT，保持单选模式
+            ),
+            // 单选模式配置
+            autoEnableMultiSelect = false,  // 不自动开启多选
+            multiSelectClickToToggle = false, // 不使用多选点击切换
+            onNodeClick = { dept ->
+                // 点击节点直接选择（只对叶子节点有效）
+                if (dept.children.isEmpty()) {
+                    onDeptSelected(dept)
+                }
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(min = 200.dp, max = 300.dp)
+        )
+    }
+}

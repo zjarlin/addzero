@@ -64,7 +64,7 @@ interface SysDictItem : BaseEntity {
     @OnDissociate(DissociateAction.DELETE)
     val sysDict: SysDict?
 
-    @IdView("sysDict")
-    val dictId: Long?
+//    @IdView("sysDict")
+//    val dictId: Long?
 
 }

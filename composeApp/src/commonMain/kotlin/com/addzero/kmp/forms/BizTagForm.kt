@@ -18,6 +18,89 @@ import com.addzero.kmp.component.form.date.*
             import androidx.compose.ui.Alignment
             import com.addzero.kmp.core.ext.parseObjectByKtx
             import com.addzero.kmp.isomorphic.*
+                @Composable
+     fun BizTagForm(
+     state: MutableState<BizTagIso>,
+visible: Boolean,
+         title: String,
+ onClose: () -> Unit,
+ onSubmit: () -> Unit,
+ confirmEnabled: Boolean = true,
+  dslConfig: BizTagFormDsl.() -> Unit = {}
+     
+     ) {
+     
+
+     
+        AddDrawer(
+     visible = visible,
+     title = title,
+     onClose = onClose,
+     onSubmit = onSubmit,
+     confirmEnabled = confirmEnabled,
+
+     ) {
+           BizTagFormOriginal(
+         state, dslConfig,
+     ) 
+     }
+     }
+
+              @Composable
+        fun BizTagFormOriginal(
+        state: MutableState<BizTagIso>,
+     dslConfig: BizTagFormDsl.() -> Unit = {}
+        ) {
+        
+           val renderMap = remember { mutableMapOf<String, @Composable () -> Unit>() }
+    BizTagFormDsl(state, renderMap).apply(dslConfig) 
+        
+        
+                     val defaultRenderMap = mutableMapOf<String, @Composable () -> Unit>(
+            BizTagFormProps.name to { AddTextField(
+    value = state.value.name?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(name = if (it.isBlank()) "" else it.parseObjectByKtx())
+    },
+    label = "标签名称",
+    isRequired = true
+) }
+        ,
+            BizTagFormProps.description to { AddTextField(
+    value = state.value.description?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(description = if (it.isBlank()) null else it.parseObjectByKtx())
+    },
+    label = "标签描述",
+    isRequired = false
+) }
+         
+ ) 
+       
+          val finalItems = remember(renderMap) {
+        defaultRenderMap
+            .filterKeys { it !in renderMap } // 未被DSL覆盖的字段
+            .plus(renderMap.filterValues { it != {} }) // 添加非隐藏的自定义字段
+    }.values.toList() 
+       
+       
+    val items = finalItems
+ 
+            AddMultiColumnContainer(
+                howMuchColumn = 2,
+                items =items
+            )
+        
+ 
+        
+        
+        
+        }
+ 
+        
+        
+ 
+            
         class BizTagFormDsl(
             val state: MutableState<BizTagIso>,
             private val renderMap: MutableMap<String, @Composable () -> Unit>
@@ -126,84 +209,3 @@ const val description = "description"
 fun rememberBizTagFormState(current:BizTagIso?=null): MutableState<BizTagIso> {
     return remember (current){ mutableStateOf(current?: BizTagIso ()) }
 }
-     @Composable
-     fun BizTagForm(
-     state: MutableState<BizTagIso>,
-visible: Boolean,
-         title: String,
- onClose: () -> Unit,
- onSubmit: () -> Unit,
- confirmEnabled: Boolean = true,
-  dslConfig: BizTagFormDsl.() -> Unit = {}
-     
-     ) {
-     
-
-     
-        AddDrawer(
-     visible = visible,
-     title = title,
-     onClose = onClose,
-     onSubmit = onSubmit,
-     confirmEnabled = confirmEnabled,
-
-     ) {
-           BizTagFormOriginal(
-         state, dslConfig,
-     ) 
-     }
-     }
-
-              @Composable
-        fun BizTagFormOriginal(
-        state: MutableState<BizTagIso>,
-     dslConfig: BizTagFormDsl.() -> Unit = {}
-        ) {
-        
-           val renderMap = remember { mutableMapOf<String, @Composable () -> Unit>() }
-    BizTagFormDsl(state, renderMap).apply(dslConfig) 
-        
-        
-                     val defaultRenderMap = mutableMapOf<String, @Composable () -> Unit>(
-            BizTagFormProps.name to { AddTextField(
-    value = state.value.name?.toString() ?: "",
-    onValueChange = {
-        state.value = state.value.copy(name = if (it.isBlank()) "" else it.parseObjectByKtx())
-    },
-    label = "标签名称",
-    isRequired = true
-) }
-        ,
-            BizTagFormProps.description to { AddTextField(
-    value = state.value.description?.toString() ?: "",
-    onValueChange = {
-        state.value = state.value.copy(description = if (it.isBlank()) null else it.parseObjectByKtx())
-    },
-    label = "标签描述",
-    isRequired = false
-) }
-         
- ) 
-       
-          val finalItems = remember(renderMap) {
-        defaultRenderMap
-            .filterKeys { it !in renderMap } // 未被DSL覆盖的字段
-            .plus(renderMap.filterValues { it != {} }) // 添加非隐藏的自定义字段
-    }.values.toList() 
-       
-       
-    val items = finalItems
- 
-            AddMultiColumnContainer(
-                howMuchColumn = 2,
-                items =items
-            )
-        
- 
-        
-        
-        
-        }
- 
-        
-        

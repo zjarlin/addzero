@@ -209,11 +209,13 @@ import com.addzero.kmp.component.form.date.*
             import androidx.compose.ui.Alignment
             import com.addzero.kmp.core.ext.parseObjectByKtx
             import com.addzero.kmp.isomorphic.*
+           $effectFormFun
+$effectFormFunOriginal
+ 
+            
 ${generateDslReceiver(ksClass)}
 $propconsts
 $rememberFun
-$effectFormFun
-$effectFormFunOriginal
 """.trimMargin()
     val file = File("$outputDir/${dataClassName}.kt")
 

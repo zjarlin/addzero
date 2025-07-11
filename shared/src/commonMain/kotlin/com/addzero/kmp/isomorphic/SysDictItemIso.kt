@@ -39,8 +39,6 @@ data class SysDictItemIso(
             val status: Long?  = null ,
     
 val sysDict: SysDictIso?  = null ,
-    
-val dictId: Long?  = null ,
                
 val id: Long?  = null,
     
