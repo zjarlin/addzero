@@ -1,5 +1,4 @@
             package com.addzero.kmp.forms
-            import androidx.compose.material.icons.Icons
             import androidx.compose.foundation.layout.*
             import androidx.compose.material3.*
             import androidx.compose.runtime.*
@@ -8,15 +7,12 @@
             import com.addzero.kmp.component.high_level.AddMultiColumnContainer
                        import com.addzero.kmp.component.drawer.AddDrawer
             //import com.addzero.kmp.component.high_level.AddFormContainer
- 
+
             import com.addzero.kmp.enums.RegexEnum
-            import androidx.compose.material.icons.filled.*
             import com.addzero.kmp.component.form.*
-           import com.addzero.kmp.component.form.number.*
-import com.addzero.kmp.component.form.date.*
- 
+
             import androidx.compose.ui.Alignment
-            import com.addzero.kmp.core.ext.parseObjectByKtx
+            import com.addzero.kmp.core.network.json.parseObjectByKtx
             import com.addzero.kmp.isomorphic.*
         class BizNoteFormDsl(
             val state: MutableState<BizNoteIso>,
@@ -204,7 +200,7 @@ fun updateTime(
 }
 
 
-            
+
             fun hide(vararg fields: String) {
                 fields.forEach { renderMap[it] = {} }
             }
@@ -233,11 +229,11 @@ visible: Boolean,
  onSubmit: () -> Unit,
  confirmEnabled: Boolean = true,
   dslConfig: BizNoteFormDsl.() -> Unit = {}
-     
-     ) {
-     
 
-     
+     ) {
+
+
+
         AddDrawer(
      visible = visible,
      title = title,
@@ -248,7 +244,7 @@ visible: Boolean,
      ) {
            BizNoteFormOriginal(
          state, dslConfig,
-     ) 
+     )
      }
      }
 
@@ -257,13 +253,13 @@ visible: Boolean,
         state: MutableState<BizNoteIso>,
      dslConfig: BizNoteFormDsl.() -> Unit = {}
         ) {
-        
+
            val renderMap = remember { mutableMapOf<String, @Composable () -> Unit>() }
-    BizNoteFormDsl(state, renderMap).apply(dslConfig) 
-        
-        
+    BizNoteFormDsl(state, renderMap).apply(dslConfig)
+
+
                      val defaultRenderMap = mutableMapOf<String, @Composable () -> Unit>(
-            BizNoteFormProps.leafFlag to {     
+            BizNoteFormProps.leafFlag to {
 Row(verticalAlignment = Alignment.CenterVertically) {
 Text("leafFlag")
     Switch(
@@ -272,7 +268,7 @@ Text("leafFlag")
             state.value = state.value.copy(leafFlag = it)
         },
     )
-    
+
     Text(
         text = if (  state.value as? Boolean == true) "是" else "否",
         modifier = Modifier.width(40.dp)
@@ -353,28 +349,27 @@ Text("leafFlag")
     isRequired = false,
     regexEnum = RegexEnum.URL
 ) }
-         
- ) 
-       
+
+ )
+
           val finalItems = remember(renderMap) {
         defaultRenderMap
             .filterKeys { it !in renderMap } // 未被DSL覆盖的字段
             .plus(renderMap.filterValues { it != {} }) // 添加非隐藏的自定义字段
-    }.values.toList() 
-       
-       
+    }.values.toList()
+
+
     val items = finalItems
- 
+
             AddMultiColumnContainer(
                 howMuchColumn = 2,
                 items =items
             )
-        
- 
-        
-        
-        
+
+
+
+
+
         }
- 
-        
-        
+
+

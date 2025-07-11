@@ -1,9 +1,6 @@
-package com.addzero.kmp.core.network// 在 commonMain 中定义共享代码
+package com.addzero.kmp.network// 在 commonMain 中定义共享代码
 //import com.lt.lazy_people_http.config.LazyPeopleHttpConfig
-import com.addzero.kmp.core.network.json.globalSerializersModule
-import com.addzero.kmp.entity.low_table.Validator
-import com.addzero.kmp.settings.SettingContext4Compose.BASE_URL
-import de.jensklingenberg.ktorfit.Ktorfit
+import com.addzero.kmp.network.json.json
 import io.ktor.client.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.api.*
@@ -13,34 +10,17 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
-import kotlinx.serialization.json.Json
-import kotlin.invoke
 import kotlin.time.Duration.Companion.minutes
 
 // 创建一个通用的 HTTP 客户端工具类
 expect val apiClient: HttpClient
-
-val json = Json {
-//    encodeDefaults = false
-    //显示null
-//    explicitNulls = true
-    ignoreUnknownKeys = true
-    isLenient = true
-//    prettyPrint = true
-    useAlternativeNames = false
-    // 允许将值强制转换为目标类型
-    coerceInputValues = true
-    //注册Any序列化器
-    serializersModule = globalSerializersModule
-}
-
 
 
 object AddHttpClient {
 
 
     //    val hfconfig = LazyPeopleHttpConfig(apiClient)
-    val ktorfit = Ktorfit.Builder().httpClient(apiClient).build()
+//    val ktorfit = Ktorfit.Builder().httpClient(apiClient).build()
 
     // Mock的token获取方式
     private var mytoken: String? = null
@@ -80,7 +60,7 @@ object AddHttpClient {
             }
         })
         //基础url配置
-        configUrl()
+//        configUrl()
         //日志插件
         configLog()
         //json解析插件
@@ -90,12 +70,12 @@ object AddHttpClient {
     }
 
 
-    fun HttpClientConfig<*>.configUrl() {
-        defaultRequest {
-//            url("https://api.apiopen.top")
-            url(BASE_URL)
-        }
-    }
+//    fun HttpClientConfig<*>.configUrl() {
+//        defaultRequest {
+////            url("https://api.apiopen.top")
+//            url(BASE_URL)
+//        }
+//    }
 
     fun HttpClientConfig<*>.configHeaders() {
         defaultRequest {
@@ -115,13 +95,13 @@ object AddHttpClient {
         }
     }
 
-    fun HttpClientConfig<*>.configBaseRes() {
-        install(BaseResponsePlugin) {
-            keysForStatus = listOf("code")
-            successCode = "200"
-            keysForData = listOf("data")
-        }
-    }
+//    fun HttpClientConfig<*>.configBaseRes() {
+//        install(BaseResponsePlugin) {
+//            keysForStatus = listOf("code")
+//            successCode = "200"
+//            keysForData = listOf("data")
+//        }
+//    }
 
     fun HttpClientConfig<*>.configLog() {
         install(Logging) {

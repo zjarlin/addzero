@@ -12,7 +12,7 @@ pluginManagement {
                 includeGroupAndSubgroups("com.google")
             }
         }
-        mavenCentral{
+        mavenCentral {
 //            credentials {
 //                username = localProps.getProperty("sonaTokenUser")
 //                password = localProps.getProperty("sonaToken")
@@ -35,7 +35,7 @@ dependencyResolutionManagement {
                 includeGroupAndSubgroups("com.google")
             }
         }
-        mavenCentral{
+        mavenCentral {
 
         }
     }
@@ -70,3 +70,5 @@ include("lib:addzero-compose-props-annotations")
 findProject(":lib:addzero-compose-props-annotations")?.name = "addzero-compose-props-annotations"
 include("lib:addzero-compose-props-processor")
 findProject(":lib:addzero-compose-props-processor")?.name = "addzero-compose-props-processor"
+
+include("lib:addzero-network-starter")
