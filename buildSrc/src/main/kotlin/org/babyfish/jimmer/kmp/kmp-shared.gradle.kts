@@ -1,13 +1,13 @@
 import org.babyfish.defIos
 import org.babyfish.doIos
 import org.babyfish.jimmer.Vars
-import org.babyfish.jimmer.Versions
-import org.babyfish.jimmer.Versions.javaVersion
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
+val libs = the<org.gradle.accessors.dm.LibrariesForLibs>()
+val javaVersion = libs.versions.jdk.get()
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
@@ -19,7 +19,7 @@ plugins {
 kotlin {
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class) compilerOptions {
-            jvmTarget.set(JvmTarget.fromTarget(Versions.javaVersion))
+            jvmTarget.set(JvmTarget.fromTarget(javaVersion))
         }
     }
 
@@ -54,11 +54,11 @@ kotlin {
 
         }
         commonMain.dependencies {
-            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kotlinxSerializationVersion}")
+            implementation(libs.kotlinx.serialization.json)
             // put your Multiplatform dependencies here
         }
         commonTest.dependencies {
-            implementation("org.jetbrains.kotlin:kotlin-test")
+            implementation(libs.kotlin.test)
         }
     }
 }
@@ -66,7 +66,10 @@ kotlin {
 android {
 
     namespace = Vars.sharedNamespace
-    compileSdk = Versions.androidCompileSdk
+    compileSdk =   libs.versions.android.compileSdk.get().toInt()
+
+
+
     compileOptions {
         val toVersion = JavaVersion.toVersion(javaVersion)
         sourceCompatibility = toVersion
@@ -74,7 +77,7 @@ android {
     }
     defaultConfig {
 
-        minSdk = Versions.androidMinSdk
+        minSdk = libs.versions.android.minSdk.get().toInt()
     }
 
 

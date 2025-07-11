@@ -5,12 +5,12 @@ import java.time.format.DateTimeFormatter
 
 object Vars {
     const val myGroup = "io.gitee.zjarlin"
-    val myVersion = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd.HHmm"))
-
-    val giturl = "https://gitee.com/zjarlin/addzero"
-    val projName = "addzero"
-    val authorName = myGroup.split(".").last() // zjarlin
+    val authorName = myGroup.split(".").last()
     val email = "$authorName@outlook.com"
+    val myVersion = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd.HHmm"))
+    val projName = "addzero"
+
+    const val projectDescription = "jimmer kmp"
 
     // 应用相关常量
     const val applicationId = "compileOptions.addzero.kmp"
@@ -27,34 +27,16 @@ object Vars {
 
     const val mainClass = "${packageName}.MainKt"
 
-    // 依赖版本
+    // 发布配置
+    const val gitUrl = "https://gitee.com/zjarlin/addzero.git"
+    const val licenseName = "The Apache License, Version 2.0"
+    const val licenseUrl = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+
+    // 计算属性
+    val gitBaseUrl = gitUrl.removeSuffix(".git")
+    val gitRepoPath = gitUrl.substringAfter("://").substringAfter("/")
+    val gitHost = gitUrl.substringAfter("://").substringBefore("/")
+    val gitRepoName = gitRepoPath.removeSuffix(".git")
+
 }
 
-object Versions {
-
-       // Spring AI 版本
-    const val springAi = "1.0.0"
-
-
-    const val kotlinxCoroutinesVersion = "1.7.3"
-    const val koinVersion = "2.1.0"
-    const val ktorVersion="3.2.1"
-    const val pinyin4jVersion = "2.5.1"
-
-    const val fileKitVersion = "0.8.8"
-    const val versionCode = 1
-    const val versionName = "1.0"
-
-    const val javaVersion = "24"
-    const val kotlinVersion = "2.2.0"
-    const val kotlinxSerializationVersion = "1.8.0"
-
-    // Android 相关常量
-    const val androidCompileSdk = 35
-    const val androidMinSdk = 24
-    const val androidTargetSdk = 35
-    const val composeMultiplatform = "1.8.2"
-    const val kotlinxCoroutines = "1.10.2"
-    const val androidxActivity = "1.10.1"
-    const val androidxLifecycle = "2.9.1"
-}

@@ -2,6 +2,7 @@ plugins {
     id("org.jetbrains.kotlin.multiplatform")
 //    kotlin("plugin.serialization")
 }
+val libs = the<org.gradle.accessors.dm.LibrariesForLibs>()
 
 kotlin {
     jvm()
@@ -15,7 +16,7 @@ kotlin {
 //            implementation(project(:addzero-ksp))
         }
         jvmMain.dependencies {
-            implementation("com.google.devtools.ksp:symbol-processing-api:2.2.0-2.0.2")
+            implementation(libs.ksp.symbol.processing.api)
         }
     }
 }

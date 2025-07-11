@@ -1,24 +1,27 @@
 import org.babyfish.jimmer.Vars
+import java.time.LocalDate
 
 plugins {
     id("com.vanniktech.maven.publish")
 }
+// 使用 Vars 中的配置
 
 mavenPublishing {
     publishToMavenCentral(automaticRelease = true)
     signAllPublications()
     coordinates(project.group.toString(), project.name, project.version.toString())
 
+
     pom {
-        name.set("addzero")
-        description.set("jimmer kmp")
-        inceptionYear.set("2025")
-        url.set(Vars.giturl)
+        name.set(Vars.projName)
+        description.set(Vars.projectDescription)
+        inceptionYear.set(LocalDate.now().year.toString())
+        url.set(Vars.gitBaseUrl)
         licenses {
             license {
-                name.set("The Apache License, Version 2.0")
-                url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
-                distribution.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                name.set(Vars.licenseName)
+                url.set(Vars.licenseUrl)
+                distribution.set(Vars.licenseUrl)
             }
         }
 
@@ -31,9 +34,9 @@ mavenPublishing {
         }
 
         scm {
-            connection.set("scm:git:git://gitee.com/zjarlin/addzero.git")
-            developerConnection.set("scm:git:ssh://gitee.com/zjarlin/addzero.git")
-            url.set("https://gitee.com/zjarlin/addzero")
+            connection.set("scm:git:git://${Vars.gitHost}/${Vars.gitRepoName}.git")
+            developerConnection.set("scm:git:ssh://${Vars.gitHost}/${Vars.gitRepoName}.git")
+            url.set(Vars.gitBaseUrl)
         }
     }
 }

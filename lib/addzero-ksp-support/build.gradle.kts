@@ -1,4 +1,4 @@
-import org.babyfish.jimmer.Versions
+
 
 plugins {
     id("kmp-ksp")
@@ -10,7 +10,6 @@ kotlin {
         }
         jvmMain.dependencies {
             implementation(libs.pinyin4j)
-//            implementation("org.jetbrains.kotlin:kotlin-reflect:${Versions.kotlinVersion}")
 
 
         }

@@ -1,4 +1,3 @@
-import org.babyfish.jimmer.Versions.javaVersion
 
 plugins {
     `java-library`
@@ -6,8 +5,10 @@ plugins {
     // id("publish-convention")
 }
 
+val libs = the<org.gradle.accessors.dm.LibrariesForLibs>()
+
 extensions.configure<JavaPluginExtension> {
-    val toVersion = JavaVersion.toVersion(javaVersion)
+    val toVersion = JavaVersion.toVersion(libs.versions.jdk.get())
     sourceCompatibility = toVersion
     targetCompatibility = toVersion
     withSourcesJar()

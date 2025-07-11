@@ -1,12 +1,6 @@
 import org.babyfish.defIos
 import org.babyfish.doIos
 import org.babyfish.jimmer.Vars
-import org.babyfish.jimmer.Vars.myGroup
-import org.babyfish.jimmer.Vars.myVersion
-import org.babyfish.jimmer.Versions
-import org.babyfish.jimmer.Versions.androidTargetSdk
-import org.babyfish.jimmer.Versions.javaVersion
-import org.gradle.kotlin.dsl.withType
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
@@ -14,6 +8,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
+val libs = the<org.gradle.accessors.dm.LibrariesForLibs>()
 plugins {
     id("org.jetbrains.compose")
     id("org.jetbrains.kotlin.multiplatform")
@@ -24,15 +19,15 @@ plugins {
 
 //val libs = the<LibrariesForLibs>()
 
+
 //group = myGroup
 //version = myVersion
 
-val androidxLifecycle = Versions.androidxLifecycle
 kotlin {
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
-            jvmTarget.set(JvmTarget.fromTarget(Versions.javaVersion))
+            jvmTarget.set(JvmTarget.fromTarget(libs.versions.jdk.get()))
 
         }
     }
@@ -65,7 +60,7 @@ kotlin {
     sourceSets {
 
         //生成的代码
-        commonMain{
+        commonMain {
             kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
         }
 
@@ -74,10 +69,10 @@ kotlin {
 
         androidMain.dependencies {
             implementation(compose.preview)
-            implementation("androidx.activity:activity-compose:${Versions.androidxActivity}")
+            implementation(libs.androidx.activity.compose)
         }
         commonMain.dependencies {
-            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kotlinxSerializationVersion}")
+            implementation(libs.kotlinx.serialization.json)
 
             implementation(compose.materialIconsExtended)
             implementation(compose.runtime)
@@ -86,15 +81,15 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
-            implementation("org.jetbrains.androidx.lifecycle:lifecycle-viewmodel:$androidxLifecycle")
-            implementation("org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose:$androidxLifecycle")
+            implementation(libs.androidx.lifecycle.viewmodel)
+            implementation(libs.androidx.lifecycle.runtime.compose)
         }
         commonTest.dependencies {
-            implementation("org.jetbrains.kotlin:kotlin-test")
+            implementation(libs.kotlin.test)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
-            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing")
+            implementation(libs.kotlinx.coroutines.swing)
         }
     }
 }
@@ -103,10 +98,10 @@ android {
 
     namespace = Vars.applicationNamespace
 
-    compileSdk = Versions.androidCompileSdk
+    compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     compileOptions {
-        val toVersion = JavaVersion.toVersion(javaVersion)
+        val toVersion = JavaVersion.toVersion(libs.versions.jdk.get())
         sourceCompatibility = toVersion
         targetCompatibility = toVersion
     }
@@ -115,10 +110,11 @@ android {
 
         applicationId = Vars.applicationId
 
-        minSdk = Versions.androidMinSdk
-        targetSdk = androidTargetSdk
-        versionCode = Versions.versionCode
-        versionName = Versions.versionName
+        minSdk = libs.versions.android.minSdk.get().toInt()
+        targetSdk = libs.versions.android.compileSdk.get().toInt()
+//        versionCode = findProperty("version").toString().toInt()
+//        versionName = findProperty("version").toString()
+
     }
 
     packaging {
@@ -146,8 +142,8 @@ compose.desktop {
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName =Vars.packageName
-            packageVersion ="1.0.0"
+            packageName = Vars.packageName
+            packageVersion = "1.0.0"
         }
     }
 }

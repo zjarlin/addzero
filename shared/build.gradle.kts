@@ -1,5 +1,5 @@
 import de.jensklingenberg.ktorfit.gradle.KtorfitPluginExtension
-import org.babyfish.jimmer.Versions
+
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 plugins {
@@ -65,6 +65,3 @@ kotlin {
         }
     }
 }
-//configure<KtorfitPluginExtension> {
-//    kotlinVersion.set("2.3.0")
-//}

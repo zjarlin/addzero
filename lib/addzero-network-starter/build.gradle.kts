@@ -1,5 +1,3 @@
-import org.babyfish.jimmer.Versions.ktorVersion
-
 plugins {
     id("kmp-core")
 }

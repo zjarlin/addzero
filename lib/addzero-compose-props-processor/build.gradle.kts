@@ -10,7 +10,6 @@ kotlin {
             implementation(projects.lib.addzeroComposePropsAnnotations)
         }
         jvmMain.dependencies {
-//            implementation("com.belerweb:pinyin4j:${Versions.pinyin4jVersion}")
         }
 
     }

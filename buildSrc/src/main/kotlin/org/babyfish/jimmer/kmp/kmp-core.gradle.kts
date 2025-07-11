@@ -1,7 +1,7 @@
 @file:OptIn(ExperimentalWasmDsl::class)
 
-import org.babyfish.jimmer.Versions
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
+val libs = the<org.gradle.accessors.dm.LibrariesForLibs>()
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
@@ -32,7 +32,7 @@ kotlin {
 
     sourceSets{
        commonMain.dependencies {
-           implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kotlinxSerializationVersion}")
+           implementation(libs.kotlinx.serialization.json)
 
        }
     }

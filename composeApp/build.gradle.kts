@@ -1,5 +1,3 @@
-import org.babyfish.jimmer.Versions
-import org.babyfish.jimmer.Versions.kotlinxCoroutinesVersion
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 plugins {
@@ -12,7 +10,7 @@ plugins {
 dependencies {
     kspCommonMainMetadata(projects.lib.addzeroRouteProcessor)
     kspCommonMainMetadata(projects.lib.addzeroComposePropsProcessor)
-    kspCommonMainMetadata("io.insert-koin:koin-ksp-compiler:${Versions.koinVersion}")
+    kspCommonMainMetadata(libs.koin.ksp.compiler)
 
 }
 
@@ -124,7 +122,7 @@ kotlin {
             // Koin Annotations
 
 
-           implementation(project.dependencies.platform(libs.koin.bom))
+            implementation(project.dependencies.platform(libs.koin.bom))
 
             implementation(libs.koin.annotations)
             implementation(libs.koin.core)
