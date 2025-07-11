@@ -27,8 +27,9 @@ fun App() {
     emitEventBus()
     EventBusConsumer()
     val loginViewModel = koinViewModel<LoginViewModel>()
+    val themeViewModel = koinViewModel<ThemeViewModel>()
     // 已登录时渲染主界面
-    val currentTheme = ThemeViewModel.currentTheme
+    val currentTheme = themeViewModel.currentTheme
     val colorScheme = AppThemes.getColorScheme(currentTheme)
 
     FollowSystemTheme(colorScheme = colorScheme) {

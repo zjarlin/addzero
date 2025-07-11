@@ -20,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.addzero.kmp.ui.infra.theme.*
 import com.addzero.kmp.component.button.AddFloatingActionButton
+import org.koin.compose.viewmodel.koinViewModel
 
 /**
  * 主题切换器组件
@@ -29,9 +30,10 @@ fun ThemeSwitcher(
     modifier: Modifier = Modifier,
     onThemeSelected: (AppThemeType) -> Unit = {}
 ) {
-    val currentTheme = ThemeViewModel.currentTheme
-    val allThemes = ThemeViewModel.getAllThemes()
-    
+    val themeViewModel = koinViewModel<ThemeViewModel>()
+    val currentTheme = themeViewModel.currentTheme
+    val allThemes = themeViewModel.getAllThemes()
+
     Card(
         modifier = modifier.width(300.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
@@ -45,7 +47,7 @@ fun ThemeSwitcher(
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(bottom = 16.dp)
             )
-            
+
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier.height(400.dp)
@@ -55,7 +57,7 @@ fun ThemeSwitcher(
                         theme = theme,
                         isSelected = theme == currentTheme,
                         onClick = {
-                            ThemeViewModel.setTheme(theme)
+                            themeViewModel.setTheme(theme)
                             onThemeSelected(theme)
                         }
                     )
@@ -75,7 +77,7 @@ private fun ThemeItem(
     onClick: () -> Unit
 ) {
     val gradientConfig = AppThemes.getGradientConfig(theme)
-    
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -115,9 +117,9 @@ private fun ThemeItem(
                     .background(colorScheme.primary)
             )
         }
-        
+
         Spacer(modifier = Modifier.width(12.dp))
-        
+
         // 主题名称
         Text(
             text = theme.getDisplayName(),
@@ -125,7 +127,7 @@ private fun ThemeItem(
             fontWeight = if (isSelected) FontWeight.Medium else FontWeight.Normal,
             modifier = Modifier.weight(1f)
         )
-        
+
         // 选中标识
         if (isSelected) {
             Icon(
@@ -147,7 +149,7 @@ fun GradientThemePreview(
     modifier: Modifier = Modifier
 ) {
     val gradientConfig = AppThemes.getGradientConfig(theme)
-    
+
     if (gradientConfig != null && theme.isGradient()) {
         Card(
             modifier = modifier.size(120.dp, 80.dp),
@@ -182,7 +184,9 @@ fun GradientThemePreview(
 fun QuickThemeToggle(
     modifier: Modifier = Modifier
 ) {
-    val currentTheme = ThemeViewModel.currentTheme
+       val themeViewModel = koinViewModel<ThemeViewModel>()
+
+    val currentTheme = themeViewModel.currentTheme
 
     AddFloatingActionButton(
         text = "切换渐变主题 (${currentTheme.getDisplayName()})",
@@ -206,7 +210,7 @@ fun QuickThemeToggle(
                 gradientThemes.first()
             }
 
-            ThemeViewModel.setTheme(nextTheme)
+            themeViewModel.setTheme(nextTheme)
         }
     )
 }

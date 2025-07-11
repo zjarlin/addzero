@@ -40,7 +40,8 @@ fun SysTopBar(
     isSearchOpen: MutableState<Boolean>? = null
 ) {
     val chatViewModel = koinViewModel<ChatViewModel>()
-    val currentTheme = ThemeViewModel.currentTheme
+    val themeViewModel = koinViewModel<ThemeViewModel>()
+    val currentTheme = themeViewModel.currentTheme
     //是否为渐变主题
     val isGradientTheme = currentTheme.isGradient()
 

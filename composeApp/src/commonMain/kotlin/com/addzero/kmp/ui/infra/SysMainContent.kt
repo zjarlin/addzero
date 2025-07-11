@@ -15,6 +15,7 @@ import com.addzero.kmp.generated.RouteKeys
 import com.addzero.kmp.generated.RouteTable
 import com.addzero.kmp.ui.infra.theme.MainContentGradientBackground
 import com.addzero.kmp.ui.infra.theme.ThemeViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 /**
  * 主内容区组件
@@ -23,7 +24,8 @@ import com.addzero.kmp.ui.infra.theme.ThemeViewModel
  */
 @Composable
 fun MainContent(navController: NavHostController) {
-    val currentTheme = ThemeViewModel.currentTheme
+    val themeViewModel = koinViewModel<ThemeViewModel>()
+    val currentTheme = themeViewModel.currentTheme
 
     MainContentGradientBackground(
         themeType = currentTheme,

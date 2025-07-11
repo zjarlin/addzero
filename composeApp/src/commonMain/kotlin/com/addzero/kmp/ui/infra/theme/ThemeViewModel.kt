@@ -3,13 +3,17 @@ package com.addzero.kmp.ui.infra.theme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModel
+import org.koin.android.annotation.KoinViewModel
+import org.koin.core.annotation.Single
 
 /**
- * 主题视图可以定义单例的
+ * 主题视图模型，使用 Koin 进行依赖注入
  * @author zjarlin
  * @date 2025/04/11
  */
-object ThemeViewModel {
+@KoinViewModel
+class ThemeViewModel : ViewModel() {
     // 当前主题类型，默认为彩虹渐变主题来测试渐变效果
     var currentTheme by mutableStateOf(AppThemeType.GRADIENT_OCEAN)
         private set

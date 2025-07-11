@@ -1,15 +1,12 @@
 package com.addzero.kmp.ui.infra.model.menu
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.*
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -21,9 +18,9 @@ import com.addzero.kmp.entity.sys.menu.EnumSysMenuType
 import com.addzero.kmp.entity.sys.menu.SysMenuVO
 import com.addzero.kmp.generated.RouteKeys
 import com.addzero.kmp.kt_util.isNotBlank
-import com.addzero.kmp.ui.infra.model.menu.MenuViewModel.currentRoute
 import com.addzero.kmp.ui.infra.model.menu.MenuViewModel.isExpand
 import com.addzero.kmp.ui.infra.theme.*
+import org.koin.compose.viewmodel.koinViewModel
 
 /**
  * 侧边菜单组件
@@ -33,7 +30,9 @@ import com.addzero.kmp.ui.infra.theme.*
  */
 @Composable
 fun SideMenu() {
-    val currentTheme = ThemeViewModel.currentTheme
+      val themeViewModel = koinViewModel<ThemeViewModel>()
+
+    val currentTheme = themeViewModel.currentTheme
 
     // 🚀 纯粹的 AddTree 组件，使用 Surface 控制大小和样式
     Surface(

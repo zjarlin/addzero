@@ -19,6 +19,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import org.koin.compose.viewmodel.koinViewModel
 
 /**
  * 主题选择对话框
@@ -27,9 +28,10 @@ import androidx.compose.ui.window.Dialog
 fun ThemeSelectionDialog(
     onDismiss: () -> Unit
 ) {
-    val currentTheme = ThemeViewModel.currentTheme
-    val allThemes = ThemeViewModel.getAllThemes()
-    
+    val themeViewModel = koinViewModel<ThemeViewModel>()
+    val currentTheme = themeViewModel.currentTheme
+    val allThemes = themeViewModel.getAllThemes()
+
     Dialog(onDismissRequest = onDismiss) {
         Surface(
             modifier = Modifier
@@ -48,7 +50,7 @@ fun ThemeSelectionDialog(
                     style = MaterialTheme.typography.headlineSmall,
                     color = MaterialTheme.colorScheme.onSurface
                 )
-                
+
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -60,13 +62,13 @@ fun ThemeSelectionDialog(
                             themeType = theme,
                             isSelected = theme == currentTheme,
                             onClick = {
-                                ThemeViewModel.setTheme(theme)
+                                themeViewModel.setTheme(theme)
                                 onDismiss()
                             }
                         )
                     }
                 }
-                
+
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End
@@ -90,7 +92,7 @@ private fun ThemeItem(
     onClick: () -> Unit
 ) {
     val colorScheme = AppThemes.getColorScheme(themeType)
-    
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -128,7 +130,7 @@ private fun ThemeItem(
                         .background(colorScheme.secondary)
                 )
             }
-            
+
             // 选中标记
             if (isSelected) {
                 Surface(
@@ -148,7 +150,7 @@ private fun ThemeItem(
                 }
             }
         }
-        
+
         Text(
             text = themeType.getDisplayName(),
             style = MaterialTheme.typography.bodySmall,
@@ -156,4 +158,4 @@ private fun ThemeItem(
             modifier = Modifier.padding(top = 4.dp)
         )
     }
-} 
+}

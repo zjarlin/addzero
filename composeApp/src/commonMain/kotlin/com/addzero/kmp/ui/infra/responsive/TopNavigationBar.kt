@@ -1,5 +1,6 @@
 package com.addzero.kmp.ui.infra.responsive
 
+// getMenuIcon 函数需要在这里重新定义或导入
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -7,31 +8,26 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ExpandLess
-import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.material.icons.automirrored.filled.*
-import androidx.compose.material.icons.filled.*
-import androidx.compose.ui.graphics.vector.ImageVector
 import com.addzero.kmp.component.button.AddIconButton
 import com.addzero.kmp.compose.icons.IconMap
-import com.addzero.kmp.kt_util.isNotBlank
-import com.addzero.kmp.component.tree.rememberTreeViewModel
 import com.addzero.kmp.entity.sys.menu.EnumSysMenuType
 import com.addzero.kmp.entity.sys.menu.SysMenuVO
-import com.addzero.kmp.generated.RouteKeys
+import com.addzero.kmp.kt_util.isNotBlank
 import com.addzero.kmp.ui.infra.model.menu.MenuViewModel
-// getMenuIcon 函数需要在这里重新定义或导入
 import com.addzero.kmp.ui.infra.theme.AppThemeType
 import com.addzero.kmp.ui.infra.theme.ThemeViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 /**
  * 🚀 顶部导航栏组件（移动端专用）
@@ -44,7 +40,9 @@ fun TopNavigationBar(
     modifier: Modifier = Modifier,
     config: ResponsiveConfig
 ) {
-    val currentTheme = ThemeViewModel.currentTheme
+    val themeViewModel = koinViewModel<ThemeViewModel>()
+
+    val currentTheme = themeViewModel.currentTheme
     var isExpanded by remember { mutableStateOf(false) }
 
     Column(modifier = modifier) {
@@ -60,6 +58,7 @@ fun TopNavigationBar(
                 AppThemeType.GRADIENT_FOREST,
                 AppThemeType.GRADIENT_AURORA,
                 AppThemeType.GRADIENT_NEON -> Color.Transparent
+
                 else -> MaterialTheme.colorScheme.surface
             },
             tonalElevation = if (currentTheme.isGradient()) 0.dp else 2.dp
@@ -132,7 +131,7 @@ private fun CurrentRouteIndicator() {
         }
 
         Text(
-            text =     currentMenu?.title ?: "",
+            text = currentMenu?.title ?: "",
             style = MaterialTheme.typography.bodyMedium.copy(
                 fontWeight = FontWeight.SemiBold
             ),
