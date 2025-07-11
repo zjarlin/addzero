@@ -1,0 +1,45 @@
+//package com.addzero.kmp.generated
+//
+///**
+// * 路由键
+// * 请勿手动修改此文件
+// */
+//object RouteKeys {
+//    const val RICH_TEXT_DEMO = "com.addzero.kmp.demo.RichTextDemo"
+//    const val ADD_GENERIC_TABLE_EXAMPLE = "com.addzero.kmp.demo.AddGenericTableExample"
+//    const val U_I_COMPONENTS_DEMO = "com.addzero.kmp.demo.UIComponentsDemo"
+//    const val DATE_INPUT_FIELD_EXAMPLE = "/component/dateInputField"
+//    const val DATE_TIME_PICKER_FIELD = "/component/dateTimePickerField"
+//    const val TIME_PICKER_FIELD_TEST = "com.addzero.kmp.demo.date_test.TimePickerFieldTest"
+//    const val DATE_PICKER_FIELD_TEST = "com.addzero.kmp.demo.date_test.DatePickerFieldTest"
+//    const val DATE_RANGE_PICKER_FIELD_TEST = "com.addzero.kmp.demo.date_test.DateRangePickerFieldTest"
+//    const val SYS_ICON_SCREEN = "com.addzero.kmp.demo.icon.SysIconScreen"
+//    const val WE_CHAT_ICON = "/component/wechatIcon"
+//    const val DRAG_LIST_DEMO = "com.addzero.kmp.demo.DragListDemo"
+//    const val TEST_PICKER = "com.addzero.kmp.demo.upload.TestPicker"
+//    const val FILE_UPLOAD_DRAWER_DEMO = "com.addzero.kmp.demo.upload.FileUploadDrawerDemo"
+//    const val TEST_DIRECTORY_PICKER = "com.addzero.kmp.demo.upload.TestDirectoryPicker"
+//    const val IMAGE_LOAD = "com.addzero.kmp.demo.ImageLoad"
+//    const val LOGIN_SCREEN = "/signFirst"
+//    const val ADD_DROP_DOWN_SELECTOR_TEST = "com.addzero.kmp.component.dropdown.AddDropDownSelectorTest"
+//    const val AUTO_COMPLETE_DEMO = "com.addzero.kmp.component.autocomplet.AutoCompleteDemo"
+//    const val HOME_SCREEN = "/home"
+//    const val ROLE_LIST_SCREEN = "/system/role"
+//    const val EXCEL_TEMPLATE_SIMPLE_TEST = "com.addzero.kmp.screens.excel.ExcelTemplateSimpleTest"
+//    const val EXCEL_METADATA_EXTRACTION_DEMO = "com.addzero.kmp.screens.excel.ExcelMetadataExtractionDemo"
+//    const val EXCEL_TEMPLATE_TEST_SCREEN = "com.addzero.kmp.screens.excel.ExcelTemplateTestScreen"
+//    const val EXCEL_TEMPLATE_DESIGNER_DEMO = "com.addzero.kmp.screens.excel.ExcelTemplateDesignerDemo"
+//    const val EXCEL_TEMPLATE_DESIGNER_SCREEN = "com.addzero.kmp.screens.excel.ExcelTemplateDesignerScreen"
+//    const val EXCEL_METADATA_TEST_SCREEN = "com.addzero.kmp.screens.excel.ExcelMetadataTestScreen"
+//    const val JSON_DESIGNER_SCREEN = "com.addzero.kmp.screens.json.JsonDesignerScreen"
+//    const val JSON_DESIGNER_DEMO = "com.addzero.kmp.screens.json.JsonDesignerDemo"
+//    const val LABUBU_CHAT_FEATURES = "com.addzero.kmp.screens.ai.LabubuChatFeatures"
+//    const val CHAT_BACKGROUND_DEMO = "com.addzero.kmp.screens.ai.ChatBackgroundDemo"
+//    const val AI_TIMEOUT_AND_ANIMATION_DEMO = "com.addzero.kmp.screens.ai.AiTimeoutAndAnimationDemo"
+//    const val KEYBOARD_SHORTCUTS_DEMO = "com.addzero.kmp.screens.ai.KeyboardShortcutsDemo"
+//    const val ENTER_KEY_TEST_DEMO = "com.addzero.kmp.screens.ai.EnterKeyTestDemo"
+//    const val LABUBU_CHAT_DEMO = "com.addzero.kmp.screens.ai.LabubuChatDemo"
+//    const val SYS_DEPT_SCREEN = "/system/sysDept"
+//    const val TABS_EXAMPLE_SCREEN = "examples/tabs"
+//    const val DICT_MANAGER_SCREEN = "/dict"
+//}
