@@ -58,7 +58,6 @@ class RouteMetadataProcessor(
 
     override fun finish() {
 
-
         // 生成代码
         if (ret.isNotEmpty()) {
             generateRouteTable(ret)
@@ -221,7 +220,7 @@ class RouteMetadataProcessor(
             logger.warn("Error generating route files: ${e.message}")
         }
     }
-    
+
     /**
      * 安全创建文件，如果文件已存在则跳过
      */

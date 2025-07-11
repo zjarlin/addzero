@@ -1,100 +1,58 @@
 
-import com.addzero.kmp.util.lowerFirst
 import com.google.devtools.ksp.processing.*
 import com.google.devtools.ksp.symbol.KSAnnotated
-import com.google.devtools.ksp.symbol.KSClassDeclaration
-import com.google.devtools.ksp.symbol.KSFunctionDeclaration
-import com.google.devtools.ksp.validate
 
-private const val PKG = "com.addzero.kmp.api"
-
-
-private const val providerName = """ApiProvider"""
-
+/**
+ * Ktorfit 服务提供者处理器
+ *
+ * 功能：处理带有 HTTP 方法注解的服务接口，生成 ApiProvider 类
+ * 采用两阶段处理：process阶段收集元数据，finish阶段生成代码
+ */
 class KtorfitServiceProviderProcessor(
     private val codeGenerator: CodeGenerator,
     private val logger: KSPLogger,
     private val options: Map<String, String>
 ) : SymbolProcessor {
 
+    // 服务元数据抽取器
+    private val metadataExtractor = ServiceMetadataExtractor(logger)
+
+    // API 提供者代码生成器
+    private val apiProviderGenerator = ApiProviderCodeGenerator(codeGenerator, logger)
+
+    // 收集到的服务元数据
+    private var serviceMetadataList: List<ServiceMetadataExtractor.ServiceMetadata> = emptyList()
+
     override fun process(resolver: Resolver): List<KSAnnotated> {
-        // 找出所有可能的HTTP方法注解
-        val httpMethodAnnotations = listOf(
-            "de.jensklingenberg.ktorfit.http.GET",
-            "de.jensklingenberg.ktorfit.http.POST",
-            "de.jensklingenberg.ktorfit.http.PUT",
-            "de.jensklingenberg.ktorfit.http.DELETE",
-            "de.jensklingenberg.ktorfit.http.PATCH",
-            "de.jensklingenberg.ktorfit.http.HEAD",
-            "de.jensklingenberg.ktorfit.http.OPTIONS"
-        )
-
-        // 收集所有具有HTTP方法注解的函数
-        val annotatedFunctions = mutableListOf<KSFunctionDeclaration>()
-
-        // 遍历每个HTTP方法注解，查找使用该注解的函数
-        for (annotationName in httpMethodAnnotations) {
-            val functions = resolver.getSymbolsWithAnnotation(annotationName)
-                .filterIsInstance<KSFunctionDeclaration>()
-                .filter { it.validate() }
-
-            annotatedFunctions.addAll(functions)
+        // process 阶段只收集元数据，不生成代码
+        if (serviceMetadataList.isEmpty()) {
+            serviceMetadataList = metadataExtractor.extractServiceMetadata(resolver)
         }
-
-        // 获取包含这些函数的类（即服务接口）
-        val services = annotatedFunctions
-            .map { it.parentDeclaration as? KSClassDeclaration }
-            .filterNotNull()
-            .distinct()
-            .toList()
-
-        if (services.isEmpty()) return emptyList()
-
-        // 收集所有源文件的依赖
-        val dependencies = services.map { it.containingFile!! }.toSet()
-
-        val text = """
-            package $PKG
-            import com.addzero.kmp.core.network.AddHttpClient.ktorfit
-            
-            /**
-             * 服务实例提供
-             * 由KSP自动生成
-             */
-            object $providerName {
-                ${
-            services.joinToString("\n    ") { service ->
-                val qfName = service.qualifiedName!!.asString()
-                val simpleNameUpper = service.simpleName.asString()
-                val simpleName = simpleNameUpper.lowerFirst()
-
-                "val $simpleName: $qfName = ktorfit.create$simpleNameUpper()"
-            }
-        }
-            }
-        """.trimIndent()
-
-        val file = codeGenerator.createNewFile(
-            dependencies = Dependencies(true, *dependencies.toTypedArray()),
-            packageName = PKG,
-            fileName = "$providerName"
-        ).use { stream ->
-            stream.write(text.toByteArray())
-        }
-
         return emptyList()
+    }
+
+    override fun finish() {
+        // finish 阶段生成代码
+        if (serviceMetadataList.isNotEmpty()) {
+            apiProviderGenerator.generateApiProvider(serviceMetadataList)
+        }
     }
 }
 
+/**
+ * Ktorfit 服务提供者处理器提供者
+ *
+ * 功能：提供 KtorfitServiceProviderProcessor 实例
+ */
 class KtorfitServiceProviderProcessorProvider : SymbolProcessorProvider {
 
     override fun create(
         environment: SymbolProcessorEnvironment
     ): SymbolProcessor {
         return KtorfitServiceProviderProcessor(
-            environment.codeGenerator,
-            environment.logger,
-            environment.options
+            codeGenerator = environment.codeGenerator,
+            logger = environment.logger,
+            options = environment.options
         )
     }
 }

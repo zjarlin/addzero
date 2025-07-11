@@ -33,7 +33,7 @@ class ComposeAttrsProcessor(
         generatePredefinedNativeComponents(resolver, suffix)
 
         if (assistAnnotatedFunctions.isEmpty()) {
-            logger.warn("找到0个注解标记的函数，已生成原生组件${suffix}")
+            logger.warn("找到0个注解标记的函数,跳过生成")
         } else {
             logger.warn("找到${assistAnnotatedFunctions.size}个注解标记的函数，已生成原生组件${suffix}")
 
@@ -55,7 +55,7 @@ class ComposeAttrsProcessor(
         // 扫描所有@Composable函数
         val nativeComposeFunctions = findNativeComposeFunctions(resolver)
 
-        logger.warn("找到${nativeComposeFunctions.size}个原生Compose组件")
+//        logger.warn("找到${nativeComposeFunctions.size}个原生Compose组件")
 
         // 为每个组件生成代码
         nativeComposeFunctions.forEach { function ->
