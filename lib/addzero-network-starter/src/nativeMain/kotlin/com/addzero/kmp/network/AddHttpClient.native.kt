@@ -1,4 +1,9 @@
 package com.addzero.kmp.network
 
-actual val apiClient: HttpClient
-    get() = TODO("Not yet implemented")
+import com.addzero.kmp.network.AddHttpClient.configClient
+import io.ktor.client.*
+import io.ktor.client.engine.cio.CIO
+
+actual val apiClient: HttpClient = HttpClient(CIO) {
+    configClient()
+}
