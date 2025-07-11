@@ -11,12 +11,12 @@ import org.springframework.context.annotation.Configuration
  * 在应用启动时打印已注册的工具信息
  */
 @Configuration
-class McpToolsConfiguration : CommandLineRunner {
+class McpToolsConfiguration(
+   private val methodToolCallbackProvider: MethodToolCallbackProvider
+) : CommandLineRunner {
 
     private val logger = LoggerFactory.getLogger(McpToolsConfiguration::class.java)
 
-    @Autowired
-    private lateinit var autoRegisterTools: MethodToolCallbackProvider
 
     override fun run(vararg args: String?) {
         printRegisteredTools()
@@ -29,9 +29,9 @@ class McpToolsConfiguration : CommandLineRunner {
         logger.info("=".repeat(80))
         logger.info("MCP工具自动注册完成")
         logger.info("=".repeat(80))
-        
-        val tools = autoRegisterTools.toolCallbacks
-        
+
+        val tools = methodToolCallbackProvider.toolCallbacks
+
         if (tools.isEmpty()) {
             logger.warn("⚠️  未发现任何MCP工具！")
             logger.info("请确保：")
@@ -41,7 +41,7 @@ class McpToolsConfiguration : CommandLineRunner {
         } else {
             logger.info("✅ 成功注册 ${tools.size} 个MCP工具:")
             logger.info("-".repeat(80))
-            
+
             tools.forEachIndexed { index, tool ->
                 val toolDefinition = tool.toolDefinition
                 val name = toolDefinition.name()

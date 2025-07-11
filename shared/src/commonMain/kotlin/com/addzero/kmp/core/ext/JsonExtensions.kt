@@ -1,4 +1,4 @@
-package com.addzero.kmp.core.network.json
+package com.addzero.kmp.core.ext
 
 import com.addzero.kmp.core.network.json
 

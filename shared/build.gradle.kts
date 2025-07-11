@@ -42,9 +42,9 @@ ksp {
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation("org.jetbrains.kotlinx:kotlinx-datetime:+")
+            implementation(libs.kotlinx.datetime)
             implementation(projects.lib.addzeroTool)
-            implementation("de.jensklingenberg.ktorfit:ktorfit-lib:+")
+            implementation(libs.ktorfit.lib)
             implementation("io.ktor:ktor-client-core:${Versions.ktorVersion}")
             implementation("io.ktor:ktor-client-content-negotiation:${Versions.ktorVersion}")
             implementation("io.ktor:ktor-serialization-kotlinx-json:${Versions.ktorVersion}")

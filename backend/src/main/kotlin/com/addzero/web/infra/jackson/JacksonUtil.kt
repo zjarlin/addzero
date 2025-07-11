@@ -1,6 +1,6 @@
 package com.addzero.web.infra.jackson
 
-import com.addzero.kmp.core.network.json.parseObjectByKtx
+import com.addzero.kmp.core.ext.parseObjectByKtx
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.DeserializationFeature

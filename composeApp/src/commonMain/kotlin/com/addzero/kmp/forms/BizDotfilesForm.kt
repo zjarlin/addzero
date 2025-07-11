@@ -1,13 +1,22 @@
             package com.addzero.kmp.forms
+            import androidx.compose.material.icons.Icons
+            import androidx.compose.foundation.layout.*
+            import androidx.compose.material3.*
             import androidx.compose.runtime.*
+            import androidx.compose.ui.Modifier
+            import androidx.compose.ui.unit.dp
             import com.addzero.kmp.component.high_level.AddMultiColumnContainer
                        import com.addzero.kmp.component.drawer.AddDrawer
             //import com.addzero.kmp.component.high_level.AddFormContainer
-
+ 
             import com.addzero.kmp.enums.RegexEnum
+            import androidx.compose.material.icons.filled.*
             import com.addzero.kmp.component.form.*
-
-            import com.addzero.kmp.core.network.json.parseObjectByKtx
+           import com.addzero.kmp.component.form.number.*
+import com.addzero.kmp.component.form.date.*
+ 
+            import androidx.compose.ui.Alignment
+            import com.addzero.kmp.core.ext.parseObjectByKtx
             import com.addzero.kmp.isomorphic.*
         class BizDotfilesFormDsl(
             val state: MutableState<BizDotfilesIso>,
@@ -195,7 +204,7 @@ fun updateTime(
 }
 
 
-
+            
             fun hide(vararg fields: String) {
                 fields.forEach { renderMap[it] = {} }
             }
@@ -224,11 +233,11 @@ visible: Boolean,
  onSubmit: () -> Unit,
  confirmEnabled: Boolean = true,
   dslConfig: BizDotfilesFormDsl.() -> Unit = {}
-
+     
      ) {
+     
 
-
-
+     
         AddDrawer(
      visible = visible,
      title = title,
@@ -239,7 +248,7 @@ visible: Boolean,
      ) {
            BizDotfilesFormOriginal(
          state, dslConfig,
-     )
+     ) 
      }
      }
 
@@ -248,11 +257,11 @@ visible: Boolean,
         state: MutableState<BizDotfilesIso>,
      dslConfig: BizDotfilesFormDsl.() -> Unit = {}
         ) {
-
+        
            val renderMap = remember { mutableMapOf<String, @Composable () -> Unit>() }
-    BizDotfilesFormDsl(state, renderMap).apply(dslConfig)
-
-
+    BizDotfilesFormDsl(state, renderMap).apply(dslConfig) 
+        
+        
                      val defaultRenderMap = mutableMapOf<String, @Composable () -> Unit>(
             BizDotfilesFormProps.osType to { AddTextField(
     value = state.value.osType?.toString() ?: "",
@@ -335,27 +344,28 @@ visible: Boolean,
     label = "文件位置",
     isRequired = false
 ) }
-
- )
-
+         
+ ) 
+       
           val finalItems = remember(renderMap) {
         defaultRenderMap
             .filterKeys { it !in renderMap } // 未被DSL覆盖的字段
             .plus(renderMap.filterValues { it != {} }) // 添加非隐藏的自定义字段
-    }.values.toList()
-
-
+    }.values.toList() 
+       
+       
     val items = finalItems
-
+ 
             AddMultiColumnContainer(
                 howMuchColumn = 2,
                 items =items
             )
-
-
-
-
-
+        
+ 
+        
+        
+        
         }
-
-
+ 
+        
+        

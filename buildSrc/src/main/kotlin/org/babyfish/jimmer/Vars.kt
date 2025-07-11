@@ -31,6 +31,11 @@ object Vars {
 }
 
 object Versions {
+
+       // Spring AI 版本
+    const val springAi = "1.0.0"
+
+
     const val kotlinxCoroutinesVersion = "1.7.3"
     const val koinVersion = "2.1.0"
     const val ktorVersion="3.2.1"

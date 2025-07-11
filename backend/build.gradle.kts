@@ -1,3 +1,4 @@
+import org.babyfish.jimmer.Versions
 
 plugins {
 //    id("com.google.devtools.ksp")
@@ -5,7 +6,7 @@ plugins {
     id("test-conventions")
     id("ksp4backend-convention")
 //    id("com.google.devtools.ksp")
-    id("org.jetbrains.kotlin.plugin.noarg") version "+"
+    id("org.jetbrains.kotlin.plugin.noarg") version libs.versions.kotlin
 //    application
 }
 
@@ -47,100 +48,98 @@ dependencies {
     implementation(projects.shared)
 
 
-
 // 引入 Spring AI 相关依赖
-    val springaiVersion = "+"
-    implementation("org.springframework.ai:spring-ai-starter-mcp-server-webflux:+")
-    implementation(platform("org.springframework.ai:spring-ai-bom:$springaiVersion"))
+    implementation(libs.spring.ai.starter.mcp.server.webflux)
+       // 引入 BOM（管理版本）
+    implementation(platform(libs.spring.ai.bom))
 //   implementation platform("org.springframework.ai:spring-ai-bom:1.0.0-M7")
 // Spring AI PGVector Store Starter
-    implementation("org.springframework.ai:spring-ai-starter-vector-store-pgvector")
-    implementation("com.github.victools:jsonschema-generator:4.38.0")
+    implementation(libs.spring.ai.starter.vector.store.pgvector)
+    implementation(libs.jsonschema.generator)
 // Spring AI Ollama Starter
-    implementation("org.springframework.ai:spring-ai-starter-model-ollama")
+    implementation(libs.spring.ai.starter.model.ollama)
 
 // Spring AI Tika Document Reader
-    implementation("org.springframework.ai:spring-ai-tika-document-reader")
+    implementation(libs.spring.ai.tika.document.reader)
 
 // Spring AI OpenAI Starter
 //    implementation("org.springframework.ai:spring-ai-starter-model-openai")
 
-    implementation("org.springframework.ai:spring-ai-starter-model-deepseek:+")
+    // 添加 deepseek starter
+    implementation(libs.spring.ai.deepseek)
 
 
 
 
 
 
-
-
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.10.2")
+    implementation(libs.kotlinx.coroutines.reactor)
 
 // 添加spring-webflux依赖，解决NoClassDefFoundError: reactor/core/publisher/Mono错误
-    implementation("org.springframework.boot:spring-boot-starter-webflux")
+    implementation(libs.spring.boot.starter.webflux)
 
 
-    implementation("org.dromara.x-file-storage:x-file-storage-spring:+")
+    implementation(libs.x.file.storage.spring)
 
 
-    implementation("org.tomlj:tomlj:+")
-    implementation("org.springframework.boot:spring-boot-starter-web")
-
-
-
-    implementation("org.springframework.boot:spring-boot-starter-validation")
-
-
-    implementation("org.aspectj:aspectjweaver:+")
+    implementation(libs.tomlj)
+    implementation(libs.spring.boot.starter.web)
 
 
 
-    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+    implementation(libs.spring.boot.starter.validation)
+
+
+    implementation(libs.aspectjweaver)
 
 
 
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
-
-    implementation("com.alibaba.fastjson2:fastjson2-kotlin:+")
-
-    implementation("io.minio:minio:+")
+    implementation(libs.spring.boot.starter.thymeleaf)
 
 
 
-    implementation("cn.dev33:sa-token-spring-boot3-starter:+")
+    implementation(libs.jackson.module.kotlin)
+
+    implementation(libs.kotlin.reflect)
+
+    implementation(libs.fastjson2.kotlin)
+
+    implementation(libs.minio)
 
 
 
-    implementation("com.belerweb:pinyin4j:+")
+    implementation(libs.sa.token.spring.boot3.starter)
 
-    implementation("cn.idev.excel:fastexcel:+")
+
+
+    implementation(libs.pinyin4j)
+
+    implementation(libs.fastexcel)
 //    implementation("org.springdoc:springdoc-openapi-ui:1.6.9")
 
 //    implementation("com.github.xiaoymin:knife4j-openapi3-ui:+")
 //    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:+")
-    implementation("cn.hutool:hutool-all:+")
+    implementation(libs.hutool.all)
 
 
 // 引入数据库驱动
 
-    runtimeOnly("org.postgresql:postgresql")
+    runtimeOnly(libs.postgresql)
 
-    runtimeOnly("com.mysql:mysql-connector-j")
-
-
-    runtimeOnly("com.dameng:DmJdbcDriver18:+")
-
-    runtimeOnly("com.h2database:h2")
+    runtimeOnly(libs.mysql.connector.j)
 
 
-    implementation("org.babyfish.jimmer:jimmer-spring-boot-starter:+")
+    runtimeOnly(libs.dameng.jdbc.driver)
 
-    ksp("org.babyfish.jimmer:jimmer-ksp:+")
+    runtimeOnly(libs.h2)
 
 
-    implementation("org.flywaydb:flyway-core:+")
-    implementation("org.flywaydb:flyway-database-postgresql:+")
+    implementation(libs.jimmer.spring.boot.starter)
+
+    ksp(libs.jimmer.ksp)
+
+
+    implementation(libs.flyway.core)
+    implementation(libs.flyway.database.postgresql)
 
 }

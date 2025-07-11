@@ -72,7 +72,6 @@ kotlin {
             // 添加SLF4J实现
 //            implementation("org.slf4j:slf4j-simple:+")
 
-
             //注解处理器核心包
 //            implementation(projects.addzeroKspCore)
             implementation(projects.lib.addzeroRouteCore)
@@ -86,15 +85,15 @@ kotlin {
             // 协程相关依赖
             implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion")
             //时间依赖
-            implementation("org.jetbrains.kotlinx:kotlinx-datetime:+")
+            implementation(libs.kotlinx.datetime)
 
             // 通用UI组件
             implementation("com.mikepenz:multiplatform-markdown-renderer-m3:0.36.0-b02")
-            implementation("org.jetbrains.androidx.navigation:navigation-compose:+")
+            implementation(libs.navigation.compose)
 
             //图片加载库
-            implementation("io.coil-kt.coil3:coil-compose:+")
-            implementation("io.coil-kt.coil3:coil-network-ktor3:+")
+            implementation(libs.coil.compose)
+            implementation(libs.coil.network.ktor3)
 
             //拖拽库
 
@@ -120,16 +119,25 @@ kotlin {
 //            implementation("io.github.ltttttttttttt:LazyPeopleHttp-lib:$lazyhttpV")
 
 
-            implementation("de.jensklingenberg.ktorfit:ktorfit-lib:+")
+            implementation(libs.ktorfit.lib)
 
             // Koin 注解处理
             // Koin Annotations
-            api("io.insert-koin:koin-annotations:+")
-            implementation("io.insert-koin:koin-core:+")
 
-            implementation("io.insert-koin:koin-compose:+")
-            implementation("io.insert-koin:koin-compose-viewmodel:+")
-            implementation("io.insert-koin:koin-compose-viewmodel-navigation:+")
+
+           implementation(project.dependencies.platform("io.insert-koin:koin-bom:4.1.0"))
+
+            implementation("io.insert-koin:koin-annotations:2.1.0")
+//            implementation("io.insert-koin:koin-core:4.1.0")
+//            implementation("io.insert-koin:koin-compose:4.1.0")
+//            implementation("io.insert-koin:koin-compose-viewmodel:4.1.0")
+//            implementation("io.insert-koin:koin-compose-viewmodel-navigation:4.1.0")
+
+
+            implementation("io.insert-koin:koin-core")
+            implementation("io.insert-koin:koin-compose")
+            implementation("io.insert-koin:koin-compose-viewmodel")
+            implementation("io.insert-koin:koin-compose-viewmodel-navigation")
 
 
         }

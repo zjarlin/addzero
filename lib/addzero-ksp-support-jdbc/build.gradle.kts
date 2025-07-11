@@ -7,8 +7,8 @@ kotlin{
     sourceSets{
         jvmMain.dependencies {
             // JDBC相关依赖
-            implementation("org.postgresql:postgresql:+") // PostgreSQL驱动
-            implementation("mysql:mysql-connector-java:+") // MySQL驱动
+            implementation(libs.postgresql.driver) // PostgreSQL驱动
+            implementation(libs.mysql.connector.java) // MySQL驱动
 
         }
     }

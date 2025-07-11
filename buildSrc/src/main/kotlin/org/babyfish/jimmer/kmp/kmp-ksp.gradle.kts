@@ -15,7 +15,7 @@ kotlin {
 //            implementation(project(:addzero-ksp))
         }
         jvmMain.dependencies {
-            implementation("com.google.devtools.ksp:symbol-processing-api:+")
+            implementation("com.google.devtools.ksp:symbol-processing-api:2.2.0-2.0.2")
         }
     }
 }

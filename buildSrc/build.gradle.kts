@@ -49,6 +49,6 @@ dependencies {
 
     implementation("org.jetbrains.kotlin.plugin.spring:org.jetbrains.kotlin.plugin.spring.gradle.plugin:${kotlinVersion}")
     implementation("io.spring.gradle:dependency-management-plugin:1.1.7")
-    implementation("org.springframework.boot:org.springframework.boot.gradle.plugin:+")
+    implementation("org.springframework.boot:org.springframework.boot.gradle.plugin:3.5.3")
 
 }

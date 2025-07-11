@@ -2,7 +2,6 @@
 package com.addzero.ai.config
 
 import cn.hutool.extra.spring.SpringUtil
-import org.springframework.ai.tool.ToolCallbackProvider
 import org.springframework.ai.tool.annotation.Tool
 import org.springframework.ai.tool.method.MethodToolCallbackProvider
 import org.springframework.context.ApplicationContext
@@ -55,7 +54,7 @@ class AutoToolRegisterConfiguration (private val applicationContext: Application
     private lateinit var toolObjects: MutableList<Any?>
 
     @Bean
-    fun autoRegisterTools(): ToolCallbackProvider {
+    fun methodToolCallbackProvider(): MethodToolCallbackProvider {
         val functionObjects = getFunctionObjects()
         // 构建并返回ToolCallbackProvider
         val build = MethodToolCallbackProvider.builder()
