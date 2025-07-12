@@ -38,7 +38,7 @@ class SysDeptController : BaseTreeApi<SysDept, SysDeptIso>{
 //    }
 
     @PostMapping("/save")
-    fun save(@RequestBody dept: SysDeptIso): SysDeptIso {
+    fun save(@RequestBody dept: SysDeptIso): SysDept {
         val convertTo = dept.toJimmerEntity<SysDeptIso, SysDept>()
 
         val sysDept = SysDept(convertTo) {
@@ -47,7 +47,7 @@ class SysDeptController : BaseTreeApi<SysDept, SysDeptIso>{
             }
         }
         val save = sql.save(sysDept)
-        return save.convertTo()
+        return save.modifiedEntity
     }
 
 

@@ -2,6 +2,7 @@ package com.addzero.kmp.processor
 
 import com.addzero.kmp.context.SettingContext
 import com.addzero.kmp.context.apiclientOutPutDir
+import com.addzero.kmp.util.isJimmerEntity
 import com.google.devtools.ksp.processing.*
 import com.google.devtools.ksp.symbol.*
 import com.google.devtools.ksp.validate
@@ -49,6 +50,7 @@ class ControllerApiProcessor(
         collectedControllers.forEach { metadata ->
             generateKtorfitInterfaceFromMetadata(metadata)
         }
+        collectedControllers.clear()
     }
 
     /**
@@ -237,7 +239,7 @@ class ControllerApiProcessor(
             val declaration = type.declaration
             val qualifiedName = declaration.qualifiedName?.asString()
 
-
+            com.addzero.kmp.util.isJimmerEntity(declaration)
             // 检查是否为 Jimmer 实体，如果是则转换为同构体类型
             if (isJimmerEntity(declaration)) {
                 val entitySimpleName = declaration.simpleName.asString()
@@ -273,18 +275,6 @@ class ControllerApiProcessor(
         }
     }
 
-    /**
-     * 检查是否为 Jimmer 实体
-     */
-    private fun isJimmerEntity(typeDecl: KSDeclaration): Boolean {
-        return try {
-            typeDecl.annotations.any { it.shortName.asString() == "Entity" } &&
-            (typeDecl as? KSClassDeclaration)?.classKind == ClassKind.INTERFACE
-        } catch (e: Exception) {
-            logger.warn("检查 Jimmer 实体时发生错误: ${e.message}")
-            false
-        }
-    }
 
     /**
      * 映射特殊类型

@@ -20,25 +20,24 @@ import org.springframework.web.bind.annotation.RestController
 class SysUserCenterController(
     private val sysuserService: SysUserService,
     private val saTokenConfig: cn.dev33.satoken.config.SaTokenConfig
-) : UserCenterApi {
+) {
 
     @GetMapping("/getCurrentUser")
-    override suspend fun getCurrentUser(): SysUserIso {
+    fun getCurrentUser(): SysUser {
         // 方式2：从当前请求中获取token（更底层）
         val tokenValue = SaHolder.getRequest().getHeader(saTokenConfig.tokenName)
         if (tokenValue == "admin") {
             return SysUser {
                 username = tokenValue
                 nickname = "超级管理员"
-            }.convertTo()
+            }
         }
         val findById = sysuserService.getCurrentUser()
-        val convertTo = findById.convertTo<SysUserIso>()
-        return convertTo
+        return findById
     }
 
     @PostMapping("/updatePassword")
-    override suspend fun updatePassword(@RequestBody newPassword: String): Boolean {
+    fun updatePassword(@RequestBody newPassword: String): Boolean {
         val currentUser = sysuserService.getCurrentUser()
         val sysUser = SysUser(currentUser) {
             password = newPassword
@@ -50,7 +49,7 @@ class SysUserCenterController(
     }
 
     @PostMapping("/logout")
-    override suspend fun logout(): Boolean {
+    fun logout(): Boolean {
         StpUtil.logout()
         return true
     }

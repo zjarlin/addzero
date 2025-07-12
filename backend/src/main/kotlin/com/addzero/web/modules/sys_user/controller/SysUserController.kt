@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RestController
 class SysUserController {
 
     @GetMapping("/page")
-    fun page(): PageResult<SysUserIso> {
+    fun page(): PageResult<SysUser> {
         val fetchPage = sql.createQuery(SysUser::class) {
             select(table)
         }.fetchPage(0, 10)
-        return fetchPage.convertTo<PageResult<SysUserIso>>()
+        return fetchPage.convertTo<PageResult<SysUser>>()
     }
 
     @PostMapping("/save")
