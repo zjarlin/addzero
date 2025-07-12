@@ -1,7 +1,7 @@
 package com.addzero.kmp.api
 
 import de.jensklingenberg.ktorfit.http.*
-import com.addzero.kmp.isomorphic.*
+import com.addzero.kmp.isomorphic.SysDeptIso
 
 /**
  * Ktorfit接口 - 由KSP自动生成
@@ -65,10 +65,10 @@ interface SysDeptApi {
  * 路径: /sysDept/tree
  * 参数:
  *   - keyword: kotlin.String (RequestParam)
- * 返回类型: kotlin.collections.List<com.addzero.web.modules.sys_dept.entity.SysDept>
+ * 返回类型: kotlin.collections.List<com.addzero.kmp.isomorphic.SysDeptIso>
  */
     @GET("/sysDept/tree")    suspend fun tree(
         @Query("keyword") keyword: kotlin.String
-    ): kotlin.collections.List<SysDeptIso>
+    ): kotlin.collections.List<com.addzero.kmp.isomorphic.SysDeptIso>
 
 }

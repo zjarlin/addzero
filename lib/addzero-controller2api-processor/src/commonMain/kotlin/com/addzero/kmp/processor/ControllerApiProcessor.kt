@@ -9,12 +9,19 @@ import java.io.File
 
 /**
  * KSP处理器：解析Controller符号生成Ktorfit接口
+ *
+ * 使用两阶段处理：
+ * 1. process() 阶段：收集元数据
+ * 2. finish() 阶段：生成代码
  */
 class ControllerApiProcessor(
     private val codeGenerator: CodeGenerator,
     private val logger: KSPLogger,
     private val options: Map<String, String>
 ) : SymbolProcessor {
+
+    // 存储收集到的控制器元数据
+    private val collectedControllers = mutableListOf<ControllerMetadata>()
 
     override fun process(resolver: Resolver): List<KSAnnotated> {
         SettingContext.initialize(options)
@@ -28,26 +35,81 @@ class ControllerApiProcessor(
             return emptyList()
         }
 
+        // 第一阶段：收集元数据
         controllerSymbols.forEach { controller ->
-            processController(controller)
+            collectControllerMetadata(controller)
         }
 
         return controllerSymbols.filterNot { it.validate() }.toList()
     }
 
-    private fun processController(controller: KSClassDeclaration) {
-        try {
-            logger.info("Processing controller: ${controller.qualifiedName?.asString()}")
-
-            val controllerInfo = extractControllerInfo(controller)
-            generateKtorfitInterface(controllerInfo)
-
-        } catch (e: Exception) {
-            logger.error("Error processing controller ${controller.qualifiedName?.asString()}: ${e.message}")
+    override fun finish() {
+        // 第二阶段：生成代码
+        logger.info("开始生成代码，共收集到 ${collectedControllers.size} 个控制器")
+        collectedControllers.forEach { metadata ->
+            generateKtorfitInterfaceFromMetadata(metadata)
         }
     }
 
-    private fun extractControllerInfo(controller: KSClassDeclaration): ControllerInfo {
+    /**
+     * 从元数据生成 Ktorfit 接口（第二阶段）
+     */
+    private fun generateKtorfitInterfaceFromMetadata(metadata: ControllerMetadata) {
+        try {
+            logger.info("生成 Ktorfit 接口: ${metadata.originalClassName}")
+
+            // 将元数据转换为 ControllerInfo（兼容现有的生成逻辑）
+            val controllerInfo = ControllerInfo(
+                originalClassName = metadata.originalClassName,
+                packageName = metadata.packageName,
+                basePath = metadata.basePath,
+                methods = metadata.methods.map { methodMetadata ->
+                    MethodInfo(
+                        name = methodMetadata.name,
+                        httpMethod = methodMetadata.httpMethod,
+                        path = methodMetadata.path,
+                        returnType = methodMetadata.returnTypeString,
+                        parameters = methodMetadata.parameters.map { paramMetadata ->
+                            ParameterInfo(
+                                name = paramMetadata.name,
+                                type = paramMetadata.typeString,
+                                isRequestBody = paramMetadata.isRequestBody,
+                                isPathVariable = paramMetadata.isPathVariable,
+                                isRequestParam = paramMetadata.isRequestParam,
+                                isRequestPart = paramMetadata.isRequestPart
+                            )
+                        }
+                    )
+                }
+            )
+
+            // 使用现有的生成逻辑
+            generateKtorfitInterface(controllerInfo)
+
+        } catch (e: Exception) {
+            logger.error("生成 Ktorfit 接口时发生错误 ${metadata.originalClassName}: ${e.message}")
+        }
+    }
+
+    /**
+     * 收集控制器元数据（第一阶段）
+     */
+    private fun collectControllerMetadata(controller: KSClassDeclaration) {
+        try {
+            logger.info("收集控制器元数据: ${controller.qualifiedName?.asString()}")
+
+            val metadata = extractControllerMetadata(controller)
+            collectedControllers.add(metadata)
+
+        } catch (e: Exception) {
+            logger.error("收集控制器元数据时发生错误 ${controller.qualifiedName?.asString()}: ${e.message}")
+        }
+    }
+
+    /**
+     * 提取控制器元数据（只收集字符串信息，避免类型解析问题）
+     */
+    private fun extractControllerMetadata(controller: KSClassDeclaration): ControllerMetadata {
         val className = controller.simpleName.asString()
         val packageName = controller.packageName.asString()
 
@@ -70,10 +132,10 @@ class ControllerApiProcessor(
 
         val methods = springMvcFunctions.map { function ->
             logger.info("Processing method: ${function.simpleName.asString()}")
-            extractMethodInfo(function, basePath)
+            extractMethodMetadata(function, basePath)
         }
 
-        return ControllerInfo(
+        return ControllerMetadata(
             originalClassName = className,
             packageName = packageName,
             basePath = basePath,
@@ -81,37 +143,50 @@ class ControllerApiProcessor(
         )
     }
 
-    private fun extractMethodInfo(function: KSFunctionDeclaration, basePath: String): MethodInfo {
+    /**
+     * 提取方法元数据（只收集字符串信息，避免类型解析问题）
+     */
+    private fun extractMethodMetadata(function: KSFunctionDeclaration, basePath: String): MethodMetadata {
         val methodName = function.simpleName.asString()
 
         // 提取HTTP方法和路径
         val httpInfo = extractHttpMapping(function)
         val fullPath = if (basePath.isNotEmpty()) "$basePath${httpInfo.path}" else httpInfo.path
 
-        // 提取参数
-        val parameters = function.parameters.map { param ->
-            val resolvedType = param.type.resolve()
-            ParameterInfo(
-                name = param.name?.asString() ?: "",
-                type = getFullQualifiedTypeName(resolvedType),
-                isRequestBody = hasAnnotation(param, "RequestBody"),
-                isPathVariable = hasAnnotation(param, "PathVariable"),
-                isRequestParam = hasAnnotation(param, "RequestParam"),
-                isRequestPart = hasAnnotation(param, "RequestPart")
-            )
+        // 提取参数（只收集字符串信息）
+        val parameters = function.parameters.mapNotNull { param ->
+            try {
+                val typeString = extractTypeString(param.type.resolve())
+                ParameterMetadata(
+                    name = param.name?.asString() ?: "",
+                    typeString = typeString,
+                    isRequestBody = hasAnnotation(param, "RequestBody"),
+                    isPathVariable = hasAnnotation(param, "PathVariable"),
+                    isRequestParam = hasAnnotation(param, "RequestParam"),
+                    isRequestPart = hasAnnotation(param, "RequestPart")
+                )
+            } catch (e: Exception) {
+                logger.error("处理参数 ${param.name?.asString()} 时发生错误: ${e.message}")
+                null
+            }
         }
 
-        // 提取返回类型
-        val returnType = function.returnType?.resolve()?.let { resolvedType ->
-            processReturnType(resolvedType)
-        } ?: "Unit"
+        // 提取返回类型（只收集字符串信息）
+        val returnTypeString = try {
+            function.returnType?.resolve()?.let { resolvedType ->
+                extractTypeString(resolvedType)
+            } ?: "Unit"
+        } catch (e: Exception) {
+            logger.error("处理返回类型时发生错误: ${e.message}")
+            "Unit"
+        }
 
-        return MethodInfo(
+        return MethodMetadata(
             name = methodName,
             httpMethod = httpInfo.method,
             path = fullPath,
             parameters = parameters,
-            returnType = returnType
+            returnTypeString = returnTypeString
         )
     }
 
@@ -155,35 +230,59 @@ class ControllerApiProcessor(
     }
 
     /**
-     * 获取类型的全限定名
+     * 提取类型字符串（安全的字符串提取，遇到 Jimmer 实体自动转换为同构体）
      */
-    private fun getFullQualifiedTypeName(type: KSType): String {
-        val declaration = type.declaration
-        val qualifiedName = declaration.qualifiedName?.asString()
+    private fun extractTypeString(type: KSType): String {
+        try {
+            val declaration = type.declaration
+            val qualifiedName = declaration.qualifiedName?.asString()
 
-        // 特殊类型映射
-        val mappedType = mapSpecialTypes(qualifiedName ?: declaration.simpleName.asString())
-        if (mappedType != null) {
-            return mappedType
-        }
 
-        return when {
-            // 处理泛型类型
-            type.arguments.isNotEmpty() -> {
-                val baseType = qualifiedName ?: declaration.simpleName.asString()
-                val mappedBaseType = mapSpecialTypes(baseType) ?: baseType
-                val typeArgs = type.arguments.joinToString(", ") { arg ->
-                    when (val argType = arg.type?.resolve()) {
-                        null -> "*"
-                        else -> getFullQualifiedTypeName(argType)
-                    }
-                }
-                "$mappedBaseType<$typeArgs>"
+            // 检查是否为 Jimmer 实体，如果是则转换为同构体类型
+            if (isJimmerEntity(declaration)) {
+                val entitySimpleName = declaration.simpleName.asString()
+                return "com.addzero.kmp.isomorphic.${entitySimpleName}Iso"
             }
-            // 处理基础类型
-            qualifiedName != null -> qualifiedName
+
+            // 特殊类型映射
+            val mappedType = mapSpecialTypes(qualifiedName ?: "")
+            if (mappedType != null) {
+                return mappedType
+            }
+
+            return when {
+                // 处理泛型类型
+                type.arguments.isNotEmpty() -> {
+                    val baseType = qualifiedName ?: ""
+                    val mappedBaseType = mapSpecialTypes(baseType) ?: baseType
+                    val typeArgs = type.arguments.joinToString(", ") { arg ->
+                        when (val argType = arg.type?.resolve()) {
+                            null -> "*"
+                            else -> extractTypeString(argType)
+                        }
+                    }
+                    "$mappedBaseType<$typeArgs>"
+                }
+                // 处理基础类型
+                else -> qualifiedName ?: declaration.simpleName.asString()
+            }
+        } catch (e: Exception) {
+            logger.error("获取类型名称时发生错误: ${e.message}")
             // 回退到简单名称
-            else -> declaration.simpleName.asString()
+            return type.declaration.simpleName.asString()
+        }
+    }
+
+    /**
+     * 检查是否为 Jimmer 实体
+     */
+    private fun isJimmerEntity(typeDecl: KSDeclaration): Boolean {
+        return try {
+            typeDecl.annotations.any { it.shortName.asString() == "Entity" } &&
+            (typeDecl as? KSClassDeclaration)?.classKind == ClassKind.INTERFACE
+        } catch (e: Exception) {
+            logger.warn("检查 Jimmer 实体时发生错误: ${e.message}")
+            false
         }
     }
 
@@ -221,7 +320,7 @@ class ControllerApiProcessor(
                 if (type.arguments.isNotEmpty()) {
                     val firstArg = type.arguments.first()
                     firstArg.type?.resolve()?.let { argType ->
-                        getFullQualifiedTypeName(argType)
+                        extractTypeString(argType)
                     } ?: "kotlin.Any"
                 } else {
                     "kotlin.Any"
@@ -232,13 +331,13 @@ class ControllerApiProcessor(
                 if (type.arguments.isNotEmpty()) {
                     val firstArg = type.arguments.first()
                     firstArg.type?.resolve()?.let { argType ->
-                        "kotlin.collections.List<${getFullQualifiedTypeName(argType)}>"
+                        "kotlin.collections.List<${extractTypeString(argType)}>"
                     } ?: "kotlin.collections.List<kotlin.Any>"
                 } else {
                     "kotlin.collections.List<kotlin.Any>"
                 }
             }
-            else -> getFullQualifiedTypeName(type)
+            else -> extractTypeString(type)
         }
     }
 
@@ -641,3 +740,28 @@ private fun KSFunctionDeclaration.hasSpringMvcAnnotation(): Boolean {
         springMvcAnnotations.contains(annotation.shortName.asString())
     }
 }
+
+// ===== 元数据类（第一阶段收集的数据）=====
+data class ParameterMetadata(
+    val name: String,
+    val typeString: String,
+    val isRequestBody: Boolean = false,
+    val isPathVariable: Boolean = false,
+    val isRequestParam: Boolean = false,
+    val isRequestPart: Boolean = false
+)
+
+data class MethodMetadata(
+    val name: String,
+    val httpMethod: String,
+    val path: String,
+    val parameters: List<ParameterMetadata>,
+    val returnTypeString: String
+)
+
+data class ControllerMetadata(
+    val originalClassName: String,
+    val packageName: String,
+    val basePath: String,
+    val methods: List<MethodMetadata>
+)

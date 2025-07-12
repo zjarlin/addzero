@@ -32,10 +32,10 @@ interface SysDictItemApi {
  * 路径: /sysDictItem/tree
  * 参数:
  *   - keyword: kotlin.String (RequestParam)
- * 返回类型: kotlin.collections.List<com.addzero.web.modules.sys_dict_item.entity.SysDictItem>
+ * 返回类型: kotlin.collections.List<com.addzero.kmp.isomorphic.SysDictItemIso>
  */
     @GET("/sysDictItem/tree")    suspend fun tree(
         @Query("keyword") keyword: kotlin.String
-    ): kotlin.collections.List<com.addzero.web.modules.sys_dict_item.entity.SysDictItem>
+    ): kotlin.collections.List<com.addzero.kmp.isomorphic.SysDictItemIso>
 
 }
