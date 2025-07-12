@@ -3,7 +3,6 @@ package com.addzero.kmp.component.form.dept_selector
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.addzero.kmp.annotation.Route
@@ -47,7 +46,7 @@ fun SingleDeptSelectorExample() {
             description = "选择一个部门后立即关闭，适合选择上级部门、负责部门等场景"
         ) {
             AddSingleDeptSelector(
-                selectedDept = selectedSingleDept,
+                value = selectedSingleDept,
                 onValueChange = { selectedSingleDept = it },
                 placeholder = "请选择所属部门"
             )
@@ -66,7 +65,7 @@ fun SingleDeptSelectorExample() {
             description = "支持选择多个部门，需要点击确认按钮，适合选择管理部门、参与部门等场景"
         ) {
             AddDeptSelector(
-                selectedDepts = selectedMultiDepts,
+                value = selectedMultiDepts,
                 onValueChange = { selectedMultiDepts = it },
                 placeholder = "请选择管理部门"
             )
@@ -85,7 +84,7 @@ fun SingleDeptSelectorExample() {
             description = "典型的单选场景，选择组织架构中的上级部门"
         ) {
             AddSingleDeptSelector(
-                selectedDept = selectedParentDept,
+                value = selectedParentDept,
                 onValueChange = { selectedParentDept = it },
                 placeholder = "请选择上级部门",
                 allowClear = true
@@ -123,7 +122,7 @@ fun SingleDeptSelectorExample() {
             description = "不允许清除的单选场景，必须选择一个部门"
         ) {
             AddSingleDeptSelector(
-                selectedDept = selectedManagerDept,
+                value = selectedManagerDept,
                 onValueChange = { selectedManagerDept = it },
                 placeholder = "请选择负责人所在部门",
                 allowClear = false // 不允许清除

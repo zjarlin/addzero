@@ -38,14 +38,16 @@ object FormStrategyManager {
         BooleanStrategy,
         DateStrategy,
         DecimalStrategy,
-        SysDeptSingleStrategy,     // 🏢 SysDept 单选策略 (优先级2)
-        SysDeptsStrategy,  // 🏢 SysDeptIso 部门选择策略 (优先级3)
+//        SysDeptSingleStrategy,     // 🏢 SysDept 单选策略 (优先级2)
+//        SysDeptsStrategy,  // 🏢 SysDeptIso 部门选择策略 (优先级3)
         EmailStrategy,
         IdCardStrategy,
         IntegerStrategy,
         MoneyStrategy,
         PercentageStrategy,
         PhoneStrategy,
+        GenericListStrategy, // 🎯 通用列表选择策略 (优先级10)
+        GenericSingleStrategy, // 🎯 通用单选策略 (优先级11)
         StringStrategy,
         UrlStrategy,
         UsernameStrategy,

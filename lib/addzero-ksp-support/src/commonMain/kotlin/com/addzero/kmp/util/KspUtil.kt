@@ -4,6 +4,14 @@ import com.addzero.kmp.util.JlStrUtil.makeSurroundWith
 import com.google.devtools.ksp.symbol.*
 import java.io.File
 
+val KSPropertyDeclaration.firstTypeArgumentKSClassDeclaration: KSClassDeclaration?
+    get() {
+        val firstTypeArgument = this.type.element?.typeArguments?.firstOrNull()
+        val firstType: KSType? = (firstTypeArgument as? KSTypeReference)?.resolve()
+        val firstClassDeclaration: KSClassDeclaration? = firstType?.declaration as? KSClassDeclaration
+        return firstClassDeclaration
+    }
+
 
 val KSPropertyDeclaration.name: String
     get() = this.simpleName.asString()
@@ -363,6 +371,7 @@ private fun KSType.buildFunctionTypeString(): String {
         baseTypeName.startsWith("kotlin.Function") -> {
             baseTypeName.removePrefix("kotlin.Function").toIntOrNull() ?: 0
         }
+
         else -> 0
     }
 

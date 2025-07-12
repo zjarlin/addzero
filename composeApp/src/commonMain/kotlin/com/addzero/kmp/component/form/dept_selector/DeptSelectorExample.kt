@@ -18,7 +18,7 @@ fun DeptSelectorExample() {
     var selectedDepts1 by remember { mutableStateOf<List<SysDeptIso>>(emptyList()) }
 
     AddDeptSelector(
-        selectedDepts = selectedDepts1,
+        value = selectedDepts1,
         onValueChange = { selectedDepts1 = it },
     )
 

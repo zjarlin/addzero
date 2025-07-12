@@ -10,6 +10,7 @@ plugins {
 dependencies {
     kspCommonMainMetadata(projects.lib.addzeroRouteProcessor)
     kspCommonMainMetadata(projects.lib.addzeroComposePropsProcessor)
+    kspCommonMainMetadata(projects.lib.addzeroEntity2formProcessor)
     kspCommonMainMetadata(libs.koin.ksp.compiler)
 
 }
@@ -74,6 +75,7 @@ kotlin {
 //            implementation(projects.addzeroKspCore)
             implementation(projects.lib.addzeroRouteCore)
             implementation(projects.lib.addzeroComposePropsAnnotations)
+//            implementation(projects.lib.addzeroEntity2formCore)
 
             // KMP 兼容的生命周期管理不能引入这个.启动skia报错
 
