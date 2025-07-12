@@ -20,13 +20,31 @@ object GenericListStrategy : FormStrategy {
     override val priority: Int = 10 // 较低优先级，作为通用兜底策略
 
     override fun support(prop: KSPropertyDeclaration): Boolean {
-        val typeName = prop.typeName
+        // 检查是否为集合类型
+        val isCollectionType = prop.isCollectionType()
 
-        // 支持各种集合类型
-        return typeName.contains("List<") ||
-                typeName.contains("Set<") ||
-                typeName.contains("MutableList<") ||
-                typeName.contains("MutableSet<")
+        if (!isCollectionType) {
+            return false
+        }
+
+        // 获取集合的泛型类型
+        val genericType = prop.type.resolve().arguments.firstOrNull()?.type?.resolve()
+        val genericDeclaration = genericType?.declaration
+
+        if (genericDeclaration == null) {
+            return false
+        }
+
+        // 检查泛型类型是否为 Jimmer 实体
+        val isJimmerEntityType = isJimmerEntity(genericDeclaration)
+
+        // 检查泛型类型是否为枚举
+        val isEnumType = isEnum(genericDeclaration)
+
+        println("GenericListStrategy: ${prop.name}, genericType: ${genericDeclaration.simpleName.asString()}, isJimmerEntity: $isJimmerEntityType, isEnum: $isEnumType")
+
+        // 只支持 Jimmer 实体类型的集合（排除枚举类型）
+        return isJimmerEntityType && !isEnumType
     }
 
     override fun genCode(prop: KSPropertyDeclaration): String {
@@ -35,7 +53,7 @@ object GenericListStrategy : FormStrategy {
         val isRequired = prop.isRequired
         val defaultValue = prop.defaultValue
         val typeName = prop.typeName
-        val typeOrGenericClassDeclaration = prop.firstTypeArgumentKSClassDeclaration?:throw IllegalStateException("未找到集合动态表单的泛型类型")
+        val typeOrGenericClassDeclaration = prop.firstTypeArgumentKSClassDeclaration?:throw IllegalStateException("未找到${name}集合动态表单的泛型类型")
 
         // 提取泛型类型
 //        val genericType = extractGenericType(typeName)
@@ -63,6 +81,18 @@ object GenericListStrategy : FormStrategy {
 }
 
 fun genCodeWhenSingle(bool: KSClassDeclaration, typeName: String, name: String, argFirstValue: String?, isRequired: Boolean, isSingle: Boolean = true): String {
+    // 检查是否为枚举类型
+    val isEnum = bool.classKind.name == "ENUM_CLASS"
+
+    // 如果是枚举类型，不生成通用选择器代码
+    if (isEnum) {
+        return """
+            // 🚫 枚举类型 $typeName 不支持通用选择器，请使用专门的枚举选择器
+            // TODO: 为枚举类型 $typeName 实现专门的选择器组件
+            Text("枚举类型 $typeName 暂不支持", color = MaterialTheme.colorScheme.error)
+        """.trimIndent()
+    }
+
     val hasProperty = bool.hasProperty("children")
     val string = if (hasProperty) {
         "it.children"

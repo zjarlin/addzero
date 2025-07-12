@@ -28,14 +28,14 @@ interface SysDictItemApi {
 
 /**
  * tree
- * HTTP方法: POST
+ * HTTP方法: GET
  * 路径: /sysDictItem/tree
  * 参数:
  *   - keyword: kotlin.String (RequestParam)
- * 返回类型: kotlin.collections.List<com.addzero.kmp.isomorphic.SysDictItemIso>
+ * 返回类型: kotlin.collections.List<com.addzero.web.modules.sys_dict_item.entity.SysDictItem>
  */
-    @POST("/sysDictItem/tree")    suspend fun tree(
+    @GET("/sysDictItem/tree")    suspend fun tree(
         @Query("keyword") keyword: kotlin.String
-    ): kotlin.collections.List<com.addzero.kmp.isomorphic.SysDictItemIso>
+    ): kotlin.collections.List<com.addzero.web.modules.sys_dict_item.entity.SysDictItem>
 
 }

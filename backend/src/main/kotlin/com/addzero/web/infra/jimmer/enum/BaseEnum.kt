@@ -29,7 +29,7 @@ interface BaseEnum<T : Enum<T>, V> {
      */
     val desc: String
 
-//    fun CLASS(): Class<T> {
+//    fun CLASS_E(): Class<T> {
 //        val typeArgument = TypeUtil.getTypeArgument(this.javaClass, 0)
 //        val jdbcType = typeArgument as Class<T>
 //        return jdbcType
@@ -53,5 +53,5 @@ interface BaseEnum<T : Enum<T>, V> {
 
 
 //    @JsonCreator
-//    fun fromCode(code: String): T? { return CLASS().enumConstants .map { it as T }.firstOrNull { ObjUtil.equals(code, it.columnValue) }
+//    fun fromCode(code: String): T? { return CLASS_E().enumConstants .map { it as T }.firstOrNull { ObjUtil.equals(code, it.columnValue) }
 }

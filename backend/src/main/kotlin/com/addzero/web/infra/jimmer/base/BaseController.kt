@@ -24,7 +24,7 @@ interface BaseController<E : Any> {
 
     // 懒加载 sqlClient，确保只初始化一次并缓存结果
     val sql: KSqlClient get() = lazySqlClient
-//    val fetcher: Fetcher<T> get() = newFetcher(CLASS()).by{
+//    val fetcher: Fetcher<T> get() = newFetcher(CLASS_E()).by{
 //        allScalarFields()
 //    }
 
@@ -70,7 +70,7 @@ interface BaseController<E : Any> {
 //    @GetMapping(listAllUrl)
 //    fun list(
 //    ): List<Any> {
-//        val entityType = CLASS()
+//        val entityType = CLASS_E()
 //        val execute1 = sql.list(entityType)
 //        return execute1
 //    }

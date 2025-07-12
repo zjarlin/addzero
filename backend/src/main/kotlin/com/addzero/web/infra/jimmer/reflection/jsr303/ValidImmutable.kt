@@ -50,7 +50,7 @@
 //)
 //
 //
-//@Target(AnnotationTarget.CLASS)
+//@Target(AnnotationTarget.CLASS_E)
 //@Retention(AnnotationRetention.RUNTIME)
 //@Constraint(validatedBy = [ImmutableObjectValidator::class])
 //annotation class ValidImmutable(

@@ -46,8 +46,8 @@ object FormStrategyManager {
         MoneyStrategy,
         PercentageStrategy,
         PhoneStrategy,
-        GenericListStrategy, // 🎯 通用列表选择策略 (优先级10)
-        GenericSingleStrategy, // 🎯 通用单选策略 (优先级11)
+//        GenericListStrategy, // 🎯 通用列表选择策略 (优先级10)
+//        GenericSingleStrategy, // 🎯 通用单选策略 (优先级11)
         StringStrategy,
         UrlStrategy,
         UsernameStrategy,

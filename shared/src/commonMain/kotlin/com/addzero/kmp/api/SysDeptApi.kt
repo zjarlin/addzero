@@ -1,7 +1,7 @@
 package com.addzero.kmp.api
 
 import de.jensklingenberg.ktorfit.http.*
-import com.addzero.kmp.isomorphic.SysDeptIso
+import com.addzero.kmp.isomorphic.*
 
 /**
  * Ktorfit接口 - 由KSP自动生成
@@ -10,18 +10,6 @@ import com.addzero.kmp.isomorphic.SysDeptIso
  * 输出目录: /Users/zjarlin/AquaProjects/addzero/shared/src/commonMain/kotlin/com/addzero/kmp/api
  */
 interface SysDeptApi {
-
-/**
- * tree
- * HTTP方法: GET
- * 路径: /sysDept/tree
- * 参数:
- *   - keyword: kotlin.String (Query)
- * 返回类型: kotlin.collections.List<com.addzero.kmp.isomorphic.SysDeptIso>
- */
-    @GET("/sysDept/tree")    suspend fun tree(
-        @Query("keyword") keyword: kotlin.String
-    ): kotlin.collections.List<com.addzero.kmp.isomorphic.SysDeptIso>
 
 /**
  * save
@@ -70,5 +58,17 @@ interface SysDeptApi {
     @GET("/sysDept/getAvailableUsers")    suspend fun getAvailableUsers(
         @Query("lng") lng: kotlin.Long
     ): kotlin.collections.List<com.addzero.kmp.jdbc.meta.public.table.impl.ISysUserImpl>
+
+/**
+ * tree
+ * HTTP方法: GET
+ * 路径: /sysDept/tree
+ * 参数:
+ *   - keyword: kotlin.String (RequestParam)
+ * 返回类型: kotlin.collections.List<com.addzero.web.modules.sys_dept.entity.SysDept>
+ */
+    @GET("/sysDept/tree")    suspend fun tree(
+        @Query("keyword") keyword: kotlin.String
+    ): kotlin.collections.List<SysDeptIso>
 
 }

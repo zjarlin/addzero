@@ -1,7 +1,6 @@
 package com.addzero.kmp.core.network// 在 commonMain 中定义共享代码
 //import com.lt.lazy_people_http.config.LazyPeopleHttpConfig
 import com.addzero.kmp.core.network.json.globalSerializersModule
-import com.addzero.kmp.entity.low_table.Validator
 import com.addzero.kmp.settings.SettingContext4Compose.BASE_URL
 import de.jensklingenberg.ktorfit.Ktorfit
 import io.ktor.client.*
@@ -14,7 +13,6 @@ import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
-import kotlin.invoke
 import kotlin.time.Duration.Companion.minutes
 
 // 创建一个通用的 HTTP 客户端工具类
@@ -33,7 +31,6 @@ val json = Json {
     //注册Any序列化器
     serializersModule = globalSerializersModule
 }
-
 
 
 object AddHttpClient {
@@ -66,12 +63,14 @@ object AddHttpClient {
         install(createClientPlugin("HttpResponseInterceptor") {
             onResponse { response ->
                 val bool = response.status.value != HttpStatusCode.OK.value
+//                val orNull = runCatching {
+//                    // 在协程作用域内执行挂起操作
+//                    val bodyAsText = response.bodyAsText()
+//                    bodyAsText
+//                }.getOrNull()
+
                 if (bool) {
-                    val orNull = runCatching {
-                        // 在协程作用域内执行挂起操作
-                        response.bodyAsText()
-                    }.getOrNull()
-                    println("异常body: $orNull")
+//                    println("异常body: $orNull")
 
                     GlobalEventDispatcher.handler(response)
 

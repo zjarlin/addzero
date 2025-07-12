@@ -69,7 +69,7 @@ kotlin {
             //日志库
 //            implementation("co.touchlab:kermit:+") // 基础库
             // 添加SLF4J实现
-//            implementation("org.slf4j:slf4j-simple:+")
+            implementation("org.slf4j:slf4j-simple:2.1.0-alpha1")
 
             //注解处理器核心包
 //            implementation(projects.addzeroKspCore)

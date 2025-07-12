@@ -1,6 +1,8 @@
 package com.addzero.web.infra.jackson
 
+import com.addzero.kmp.core.ext.parseListByKtxByKClass
 import com.addzero.kmp.core.ext.parseObjectByKtx
+import com.addzero.kmp.core.ext.toJsonByKtx
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.DeserializationFeature
@@ -15,6 +17,7 @@ import com.fasterxml.jackson.module.kotlin.KotlinModule
 import org.babyfish.jimmer.jackson.ImmutableModule
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import kotlin.reflect.KClass
 
 private val dateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
 
@@ -77,6 +80,23 @@ inline fun <reified T> Any.convertTo(): T {
     val parseObjectByKtx = toJson.parseObjectByKtx<T>()
     return parseObjectByKtx
 }
+
+
+
+
+ fun  <T : Any>Any.convertToList(kclass: KClass<T>): List<T> {
+    val toJson = this.toJson()
+     return toJson.parseListByKtxByKClass(kclass)
+}
+//fun <T> Any.convertToNoInline(Kclass: Class<T>): T {
+//    val toJson = this.toJson()
+//    val parseObjectByKtx = parseObjectByKtx(toJson, Kclass)
+//    return parseObjectByKtx
+//}
+
+
+
+
 
 //fun String.parseObject(): ObjectNode {
 //    val parseObject = parseObject(this)

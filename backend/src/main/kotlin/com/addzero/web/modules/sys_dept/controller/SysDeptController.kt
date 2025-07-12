@@ -4,6 +4,7 @@ import com.addzero.common.consts.sql
 import com.addzero.kmp.isomorphic.SysDeptIso
 import com.addzero.kmp.jdbc.meta.public.table.impl.ISysUserImpl
 import com.addzero.web.infra.jackson.convertTo
+import com.addzero.web.infra.jimmer.base.BaseTreeApi
 import com.addzero.web.infra.jimmer.toJimmerEntity
 import com.addzero.web.modules.sys_dept.entity.*
 import org.babyfish.jimmer.kt.isLoaded
@@ -14,27 +15,27 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/sysDept")
-class SysDeptController {
+class SysDeptController : BaseTreeApi<SysDept, SysDeptIso>{
 
-    @GetMapping("/tree")
-    fun tree(keyword: String): List<SysDeptIso> {
-        val map = sql.executeQuery(SysDept::class) {
-            where(
-                or(
-                    table.name `ilike?` keyword,
-                    table.children {
-                        name `ilike?` keyword
-                    }
-                ),
-                table.parentId.isNull()
-            )
-            select(table.fetchBy {
-                allScalarFields()
-                `children*`()
-            })
-        }
-        return map.convertTo()
-    }
+//    @GetMapping("/tree")
+//    fun tree(keyword: String): List<SysDeptIso> {
+//        val map = sql.executeQuery(SysDept::class) {
+//            where(
+//                or(
+//                    table.name `ilike?` keyword,
+//                    table.children {
+//                        name `ilike?` keyword
+//                    }
+//                ),
+//                table.parentId.isNull()
+//            )
+//            select(table.fetchBy {
+//                allScalarFields()
+//                `children*`()
+//            })
+//        }
+//        return map.convertTo()
+//    }
 
     @PostMapping("/save")
     fun save(@RequestBody dept: SysDeptIso): SysDeptIso {
