@@ -12,7 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import com.addzero.kmp.component.form.PasswordField
+import com.addzero.kmp.component.form.AddPasswordField
 import com.addzero.kmp.ui.infra.model.user_center.UserCenterViewModel
 import com.addzero.kmp.viewmodel.LoginViewModel
 import org.koin.compose.viewmodel.koinViewModel
@@ -117,18 +117,15 @@ fun SysUserCenterScreen() {
                     // 重置密码表单
                     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
 
-                        PasswordField(
+                        AddPasswordField(
                             value = viewModel.newPassword,
                             onValueChange = { viewModel.newPassword = it },
-                            label = "新密码",
-                            isError = viewModel.passwordErrorMsg != null
+                            label = "新密码"
                         )
-                        PasswordField(
+                        AddPasswordField(
                             value = viewModel.confirmPassword,
                             onValueChange = { viewModel.confirmPassword = it },
-                            label = "确认密码",
-                            isError = viewModel.passwordErrorMsg != null,
-                            supportingText = viewModel.passwordErrorMsg
+                            label = "确认密码"
                         )
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -155,8 +152,8 @@ fun SysUserCenterScreen() {
                     }
                 } else {
                     // 显示当前密码
-                    PasswordField(
-                        value = loginViewModel.currentToken?.password?:"" ,
+                    AddPasswordField(
+                        value = loginViewModel.currentToken?.password ?: "",
                         onValueChange = {},
                         enabled = false
                     )
