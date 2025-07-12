@@ -26,4 +26,16 @@ interface SysDictItemApi {
  */
     @POST("/sysDictItem/save")    suspend fun save(): kotlin.Unit
 
+/**
+ * tree
+ * HTTP方法: POST
+ * 路径: /sysDictItem/tree
+ * 参数:
+ *   - keyword: kotlin.String (RequestParam)
+ * 返回类型: kotlin.collections.List<com.addzero.kmp.isomorphic.SysDictItemIso>
+ */
+    @POST("/sysDictItem/tree")    suspend fun tree(
+        @Query("keyword") keyword: kotlin.String
+    ): kotlin.collections.List<com.addzero.kmp.isomorphic.SysDictItemIso>
+
 }

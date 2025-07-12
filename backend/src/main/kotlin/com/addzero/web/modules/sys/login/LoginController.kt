@@ -19,15 +19,16 @@ import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.babyfish.jimmer.sql.kt.ast.expression.or
 import org.springframework.web.bind.annotation.*
 
+@RequestMapping("/sys/login")
 @RestController
 class LoginController(private val sysUserService: SysUserService) : LoginApi {
 
-    @GetMapping("/sys/login/hasPermition")
+    @GetMapping("/hasPermition")
     override suspend fun hasPermition(@RequestParam code: String): Boolean {
         return true
     }
 
-    @PostMapping("/sys/login/signin")
+    @PostMapping("/signin")
     override suspend fun signin(@RequestBody loginRe: String): SignInStatus {
 
         val executeQuery = sql.executeQuery(SysUser::class) {
@@ -58,7 +59,7 @@ class LoginController(private val sysUserService: SysUserService) : LoginApi {
      * @param [userRegFormState]
      * @return [Boolean]
      */
-    @PostMapping("/sys/login/signup")
+    @PostMapping("/signup")
     override suspend fun signup(@RequestBody userRegFormState: SysUserIso): Boolean {
         val toJimmerEntity = userRegFormState.toJimmerEntity<SysUserIso, SysUser>()
 
@@ -70,7 +71,7 @@ class LoginController(private val sysUserService: SysUserService) : LoginApi {
 //        log.info(save.modifiedEntity)
     }
 
-    @PostMapping("/sys/login/signinSecond")
+    @PostMapping("/signinSecond")
     override suspend fun signinSecond(@RequestBody secondLoginDTO: SecondLoginDTO): SecondLoginResponse {
         val findByUserRegFormState = sysUserService.findByUserRegFormState(secondLoginDTO) ?: throw BizException("用户不存在")
         val password = secondLoginDTO.userRegFormState.password

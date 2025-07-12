@@ -7,7 +7,7 @@ import com.addzero.kmp.isomorphic.SysDictItemIso
 /**
  * Ktorfit接口 - 由KSP自动生成
  * 原始Controller: com.addzero.web.modules.sys_dict.controller.SysDictController
- * 基础路径: 
+ * 基础路径: /sysDict
  * 输出目录: /Users/zjarlin/AquaProjects/addzero/shared/src/commonMain/kotlin/com/addzero/kmp/api
  */
 interface SysDictApi {
@@ -15,60 +15,60 @@ interface SysDictApi {
 /**
  * querydict
  * HTTP方法: GET
- * 路径: /sys/dict/querydict
+ * 路径: /sysDict/querydict
  * 参数:
  *   - keyword: kotlin.String (RequestParam)
  * 返回类型: kotlin.collections.List<com.addzero.kmp.isomorphic.SysDictIso>
  */
-    @GET("/sys/dict/querydict")    suspend fun querydict(
+    @GET("/sysDict/querydict")    suspend fun querydict(
         @Query("keyword") keyword: kotlin.String
     ): kotlin.collections.List<com.addzero.kmp.isomorphic.SysDictIso>
 
 /**
  * saveDict
  * HTTP方法: POST
- * 路径: /sys/dict/saveDict
+ * 路径: /sysDict/saveDict
  * 参数:
  *   - vO: com.addzero.kmp.isomorphic.SysDictIso (RequestBody)
  * 返回类型: com.addzero.kmp.isomorphic.SysDictIso
  */
-    @POST("/sys/dict/saveDict")    suspend fun saveDict(
+    @POST("/sysDict/saveDict")    suspend fun saveDict(
         @Body vO: com.addzero.kmp.isomorphic.SysDictIso
     ): com.addzero.kmp.isomorphic.SysDictIso
 
 /**
  * saveDictItem
  * HTTP方法: POST
- * 路径: /sys/dict/saveDictItem
+ * 路径: /sysDict/saveDictItem
  * 参数:
  *   - impl: com.addzero.kmp.isomorphic.SysDictItemIso (RequestBody)
  * 返回类型: kotlin.Unit
  */
-    @POST("/sys/dict/saveDictItem")    suspend fun saveDictItem(
+    @POST("/sysDict/saveDictItem")    suspend fun saveDictItem(
         @Body impl: com.addzero.kmp.isomorphic.SysDictItemIso
     ): kotlin.Unit
 
 /**
  * deleteDictItem
  * HTTP方法: GET
- * 路径: /sys/dict/deleteDictItem
+ * 路径: /sysDict/deleteDictItem
  * 参数:
  *   - lng: kotlin.Long (RequestParam)
  * 返回类型: kotlin.Unit
  */
-    @GET("/sys/dict/deleteDictItem")    suspend fun deleteDictItem(
+    @GET("/sysDict/deleteDictItem")    suspend fun deleteDictItem(
         @Query("lng") lng: kotlin.Long
     ): kotlin.Unit
 
 /**
  * deleteDict
  * HTTP方法: GET
- * 路径: /sys/dict/deleteDict
+ * 路径: /sysDict/deleteDict
  * 参数:
  *   - lng: kotlin.Long (Query)
  * 返回类型: kotlin.Unit
  */
-    @GET("/sys/dict/deleteDict")    suspend fun deleteDict(
+    @GET("/sysDict/deleteDict")    suspend fun deleteDict(
         @Query("lng") lng: kotlin.Long
     ): kotlin.Unit
 

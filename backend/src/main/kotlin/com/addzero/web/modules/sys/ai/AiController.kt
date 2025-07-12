@@ -12,10 +12,12 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
+@RequestMapping("/ai")
 class AiController(
     private val deepSeekService: DeepSeekService,
     private val doubaoService: DoubaoService,
@@ -31,7 +33,7 @@ class AiController(
      * @param [promt]
      * @return [DeepSeekChatResponse]
      */
-    @GetMapping("/ai/ask")
+    @GetMapping("/ask")
      fun ask(promt: String): String {
 //        log.info("promt: $promt")
 //        val chat = deepSeekService.chat(promt).parseObject<DeepSeekChatResponse>()
@@ -64,14 +66,14 @@ class AiController(
         return balance
     }
 
-    @PostMapping("/ai/chatVision")
+    @PostMapping("/chatVision")
     fun 视觉(@RequestBody 视觉Request: 视觉Request): String? {
         val (promt, images) = 视觉Request
         val chatVision = doubaoService.chatVision(promt, images, DoubaoCommon.DoubaoVision.HIGH.detail)
         return chatVision
     }
 
-       @PostMapping("/ai/genVideo")
+       @PostMapping("/genVideo")
     fun genVideo(@RequestBody 视觉Request: 视觉Request): String? {
 
         val (promt, images) = 视觉Request
@@ -86,7 +88,7 @@ class AiController(
 
     }
 
-    @GetMapping("/ai/getAiVideoProgres")
+    @GetMapping("/getAiVideoProgres")
     fun getAiVideoProgres(taskkId: String): Unit {
 
         //查询视频生成任务信息

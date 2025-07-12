@@ -13,39 +13,30 @@ import org.babyfish.jimmer.sql.kt.ast.expression.or
 import org.springframework.web.bind.annotation.*
 
 @RestController
+@RequestMapping("/sysDept")
 class SysDeptController {
 
-    @GetMapping("/sysDept/tree")
+    @GetMapping("/tree")
     fun tree(keyword: String): List<SysDeptIso> {
         val map = sql.executeQuery(SysDept::class) {
-//            where(
-//                table.name `ilike?` keyword
-//            )
             where(
-
-
                 or(
                     table.name `ilike?` keyword,
                     table.children {
                         name `ilike?` keyword
                     }
-                )
-
-//                table.name `ilike?` keyword
-                ,
+                ),
                 table.parentId.isNull()
-
             )
             select(table.fetchBy {
                 allScalarFields()
                 `children*`()
-//                sysUsers {  }
             })
         }
         return map.convertTo()
     }
 
-    @PostMapping("/sysDept/save")
+    @PostMapping("/save")
     fun save(@RequestBody dept: SysDeptIso): SysDeptIso {
         val convertTo = dept.toJimmerEntity<SysDeptIso, SysDept>()
 
@@ -59,20 +50,20 @@ class SysDeptController {
     }
 
 
-    @GetMapping("/sysDept/get/{id}")
+    @GetMapping("/get/{id}")
     fun get(id: Long): SysDeptIso {
 
         return TODO("提供返回值")
     }
 
 
-    @DeleteMapping("/sysDept/delete")
+    @DeleteMapping("/delete")
     fun delete(id: Long) {
         TODO("Not yet implemented")
     }
 
 
-    @GetMapping("/sysDept/getAvailableUsers")
+    @GetMapping("/getAvailableUsers")
     fun getAvailableUsers(lng: Long): List<ISysUserImpl> {
         TODO("Not yet implemented")
     }

@@ -6,7 +6,7 @@ import com.addzero.kmp.isomorphic.SysDeptIso
 /**
  * Ktorfit接口 - 由KSP自动生成
  * 原始Controller: com.addzero.web.modules.sys_dept.controller.SysDeptController
- * 基础路径: 
+ * 基础路径: /sysDept
  * 输出目录: /Users/zjarlin/AquaProjects/addzero/shared/src/commonMain/kotlin/com/addzero/kmp/api
  */
 interface SysDeptApi {

@@ -11,16 +11,18 @@ import com.addzero.web.modules.sys_user.entity.SysUser
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 
 @RestController
+@RequestMapping("/sysUser")
 class SysUserCenterController(
     private val sysuserService: SysUserService,
     private val saTokenConfig: cn.dev33.satoken.config.SaTokenConfig
 ) : UserCenterApi {
 
-    @GetMapping("/sysUser/getCurrentUser")
+    @GetMapping("/getCurrentUser")
     override suspend fun getCurrentUser(): SysUserIso {
         // 方式2：从当前请求中获取token（更底层）
         val tokenValue = SaHolder.getRequest().getHeader(saTokenConfig.tokenName)
@@ -35,7 +37,7 @@ class SysUserCenterController(
         return convertTo
     }
 
-    @PostMapping("/sysUser/updatePassword")
+    @PostMapping("/updatePassword")
     override suspend fun updatePassword(@RequestBody newPassword: String): Boolean {
         val currentUser = sysuserService.getCurrentUser()
         val sysUser = SysUser(currentUser) {
@@ -47,7 +49,7 @@ class SysUserCenterController(
 //        return updateById.isModified
     }
 
-    @PostMapping("/sysUser/logout")
+    @PostMapping("/logout")
     override suspend fun logout(): Boolean {
         StpUtil.logout()
         return true

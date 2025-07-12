@@ -66,12 +66,13 @@ visible: Boolean,
     isRequired = true
 ) }
         ,
-            SysDeptFormProps.parent to { AddSingleDeptSelector(
-    selectedDept = state.value.parent,
-    onValueChange = { selectedDept ->
-        state.value = state.value.copy(parent = selectedDept)
+            SysDeptFormProps.parent to { AddTextField(
+    value = state.value.parent?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(parent = if (it.isBlank()) null else it.parseObjectByKtx())
     },
-    allowClear = true
+    label = "parent",
+    isRequired = false
 ) }
         ,
             SysDeptFormProps.children to { AddTextField(

@@ -150,11 +150,13 @@ column = "username",
     isRequired = false
 ) }
         ,
-            SysUserFormProps.depts to { AddDeptSelector(
-    selectedDepts = state.value.depts ?: emptyList(),
-    onValueChange = { selectedDepts ->
-        state.value = state.value.copy(depts = selectedDepts)
+            SysUserFormProps.depts to { AddTextField(
+    value = state.value.depts?.toString() ?: "",
+    onValueChange = {
+        state.value = state.value.copy(depts = if (it.isBlank()) emptyList() else it.parseObjectByKtx())
     },
+    label = "所属部门",
+    isRequired = true
 ) }
         ,
             SysUserFormProps.roles to { AddTextField(

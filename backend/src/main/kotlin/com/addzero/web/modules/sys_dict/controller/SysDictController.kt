@@ -23,10 +23,11 @@ import org.springframework.web.bind.annotation.*
 
 
 @RestController
+@RequestMapping("/sysDict")
 class SysDictController {
 
 
-    @GetMapping("/sys/dict/querydict")
+    @GetMapping("/querydict")
 
     fun querydict(@RequestParam keyword: String): List<SysDictIso> {
         val createQuery = sql.executeQuery(SysDict::class) {
@@ -61,7 +62,7 @@ class SysDictController {
 
 
 
-    @PostMapping("/sys/dict/saveDict")
+    @PostMapping("/saveDict")
     fun saveDict(@RequestBody vO: SysDictIso): SysDictIso {
         val toJimmerEntity = vO.toJimmerEntity<SysDictIso, SysDict>()
         val save = sql.save(toJimmerEntity)
@@ -70,19 +71,19 @@ class SysDictController {
     }
 
 
-    @PostMapping("/sys/dict/saveDictItem")
+    @PostMapping("/saveDictItem")
     fun saveDictItem(@RequestBody impl: SysDictItemIso) {
         val json = impl.toJimmerEntity<SysDictItemIso, SysDictItem>()
         sql.save(json)
     }
 
 
-    @GetMapping("/sys/dict/deleteDictItem")
+    @GetMapping("/deleteDictItem")
     fun deleteDictItem(@RequestParam lng: Long) {
         sql.deleteById(SysDictItem::class, lng)
     }
 
-    @GetMapping("/sys/dict/deleteDict")
+    @GetMapping("/deleteDict")
     fun deleteDict(lng: Long) {
         val deleteById = sql.deleteById(SysDict::class, lng)
 
