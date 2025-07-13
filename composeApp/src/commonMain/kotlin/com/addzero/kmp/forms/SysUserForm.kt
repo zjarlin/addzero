@@ -1,4 +1,6 @@
             package com.addzero.kmp.forms
+            import com.addzero.kmp.form_mapping.Iso2DataProvider.isoToDataProvider
+ 
             import androidx.compose.material.icons.Icons
             import androidx.compose.foundation.layout.*
             import androidx.compose.material3.*
@@ -150,22 +152,58 @@ column = "username",
     isRequired = false
 ) }
         ,
-            SysUserFormProps.depts to { AddTextField(
-    value = state.value.depts?.toString() ?: "",
-    onValueChange = {
-        state.value = state.value.copy(depts = if (it.isBlank()) emptyList() else it.parseObjectByKtx())
+            SysUserFormProps.depts to { val deptsDataProvider = remember {
+              val dataProviderFunction = isoToDataProvider[SysDeptIso::class] ?: throw IllegalStateException("未找到 List 的数据提供者，请在Iso2DataProvider注册")
+             dataProviderFunction 
+}
+
+AddGenericSelector(
+    value = state.value.depts,
+    onValueChange = { 
+        state.value = state.value.copy(depts = it as List<SysDeptIso>)
     },
-    label = "所属部门",
-    isRequired = true
+    dataProvider = {
+        
+           if (  deptsDataProvider == null) {
+    emptyList()
+} else {
+      deptsDataProvider().invoke("") as List<SysDeptIso>
+} 
+    },
+    getId = {it.id!! },
+    getLabel = { it.   name   },
+    
+    getChildren = { 
+it.children
+    },
+    allowClear = false,
 ) }
         ,
-            SysUserFormProps.roles to { AddTextField(
-    value = state.value.roles?.toString() ?: "",
-    onValueChange = {
-        state.value = state.value.copy(roles = if (it.isBlank()) emptyList() else it.parseObjectByKtx())
+            SysUserFormProps.roles to { val rolesDataProvider = remember {
+              val dataProviderFunction = isoToDataProvider[SysRoleIso::class] ?: throw IllegalStateException("未找到 List 的数据提供者，请在Iso2DataProvider注册")
+             dataProviderFunction 
+}
+
+AddGenericSelector(
+    value = state.value.roles,
+    onValueChange = { 
+        state.value = state.value.copy(roles = it as List<SysRoleIso>)
     },
-    label = "角色列表",
-    isRequired = true
+    dataProvider = {
+        
+           if (  rolesDataProvider == null) {
+    emptyList()
+} else {
+      rolesDataProvider().invoke("") as List<SysRoleIso>
+} 
+    },
+    getId = {it.id!! },
+    getLabel = { it.   roleName   },
+    
+    getChildren = { 
+emptyList()
+    },
+    allowClear = false,
 ) }
          
  ) 

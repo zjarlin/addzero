@@ -44,15 +44,46 @@ object GenericSingleStrategy : FormStrategy {
         return basicTypes.any { typeName.contains(it) }
     }
 
+    /**
+     * 在类型的属性中查找带有 @LabelProp 注解的属性
+     */
+    private fun findLabelPropInType(classDeclaration: KSClassDeclaration): String {
+        try {
+            // 获取类型的所有属性
+            val properties = classDeclaration.getAllProperties()
+
+            // 查找带有 @LabelProp 注解的属性
+            val labelProperty = properties.find { property ->
+                property.annotations.any { annotation ->
+                    annotation.shortName.asString() == "LabelProp"
+                }
+            }
+
+            if (labelProperty != null) {
+                val labelFieldName = labelProperty.simpleName.asString()
+                println("找到 @LabelProp 标记的属性: ${classDeclaration.simpleName.asString()}.${labelFieldName}")
+                return labelFieldName
+            } else {
+                println("在 ${classDeclaration.simpleName.asString()} 中未找到 @LabelProp 标记的属性，使用默认值 'name'")
+                return "name"  // 默认使用 name 字段
+            }
+        } catch (e: Exception) {
+            println("查找 @LabelProp 属性时发生错误: ${e.message}")
+            return "name"  // 出错时使用默认值
+        }
+    }
+
     override fun genCode(prop: KSPropertyDeclaration): String {
         val name = prop.name
         val label = prop.label
         val isRequired = prop.isRequired
         val defaultValue = prop.defaultValue
         val typeName = prop.typeName.replace("?", "").trim()
-        val argFirstValue = prop.getAnno("LabelProp").getArgFirstValue()
         val declaration = prop.type.resolve().declaration
         val typeOrGenericClassDeclaration = declaration as KSClassDeclaration
+
+        // 新逻辑：查找字段类型的属性中带有 @LabelProp 注解的属性
+        val argFirstValue = findLabelPropInType(typeOrGenericClassDeclaration)
         return genCodeWhenSingle(typeOrGenericClassDeclaration, typeName, name, argFirstValue, isRequired,true)
     }
 

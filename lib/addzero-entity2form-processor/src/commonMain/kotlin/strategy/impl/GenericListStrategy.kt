@@ -31,7 +31,13 @@ object GenericListStrategy : FormStrategy {
         val genericType = prop.type.resolve().arguments.firstOrNull()?.type?.resolve()
         val genericDeclaration = genericType?.declaration
 
+        println("GenericListStrategy 调试: ${prop.simpleName.asString()}")
+        println("  - 是否为集合类型: $isCollectionType")
+        println("  - 泛型类型: ${genericType?.toString()}")
+        println("  - 泛型声明: ${genericDeclaration?.simpleName?.asString()}")
+
         if (genericDeclaration == null) {
+            println("  - 泛型声明为空，不支持")
             return false
         }
 
@@ -41,7 +47,9 @@ object GenericListStrategy : FormStrategy {
         // 检查泛型类型是否为枚举
         val isEnumType = isEnum(genericDeclaration)
 
-        println("GenericListStrategy: ${prop.name}, genericType: ${genericDeclaration.simpleName.asString()}, isJimmerEntity: $isJimmerEntityType, isEnum: $isEnumType")
+        println("  - 是否为 Jimmer 实体: $isJimmerEntityType")
+        println("  - 是否为枚举: $isEnumType")
+        println("  - 最终支持: ${isJimmerEntityType && !isEnumType}")
 
         // 只支持 Jimmer 实体类型的集合（排除枚举类型）
         return isJimmerEntityType && !isEnumType
@@ -53,7 +61,13 @@ object GenericListStrategy : FormStrategy {
         val isRequired = prop.isRequired
         val defaultValue = prop.defaultValue
         val typeName = prop.typeName
-        val typeOrGenericClassDeclaration = prop.firstTypeArgumentKSClassDeclaration?:throw IllegalStateException("未找到${name}集合动态表单的泛型类型")
+        val typeOrGenericClassDeclaration = prop.firstTypeArgumentKSClassDeclaration
+        if (typeOrGenericClassDeclaration == null) {
+            println("GenericListStrategy.genCode 错误: 无法获取 ${name} 的泛型类型")
+            println("  - 属性类型: ${prop.type.resolve()}")
+            println("  - 类型参数: ${prop.type.resolve().arguments}")
+            throw IllegalStateException("未找到${name}集合动态表单的泛型类型，属性类型: ${prop.type.resolve()}")
+        }
 
         // 提取泛型类型
 //        val genericType = extractGenericType(typeName)
@@ -62,11 +76,41 @@ object GenericListStrategy : FormStrategy {
         val isSet = typeName.contains("Set")
         val collectionType = if (isSet) "toSet()" else ""
 
-        val argFirstValue = prop.getAnno("LabelProp").getArgFirstValue()
+        // 新逻辑：查找字段类型的属性中带有 @LabelProp 注解的属性
+        val argFirstValue = findLabelPropInType(typeOrGenericClassDeclaration)
 
 
         return genCodeWhenSingle(typeOrGenericClassDeclaration, typeName, name, argFirstValue, isRequired,false)
 
+    }
+
+    /**
+     * 在类型的属性中查找带有 @LabelProp 注解的属性
+     */
+    private fun findLabelPropInType(classDeclaration: KSClassDeclaration): String {
+        try {
+            // 获取类型的所有属性
+            val properties = classDeclaration.getAllProperties()
+
+            // 查找带有 @LabelProp 注解的属性
+            val labelProperty = properties.find { property ->
+                property.annotations.any { annotation ->
+                    annotation.shortName.asString() == "LabelProp"
+                }
+            }
+
+            if (labelProperty != null) {
+                val labelFieldName = labelProperty.simpleName.asString()
+                println("找到 @LabelProp 标记的属性: ${classDeclaration.simpleName.asString()}.${labelFieldName}")
+                return labelFieldName
+            } else {
+                println("在 ${classDeclaration.simpleName.asString()} 中未找到 @LabelProp 标记的属性，使用默认值 'name'")
+                return "name"  // 默认使用 name 字段
+            }
+        } catch (e: Exception) {
+            println("查找 @LabelProp 属性时发生错误: ${e.message}")
+            return "name"  // 出错时使用默认值
+        }
     }
 
     /**
@@ -100,8 +144,9 @@ fun genCodeWhenSingle(bool: KSClassDeclaration, typeName: String, name: String, 
         "emptyList()"
     }
 
+    val simpleName = bool.simpleName.asString()
 
-    val isoTypeName = """${typeName}Iso"""
+    val isoTypeName = """${simpleName}Iso"""
 
     val whenSingleFunName =
         if (isSingle) {
@@ -121,6 +166,7 @@ fun genCodeWhenSingle(bool: KSClassDeclaration, typeName: String, name: String, 
     val trimIndent = """
                 val ${name}DataProvider = remember {
                               val dataProviderFunction = isoToDataProvider[$isoTypeName::class] ?: throw IllegalStateException("未找到 $typeName 的数据提供者，请在Iso2DataProvider注册")
+                             dataProviderFunction 
                 }
     
                 $whenSingleFunName(

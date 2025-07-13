@@ -1,4 +1,6 @@
             package com.addzero.kmp.forms
+            import com.addzero.kmp.form_mapping.Iso2DataProvider.isoToDataProvider
+ 
             import androidx.compose.material.icons.Icons
             import androidx.compose.foundation.layout.*
             import androidx.compose.material3.*
@@ -102,13 +104,31 @@ Text("是否为系统角色")
     isRequired = true
 ) }
         ,
-            SysRoleFormProps.sysUsers to { AddTextField(
-    value = state.value.sysUsers?.toString() ?: "",
-    onValueChange = {
-        state.value = state.value.copy(sysUsers = if (it.isBlank()) emptyList() else it.parseObjectByKtx())
+            SysRoleFormProps.sysUsers to { val sysUsersDataProvider = remember {
+              val dataProviderFunction = isoToDataProvider[SysUserIso::class] ?: throw IllegalStateException("未找到 List 的数据提供者，请在Iso2DataProvider注册")
+             dataProviderFunction 
+}
+
+AddGenericSelector(
+    value = state.value.sysUsers,
+    onValueChange = { 
+        state.value = state.value.copy(sysUsers = it as List<SysUserIso>)
     },
-    label = "sysUsers",
-    isRequired = true
+    dataProvider = {
+        
+           if (  sysUsersDataProvider == null) {
+    emptyList()
+} else {
+      sysUsersDataProvider().invoke("") as List<SysUserIso>
+} 
+    },
+    getId = {it.id!! },
+    getLabel = { it.   username   },
+    
+    getChildren = { 
+emptyList()
+    },
+    allowClear = false,
 ) }
          
  ) 

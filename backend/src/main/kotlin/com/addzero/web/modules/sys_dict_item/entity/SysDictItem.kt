@@ -1,5 +1,6 @@
 package com.addzero.web.modules.sys_dict_item.entity
 
+import com.addzero.kmp.entity2form.annotation.LabelProp
 import com.addzero.web.infra.jimmer.base.baseentity.BaseEntity
 import com.addzero.web.modules.sys_dict.entity.SysDict
 import org.babyfish.jimmer.sql.Column
@@ -32,6 +33,7 @@ interface SysDictItem : BaseEntity {
      */
     @Column(name = "item_text")
     @Key
+    @LabelProp
     val itemText: String
 
     /**

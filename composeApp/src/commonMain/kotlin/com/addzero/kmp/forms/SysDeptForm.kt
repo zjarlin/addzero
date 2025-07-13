@@ -1,4 +1,6 @@
             package com.addzero.kmp.forms
+            import com.addzero.kmp.form_mapping.Iso2DataProvider.isoToDataProvider
+ 
             import androidx.compose.material.icons.Icons
             import androidx.compose.foundation.layout.*
             import androidx.compose.material3.*
@@ -66,31 +68,85 @@ visible: Boolean,
     isRequired = true
 ) }
         ,
-            SysDeptFormProps.parent to { AddTextField(
-    value = state.value.parent?.toString() ?: "",
-    onValueChange = {
-        state.value = state.value.copy(parent = if (it.isBlank()) null else it.parseObjectByKtx())
+            SysDeptFormProps.parent to { val parentDataProvider = remember {
+              val dataProviderFunction = isoToDataProvider[SysDeptIso::class] ?: throw IllegalStateException("未找到 SysDept 的数据提供者，请在Iso2DataProvider注册")
+             dataProviderFunction 
+}
+
+AddGenericSingleSelector(
+    value = state.value.parent,
+    onValueChange = { 
+        state.value = state.value.copy(parent = it as SysDeptIso)
     },
-    label = "parent",
-    isRequired = false
+    dataProvider = {
+        
+           if (  parentDataProvider == null) {
+    emptyList()
+} else {
+      parentDataProvider().invoke("") as List<SysDeptIso>
+} 
+    },
+    getId = {it.id!! },
+    getLabel = { it.   name   },
+    
+    getChildren = { 
+it.children
+    },
+    allowClear = true,
 ) }
         ,
-            SysDeptFormProps.children to { AddTextField(
-    value = state.value.children?.toString() ?: "",
-    onValueChange = {
-        state.value = state.value.copy(children = if (it.isBlank()) emptyList() else it.parseObjectByKtx())
+            SysDeptFormProps.children to { val childrenDataProvider = remember {
+              val dataProviderFunction = isoToDataProvider[SysDeptIso::class] ?: throw IllegalStateException("未找到 List 的数据提供者，请在Iso2DataProvider注册")
+             dataProviderFunction 
+}
+
+AddGenericSelector(
+    value = state.value.children,
+    onValueChange = { 
+        state.value = state.value.copy(children = it as List<SysDeptIso>)
     },
-    label = "children",
-    isRequired = true
+    dataProvider = {
+        
+           if (  childrenDataProvider == null) {
+    emptyList()
+} else {
+      childrenDataProvider().invoke("") as List<SysDeptIso>
+} 
+    },
+    getId = {it.id!! },
+    getLabel = { it.   name   },
+    
+    getChildren = { 
+it.children
+    },
+    allowClear = false,
 ) }
         ,
-            SysDeptFormProps.sysUsers to { AddTextField(
-    value = state.value.sysUsers?.toString() ?: "",
-    onValueChange = {
-        state.value = state.value.copy(sysUsers = if (it.isBlank()) emptyList() else it.parseObjectByKtx())
+            SysDeptFormProps.sysUsers to { val sysUsersDataProvider = remember {
+              val dataProviderFunction = isoToDataProvider[SysUserIso::class] ?: throw IllegalStateException("未找到 List 的数据提供者，请在Iso2DataProvider注册")
+             dataProviderFunction 
+}
+
+AddGenericSelector(
+    value = state.value.sysUsers,
+    onValueChange = { 
+        state.value = state.value.copy(sysUsers = it as List<SysUserIso>)
     },
-    label = "部门用户",
-    isRequired = true
+    dataProvider = {
+        
+           if (  sysUsersDataProvider == null) {
+    emptyList()
+} else {
+      sysUsersDataProvider().invoke("") as List<SysUserIso>
+} 
+    },
+    getId = {it.id!! },
+    getLabel = { it.   username   },
+    
+    getChildren = { 
+emptyList()
+    },
+    allowClear = false,
 ) }
          
  ) 

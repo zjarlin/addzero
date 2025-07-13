@@ -1,5 +1,6 @@
 package com.addzero.web.modules.sys_role.entity
 
+import com.addzero.kmp.entity2form.annotation.LabelProp
 import com.addzero.kmp.generated.enums.EnumSysToggle
 import com.addzero.web.infra.jimmer.base.baseentity.BaseEntity
 import com.addzero.web.modules.sys_user.entity.SysUser
@@ -25,6 +26,7 @@ interface SysRole : BaseEntity {
     /**
      * 角色名称
      */
+    @LabelProp
     val roleName: String
 
     /**

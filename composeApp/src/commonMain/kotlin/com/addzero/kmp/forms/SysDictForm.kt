@@ -1,4 +1,6 @@
             package com.addzero.kmp.forms
+            import com.addzero.kmp.form_mapping.Iso2DataProvider.isoToDataProvider
+ 
             import androidx.compose.material.icons.Icons
             import androidx.compose.foundation.layout.*
             import androidx.compose.material3.*
@@ -84,13 +86,31 @@ visible: Boolean,
     isRequired = false
 ) }
         ,
-            SysDictFormProps.sysDictItems to { AddTextField(
-    value = state.value.sysDictItems?.toString() ?: "",
-    onValueChange = {
-        state.value = state.value.copy(sysDictItems = if (it.isBlank()) emptyList() else it.parseObjectByKtx())
+            SysDictFormProps.sysDictItems to { val sysDictItemsDataProvider = remember {
+              val dataProviderFunction = isoToDataProvider[SysDictItemIso::class] ?: throw IllegalStateException("未找到 List 的数据提供者，请在Iso2DataProvider注册")
+             dataProviderFunction 
+}
+
+AddGenericSelector(
+    value = state.value.sysDictItems,
+    onValueChange = { 
+        state.value = state.value.copy(sysDictItems = it as List<SysDictItemIso>)
     },
-    label = "sysDictItems",
-    isRequired = true
+    dataProvider = {
+        
+           if (  sysDictItemsDataProvider == null) {
+    emptyList()
+} else {
+      sysDictItemsDataProvider().invoke("") as List<SysDictItemIso>
+} 
+    },
+    getId = {it.id!! },
+    getLabel = { it.   itemText   },
+    
+    getChildren = { 
+emptyList()
+    },
+    allowClear = false,
 ) }
          
  ) 

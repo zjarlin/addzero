@@ -1,4 +1,6 @@
             package com.addzero.kmp.forms
+            import com.addzero.kmp.form_mapping.Iso2DataProvider.isoToDataProvider
+ 
             import androidx.compose.material.icons.Icons
             import androidx.compose.foundation.layout.*
             import androidx.compose.material3.*
@@ -102,13 +104,31 @@ visible: Boolean,
     isRequired = false
 ) }
         ,
-            SysDictItemFormProps.sysDict to { AddTextField(
-    value = state.value.sysDict?.toString() ?: "",
-    onValueChange = {
-        state.value = state.value.copy(sysDict = if (it.isBlank()) null else it.parseObjectByKtx())
+            SysDictItemFormProps.sysDict to { val sysDictDataProvider = remember {
+              val dataProviderFunction = isoToDataProvider[SysDictIso::class] ?: throw IllegalStateException("未找到 SysDict 的数据提供者，请在Iso2DataProvider注册")
+             dataProviderFunction 
+}
+
+AddGenericSingleSelector(
+    value = state.value.sysDict,
+    onValueChange = { 
+        state.value = state.value.copy(sysDict = it as SysDictIso)
     },
-    label = "sysDict",
-    isRequired = false
+    dataProvider = {
+        
+           if (  sysDictDataProvider == null) {
+    emptyList()
+} else {
+      sysDictDataProvider().invoke("") as List<SysDictIso>
+} 
+    },
+    getId = {it.id!! },
+    getLabel = { it.   dictName   },
+    
+    getChildren = { 
+emptyList()
+    },
+    allowClear = true,
 ) }
          
  ) 

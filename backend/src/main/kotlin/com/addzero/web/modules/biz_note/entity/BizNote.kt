@@ -1,5 +1,6 @@
 package com.addzero.web.modules.biz_note.entity
 
+import com.addzero.kmp.entity2form.annotation.LabelProp
 import com.addzero.web.infra.jimmer.base.baseentity.BaseEntity
 import com.addzero.web.modules.biz_tag.entity.BizTag
 import org.babyfish.jimmer.Formula
@@ -42,6 +43,7 @@ interface BizNote : BaseEntity {
      *
      */
     @Key
+    @LabelProp
     val title: String
 
     /**

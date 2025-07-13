@@ -1,5 +1,6 @@
 package com.addzero.web.modules.sys_dict.entity
 
+import com.addzero.kmp.entity2form.annotation.LabelProp
 import com.addzero.web.infra.jimmer.base.BaseDeletedEntity
 import com.addzero.web.infra.jimmer.base.baseentity.BaseEntity
 import com.addzero.web.modules.sys_dict_item.entity.SysDictItem
@@ -24,6 +25,7 @@ interface SysDict : BaseEntity, BaseDeletedEntity {
     /**
      *  字典名称
      */
+    @LabelProp
     @Column(name = "dict_name")
     val dictName: String
 
@@ -38,6 +40,7 @@ interface SysDict : BaseEntity, BaseDeletedEntity {
      *  描述
      */
     @Key(group = "description")
+    @LabelProp
     val description: String?
 
 

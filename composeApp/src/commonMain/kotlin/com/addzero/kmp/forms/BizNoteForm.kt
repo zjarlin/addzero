@@ -1,4 +1,6 @@
             package com.addzero.kmp.forms
+            import com.addzero.kmp.form_mapping.Iso2DataProvider.isoToDataProvider
+ 
             import androidx.compose.material.icons.Icons
             import androidx.compose.foundation.layout.*
             import androidx.compose.material3.*
@@ -75,22 +77,58 @@ Text("leafFlag")
 }
      }
         ,
-            BizNoteFormProps.children to { AddTextField(
-    value = state.value.children?.toString() ?: "",
-    onValueChange = {
-        state.value = state.value.copy(children = if (it.isBlank()) emptyList() else it.parseObjectByKtx())
+            BizNoteFormProps.children to { val childrenDataProvider = remember {
+              val dataProviderFunction = isoToDataProvider[BizNoteIso::class] ?: throw IllegalStateException("未找到 List 的数据提供者，请在Iso2DataProvider注册")
+             dataProviderFunction 
+}
+
+AddGenericSelector(
+    value = state.value.children,
+    onValueChange = { 
+        state.value = state.value.copy(children = it as List<BizNoteIso>)
     },
-    label = "笔记的子节点列表，表示当前笔记的子笔记。通过{@linkOneToMany}注解与父笔记关联。@return子笔记列表",
-    isRequired = true
+    dataProvider = {
+        
+           if (  childrenDataProvider == null) {
+    emptyList()
+} else {
+      childrenDataProvider().invoke("") as List<BizNoteIso>
+} 
+    },
+    getId = {it.id!! },
+    getLabel = { it.   title   },
+    
+    getChildren = { 
+it.children
+    },
+    allowClear = false,
 ) }
         ,
-            BizNoteFormProps.parent to { AddTextField(
-    value = state.value.parent?.toString() ?: "",
-    onValueChange = {
-        state.value = state.value.copy(parent = if (it.isBlank()) null else it.parseObjectByKtx())
+            BizNoteFormProps.parent to { val parentDataProvider = remember {
+              val dataProviderFunction = isoToDataProvider[BizNoteIso::class] ?: throw IllegalStateException("未找到 BizNote 的数据提供者，请在Iso2DataProvider注册")
+             dataProviderFunction 
+}
+
+AddGenericSingleSelector(
+    value = state.value.parent,
+    onValueChange = { 
+        state.value = state.value.copy(parent = it as BizNoteIso)
     },
-    label = "笔记的父节点，表示当前笔记的父笔记。通过{@linkManyToOne}注解与子笔记关联。@return父笔记，如果没有父笔记则返回null",
-    isRequired = false
+    dataProvider = {
+        
+           if (  parentDataProvider == null) {
+    emptyList()
+} else {
+      parentDataProvider().invoke("") as List<BizNoteIso>
+} 
+    },
+    getId = {it.id!! },
+    getLabel = { it.   title   },
+    
+    getChildren = { 
+it.children
+    },
+    allowClear = true,
 ) }
         ,
             BizNoteFormProps.title to { AddTextField(
@@ -120,13 +158,31 @@ Text("leafFlag")
     isRequired = false
 ) }
         ,
-            BizNoteFormProps.tags to { AddTextField(
-    value = state.value.tags?.toString() ?: "",
-    onValueChange = {
-        state.value = state.value.copy(tags = if (it.isBlank()) emptyList() else it.parseObjectByKtx())
+            BizNoteFormProps.tags to { val tagsDataProvider = remember {
+              val dataProviderFunction = isoToDataProvider[BizTagIso::class] ?: throw IllegalStateException("未找到 List 的数据提供者，请在Iso2DataProvider注册")
+             dataProviderFunction 
+}
+
+AddGenericSelector(
+    value = state.value.tags,
+    onValueChange = { 
+        state.value = state.value.copy(tags = it as List<BizTagIso>)
     },
-    label = "笔记的标签列表，用于分类和检索。通过中间表实现与标签的多对多关系@return标签列表",
-    isRequired = true
+    dataProvider = {
+        
+           if (  tagsDataProvider == null) {
+    emptyList()
+} else {
+      tagsDataProvider().invoke("") as List<BizTagIso>
+} 
+    },
+    getId = {it.id!! },
+    getLabel = { it.   name   },
+    
+    getChildren = { 
+emptyList()
+    },
+    allowClear = false,
 ) }
         ,
             BizNoteFormProps.path to { AddTextField(

@@ -6,10 +6,17 @@ import java.io.File
 
 val KSPropertyDeclaration.firstTypeArgumentKSClassDeclaration: KSClassDeclaration?
     get() {
-        val firstTypeArgument = this.type.element?.typeArguments?.firstOrNull()
-        val firstType: KSType? = (firstTypeArgument as? KSTypeReference)?.resolve()
-        val firstClassDeclaration: KSClassDeclaration? = firstType?.declaration as? KSClassDeclaration
-        return firstClassDeclaration
+        return try {
+            // 正确的方式：通过 resolve() 获取类型参数
+            val resolvedType = this.type.resolve()
+            val firstTypeArgument = resolvedType.arguments.firstOrNull()
+            val firstType: KSType? = firstTypeArgument?.type?.resolve()
+            val firstClassDeclaration: KSClassDeclaration? = firstType?.declaration as? KSClassDeclaration
+            firstClassDeclaration
+        } catch (e: Exception) {
+            println("获取泛型类型失败: ${this.simpleName.asString()}, 错误: ${e.message}")
+            null
+        }
     }
 
 

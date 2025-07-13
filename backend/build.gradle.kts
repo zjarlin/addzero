@@ -43,6 +43,8 @@ dependencies {
     ksp(projects.lib.addzeroJdbc2controllerProcessor)
     //内部使用:后台实体转composeApp form
     ksp(projects.lib.addzeroEntity2formProcessor)
+    //实体表单核心注解
+    implementation(projects.lib.addzeroEntity2formCore)
     //内部使用:共享业务逻辑
     implementation(projects.shared)
 

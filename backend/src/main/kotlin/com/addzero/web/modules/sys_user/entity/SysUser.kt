@@ -1,5 +1,6 @@
 package com.addzero.web.modules.sys_user.entity
 
+import com.addzero.kmp.entity2form.annotation.LabelProp
 import com.addzero.kmp.generated.enums.EnumSysGender
 import com.addzero.web.infra.jimmer.SnowflakeIdGenerator
 import com.addzero.web.infra.jimmer.base.basedatetime.BaseDateTime
@@ -75,6 +76,7 @@ interface SysUser : BaseDateTime {
      * 用户名
      */
     @Key(group = "username")
+    @LabelProp
     val username: String
 
     /**

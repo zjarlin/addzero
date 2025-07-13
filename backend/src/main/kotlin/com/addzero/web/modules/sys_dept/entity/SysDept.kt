@@ -1,5 +1,6 @@
 package com.addzero.web.modules.sys_dept.entity
 
+import com.addzero.kmp.entity2form.annotation.LabelProp
 import com.addzero.web.infra.jimmer.base.baseentity.BaseEntity
 import com.addzero.web.modules.sys_user.entity.SysUser
 import org.babyfish.jimmer.sql.*
@@ -10,6 +11,7 @@ interface SysDept : BaseEntity {
 
     /**部门名称  */
     @Key
+    @LabelProp
     val name: String
 
     @ManyToOne

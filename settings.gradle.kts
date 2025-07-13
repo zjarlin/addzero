@@ -73,5 +73,5 @@ findProject(":lib:addzero-compose-props-processor")?.name = "addzero-compose-pro
 
 //include("lib:addzero-network-starter")
 
-//include("lib:addzero-entity2form-core")
+include("lib:addzero-entity2form-core")
 //findProject(":lib:addzero-entity2form-core")?.name = "addzero-entity2form-core"
