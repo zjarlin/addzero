@@ -26,4 +26,16 @@ interface BizDotfilesApi {
  */
     @POST("/bizDotfiles/save")    suspend fun save(): kotlin.Unit
 
+/**
+ * tree
+ * HTTP方法: GET
+ * 路径: /bizDotfiles/tree
+ * 参数:
+ *   - keyword: kotlin.String (RequestParam)
+ * 返回类型: kotlin.collections.List<com.addzero.kmp.isomorphic.BizDotfilesIso>
+ */
+    @GET("/bizDotfiles/tree")    suspend fun tree(
+        @Query("keyword") keyword: kotlin.String
+    ): kotlin.collections.List<com.addzero.kmp.isomorphic.BizDotfilesIso>
+
 }

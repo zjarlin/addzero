@@ -3,19 +3,15 @@ package com.addzero.web.modules.sys_dept.controller
 import com.addzero.common.consts.sql
 import com.addzero.kmp.isomorphic.SysDeptIso
 import com.addzero.kmp.jdbc.meta.public.table.impl.ISysUserImpl
-import com.addzero.web.infra.jackson.convertTo
 import com.addzero.web.infra.jimmer.base.BaseTreeApi
 import com.addzero.web.infra.jimmer.toJimmerEntity
 import com.addzero.web.modules.sys_dept.entity.*
 import org.babyfish.jimmer.kt.isLoaded
-import org.babyfish.jimmer.sql.kt.ast.expression.`ilike?`
-import org.babyfish.jimmer.sql.kt.ast.expression.isNull
-import org.babyfish.jimmer.sql.kt.ast.expression.or
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/sysDept")
-class SysDeptController : BaseTreeApi<SysDept, SysDeptIso>{
+class SysDeptController : BaseTreeApi<SysDept>{
 
 //    @GetMapping("/tree")
 //    fun tree(keyword: String): List<SysDeptIso> {

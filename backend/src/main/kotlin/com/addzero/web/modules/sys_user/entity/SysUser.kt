@@ -70,6 +70,7 @@ interface SysUser : BaseDateTime {
      * 电子邮箱
      */
     @Key(group = "email")
+    @LabelProp
     val email: String
 
     /**

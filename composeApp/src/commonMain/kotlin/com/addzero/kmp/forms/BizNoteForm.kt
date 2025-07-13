@@ -78,7 +78,7 @@ Text("leafFlag")
      }
         ,
             BizNoteFormProps.children to { val childrenDataProvider = remember {
-              val dataProviderFunction = isoToDataProvider[BizNoteIso::class] ?: throw IllegalStateException("未找到 List 的数据提供者，请在Iso2DataProvider注册")
+              val dataProviderFunction = isoToDataProvider[BizNoteIso::class] ?: throw IllegalStateException("未找到 val children: List<BizNote> 的数据提供者，请在Iso2DataProvider注册")
              dataProviderFunction 
 }
 
@@ -101,11 +101,12 @@ AddGenericSelector(
     getChildren = { 
 it.children
     },
+       placeholder = "请选择"+"笔记的子节点列表，表示当前笔记的子笔记。通过{@linkOneToMany}注解与父笔记关联。@return子笔记列表", 
     allowClear = false,
 ) }
         ,
             BizNoteFormProps.parent to { val parentDataProvider = remember {
-              val dataProviderFunction = isoToDataProvider[BizNoteIso::class] ?: throw IllegalStateException("未找到 BizNote 的数据提供者，请在Iso2DataProvider注册")
+              val dataProviderFunction = isoToDataProvider[BizNoteIso::class] ?: throw IllegalStateException("未找到 val parent: BizNote 的数据提供者，请在Iso2DataProvider注册")
              dataProviderFunction 
 }
 
@@ -128,6 +129,7 @@ AddGenericSingleSelector(
     getChildren = { 
 it.children
     },
+       placeholder = "请选择"+"笔记的父节点，表示当前笔记的父笔记。通过{@linkManyToOne}注解与子笔记关联。@return父笔记，如果没有父笔记则返回null", 
     allowClear = true,
 ) }
         ,
@@ -159,7 +161,7 @@ it.children
 ) }
         ,
             BizNoteFormProps.tags to { val tagsDataProvider = remember {
-              val dataProviderFunction = isoToDataProvider[BizTagIso::class] ?: throw IllegalStateException("未找到 List 的数据提供者，请在Iso2DataProvider注册")
+              val dataProviderFunction = isoToDataProvider[BizTagIso::class] ?: throw IllegalStateException("未找到 val tags: List<BizTag> 的数据提供者，请在Iso2DataProvider注册")
              dataProviderFunction 
 }
 
@@ -182,6 +184,7 @@ AddGenericSelector(
     getChildren = { 
 emptyList()
     },
+       placeholder = "请选择"+"笔记的标签列表，用于分类和检索。通过中间表实现与标签的多对多关系@return标签列表", 
     allowClear = false,
 ) }
         ,

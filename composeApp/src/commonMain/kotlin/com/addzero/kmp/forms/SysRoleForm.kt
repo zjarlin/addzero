@@ -105,7 +105,7 @@ Text("是否为系统角色")
 ) }
         ,
             SysRoleFormProps.sysUsers to { val sysUsersDataProvider = remember {
-              val dataProviderFunction = isoToDataProvider[SysUserIso::class] ?: throw IllegalStateException("未找到 List 的数据提供者，请在Iso2DataProvider注册")
+              val dataProviderFunction = isoToDataProvider[SysUserIso::class] ?: throw IllegalStateException("未找到 val sysUsers: List<SysUser> 的数据提供者，请在Iso2DataProvider注册")
              dataProviderFunction 
 }
 
@@ -123,11 +123,12 @@ AddGenericSelector(
 } 
     },
     getId = {it.id!! },
-    getLabel = { it.   username   },
+    getLabel = { it.   email   },
     
     getChildren = { 
 emptyList()
     },
+       placeholder = "请选择"+"sysUsers", 
     allowClear = false,
 ) }
          

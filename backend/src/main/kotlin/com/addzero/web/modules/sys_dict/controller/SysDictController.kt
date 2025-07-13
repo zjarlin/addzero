@@ -4,6 +4,7 @@ import com.addzero.common.consts.sql
 import com.addzero.kmp.isomorphic.SysDictIso
 import com.addzero.kmp.isomorphic.SysDictItemIso
 import com.addzero.web.infra.jackson.convertTo
+import com.addzero.web.infra.jimmer.base.BaseTreeApi
 import com.addzero.web.infra.jimmer.toJimmerEntity
 import com.addzero.web.modules.sys_dict.entity.SysDict
 import com.addzero.web.modules.sys_dict.entity.dictName
@@ -24,7 +25,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/sysDict")
-class SysDictController {
+class SysDictController: BaseTreeApi<SysDict> {
 
 
     @GetMapping("/querydict")

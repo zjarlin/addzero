@@ -80,28 +80,41 @@ object GenericListStrategy : FormStrategy {
         val argFirstValue = findLabelPropInType(typeOrGenericClassDeclaration)
 
 
-        return genCodeWhenSingle(typeOrGenericClassDeclaration, typeName, name, argFirstValue, isRequired,false)
+        return genCodeWhenSingle(typeOrGenericClassDeclaration, typeName, name, argFirstValue, isRequired, false, label)
 
     }
 
     /**
      * 在类型的属性中查找带有 @LabelProp 注解的属性
+     * 如果有多个 @LabelProp 属性，返回第一个非空的那个
      */
     private fun findLabelPropInType(classDeclaration: KSClassDeclaration): String {
         try {
             // 获取类型的所有属性
             val properties = classDeclaration.getAllProperties()
 
-            // 查找带有 @LabelProp 注解的属性
-            val labelProperty = properties.find { property ->
+            // 查找所有带有 @LabelProp 注解的属性
+            val labelProperties = properties.filter { property ->
                 property.annotations.any { annotation ->
                     annotation.shortName.asString() == "LabelProp"
                 }
-            }
+            }.toList()
 
-            if (labelProperty != null) {
-                val labelFieldName = labelProperty.simpleName.asString()
-                println("找到 @LabelProp 标记的属性: ${classDeclaration.simpleName.asString()}.${labelFieldName}")
+            if (labelProperties.isNotEmpty()) {
+                // 如果有多个 @LabelProp 属性，选择第一个非空的
+                val selectedProperty = labelProperties.firstOrNull { property ->
+                    val propertyName = property.simpleName.asString()
+                    // 这里可以添加更复杂的非空检查逻辑
+                    // 目前简单返回第一个找到的
+                    propertyName.isNotBlank()
+                } ?: labelProperties.first()
+
+                val labelFieldName = selectedProperty.simpleName.asString()
+                if (labelProperties.size > 1) {
+                    println("找到多个 @LabelProp 标记的属性: ${classDeclaration.simpleName.asString()}, 选择: ${labelFieldName}")
+                } else {
+                    println("找到 @LabelProp 标记的属性: ${classDeclaration.simpleName.asString()}.${labelFieldName}")
+                }
                 return labelFieldName
             } else {
                 println("在 ${classDeclaration.simpleName.asString()} 中未找到 @LabelProp 标记的属性，使用默认值 'name'")
@@ -124,7 +137,7 @@ object GenericListStrategy : FormStrategy {
 
 }
 
-fun genCodeWhenSingle(bool: KSClassDeclaration, typeName: String, name: String, argFirstValue: String?, isRequired: Boolean, isSingle: Boolean = true): String {
+fun genCodeWhenSingle(bool: KSClassDeclaration, typeName: String, name: String, argFirstValue: String?, isRequired: Boolean, isSingle: Boolean = true, label: String): String {
     // 检查是否为枚举类型
     val isEnum = bool.classKind.name == "ENUM_CLASS"
 
@@ -163,9 +176,19 @@ fun genCodeWhenSingle(bool: KSClassDeclaration, typeName: String, name: String, 
         }
 
 
+    val genericFullName =
+
+
+        if (isSingle) {
+            simpleName
+        } else {
+            "List<$simpleName>"
+        }
+
+
     val trimIndent = """
                 val ${name}DataProvider = remember {
-                              val dataProviderFunction = isoToDataProvider[$isoTypeName::class] ?: throw IllegalStateException("未找到 $typeName 的数据提供者，请在Iso2DataProvider注册")
+                              val dataProviderFunction = isoToDataProvider[$isoTypeName::class] ?: throw IllegalStateException("未找到 val $name: $genericFullName 的数据提供者，请在Iso2DataProvider注册")
                              dataProviderFunction 
                 }
     
@@ -188,6 +211,7 @@ fun genCodeWhenSingle(bool: KSClassDeclaration, typeName: String, name: String, 
                     getChildren = { 
                 $string
                     },
+                       placeholder = "请选择"+$label, 
                     allowClear = ${!isRequired},
                 )
             """.trimIndent()

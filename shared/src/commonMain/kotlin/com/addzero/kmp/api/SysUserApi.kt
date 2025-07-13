@@ -27,4 +27,16 @@ interface SysUserApi {
  */
     @POST("/sysUser/save")    suspend fun save(): kotlin.Unit
 
+/**
+ * tree
+ * HTTP方法: GET
+ * 路径: /sysUser/tree
+ * 参数:
+ *   - keyword: kotlin.String (RequestParam)
+ * 返回类型: kotlin.collections.List<com.addzero.kmp.isomorphic.SysUserIso>
+ */
+    @GET("/sysUser/tree")    suspend fun tree(
+        @Query("keyword") keyword: kotlin.String
+    ): kotlin.collections.List<com.addzero.kmp.isomorphic.SysUserIso>
+
 }

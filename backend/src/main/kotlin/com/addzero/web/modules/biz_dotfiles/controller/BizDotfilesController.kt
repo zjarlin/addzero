@@ -1,4 +1,6 @@
 package com.addzero.web.modules.biz_dotfiles.controller
+import com.addzero.web.infra.jimmer.base.BaseTreeApi
+import com.addzero.web.modules.biz_dotfiles.entity.BizDotfiles
 import com.addzero.web.modules.sys_user.entity.SysUser
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -8,7 +10,7 @@ import kotlin.reflect.full.memberProperties
 
 @RestController
 @RequestMapping("/bizDotfiles")
-class BizDotfilesController {
+class BizDotfilesController : BaseTreeApi<BizDotfiles>{
 
     @GetMapping("/page")
     fun page(): Unit {

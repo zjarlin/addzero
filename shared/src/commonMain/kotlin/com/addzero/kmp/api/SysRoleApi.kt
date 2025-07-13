@@ -26,4 +26,16 @@ interface SysRoleApi {
  */
     @POST("/sysRole/save")    suspend fun save(): kotlin.Unit
 
+/**
+ * tree
+ * HTTP方法: GET
+ * 路径: /sysRole/tree
+ * 参数:
+ *   - keyword: kotlin.String (RequestParam)
+ * 返回类型: kotlin.collections.List<com.addzero.kmp.isomorphic.SysRoleIso>
+ */
+    @GET("/sysRole/tree")    suspend fun tree(
+        @Query("keyword") keyword: kotlin.String
+    ): kotlin.collections.List<com.addzero.kmp.isomorphic.SysRoleIso>
+
 }

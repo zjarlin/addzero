@@ -72,4 +72,16 @@ interface SysDictApi {
         @Query("lng") lng: kotlin.Long
     ): kotlin.Unit
 
+/**
+ * tree
+ * HTTP方法: GET
+ * 路径: /sysDict/tree
+ * 参数:
+ *   - keyword: kotlin.String (RequestParam)
+ * 返回类型: kotlin.collections.List<com.addzero.kmp.isomorphic.SysDictIso>
+ */
+    @GET("/sysDict/tree")    suspend fun tree(
+        @Query("keyword") keyword: kotlin.String
+    ): kotlin.collections.List<com.addzero.kmp.isomorphic.SysDictIso>
+
 }

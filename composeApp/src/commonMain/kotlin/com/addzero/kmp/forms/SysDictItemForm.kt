@@ -105,7 +105,7 @@ visible: Boolean,
 ) }
         ,
             SysDictItemFormProps.sysDict to { val sysDictDataProvider = remember {
-              val dataProviderFunction = isoToDataProvider[SysDictIso::class] ?: throw IllegalStateException("未找到 SysDict 的数据提供者，请在Iso2DataProvider注册")
+              val dataProviderFunction = isoToDataProvider[SysDictIso::class] ?: throw IllegalStateException("未找到 val sysDict: SysDict 的数据提供者，请在Iso2DataProvider注册")
              dataProviderFunction 
 }
 
@@ -128,6 +128,7 @@ AddGenericSingleSelector(
     getChildren = { 
 emptyList()
     },
+       placeholder = "请选择"+"sysDict", 
     allowClear = true,
 ) }
          

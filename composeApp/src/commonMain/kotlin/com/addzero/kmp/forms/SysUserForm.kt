@@ -153,7 +153,7 @@ column = "username",
 ) }
         ,
             SysUserFormProps.depts to { val deptsDataProvider = remember {
-              val dataProviderFunction = isoToDataProvider[SysDeptIso::class] ?: throw IllegalStateException("未找到 List 的数据提供者，请在Iso2DataProvider注册")
+              val dataProviderFunction = isoToDataProvider[SysDeptIso::class] ?: throw IllegalStateException("未找到 val depts: List<SysDept> 的数据提供者，请在Iso2DataProvider注册")
              dataProviderFunction 
 }
 
@@ -176,11 +176,12 @@ AddGenericSelector(
     getChildren = { 
 it.children
     },
+       placeholder = "请选择"+"所属部门", 
     allowClear = false,
 ) }
         ,
             SysUserFormProps.roles to { val rolesDataProvider = remember {
-              val dataProviderFunction = isoToDataProvider[SysRoleIso::class] ?: throw IllegalStateException("未找到 List 的数据提供者，请在Iso2DataProvider注册")
+              val dataProviderFunction = isoToDataProvider[SysRoleIso::class] ?: throw IllegalStateException("未找到 val roles: List<SysRole> 的数据提供者，请在Iso2DataProvider注册")
              dataProviderFunction 
 }
 
@@ -203,6 +204,7 @@ AddGenericSelector(
     getChildren = { 
 emptyList()
     },
+       placeholder = "请选择"+"角色列表", 
     allowClear = false,
 ) }
          
