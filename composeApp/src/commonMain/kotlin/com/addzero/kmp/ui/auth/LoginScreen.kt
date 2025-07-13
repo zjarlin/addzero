@@ -13,7 +13,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 @Preview
-@Route("系统页面", "登录页", routePath = "/signFirst")
+//@Route("系统页面", "登录页", routePath = "/signFirst")
 fun LoginScreen() {
 //    val viewModel = koinViewModel<LoginViewModel>()
     val viewModel = koinViewModel<LoginViewModel>()
