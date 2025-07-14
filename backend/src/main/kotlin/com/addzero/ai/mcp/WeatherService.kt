@@ -1,8 +1,20 @@
 package com.addzero.ai.mcp
 
+import cn.hutool.core.date.DateUtil
+import com.addzero.common.consts.sql
+import com.addzero.web.modules.entity.Citys
+import com.addzero.web.modules.entity.areaName
+import com.addzero.web.modules.entity.pinyin
+import com.addzero.web.modules.entity.py
+import org.babyfish.jimmer.sql.kt.ast.expression.`ilike?`
+import org.babyfish.jimmer.sql.kt.ast.expression.or
 import org.springframework.ai.tool.annotation.Tool
+import org.springframework.ai.tool.annotation.ToolParam
 import org.springframework.stereotype.Service
-import kotlin.random.Random
+import weatherutil.WeatherData
+import weatherutil.WeatherUtil
+import java.time.LocalDate
+import java.time.LocalDateTime
 
 /**
  * 天气服务 - MCP工具示例
@@ -10,41 +22,35 @@ import kotlin.random.Random
 @Service
 class WeatherService {
 
-    @Tool(description = "获取指定城市的当前天气信息")
-    fun getCurrentWeather(city: String): String {
-        // 模拟天气数据
-        val temperatures = listOf(15, 18, 22, 25, 28, 30, 32)
-        val conditions = listOf("晴天", "多云", "阴天", "小雨", "大雨", "雪")
-        
-        val temperature = temperatures.random()
-        val condition = conditions.random()
-        val humidity = Random.nextInt(30, 90)
-        
-        return """
-            城市: $city
-            温度: ${temperature}°C
-            天气: $condition
-            湿度: ${humidity}%
-            更新时间: ${java.time.LocalDateTime.now()}
-        """.trimIndent()
+    @Tool(description = "获取城市历史天气信息")
+    fun getCityWeather(
+        city: String,
+        year: String,
+        month: String,
+        @ToolParam(description = "默认展示一个月的数据,该参数表示裁剪几天的数据,默认三天") limit: Int = 3
+    ): Map<String?, List<WeatherData?>> {
+        val citys = sql.executeQuery(Citys::class) {
+            where(
+                or(
+                    table.pinyin `ilike?` city,
+                    table.py `ilike?` city,
+                    table.areaName `ilike?` city,
+//                                    table.cityName `ilike?` city
+                )
+            )
+            select(table)
+        }.take(limit)
+        val associate = citys.associate {
+            val queryWeather1 = WeatherUtil.queryWeather(year, month, it.areaId, "2")
+            val sortedBy = queryWeather1
+//                .sortedBy {
+//                    DateUtil.parse(it?.date)
+//                }
+            val queryWeather = sortedBy.take(limit)
+            it.areaName to queryWeather
+        }
+        return associate
+
     }
 
-    @Tool(description = "获取指定城市未来几天的天气预报")
-    fun getWeatherForecast(city: String, days: Int = 3): String {
-        val forecasts = mutableListOf<String>()
-        val conditions = listOf("晴天", "多云", "阴天", "小雨")
-        
-        repeat(days) { day ->
-            val date = java.time.LocalDate.now().plusDays(day.toLong())
-            val temperature = Random.nextInt(15, 35)
-            val condition = conditions.random()
-            
-            forecasts.add("${date}: ${temperature}°C, $condition")
-        }
-        
-        return """
-            $city 未来${days}天天气预报:
-            ${forecasts.joinToString("\n")}
-        """.trimIndent()
-    }
 }

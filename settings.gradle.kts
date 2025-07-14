@@ -109,6 +109,12 @@ include("lib")
     "addzero-compose-props-processor"
 )).useFile()
 
+// 组件模块
+("lib" to listOf(
+    "addzero-compose-native-component",
+    "addzero-compose-klibs-component"
+)).useFile()
+
 // 工具模块
 ("lib" to listOf(
     "addzero-tool"
@@ -116,3 +122,5 @@ include("lib")
 
 // 网络模块（暂时注释）
 // ("lib" to listOf("addzero-network-starter")).useFile()
+include("lib:addzero-tool-weather")
+findProject(":lib:addzero-tool-weather")?.name = "addzero-tool-weather"

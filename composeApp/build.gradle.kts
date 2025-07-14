@@ -51,10 +51,13 @@ kotlin {
         commonMain.dependencies {
             implementation(projects.shared)
             implementation(projects.lib.addzeroTool)
-            // Enables FileKit with Composable utilities
-            implementation(libs.filekit.compose)
-            // Enables FileKit with Composable utilities
-//            implementation(libs.filekit.compose)
+
+            // 组件库依赖
+//            implementation(projects.lib.addzeroComposeNativeComponent)
+//            implementation(projects.lib.addzeroComposeKlibsComponent)
+
+            // 原来的 FileKit 依赖现在由 klibs-component 模块提供
+             implementation(libs.filekit.compose) // 移除，由组件模块提供
 
 
             //日志库
@@ -82,9 +85,9 @@ kotlin {
             implementation(libs.multiplatform.markdown.renderer.m3)
             implementation(libs.navigation.compose)
 
-            //图片加载库
-            implementation(libs.coil.compose)
-            implementation(libs.coil.network.ktor3)
+            // 图片加载库现在由 klibs-component 模块提供
+             implementation(libs.coil.compose) // 移除，由组件模块提供
+             implementation(libs.coil.network.ktor3) // 移除，由组件模块提供
 
             //拖拽库
             implementation(libs.compose.dnd)
@@ -109,25 +112,14 @@ kotlin {
 //            implementation("io.github.ltttttttttttt:LazyPeopleHttp-lib:$lazyhttpV")
 
 
-            implementation(libs.ktorfit.lib)
-
-            // Koin 注解处理
-            // Koin Annotations
-
-
-            implementation(project.dependencies.platform(libs.koin.bom))
-
-            implementation(libs.koin.annotations)
-            implementation(libs.koin.core)
-            implementation(libs.koin.compose)
-            implementation(libs.koin.compose.viewmodel)
-            implementation(libs.koin.compose.viewmodel.navigation)
-
-
-            implementation(libs.koin.core)
-            implementation(libs.koin.compose)
-            implementation(libs.koin.compose.viewmodel)
-            implementation(libs.koin.compose.viewmodel.navigation)
+            // 网络和依赖注入现在由 klibs-component 模块提供
+             implementation(libs.ktorfit.lib) // 移除，由组件模块提供
+             implementation(project.dependencies.platform(libs.koin.bom)) // 移除，由组件模块提供
+             implementation(libs.koin.annotations) // 移除，由组件模块提供
+             implementation(libs.koin.core) // 移除，由组件模块提供
+             implementation(libs.koin.compose) // 移除，由组件模块提供
+             implementation(libs.koin.compose.viewmodel) // 移除，由组件模块提供
+             implementation(libs.koin.compose.viewmodel.navigation) // 移除，由组件模块提供
 
 
         }

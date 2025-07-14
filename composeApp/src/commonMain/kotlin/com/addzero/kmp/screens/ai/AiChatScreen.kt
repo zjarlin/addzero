@@ -11,6 +11,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Replay
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -109,6 +110,8 @@ private fun AiChatScreenContent() {
                     messages = chatViewModel.chatMessages,
                     scrollState = scrollState,
                     isAiThinking = chatViewModel.isAiThinking,
+                    onRetryMessage = { messageId -> chatViewModel.retryMessage(messageId) },
+                    retryingMessageId = chatViewModel.retryingMessageId,
                     modifier = Modifier.fillMaxSize()
                 )
             }
@@ -296,9 +299,11 @@ private fun LabubuTopBar(
 // Labubu风格的聊天消息区
 @Composable
 private fun LabubuChatMessages(
-    messages: List<Pair<Boolean, String>>,
+    messages: List<com.addzero.kmp.viewmodel.ChatMessage>,
     scrollState: ScrollState,
     isAiThinking: Boolean = false,
+    onRetryMessage: (String) -> Unit = {},
+    retryingMessageId: String? = null,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -314,11 +319,12 @@ private fun LabubuChatMessages(
         }
 
         // 聊天消息
-        messages.forEachIndexed { index, (isUser, msg) ->
+        messages.forEachIndexed { index, chatMessage ->
             LabubuChatBubble(
-                message = msg,
-                isUser = isUser,
-                animationDelay = index * 100
+                chatMessage = chatMessage,
+                animationDelay = index * 100,
+                onRetryMessage = onRetryMessage,
+                isRetrying = retryingMessageId == chatMessage.id
             )
             Spacer(modifier = Modifier.height(12.dp))
         }
@@ -409,9 +415,10 @@ private fun LabubuWelcomeMessage(welcomMsg: String) {
 // Labubu风格的聊天气泡
 @Composable
 private fun LabubuChatBubble(
-    message: String,
-    isUser: Boolean,
-    animationDelay: Int = 0
+    chatMessage: com.addzero.kmp.viewmodel.ChatMessage,
+    animationDelay: Int = 0,
+    onRetryMessage: (String) -> Unit = {},
+    isRetrying: Boolean = false
 ) {
     // 入场动画
     var visible by remember { mutableStateOf(false) }
@@ -424,15 +431,15 @@ private fun LabubuChatBubble(
     AnimatedVisibility(
         visible = visible,
         enter = slideInHorizontally(
-            initialOffsetX = { if (isUser) it else -it },
+            initialOffsetX = { if (chatMessage.isUser) it else -it },
             animationSpec = tween(300, easing = EaseOutBack)
         ) + fadeIn(animationSpec = tween(300))
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = if (isUser) Arrangement.End else Arrangement.Start
+            horizontalArrangement = if (chatMessage.isUser) Arrangement.End else Arrangement.Start
         ) {
-            if (!isUser) {
+            if (!chatMessage.isUser) {
                 // AI头像
                 Box(
                     modifier = Modifier
@@ -459,56 +466,112 @@ private fun LabubuChatBubble(
                 Spacer(modifier = Modifier.width(8.dp))
             }
 
-            // 消息气泡
-            Box(
-                modifier = Modifier
-                    .background(
-                        brush = if (isUser) {
-                            Brush.linearGradient(
-                                colors = listOf(
-                                    LabubuColors.PrimaryPink,
-                                    LabubuColors.SecondaryPurple
+            // 消息气泡容器
+            Column {
+                // 消息气泡
+                Box(
+                    modifier = Modifier
+                        .background(
+                            brush = if (chatMessage.isUser) {
+                                Brush.linearGradient(
+                                    colors = listOf(
+                                        LabubuColors.PrimaryPink,
+                                        LabubuColors.SecondaryPurple
+                                    )
                                 )
-                            )
-                        } else {
-                            Brush.linearGradient(
-                                colors = listOf(
-                                    Color.White,
-                                    LabubuColors.LightPink
+                            } else if (chatMessage.isError) {
+                                // 错误消息使用红色渐变
+                                Brush.linearGradient(
+                                    colors = listOf(
+                                        Color(0xFFFFEBEE),
+                                        Color(0xFFFFCDD2)
+                                    )
                                 )
+                            } else {
+                                Brush.linearGradient(
+                                    colors = listOf(
+                                        Color.White,
+                                        LabubuColors.LightPink
+                                    )
+                                )
+                            },
+                            shape = RoundedCornerShape(
+                                topStart = 20.dp,
+                                topEnd = 20.dp,
+                                bottomStart = if (chatMessage.isUser) 20.dp else 4.dp,
+                                bottomEnd = if (chatMessage.isUser) 4.dp else 20.dp
                             )
-                        },
-                        shape = RoundedCornerShape(
-                            topStart = 20.dp,
-                            topEnd = 20.dp,
-                            bottomStart = if (isUser) 20.dp else 4.dp,
-                            bottomEnd = if (isUser) 4.dp else 20.dp
                         )
-                    )
-                    .border(
-                        1.dp,
-                        if (isUser) Color.Transparent else LabubuColors.PrimaryPink.copy(alpha = 0.3f),
-                        RoundedCornerShape(
-                            topStart = 20.dp,
-                            topEnd = 20.dp,
-                            bottomStart = if (isUser) 20.dp else 4.dp,
-                            bottomEnd = if (isUser) 4.dp else 20.dp
+                        .border(
+                            1.dp,
+                            if (chatMessage.isUser) Color.Transparent
+                            else if (chatMessage.isError) Color(0xFFE57373)
+                            else LabubuColors.PrimaryPink.copy(alpha = 0.3f),
+                            RoundedCornerShape(
+                                topStart = 20.dp,
+                                topEnd = 20.dp,
+                                bottomStart = if (chatMessage.isUser) 20.dp else 4.dp,
+                                bottomEnd = if (chatMessage.isUser) 4.dp else 20.dp
+                            )
                         )
+                        .padding(horizontal = 16.dp, vertical = 12.dp)
+                        .widthIn(max = 280.dp)
+                ) {
+                    Markdown(
+                        content = chatMessage.content,
+                        modifier = Modifier.fillMaxWidth()
                     )
-                    .padding(horizontal = 16.dp, vertical = 12.dp)
-                    .widthIn(max = 280.dp)
-            ) {
-                Markdown( message)
-//                Text(
-//                    text = message,
-//                    color = if (isUser) Color.White else LabubuColors.DarkText,
-//                    style = MaterialTheme.typography.bodyMedium.copy(
-//                        lineHeight = 20.sp
-//                    )
-//                )
+                }
+
+                // 重试按钮（仅对错误消息显示）
+                if (chatMessage.canRetry && chatMessage.isError) {
+                    Spacer(modifier = Modifier.height(4.dp))
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = if (chatMessage.isUser) Arrangement.End else Arrangement.Start
+                    ) {
+                        if (!chatMessage.isUser) {
+                            Spacer(modifier = Modifier.width(40.dp)) // 对齐AI头像
+                        }
+
+                        // 重试按钮
+                        androidx.compose.material3.OutlinedButton(
+                            onClick = { onRetryMessage(chatMessage.id) },
+                            enabled = !isRetrying,
+                            modifier = Modifier.height(32.dp),
+                            colors = androidx.compose.material3.ButtonDefaults.outlinedButtonColors(
+                                contentColor = if (isRetrying) Color.Gray else LabubuColors.PrimaryPink
+                            )
+                        ) {
+                            if (isRetrying) {
+                                // 显示加载动画
+                                androidx.compose.material3.CircularProgressIndicator(
+                                    modifier = Modifier.size(16.dp),
+                                    strokeWidth = 2.dp,
+                                    color = LabubuColors.PrimaryPink
+                                )
+                                Spacer(modifier = Modifier.width(4.dp))
+                                Text("重试中...", fontSize = 12.sp)
+                            } else {
+                                Icon(
+                                    Icons.Default.Replay,
+                                    contentDescription = "重试",
+                                    modifier = Modifier.size(14.dp)
+                                )
+                                Spacer(modifier = Modifier.width(4.dp))
+                                Text("重试", fontSize = 12.sp)
+                            }
+                        }
+
+                        if (chatMessage.isUser) {
+                            Spacer(modifier = Modifier.width(40.dp)) // 对齐用户头像
+                        }
+                    }
+                }
             }
 
-            if (isUser) {
+            if (chatMessage.isUser) {
                 Spacer(modifier = Modifier.width(8.dp))
                 // 用户头像
                 Box(

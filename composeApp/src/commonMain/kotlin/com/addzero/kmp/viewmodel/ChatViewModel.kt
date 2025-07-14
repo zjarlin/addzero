@@ -11,15 +11,18 @@ import org.koin.android.annotation.KoinViewModel
 import org.koin.core.component.KoinComponent
 
 /**
- * 主布局组件
+ * 🤖 聊天视图模型
  *
- * 整体应用布局框架，包含顶栏、侧边菜单和主内容区
+ * 管理聊天界面的状态和业务逻辑，包含消息发送、重试、错误处理等功能
  */
 @KoinViewModel
 class ChatViewModel : ViewModel() {
     var showChatBot by mutableStateOf(false)
-    var chatMessages = mutableStateListOf<Pair<Boolean, String>>()
+
+    // 聊天消息列表，包含消息内容、是否为用户消息、消息ID、是否可重试
+    var chatMessages = mutableStateListOf<ChatMessage>()
         private set
+
     var chatInput by mutableStateOf("")
         private set
 
@@ -27,35 +30,108 @@ class ChatViewModel : ViewModel() {
     var isAiThinking by mutableStateOf(false)
         private set
 
+    // 重试状态 - 记录正在重试的消息ID
+    var retryingMessageId by mutableStateOf<String?>(null)
+        private set
+
+    /**
+     * 发送消息
+     * @param input 消息内容，如果为null则使用chatInput
+     */
     fun sendMessage(input: String? = null) {
         val msg = input ?: chatInput
         if (msg.isBlank()) return
 
+        // 生成消息ID
+        val messageId = generateMessageId()
+
         // 添加用户消息
-        chatMessages.add(true to msg)
+        chatMessages.add(ChatMessage(
+            id = messageId,
+            content = msg,
+            isUser = true,
+            canRetry = false,
+            isError = false
+        ))
         chatInput = ""
 
+        // 发送AI请求
+        sendAiRequest(msg, messageId)
+    }
+
+    /**
+     * 重试消息
+     * @param messageId 要重试的消息ID
+     */
+    fun retryMessage(messageId: String) {
+        val messageIndex = chatMessages.indexOfFirst { it.id == messageId }
+        if (messageIndex == -1) return
+
+        val message = chatMessages[messageIndex]
+        if (!message.canRetry) return
+
+        // 找到对应的用户消息
+        val userMessageIndex = messageIndex - 1
+        if (userMessageIndex < 0) return
+
+        val userMessage = chatMessages[userMessageIndex]
+        if (!userMessage.isUser) return
+
+        // 移除错误的AI回复
+        chatMessages.removeAt(messageIndex)
+
+        // 设置重试状态
+        retryingMessageId = messageId
+
+        // 重新发送请求
+        sendAiRequest(userMessage.content, messageId)
+    }
+
+    /**
+     * 发送AI请求的核心方法
+     */
+    private fun sendAiRequest(message: String, messageId: String) {
         // 开始AI思考状态
         isAiThinking = true
 
         api {
             try {
-                val joinToString = chatApi.chat(msg)
-//                val resp = aiApi.ask(msg)
-//                val joinToString = resp.choices?.map { it.message?.content }?.joinToString("\n")?:"🤖响应异常!"
+                val response = chatApi.chat(message)
 
-                chatMessages.add(false to joinToString!!)
+                // 添加成功的AI回复
+                chatMessages.add(ChatMessage(
+                    id = messageId + "_ai",
+                    content = response ?: "🤖 响应为空",
+                    isUser = false,
+                    canRetry = false,
+                    isError = false
+                ))
+
             } catch (e: Exception) {
-                // 处理超时或其他错误
+                // 处理错误
                 val errorMsg = when {
                     e.message?.contains("timeout", ignoreCase = true) == true ->
-                        "抱歉，AI响应超时了，请稍后重试 ⏰"
-                    else -> "抱歉，发生了错误：${e.message} 😔"
+                        "抱歉，AI响应超时了，请点击重试 ⏰"
+                    e.message?.contains("network", ignoreCase = true) == true ->
+                        "网络连接异常，请检查网络后重试 🌐"
+                    e.message?.contains("server", ignoreCase = true) == true ->
+                        "服务器暂时不可用，请稍后重试 🔧"
+                    else -> "抱歉，发生了错误：${e.message} 😔\n点击重试按钮重新发送"
                 }
-                chatMessages.add(false to errorMsg)
+
+                // 添加错误消息（可重试）
+                chatMessages.add(ChatMessage(
+                    id = messageId + "_ai",
+                    content = errorMsg,
+                    isUser = false,
+                    canRetry = true,
+                    isError = true
+                ))
+
             } finally {
-                // 结束AI思考状态
+                // 结束AI思考状态和重试状态
                 isAiThinking = false
+                retryingMessageId = null
             }
         }
     }
@@ -70,5 +146,50 @@ class ChatViewModel : ViewModel() {
     fun startNewChat() {
         chatMessages.clear()
         chatInput = ""
+        isAiThinking = false
+        retryingMessageId = null
+    }
+
+    /**
+     * 生成唯一的消息ID
+     */
+    private fun generateMessageId(): String {
+        return "msg_${System.currentTimeMillis()}_${(0..999).random()}"
+    }
+
+    /**
+     * 检查是否有错误消息可以重试
+     */
+    fun hasRetryableMessages(): Boolean {
+        return chatMessages.any { it.canRetry && it.isError }
+    }
+
+    /**
+     * 重试所有失败的消息
+     */
+    fun retryAllFailedMessages() {
+        val failedMessages = chatMessages.filter { it.canRetry && it.isError }
+        failedMessages.forEach { message ->
+            retryMessage(message.id)
+        }
     }
 }
+
+/**
+ * 💬 聊天消息数据类
+ *
+ * @property id 消息唯一标识符
+ * @property content 消息内容
+ * @property isUser 是否为用户消息
+ * @property canRetry 是否可以重试（仅对AI错误消息有效）
+ * @property isError 是否为错误消息
+ * @property timestamp 消息时间戳
+ */
+data class ChatMessage(
+    val id: String,
+    val content: String,
+    val isUser: Boolean,
+    val canRetry: Boolean = false,
+    val isError: Boolean = false,
+    val timestamp: Long = System.currentTimeMillis()
+)

@@ -7,7 +7,6 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 val libs = the<org.gradle.accessors.dm.LibrariesForLibs>()
-val javaVersion = libs.versions.jdk.get()
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
@@ -19,7 +18,7 @@ plugins {
 kotlin {
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class) compilerOptions {
-            jvmTarget.set(JvmTarget.fromTarget(javaVersion))
+            jvmTarget.set(JvmTarget.fromTarget( libs.versions.jdk.get()))
         }
     }
 
@@ -71,7 +70,7 @@ android {
 
 
     compileOptions {
-        val toVersion = JavaVersion.toVersion(javaVersion)
+        val toVersion = JavaVersion.toVersion( libs.versions.jdk.get())
         sourceCompatibility = toVersion
         targetCompatibility = toVersion
     }

@@ -5,17 +5,15 @@ import com.addzero.kmp.enums.ErrorEnum
 import com.addzero.kmp.exp.BizException
 import com.addzero.web.infra.config.log
 import jakarta.validation.ConstraintViolationException
+import org.babyfish.jimmer.sql.exception.ExecutionException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseBody
-import org.springframework.web.context.request.WebRequest
-import java.lang.invoke.MethodHandle
 
 @ControllerAdvice
 class GlobalExceptionHandler {
 
-    @ResponseBody
     @ExceptionHandler(BizException::class)
     fun handleBusinessException(
         exception: BizException,
@@ -51,13 +49,28 @@ class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception::class)
-    fun handleException(e: Exception?): Any {
+    fun handleException(e: Exception): Any {
+        e.printStackTrace()
         log.error("系统异常", e)
 //        val message = e?.message
         val buildMessage = e.buildMessage()
         val fail = Res.fail(buildMessage).buidResponseEntity()
         return fail
     }
+
+
+    @ExceptionHandler(ExecutionException::class)
+    fun handleException(e: ExecutionException): Any {
+        e.printStackTrace()
+        log.error("系统异常", e)
+//        val message = e?.message
+        val buildMessage = e.buildMessage()
+        val fail = Res.fail(buildMessage).buidResponseEntity()
+        return fail
+    }
+
+
+
 
 
 }

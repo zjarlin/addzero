@@ -133,6 +133,8 @@ ksp {
 dependencies {
     //通用库
     implementation(projects.lib.addzeroTool)
+    //天气库
+    implementation(projects.lib.addzeroToolWeather)
 
     //实体表单核心注解
     implementation(projects.lib.addzeroEntity2formCore)
