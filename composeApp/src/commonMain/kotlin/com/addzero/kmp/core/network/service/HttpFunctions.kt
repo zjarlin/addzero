@@ -1,7 +1,7 @@
 //package com.addzero.kmp.core.network.service
 //
-//import com.addzero.kmp.api.BaseCrudApi
-//import com.addzero.kmp.isomorphic.SysUserIso
+//import com.addzero.kmp.generated.api.BaseCrudApi
+//import com.addzero.kmp.generated.isomorphic.SysUserIso
 //import com.lt.lazy_people_http.annotations.LazyPeopleHttpService
 //
 //@LazyPeopleHttpService

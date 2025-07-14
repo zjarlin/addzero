@@ -1,8 +1,8 @@
 package com.addzero.kmp.screens.dept
 
 import androidx.compose.runtime.Composable
-// import com.addzero.kmp.forms.SysDeptForm
-// import com.addzero.kmp.forms.rememberSysDeptFormState
+// import com.addzero.kmp.generated.forms.SysDeptForm
+// import com.addzero.kmp.generated.forms.rememberSysDeptFormState
 import com.addzero.kmp.viewmodel.SysDeptViewModel
 
 @Composable

@@ -1,7 +1,8 @@
 package com.addzero.web.modules.sys_user.entity
 
 import com.addzero.kmp.entity2form.annotation.LabelProp
-import com.addzero.kmp.generated.enums.EnumSysGender
+// 临时注释掉，避免 KSP 处理顺序问题
+// import com.addzero.kmp.generated.enums.EnumSysGender
 import com.addzero.web.infra.jimmer.SnowflakeIdGenerator
 import com.addzero.web.infra.jimmer.base.basedatetime.BaseDateTime
 import com.addzero.web.modules.sys_dept.entity.SysDept
@@ -99,7 +100,9 @@ interface SysUser : BaseDateTime {
     /**
      * 性别
      */
-    val gender: EnumSysGender?
+    // 临时使用字符串类型，避免 KSP 处理顺序问题
+    // val gender: EnumSysGender?
+    val gender: String?
 
     /**
      * 所属部门

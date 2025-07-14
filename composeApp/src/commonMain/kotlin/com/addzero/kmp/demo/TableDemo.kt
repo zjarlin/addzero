@@ -9,7 +9,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.addzero.kmp.api.ApiProvider.fileApi
+import com.addzero.kmp.generated.api.ApiProvider.fileApi
 import com.addzero.kmp.component.addzero_starter.addzero_table.AddGenericTable
 import com.addzero.kmp.component.addzero_starter.addzero_table.TableRowType
 import com.addzero.kmp.component.form.DynamicFormItem

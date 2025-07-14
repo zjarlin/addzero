@@ -1,8 +1,8 @@
 package com.addzero.web.modules.sys_dict.controller
 
 import com.addzero.common.consts.sql
-import com.addzero.kmp.isomorphic.SysDictIso
-import com.addzero.kmp.isomorphic.SysDictItemIso
+import com.addzero.kmp.generated.isomorphic.SysDictIso
+import com.addzero.kmp.generated.isomorphic.SysDictItemIso
 import com.addzero.web.infra.jackson.convertTo
 import com.addzero.web.infra.jimmer.base.BaseTreeApi
 import com.addzero.web.infra.jimmer.toJimmerEntity
@@ -30,7 +30,7 @@ class SysDictController: BaseTreeApi<SysDict> {
 
     @GetMapping("/querydict")
 
-    fun querydict(@RequestParam keyword: String): List<SysDictIso> {
+    fun querydict(@RequestParam keyword: String): List<SysDict> {
         val createQuery = sql.executeQuery(SysDict::class) {
             where(
                 or(
@@ -58,24 +58,22 @@ class SysDictController: BaseTreeApi<SysDict> {
                     }
                 })
         }
-        return createQuery.convertTo()
+        return createQuery
     }
 
 
 
     @PostMapping("/saveDict")
-    fun saveDict(@RequestBody vO: SysDictIso): SysDictIso {
-        val toJimmerEntity = vO.toJimmerEntity<SysDictIso, SysDict>()
-        val save = sql.save(toJimmerEntity)
+    fun saveDict(@RequestBody vO: SysDict): SysDict {
+        val save = sql.save(vO)
         val modifiedEntity = save.modifiedEntity
-        return modifiedEntity.convertTo()
+        return modifiedEntity
     }
 
 
     @PostMapping("/saveDictItem")
-    fun saveDictItem(@RequestBody impl: SysDictItemIso) {
-        val json = impl.toJimmerEntity<SysDictItemIso, SysDictItem>()
-        sql.save(json)
+    fun saveDictItem(@RequestBody impl: SysDictItem) {
+        sql.save(impl)
     }
 
 

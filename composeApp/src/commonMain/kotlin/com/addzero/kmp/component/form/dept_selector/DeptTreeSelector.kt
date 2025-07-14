@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.addzero.kmp.component.tree_command.AddTreeWithCommand
 import com.addzero.kmp.component.tree_command.TreeCommand
-import com.addzero.kmp.isomorphic.SysDeptIso
+import com.addzero.kmp.generated.isomorphic.SysDeptIso
 
 /**
  * 🌳 部门树选择器

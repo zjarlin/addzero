@@ -12,7 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import com.addzero.kmp.component.form.AddPasswordField
+import com.addzero.kmp.component.form.text.AddPasswordField
 import com.addzero.kmp.ui.infra.model.user_center.UserCenterViewModel
 import com.addzero.kmp.viewmodel.LoginViewModel
 import org.koin.compose.viewmodel.koinViewModel

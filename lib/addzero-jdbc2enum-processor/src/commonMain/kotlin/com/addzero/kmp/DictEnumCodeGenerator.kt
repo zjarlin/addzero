@@ -1,10 +1,12 @@
 package com.addzero.kmp
 
+import com.addzero.kmp.context.SettingContext.settings
 import com.addzero.kmp.util.PinYin4JUtils
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.Dependencies
 import com.google.devtools.ksp.processing.KSPLogger
 import kotlin.math.absoluteValue
+import kotlin.math.log
 
 /**
  * 字典枚举代码生成器
@@ -14,7 +16,6 @@ import kotlin.math.absoluteValue
 class DictEnumCodeGenerator(
     private val codeGenerator: CodeGenerator,
     private val logger: KSPLogger,
-    private val outputPackage: String
 ) {
 
     /**
@@ -66,8 +67,12 @@ class DictEnumCodeGenerator(
         val fullEnumName = "Enum$enumName"
 
         // 构建枚举类内容
+        val enumOutputPackage = settings.enumOutputPackage
+        val enumOutputDir = settings.enumOutputDir
+//        logger.warn("枚举类输出目录为: $enumOutputDir")
+//        logger.warn("枚举输出包为: $enumOutputPackage")
         val enumContent = """
-            package $outputPackage
+            package $enumOutputPackage
             
             /**
              * ${dictMetadata.dictName}
@@ -106,14 +111,8 @@ class DictEnumCodeGenerator(
         """.trimIndent()
 
         // 创建枚举类文件
-        val dependencies = Dependencies(aggregating = true)
-        codeGenerator.createNewFile(
-            dependencies = dependencies,
-            packageName = outputPackage,
-            fileName = fullEnumName // 文件名也使用前缀
-        ).use { output ->
-            output.write(enumContent.toByteArray())
-        }
+            // 使用手动 File IO 生成到指定目录
+            writeEnumToFile(fullEnumName, enumContent, enumOutputDir)
     }
 
     /**
@@ -151,6 +150,25 @@ class DictEnumCodeGenerator(
                 word.capitalize()
             }
         }.joinToString("")
+    }
+
+    /**
+     * 使用手动 File IO 写入枚举文件
+     */
+    private fun writeEnumToFile(fileName: String, content: String, outputDir: String) {
+
+
+        val enumOutputDir = settings.enumOutputDir
+
+        // 创建目录
+        val dir = java.io.File(enumOutputDir)
+        dir.mkdirs()
+
+        // 写入文件
+        val file = java.io.File(dir, "$fileName.kt")
+        file.writeText(content)
+
+        logger.info("Generated enum class: $fileName at ${file.absolutePath}")
     }
 
     /**

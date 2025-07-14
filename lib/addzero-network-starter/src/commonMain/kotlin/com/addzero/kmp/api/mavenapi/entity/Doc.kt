@@ -1,4 +1,4 @@
-package com.addzero.kmp.api.mavenapi.entity
+package com.addzero.kmp.generated.api.mavenapi.entity
 
 import kotlinx.serialization.Serializable
 

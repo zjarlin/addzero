@@ -3,9 +3,6 @@ package com.addzero.web.modules.sys_user.controller
 import cn.dev33.satoken.context.SaHolder
 import cn.dev33.satoken.stp.StpUtil
 import com.addzero.common.consts.sql
-import com.addzero.kmp.api.UserCenterApi
-import com.addzero.kmp.isomorphic.SysUserIso
-import com.addzero.web.infra.jackson.convertTo
 import com.addzero.web.infra.jimmer.updateById
 import com.addzero.web.modules.sys_user.entity.SysUser
 import org.springframework.web.bind.annotation.GetMapping

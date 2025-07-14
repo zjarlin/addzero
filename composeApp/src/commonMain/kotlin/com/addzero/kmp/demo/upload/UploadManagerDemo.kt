@@ -10,10 +10,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.addzero.kmp.annotation.Route
-import com.addzero.kmp.component.form.AddMultiFilePicker
-import com.addzero.kmp.component.form.PickedFile
-import com.addzero.kmp.component.form.USE_MOCK_FILE_UPLOAD
-import com.addzero.kmp.component.form.formatFileSize
+import com.addzero.kmp.component.form.file.AddMultiFilePicker
+import com.addzero.kmp.component.form.file.PickedFile
+import com.addzero.kmp.component.form.file.USE_MOCK_FILE_UPLOAD
+import com.addzero.kmp.component.form.file.formatFileSize
 import com.addzero.kmp.component.upload_manager.GlobalUploadManager
 import com.addzero.kmp.component.upload_manager.UploadManagerUI
 

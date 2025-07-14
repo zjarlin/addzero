@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 plugins {
     id("kmp")
@@ -10,9 +11,7 @@ plugins {
 dependencies {
     kspCommonMainMetadata(projects.lib.addzeroRouteProcessor)
     kspCommonMainMetadata(projects.lib.addzeroComposePropsProcessor)
-    kspCommonMainMetadata(projects.lib.addzeroEntity2formProcessor)
     kspCommonMainMetadata(libs.koin.ksp.compiler)
-
 }
 
 
@@ -31,14 +30,6 @@ dependencies {
 //}
 
 ksp {
-//    arg("generated.dir", defaultKspGenDir)
-//    arg("generatedsrc.dir", "src/commonMain/kotlin")
-//    arg("project.dir", rootProject.projectDir.absolutePath)
-    // 或者使用更精确的路径获取方式
-    arg(
-        "module.main.src.dir",
-        project.extensions.getByType<KotlinMultiplatformExtension>().sourceSets.getByName("commonMain").kotlin.srcDirs.first().absolutePath
-    )
 
 
     // JDBC元数据处理器配置
@@ -142,3 +133,16 @@ kotlin {
         }
     }
 }
+
+
+// 确保所有 Kotlin 编译任务都依赖于 shared 模块的 KSP 元数据生成
+tasks.withType<KotlinCompilationTask<*>>().configureEach {
+    if (name != "kspCommonMainKotlinMetadata") {
+        dependsOn(":backend:kspKotlin")
+        dependsOn(":shared:kspCommonMainKotlinMetadata")
+        dependsOn(":composeApp:kspCommonMainKotlinMetadata")
+    }
+}
+
+
+

@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import com.addzero.kmp.component.button.AddIconButton
 import com.addzero.kmp.component.search_bar.AddSearchBar
 import com.addzero.kmp.component.tree.AddTree
-import com.addzero.kmp.isomorphic.SysDeptIso
+import com.addzero.kmp.generated.isomorphic.SysDeptIso
 import com.addzero.kmp.viewmodel.SysDeptViewModel
 
 @Composable

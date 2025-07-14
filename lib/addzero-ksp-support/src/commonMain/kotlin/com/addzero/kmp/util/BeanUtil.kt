@@ -3,6 +3,7 @@ package com.addzero.kmp.util
 
 import com.addzero.kmp.context.Settings
 
+
 object BeanUtil {
     fun Settings.toMap(): Map<String, String> = mapOf(
         "dbType" to dbType,

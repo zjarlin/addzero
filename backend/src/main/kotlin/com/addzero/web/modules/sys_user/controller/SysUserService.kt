@@ -3,8 +3,8 @@ package com.addzero.web.modules.sys_user.controller
 import cn.dev33.satoken.stp.StpUtil
 import cn.hutool.core.util.StrUtil
 import com.addzero.common.consts.sql
-import com.addzero.kmp.api.CheckSignInput
-import com.addzero.kmp.api.SecondLoginDTO
+import com.addzero.kmp.entity.CheckSignInput
+import com.addzero.kmp.entity.SecondLoginDTO
 import com.addzero.kmp.exp.BizException
 import com.addzero.web.modules.sys.login.identifyInputType
 import com.addzero.web.modules.sys_user.entity.SysUser

@@ -1,6 +1,7 @@
 import org.babyfish.defIos
 import org.babyfish.doIos
 import org.babyfish.jimmer.Vars
+import org.babyfish.jimmer.Vars.Modules.COMPOSE_APP
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
@@ -39,12 +40,12 @@ kotlin {
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
 
-        outputModuleName.set(Vars.outputModuleName)
+        outputModuleName.set(COMPOSE_APP)
         browser {
             val rootDirPath = project.rootDir.path
             val projectDirPath = project.projectDir.path
             commonWebpackConfig {
-                outputFileName = "${Vars.outputModuleName}.js"
+                outputFileName = "${COMPOSE_APP}.js"
                 devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
                     static = (static ?: mutableListOf()).apply {
                         // Serve sources to debug inside browser
@@ -148,10 +149,30 @@ compose.desktop {
     }
 }
 
-tasks.withType<KotlinCompilationTask<*>>().all {
-    val kspCommonMainKotlinMetadata = "kspCommonMainKotlinMetadata"
-    if (name != kspCommonMainKotlinMetadata) {
-        dependsOn(kspCommonMainKotlinMetadata)
-    }
-}
+
+
+// 确保 KSP 任务的执行顺序：先执行 shared 模块的 KSP，再执行 backend 模块的 KSP
+//tasks.configureEach {
+//    when (name) {
+//        "kspKotlin" -> {
+//            // backend 模块的 KSP 任务依赖 shared 模块的 KSP 任务
+//            dependsOn(":shared:kspCommonMainKotlinMetadata")
+//        }
+//        "compileKotlin" -> {
+//            // Kotlin 编译任务依赖 KSP 任务
+//            dependsOn("kspKotlin")
+//        }
+//    }
+//}
+
+
+//tasks.withType<KotlinCompilationTask<*>>().all {
+//    val kspCommonMainKotlinMetadata = "kspCommonMainKotlinMetadata"
+//
+//    // 只处理 shared 模块内部的依赖，避免跨模块循环依赖
+//    if (name != kspCommonMainKotlinMetadata &&
+//        project.tasks.findByName(kspCommonMainKotlinMetadata) != null) {
+//        dependsOn(kspCommonMainKotlinMetadata)
+//    }
+//}
 

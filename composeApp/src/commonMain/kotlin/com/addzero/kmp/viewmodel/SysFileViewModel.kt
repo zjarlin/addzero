@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.addzero.kmp.api.ApiProvider.fileApi
+import com.addzero.kmp.generated.api.ApiProvider.fileApi
 import io.ktor.client.request.forms.*
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay

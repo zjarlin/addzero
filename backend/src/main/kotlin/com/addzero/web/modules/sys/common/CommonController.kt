@@ -1,7 +1,7 @@
 package com.addzero.web.modules.sys.common
 
 import com.addzero.common.consts.sql
-import com.addzero.kmp.api.CommonApi
+import com.addzero.kmp.generated.api.CommonApi
 import com.addzero.kmp.entity.low_table.*
 import com.addzero.kmp.exp.BizException
 import com.addzero.web.infra.entityMap
@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.*
 import kotlin.reflect.KClass
 
 @RestController
-class CommonController (private val jdbcClient: JdbcClient) {
+class CommonController(private val jdbcClient: JdbcClient) {
 
     @PostMapping("/common/getTable")
-     fun getTableData(@RequestBody commonTableDaTaInputDTO: CommonTableDaTaInputDTO): String {
+    fun getTableData(@RequestBody commonTableDaTaInputDTO: CommonTableDaTaInputDTO): String {
         val tableName = commonTableDaTaInputDTO.tableName
         if (tableName.isBlank()) {
             throw BizException("Table name is blank")
@@ -47,7 +47,7 @@ class CommonController (private val jdbcClient: JdbcClient) {
     }
 
     @PostMapping("/common/exportTable")
-     fun export(@RequestBody exportParam: ExportParam): Boolean {
+    fun export(@RequestBody exportParam: ExportParam): Boolean {
         return true
     }
 
@@ -87,7 +87,7 @@ class CommonController (private val jdbcClient: JdbcClient) {
 //    }
 
     @PostMapping("/common/edit")
-     fun edit(@RequestBody tableSaveOrUpdateDTO: TableSaveOrUpdateDTO): Boolean {
+    fun edit(@RequestBody tableSaveOrUpdateDTO: TableSaveOrUpdateDTO): Boolean {
         val tableName = tableSaveOrUpdateDTO.tableName
         val toJson = tableSaveOrUpdateDTO.toJson()
         val klass1 = entityMap[tableName] as KClass<Any>
@@ -99,7 +99,7 @@ class CommonController (private val jdbcClient: JdbcClient) {
 
 
     @GetMapping("/common/checkExist")
-     fun checkExist(tableName: String, column: String, value: String): Boolean {
+    fun checkExist(tableName: String, column: String, value: String): Boolean {
         val trimIndent = """
            SELECT EXISTS(
     SELECT 1 FROM $tableName WHERE $column = '$value'

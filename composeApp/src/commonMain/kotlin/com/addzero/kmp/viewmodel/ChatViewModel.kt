@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.addzero.kmp.api.ApiProvider.chatApi
+import com.addzero.kmp.generated.api.ApiProvider.chatApi
 import com.addzero.kmp.ext.api
 import org.koin.android.annotation.KoinViewModel
 import org.koin.core.component.KoinComponent
@@ -44,7 +44,7 @@ class ChatViewModel : ViewModel() {
 //                val resp = aiApi.ask(msg)
 //                val joinToString = resp.choices?.map { it.message?.content }?.joinToString("\n")?:"🤖响应异常!"
 
-                chatMessages.add(false to joinToString)
+                chatMessages.add(false to joinToString!!)
             } catch (e: Exception) {
                 // 处理超时或其他错误
                 val errorMsg = when {

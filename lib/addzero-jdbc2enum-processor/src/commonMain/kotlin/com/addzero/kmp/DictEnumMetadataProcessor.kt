@@ -1,5 +1,6 @@
 package com.addzero.kmp
 
+import com.addzero.kmp.context.SettingContext
 import com.google.devtools.ksp.processing.*
 import com.google.devtools.ksp.symbol.KSAnnotated
 import java.sql.SQLException
@@ -33,9 +34,6 @@ class DictEnumMetadataProcessor(
     private val options: Map<String, String>
 ) : SymbolProcessor {
 
-    // 输出包名
-    private val outputPackage = options["enumOutputPackage"] ?: "com.addzero.kmp.generated.enums"
-
     // 字典元数据抽取器
     private val metadataExtractor = DictMetadataExtractor(
         logger = logger,
@@ -59,13 +57,13 @@ class DictEnumMetadataProcessor(
     private val enumCodeGenerator = DictEnumCodeGenerator(
         codeGenerator = this.codeGenerator,
         logger = logger,
-        outputPackage = outputPackage
     )
 
     // 收集到的字典元数据
     private var dictMetadataList: List<DictMetadataExtractor.DictMetadata> = emptyList()
 
     override fun process(resolver: Resolver): List<KSAnnotated> {
+        SettingContext.initialize(options)
         // process 阶段只收集元数据，不生成代码
         if (dictMetadataList.isEmpty()) {
             try {

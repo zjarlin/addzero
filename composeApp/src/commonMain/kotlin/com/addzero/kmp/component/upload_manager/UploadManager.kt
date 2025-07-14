@@ -3,16 +3,14 @@
 package com.addzero.kmp.component.upload_manager
 
 import androidx.compose.runtime.*
-import com.addzero.kmp.api.ApiProvider.fileApi
-import com.addzero.kmp.component.form.USE_MOCK_FILE_UPLOAD
-import com.addzero.kmp.component.form.mockQueryProgress
+import com.addzero.kmp.generated.api.ApiProvider.fileApi
+import com.addzero.kmp.component.form.file.USE_MOCK_FILE_UPLOAD
+import com.addzero.kmp.component.form.file.mockQueryProgress
 import com.addzero.kmp.core.ext.now
-import com.addzero.kmp.core.ext.nowInt
 import com.addzero.kmp.core.ext.nowLong
 import io.ktor.client.request.forms.*
 import kotlinx.coroutines.*
 import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.toStdlibInstant
 import kotlinx.serialization.Serializable
 import kotlin.time.ExperimentalTime
 

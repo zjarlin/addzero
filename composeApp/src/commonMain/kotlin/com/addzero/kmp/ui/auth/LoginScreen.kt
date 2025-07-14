@@ -4,8 +4,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.EmojiPeople
 import androidx.compose.runtime.Composable
 import coil3.compose.AsyncImage
-import com.addzero.kmp.api.SignInStatus
-import com.addzero.kmp.annotation.Route
+import com.addzero.kmp.entity.SignInStatus
 
 import com.addzero.kmp.viewmodel.LoginViewModel
 import org.jetbrains.compose.ui.tooling.preview.Preview

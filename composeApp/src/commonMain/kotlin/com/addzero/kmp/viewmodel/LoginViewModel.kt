@@ -4,15 +4,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.addzero.kmp.api.ApiProvider.loginApi
-import com.addzero.kmp.api.ApiProvider.userCenterApi
-import com.addzero.kmp.api.CheckSignInput
-import com.addzero.kmp.api.SecondLoginDTO
-import com.addzero.kmp.api.SignInStatus
+import com.addzero.kmp.generated.api.ApiProvider.loginApi
+import com.addzero.kmp.entity.CheckSignInput
+import com.addzero.kmp.entity.SecondLoginDTO
+import com.addzero.kmp.entity.SignInStatus
 import com.addzero.kmp.component.toast.ToastManager
 import com.addzero.kmp.core.network.AddHttpClient
 import com.addzero.kmp.ext.api
-import com.addzero.kmp.isomorphic.SysUserIso
+import com.addzero.kmp.generated.api.ApiProvider.sysUserCenterApi
+import com.addzero.kmp.generated.api.SysUserCenterApi
+import com.addzero.kmp.generated.isomorphic.SysUserIso
 import com.addzero.kmp.settings.SettingContext4Compose
 import org.koin.android.annotation.KoinViewModel
 
@@ -101,7 +102,7 @@ class LoginViewModel : ViewModel() {
      */
     fun logout() {
         api {
-            userCenterApi.logout()
+            sysUserCenterApi.logout()
             currentToken = null
             AddHttpClient.setToken(null)
         }

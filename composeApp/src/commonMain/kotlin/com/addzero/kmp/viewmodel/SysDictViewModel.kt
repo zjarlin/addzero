@@ -7,10 +7,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.addzero.kmp.api.ApiProvider
+import com.addzero.kmp.generated.api.ApiProvider
 import com.addzero.kmp.ext.api
-import com.addzero.kmp.isomorphic.SysDictIso
-import com.addzero.kmp.isomorphic.SysDictItemIso
+import com.addzero.kmp.generated.isomorphic.SysDictIso
+import com.addzero.kmp.generated.isomorphic.SysDictItemIso
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
 

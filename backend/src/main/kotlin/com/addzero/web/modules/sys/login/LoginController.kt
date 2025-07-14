@@ -2,12 +2,11 @@ package com.addzero.web.modules.sys.login
 
 import cn.dev33.satoken.stp.StpUtil
 import com.addzero.common.consts.sql
-import com.addzero.kmp.api.LoginApi
-import com.addzero.kmp.api.SecondLoginDTO
-import com.addzero.kmp.api.SecondLoginResponse
-import com.addzero.kmp.api.SignInStatus
+import com.addzero.kmp.entity.SecondLoginDTO
+import com.addzero.kmp.entity.SecondLoginResponse
+import com.addzero.kmp.entity.SignInStatus
 import com.addzero.kmp.exp.BizException
-import com.addzero.kmp.isomorphic.SysUserIso
+import com.addzero.kmp.generated.isomorphic.SysUserIso
 import com.addzero.web.infra.jackson.convertTo
 import com.addzero.web.infra.jimmer.toJimmerEntity
 import com.addzero.web.modules.sys_user.controller.SysUserService
@@ -21,15 +20,15 @@ import org.springframework.web.bind.annotation.*
 
 @RequestMapping("/sys/login")
 @RestController
-class LoginController(private val sysUserService: SysUserService) : LoginApi {
+class LoginController(private val sysUserService: SysUserService)  {
 
     @GetMapping("/hasPermition")
-    override suspend fun hasPermition(@RequestParam code: String): Boolean {
+     fun hasPermition(@RequestParam code: String): Boolean {
         return true
     }
 
     @PostMapping("/signin")
-    override suspend fun signin(@RequestBody loginRe: String): SignInStatus {
+     fun signin(@RequestBody loginRe: String): SignInStatus {
 
         val executeQuery = sql.executeQuery(SysUser::class) {
             where(
@@ -60,7 +59,7 @@ class LoginController(private val sysUserService: SysUserService) : LoginApi {
      * @return [Boolean]
      */
     @PostMapping("/signup")
-    override suspend fun signup(@RequestBody userRegFormState: SysUserIso): Boolean {
+     fun signup(@RequestBody userRegFormState: SysUserIso): Boolean {
         val toJimmerEntity = userRegFormState.toJimmerEntity<SysUserIso, SysUser>()
 
         val save = sql.save(toJimmerEntity)
@@ -72,7 +71,7 @@ class LoginController(private val sysUserService: SysUserService) : LoginApi {
     }
 
     @PostMapping("/signinSecond")
-    override suspend fun signinSecond(@RequestBody secondLoginDTO: SecondLoginDTO): SecondLoginResponse {
+     fun signinSecond(@RequestBody secondLoginDTO: SecondLoginDTO): SecondLoginResponse {
         val findByUserRegFormState = sysUserService.findByUserRegFormState(secondLoginDTO) ?: throw BizException("用户不存在")
         val password = secondLoginDTO.userRegFormState.password
         if (findByUserRegFormState.password != password) {

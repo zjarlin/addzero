@@ -53,29 +53,60 @@ val KSPropertyDeclaration.label: String
     }
 
 
-fun KSType.getQualifiedTypeString(): String {
-    val type = this
+/**
+ * 获取 KSType 的基础类型字符串（简化版本）
+ * 只处理基本的类型解析，不进行复杂的类型映射
+ */
+fun KSType.getBasicQualifiedTypeString(): String {
+    return try {
+        val type = this
+        val qualifiedName = type.declaration.qualifiedName?.asString()
+        val simpleName = type.declaration.simpleName.asString()
 
-    // 基础类型名称
-    val baseType = type.declaration.qualifiedName?.asString() ?: type.declaration.simpleName.asString()
-
-    // 处理泛型参数
-    val genericArgs = if (type.arguments.isNotEmpty()) {
-        type.arguments.joinToString(", ") { arg ->
-            arg.type?.resolve()?.let {
-                it.declaration.qualifiedName?.asString() ?: it.declaration.simpleName.asString()
-            } ?: "*" // 通配符表示未知类型
+        // 如果类型名包含错误标记，返回简单类型名
+        if (simpleName.contains("<ERROR")) {
+            return simpleName.replace("<ERROR", "").replace(">", "")
         }
-    } else null
 
-    // 处理可空性
-    val nullableSuffix = if (type.nullability == Nullability.NULLABLE) "?" else ""
+        // 基础类型名称
+        val baseType = qualifiedName ?: simpleName
 
-    return when {
-        genericArgs != null -> "$baseType<$genericArgs>$nullableSuffix"
-        else -> "$baseType$nullableSuffix"
+        // 处理泛型参数
+        val genericArgs = if (type.arguments.isNotEmpty()) {
+            type.arguments.joinToString(", ") { arg ->
+                arg.type?.resolve()?.getBasicQualifiedTypeString() ?: "*"
+            }
+        } else null
+
+        // 处理可空性
+        val nullableSuffix = if (type.nullability == Nullability.NULLABLE) "?" else ""
+
+        when {
+            genericArgs != null -> "$baseType<$genericArgs>$nullableSuffix"
+            else -> "$baseType$nullableSuffix"
+        }
+    } catch (e: Exception) {
+        // 异常时返回简单类型名
+        this.declaration.simpleName.asString()
     }
 }
+
+/**
+ * 检查是否是 Jimmer 实体
+ */
+private fun KSType.isJimmerEntity(): Boolean {
+    return try {
+        val declaration = this.declaration as? KSClassDeclaration
+        declaration?.annotations?.any {
+            it.shortName.asString() == "Entity" &&
+            it.annotationType.resolve().declaration.qualifiedName?.asString()?.contains("jimmer") == true
+        } ?: false
+    } catch (e: Exception) {
+        false
+    }
+}
+
+
 
 
 fun genCode(pathname: String, toJsonStr: String, skipExistFile: Boolean = false) {
@@ -104,31 +135,25 @@ fun KSPropertyDeclaration.isEnumProperty(): Boolean {
 
 /**
  * 获取属性的全限定类型字符串（包含泛型参数和可空性）
+ * 简化版本，只进行基础类型解析
  */
 fun KSPropertyDeclaration.getQualifiedTypeString(): String {
-    val type = this.type.resolve()
-
-    return buildString {
-        // 基础类型名称
-        append(type.declaration.qualifiedName?.asString() ?: type.declaration.simpleName.asString())
-
-        // 处理泛型参数
-        if (type.arguments.isNotEmpty()) {
-            append("<")
-            append(type.arguments.joinToString(", ") { arg ->
-                arg.type?.resolve()?.let {
-                    it.declaration.qualifiedName?.asString() ?: it.declaration.simpleName.asString()
-                } ?: "*" // 通配符表示未知类型
-            })
-            append(">")
-        }
-
-        // 处理可空性
-        if (type.nullability == Nullability.NULLABLE) {
-            append("?")
+    return try {
+        val type = this.type.resolve()
+        type.getBasicQualifiedTypeString()
+    } catch (e: Exception) {
+        // 如果类型解析失败，尝试使用原始类型字符串
+        val rawTypeString = this.type.toString()
+        if (rawTypeString.contains("<ERROR") ||
+            rawTypeString.any { !it.isLetterOrDigit() && it != '.' && it != '_' && it != '$' && it != '<' && it != '>' && it != '?' && it != ',' && it != ' ' }) {
+            "kotlin.Any"
+        } else {
+            rawTypeString
         }
     }
 }
+
+
 
 /**
  * 获取属性的简化类型字符串（不包含包名，但保留泛型）
@@ -512,3 +537,19 @@ fun KSFunctionDeclaration.getCompleteSignature(): String {
         }
     }
 }
+
+/**
+ * 布尔值加法操作符，用于权重计算
+ * 将布尔值视为 0 和 1 进行加法运算
+ */
+operator fun Boolean.plus(other: Boolean): Int = this.toInt() + other.toInt()
+
+/**
+ * 布尔值转整数
+ */
+fun Boolean.toInt(): Int = if (this) 1 else 0
+
+/**
+ * 整数与布尔值加法操作符
+ */
+operator fun Int.plus(boolean: Boolean): Int = this + boolean.toInt()

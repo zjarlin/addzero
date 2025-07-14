@@ -1,7 +1,8 @@
 package com.addzero.web.modules.sys_role.entity
 
 import com.addzero.kmp.entity2form.annotation.LabelProp
-import com.addzero.kmp.generated.enums.EnumSysToggle
+// 临时注释掉，避免 KSP 处理顺序问题
+// import com.addzero.kmp.generated.enums.EnumSysToggle
 import com.addzero.web.infra.jimmer.base.baseentity.BaseEntity
 import com.addzero.web.modules.sys_user.entity.SysUser
 import org.babyfish.jimmer.sql.Entity
@@ -37,7 +38,9 @@ interface SysRole : BaseEntity {
     /**
      * 角色状态
      */
-    val status: EnumSysToggle
+    // 临时使用字符串类型，避免 KSP 处理顺序问题
+    // val status: EnumSysToggle
+    val status: String
 
     @ManyToMany
     val sysUsers: List<SysUser>

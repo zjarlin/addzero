@@ -1,6 +1,6 @@
 package com.addzero.web.modules.sys.login
 
-import com.addzero.kmp.api.CheckSignInput
+import com.addzero.kmp.entity.CheckSignInput
 
 fun identifyInputType(input: String): CheckSignInput {
     val emailRegex = Regex("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")

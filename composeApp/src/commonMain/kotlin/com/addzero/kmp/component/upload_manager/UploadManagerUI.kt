@@ -11,11 +11,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.addzero.kmp.component.form.formatFileSize
+import com.addzero.kmp.component.form.file.formatFileSize
 import com.addzero.kmp.core.ext.now
-import kotlinx.datetime.Instant
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 
 /**
  * 上传管理器UI组件

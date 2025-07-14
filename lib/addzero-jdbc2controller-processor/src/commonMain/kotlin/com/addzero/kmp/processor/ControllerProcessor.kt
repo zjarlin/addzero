@@ -1,5 +1,7 @@
 package com.addzero.kmp.processor
 
+import com.addzero.kmp.context.SettingContext
+import com.addzero.kmp.context.Settings
 import com.addzero.kmp.entity.*
 
 
@@ -17,6 +19,7 @@ class ControllerProcessor(
     private val environment: SymbolProcessorEnvironment
 ) : SymbolProcessor {
     override fun process(resolver: Resolver): List<KSAnnotated> {
+         SettingContext.initialize(environment.options)
 //        resolver.getde
         val tables = JdbcMetadataExtractor.initAndGetJdbcMetaDataTables(environment.options)
         // 通过KSP options获取JDBC配置
@@ -33,8 +36,8 @@ class ControllerProcessor(
     private fun generateFormFile(table: JdbcTableMetadata) {
         val tableName = table.tableName
         val entityName = tableName.toBigCamelCase()
-        val dir = environment.options["module.main.src.dir"]
-            ?: throw IllegalArgumentException("模块根目录未设置，请在build.gradle中配置")
+        val dir = SettingContext.settings.backendSourceDir
+        println("后端源码目录为: $dir")
 
         val pkgGang = "com/addzero/web/modules/$tableName/controller"
 

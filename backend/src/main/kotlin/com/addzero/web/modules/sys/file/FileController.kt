@@ -1,6 +1,6 @@
 package com.addzero.web.modules.sys.file
 
-import com.addzero.kmp.api.FileUploadResponse
+import com.addzero.kmp.entity.FileUploadResponse
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 

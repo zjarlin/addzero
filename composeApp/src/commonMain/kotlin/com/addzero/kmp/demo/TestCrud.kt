@@ -4,7 +4,7 @@
 //import androidx.compose.runtime.Composable
 //import com.addzero.kmp.annotation.Route
 //import com.addzero.kmp.core.ext.toJsonByKtx
-//import com.addzero.kmp.isomorphic.SysUserIso
+//import com.addzero.kmp.generated.isomorphic.SysUserIso
 //import com.addzero.kmp.viewmodel.CrudViewModel
 //import org.koin.compose.viewmodel.koinViewModel
 //

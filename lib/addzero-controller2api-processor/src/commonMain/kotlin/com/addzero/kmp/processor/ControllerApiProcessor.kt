@@ -1,8 +1,9 @@
 package com.addzero.kmp.processor
 
 import com.addzero.kmp.context.SettingContext
-import com.addzero.kmp.context.apiclientOutPutDir
+import com.addzero.kmp.context.SettingContext.settings
 import com.addzero.kmp.util.isJimmerEntity
+import com.addzero.kmp.processor.type.TypeMappingManager
 import com.google.devtools.ksp.processing.*
 import com.google.devtools.ksp.symbol.*
 import com.google.devtools.ksp.validate
@@ -36,12 +37,23 @@ class ControllerApiProcessor(
             return emptyList()
         }
 
-        // 第一阶段：收集元数据
+        // 第一阶段：收集元数据，使用 validate() 进行多轮处理
+        val invalidSymbols = mutableListOf<KSClassDeclaration>()
+
         controllerSymbols.forEach { controller ->
-            collectControllerMetadata(controller)
+
+            if (controller.validate()) {
+                // 符号有效，尝试收集元数据
+                collectControllerMetadata(controller)
+            } else {
+                // 符号无效，推迟到下一轮处理
+                logger.info("控制器 ${controller.simpleName.asString()} 暂时无法解析，推迟到下一轮处理")
+                invalidSymbols.add(controller)
+            }
         }
 
-        return controllerSymbols.filterNot { it.validate() }.toList()
+        // 返回无效的符号，让 KSP 在下一轮重新处理
+        return invalidSymbols
     }
 
     override fun finish() {
@@ -93,6 +105,8 @@ class ControllerApiProcessor(
         }
     }
 
+
+
     /**
      * 收集控制器元数据（第一阶段）
      */
@@ -129,12 +143,17 @@ class ControllerApiProcessor(
         val allFunctions = controller.getAllFunctions().toList()
         logger.info("Controller ${className} has ${allFunctions.size} total functions")
 
-        val springMvcFunctions = allFunctions.filter { it.isPublic() && it.hasSpringMvcAnnotation() }
-        logger.info("Found ${springMvcFunctions.size} Spring MVC annotated functions")
+        val springMvcFunctions = allFunctions.filter { it.isPublic() && it.hasSpringMvcAnnotation() && it.validate() }
+        logger.info("Found ${springMvcFunctions.size} valid Spring MVC annotated functions")
 
-        val methods = springMvcFunctions.map { function ->
-            logger.info("Processing method: ${function.simpleName.asString()}")
-            extractMethodMetadata(function, basePath)
+        val methods = springMvcFunctions.mapNotNull { function ->
+            try {
+                logger.info("Processing method: ${function.simpleName.asString()}")
+                extractMethodMetadata(function, basePath)
+            } catch (e: Exception) {
+                logger.warn("跳过方法 ${function.simpleName.asString()}: ${e.message}")
+                null
+            }
         }
 
         return ControllerMetadata(
@@ -156,11 +175,15 @@ class ControllerApiProcessor(
         val fullPath = if (basePath.isNotEmpty()) "$basePath${httpInfo.path}" else httpInfo.path
 
         // 提取参数（只收集字符串信息）
-        val parameters = function.parameters.mapNotNull { param ->
+        val parameters = function.parameters.map { param ->
             try {
-                val typeString = extractTypeString(param.type.resolve())
+                val paramName = param.name?.asString() ?: ""
+
+                // 使用类型映射管理器进行类型转换
+                val typeString = TypeMappingManager.mapParameterType(param)
+
                 ParameterMetadata(
-                    name = param.name?.asString() ?: "",
+                    name = paramName,
                     typeString = typeString,
                     isRequestBody = hasAnnotation(param, "RequestBody"),
                     isPathVariable = hasAnnotation(param, "PathVariable"),
@@ -168,20 +191,21 @@ class ControllerApiProcessor(
                     isRequestPart = hasAnnotation(param, "RequestPart")
                 )
             } catch (e: Exception) {
-                logger.error("处理参数 ${param.name?.asString()} 时发生错误: ${e.message}")
-                null
+                logger.error("处理参数 ${param.name?.asString()} 时发生严重错误: ${e.message}")
+                // 即使发生错误，也要保留参数，使用基本信息
+                ParameterMetadata(
+                    name = param.name?.asString() ?: "unknownParam",
+                    typeString = "Any",
+                    isRequestBody = hasAnnotation(param, "RequestBody"),
+                    isPathVariable = hasAnnotation(param, "PathVariable"),
+                    isRequestParam = hasAnnotation(param, "RequestParam"),
+                    isRequestPart = hasAnnotation(param, "RequestPart")
+                )
             }
         }
 
-        // 提取返回类型（只收集字符串信息）
-        val returnTypeString = try {
-            function.returnType?.resolve()?.let { resolvedType ->
-                extractTypeString(resolvedType)
-            } ?: "Unit"
-        } catch (e: Exception) {
-            logger.error("处理返回类型时发生错误: ${e.message}")
-            "Unit"
-        }
+        // 使用类型映射管理器进行返回类型转换
+        val returnTypeString = TypeMappingManager.mapReturnType(function)
 
         return MethodMetadata(
             name = methodName,
@@ -239,11 +263,10 @@ class ControllerApiProcessor(
             val declaration = type.declaration
             val qualifiedName = declaration.qualifiedName?.asString()
 
-            com.addzero.kmp.util.isJimmerEntity(declaration)
             // 检查是否为 Jimmer 实体，如果是则转换为同构体类型
             if (isJimmerEntity(declaration)) {
                 val entitySimpleName = declaration.simpleName.asString()
-                return "com.addzero.kmp.isomorphic.${entitySimpleName}Iso"
+                return "com.addzero.kmp.generated.isomorphic.${entitySimpleName}Iso"
             }
 
             // 特殊类型映射
@@ -298,6 +321,55 @@ class ControllerApiProcessor(
     }
 
     /**
+     * 转换原始类型字符串为合适的 Kotlin 类型
+     * 处理无法解析的类型，尝试转换为 Iso 类型或保持原样
+     */
+    private fun convertRawTypeString(rawTypeString: String): String {
+        // 移除泛型参数，获取基础类型名
+        val baseTypeName = rawTypeString.substringBefore('<').trim()
+
+        // 检查是否包含非ASCII字符（如中文），如果是则使用 Any 类型
+        if (baseTypeName.any { !it.isLetterOrDigit() && it != '.' && it != '_' && it != '$' }) {
+            logger.warn("类型名称包含特殊字符，使用 Any 类型: $baseTypeName")
+            return "kotlin.Any"
+        }
+
+        // 检查是否是已知的 DTO 类型，转换为 Iso 类型
+        return when {
+            // 如果是以 DTO 结尾的类型，转换为 Iso 类型
+            baseTypeName.endsWith("DTO") -> {
+                val entityName = baseTypeName.removeSuffix("DTO")
+                "com.addzero.kmp.generated.isomorphic.${entityName}Iso"
+            }
+
+            // 如果是以 Response 结尾的类型，转换为 Iso 类型
+            baseTypeName.endsWith("Response") -> {
+                val entityName = baseTypeName.removeSuffix("Response")
+                "com.addzero.kmp.generated.isomorphic.${entityName}Iso"
+            }
+
+            // 如果包含包名，提取简单类名并转换
+            baseTypeName.contains('.') -> {
+                val simpleName = baseTypeName.substringAfterLast('.')
+                when {
+                    simpleName.endsWith("DTO") -> {
+                        val entityName = simpleName.removeSuffix("DTO")
+                        "com.addzero.kmp.generated.isomorphic.${entityName}Iso"
+                    }
+                    simpleName.endsWith("Response") -> {
+                        val entityName = simpleName.removeSuffix("Response")
+                        "com.addzero.kmp.generated.isomorphic.${entityName}Iso"
+                    }
+                    else -> rawTypeString // 保持原样
+                }
+            }
+
+            // 其他情况保持原样
+            else -> rawTypeString
+        }
+    }
+
+    /**
      * 处理返回类型，特别处理ResponseEntity
      */
     private fun processReturnType(type: KSType): String {
@@ -337,8 +409,7 @@ class ControllerApiProcessor(
 
         try {
             // 从SettingContext获取配置
-            val settings = SettingContext.settings
-            val outputDir = settings.apiclientOutPutDir
+            val outputDir = settings.apiClientOutputDir
 
 
             logger.info("api客户端输出目录为: $outputDir")
@@ -375,7 +446,7 @@ class ControllerApiProcessor(
         try {
             val file = codeGenerator.createNewFile(
                 dependencies = Dependencies(false),
-                packageName = "com.addzero.kmp.api",
+                packageName = settings.apiClientPackageName,
                 fileName = apiClassName
             )
 
@@ -384,7 +455,7 @@ class ControllerApiProcessor(
                 outputStream.write(code.toByteArray())
             }
 
-            logger.info("Fallback: Generated Ktorfit interface to build directory: com.addzero.kmp.api.$apiClassName")
+            logger.info("Fallback: Generated Ktorfit interface to build directory: com.addzero.kmp.generated.api.$apiClassName")
         } catch (e: Exception) {
             logger.error("Fallback generation also failed: ${e.message}")
         }
@@ -479,7 +550,7 @@ class ControllerApiProcessor(
 //    }
 
     /**
-     * 收集需要导入的类型
+     * 收集需要导入的类型（安全版本，过滤错误类型）
      */
     private fun collectImports(controllerInfo: ControllerInfo): Set<String> {
         val imports = mutableSetOf<String>()
@@ -492,10 +563,10 @@ class ControllerApiProcessor(
 
         // 收集方法中使用的类型
         controllerInfo.methods.forEach { method ->
-            // 收集返回类型
+            // 收集返回类型（安全处理）
             if (method.returnType != "Unit" && method.returnType.contains(".")) {
                 val baseType = method.returnType.substringBeforeLast("<")
-                if (!baseType.startsWith("kotlin.")) {
+                if (isValidTypeForImport(baseType)) {
                     imports.add(baseType)
                 }
 
@@ -505,11 +576,11 @@ class ControllerApiProcessor(
                 }
             }
 
-            // 收集参数类型
+            // 收集参数类型（安全处理）
             method.parameters.forEach { param ->
                 if (param.type.contains(".")) {
                     val baseType = param.type.substringBeforeLast("<")
-                    if (!baseType.startsWith("kotlin.")) {
+                    if (isValidTypeForImport(baseType)) {
                         imports.add(baseType)
                     }
                 }
@@ -530,6 +601,16 @@ class ControllerApiProcessor(
         }
 
         return imports
+    }
+
+    /**
+     * 检查类型是否适合导入
+     */
+    private fun isValidTypeForImport(typeName: String): Boolean {
+        return !typeName.startsWith("kotlin.") &&
+               !typeName.contains("<ERROR") &&
+               !typeName.any { !it.isLetterOrDigit() && it != '.' && it != '_' && it != '$' } &&
+               typeName.isNotBlank()
     }
 
     /**
@@ -555,7 +636,7 @@ $importStatements
  * Ktorfit接口 - 由KSP自动生成
  * 原始Controller: ${controllerInfo.packageName}.${controllerInfo.originalClassName}
  * 基础路径: ${controllerInfo.basePath}
- * 输出目录: ${SettingContext.settings.apiclientOutPutDir}
+ * 输出目录: ${SettingContext.settings.apiClientOutputDir}
  */
 interface $apiClassName {
 

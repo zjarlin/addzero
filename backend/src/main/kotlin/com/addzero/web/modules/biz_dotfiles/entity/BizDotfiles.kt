@@ -36,7 +36,9 @@ public interface BizDotfiles : BaseEntity {
      */
 
 //    @Serialized
-    val osType: List<EnumOsType>
+    // 临时注释掉，避免 KSP 处理顺序问题
+    // val osType: List<EnumOsType>
+    val osType: List<String>
 
 
 //    @get:Schema(description = "操作系统")
@@ -72,7 +74,9 @@ public interface BizDotfiles : BaseEntity {
      * var=var
      */
     @Key
-    val defType: EnumShellDefType
+    // 临时使用字符串类型，避免 KSP 处理顺序问题
+    // val defType: EnumShellDefType
+    val defType: String
 
     /**
      *  名称
@@ -97,7 +101,9 @@ public interface BizDotfiles : BaseEntity {
      */
     @Key
     @Default("1")
-    val status: EnumSysToggle
+    // 临时使用字符串类型，避免 KSP 处理顺序问题
+    // val status: EnumSysToggle
+    val status: String
 
     /** 文件地址 */
     val fileUrl: String?

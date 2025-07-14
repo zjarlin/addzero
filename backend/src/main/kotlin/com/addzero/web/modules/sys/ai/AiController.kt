@@ -4,11 +4,10 @@ import cn.hutool.ai.model.deepseek.DeepSeekConfig
 import cn.hutool.ai.model.deepseek.DeepSeekService
 import cn.hutool.ai.model.doubao.DoubaoCommon
 import cn.hutool.ai.model.doubao.DoubaoService
-import com.addzero.kmp.api.视觉Request
+import com.addzero.kmp.entity.VisionRequest
 import com.addzero.kmp.entity.sys.ai.DeepSeekChatResponse
 import com.addzero.kmp.exp.BizException
 import org.springframework.ai.chat.client.ChatClient
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -67,16 +66,16 @@ class AiController(
     }
 
     @PostMapping("/chatVision")
-    fun 视觉(@RequestBody 视觉Request: 视觉Request): String? {
-        val (promt, images) = 视觉Request
+    fun chatVision(@RequestBody visionRequest: VisionRequest): String? {
+        val (promt, images) = visionRequest
         val chatVision = doubaoService.chatVision(promt, images, DoubaoCommon.DoubaoVision.HIGH.detail)
         return chatVision
     }
 
        @PostMapping("/genVideo")
-    fun genVideo(@RequestBody 视觉Request: 视觉Request): String? {
+    fun genVideo(@RequestBody visionRequest: VisionRequest): String? {
 
-        val (promt, images) = 视觉Request
+        val (promt, images) = visionRequest
 
         if (images.size > 1) {
             throw BizException("暂不支持批量处理")

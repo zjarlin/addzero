@@ -25,7 +25,7 @@ class ChatController(
 ) {
 
 
-    @GetMapping("dbatest")
+    @GetMapping("/dbatest")
     @Operation(summary = "设计表test")
     fun jdaoisdj(): FormDTO? {
         val ask = AiUtil(

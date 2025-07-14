@@ -16,10 +16,7 @@ import com.addzero.kmp.component.high_level.AddDualCardLayout
 import com.addzero.kmp.component.high_level.AddLazyList
 import com.addzero.kmp.component.search_bar.AddSearchBar
 import com.addzero.kmp.compose.icons.IconKeys
-import com.addzero.kmp.forms.SysDictForm
-import com.addzero.kmp.forms.SysDictItemForm
-import com.addzero.kmp.forms.rememberSysDictFormState
-import com.addzero.kmp.forms.rememberSysDictItemFormState
+import com.addzero.kmp.generated.forms.*
 import com.addzero.kmp.annotation.Route
 
 import com.addzero.kmp.viewmodel.SysDictViewModel

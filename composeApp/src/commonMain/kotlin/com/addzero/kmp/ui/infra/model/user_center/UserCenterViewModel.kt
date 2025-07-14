@@ -4,9 +4,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.addzero.kmp.api.ApiProvider.userCenterApi
 import com.addzero.kmp.core.network.AddHttpClient
 import com.addzero.kmp.ext.api
+import com.addzero.kmp.generated.api.ApiProvider.sysUserCenterApi
+import com.addzero.kmp.generated.api.SysUserCenterApi
 import com.addzero.kmp.viewmodel.LoginViewModel
 import org.koin.android.annotation.KoinViewModel
 
@@ -40,7 +41,7 @@ class UserCenterViewModel(
     // 从服务加载用户数据
     fun loadUserData() {
         api(isLoading, { isLoading = it }) {
-            val jsonResponse = userCenterApi.getCurrentUser()
+            val jsonResponse = sysUserCenterApi.getCurrentUser()
             loginViewModel.currentToken = jsonResponse
         }
     }
@@ -58,7 +59,7 @@ class UserCenterViewModel(
 
         api(isLoading, { isLoading = it }) {
 
-            val success = userCenterApi.updatePassword(newPassword)
+            val success = sysUserCenterApi.updatePassword(newPassword)
 
 
             if (success) {
@@ -77,7 +78,8 @@ class UserCenterViewModel(
     fun logout() {
         api {
             loginViewModel.logout()
-            val logout = userCenterApi.logout()
+            val logout = sysUserCenterApi.logout()
+
 
             AddHttpClient.setToken(null)
 

@@ -14,7 +14,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.addzero.kmp.component.button.AddEditDeleteButton
-import com.addzero.kmp.isomorphic.SysDictIso
+import com.addzero.kmp.generated.isomorphic.SysDictIso
 
 /**
  * 字典类型卡片

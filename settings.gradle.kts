@@ -41,37 +41,78 @@ dependencyResolutionManagement {
     }
 
 }
-include(":backend")
-include(":composeApp")
-include(":shared")
+
+
+
+// 扩展函数：简化模块声明
+fun String.useFile(submodules: List<String> = emptyList()) {
+    if (submodules.isEmpty()) {
+        include(this)
+        findProject(":$this")?.name = this
+    } else {
+        submodules.forEach { submodule ->
+            val fullPath = "$this:$submodule"
+            include(fullPath)
+            findProject(":$fullPath")?.name = submodule
+        }
+    }
+}
+
+fun Pair<String, List<String>>.useFile() {
+    first.useFile(second)
+}
+
+// 主要模块
+listOf("backend", "composeApp", "shared").forEach { module ->
+    include(module)
+}
+
+// lib 根模块
 include("lib")
-include("lib:addzero-route-processor")
-findProject(":lib:addzero-route-processor")?.name = "addzero-route-processor"
-include("lib:addzero-route-core")
-findProject(":lib:addzero-route-core")?.name = "addzero-route-core"
-include("lib:addzero-controller2api-processor")
-findProject(":lib:addzero-controller2api-processor")?.name = "addzero-controller2api-processor"
-include("lib:addzero-ksp-support")
-findProject(":lib:addzero-ksp-support")?.name = "addzero-ksp-support"
-include("lib:addzero-ksp-support-jdbc")
-findProject(":lib:addzero-ksp-support-jdbc")?.name = "addzero-ksp-support-jdbc"
-include("lib:addzero-jdbc2controller-processor")
-findProject(":lib:addzero-jdbc2controller-processor")?.name = "addzero-jdbc2controller-processor"
-include("lib:addzero-entity2form-processor")
-findProject(":lib:addzero-entity2form-processor")?.name = "addzero-entity2form-processor"
-include("lib:addzero-jdbc2enum-processor")
-findProject(":lib:addzero-jdbc2enum-processor")?.name = "addzero-jdbc2enum-processor"
-include("lib:addzero-apiprovider-processor")
-findProject(":lib:addzero-apiprovider-processor")?.name = "addzero-apiprovider-processor"
-include("lib:addzero-tool")
-findProject(":lib:addzero-tool")?.name = "addzero-tool"
 
-include("lib:addzero-compose-props-annotations")
-findProject(":lib:addzero-compose-props-annotations")?.name = "addzero-compose-props-annotations"
-include("lib:addzero-compose-props-processor")
-findProject(":lib:addzero-compose-props-processor")?.name = "addzero-compose-props-processor"
+// KSP 支持模块
+("lib" to listOf(
+    "addzero-ksp-support",
+    "addzero-ksp-support-jdbc"
+)).useFile()
 
-//include("lib:addzero-network-starter")
+// 实体分析与代码生成
+("lib" to listOf(
+    "addzero-entity2analysed-support",
+    "addzero-entity2iso-processor",
+    "addzero-entity2form-processor",
+    "addzero-entity2form-core"
+)).useFile()
 
-include("lib:addzero-entity2form-core")
-//findProject(":lib:addzero-entity2form-core")?.name = "addzero-entity2form-core"
+// JDBC 相关处理器
+("lib" to listOf(
+    "addzero-jdbc2controller-processor",
+    "addzero-jdbc2enum-processor"
+)).useFile()
+
+// API 相关处理器
+("lib" to listOf(
+    "addzero-controller2api-processor",
+    "addzero-controller2iso2dataprovider-processor",
+    "addzero-apiprovider-processor"
+)).useFile()
+
+// 路由模块
+("lib" to listOf(
+    "addzero-route-processor",
+    "addzero-route-core"
+)).useFile()
+
+// Compose 相关模块
+("lib" to listOf(
+    "addzero-compose-props-annotations",
+    "addzero-compose-props-processor"
+)).useFile()
+
+// 工具模块
+("lib" to listOf(
+    "addzero-tool"
+)).useFile()
+
+// 网络模块（暂时注释）
+// ("lib" to listOf("addzero-network-starter")).useFile()

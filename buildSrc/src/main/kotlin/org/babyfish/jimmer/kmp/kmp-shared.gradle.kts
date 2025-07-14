@@ -83,9 +83,9 @@ android {
 
 }
 
-tasks.withType<KotlinCompilationTask<*>>().all {
-    val kspCommonMainKotlinMetadata = "kspCommonMainKotlinMetadata"
-    if (name != kspCommonMainKotlinMetadata) {
-        dependsOn(kspCommonMainKotlinMetadata)
-    }
-}
+//tasks.withType<KotlinCompilationTask<*>>().all {
+//    val kspCommonMainKotlinMetadata = "kspCommonMainKotlinMetadata"
+//    if (name != kspCommonMainKotlinMetadata) {
+//        dependsOn(kspCommonMainKotlinMetadata)
+//    }
+//}

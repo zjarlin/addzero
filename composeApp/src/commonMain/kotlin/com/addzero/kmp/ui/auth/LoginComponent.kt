@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.addzero.kmp.component.button.AddIconButton
-import com.addzero.kmp.component.form.AddTextField
+import com.addzero.kmp.component.form.text.AddTextField
 import com.addzero.kmp.viewmodel.LoginViewModel
 import org.koin.compose.viewmodel.koinViewModel
 

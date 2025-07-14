@@ -4,7 +4,7 @@ import com.google.devtools.ksp.processing.Dependencies
 import com.google.devtools.ksp.processing.KSPLogger
 
 /**
- * API 提供者代码生成器
+ * API 提供者代码生成器 (shared模块使用
  * 
  * 负责根据服务元数据生成 ApiProvider 类
  */
@@ -14,7 +14,7 @@ class ApiProviderCodeGenerator(
 ) {
     
     companion object {
-        private const val PACKAGE_NAME = "com.addzero.kmp.api"
+        private const val PACKAGE_NAME = "com.addzero.kmp.generated.api"
         private const val PROVIDER_NAME = "ApiProvider"
     }
     
@@ -41,6 +41,7 @@ class ApiProviderCodeGenerator(
         val classContent = """
             package $PACKAGE_NAME
             import com.addzero.kmp.core.network.AddHttpClient.ktorfit
+           import com.addzero.kmp.generated.api.* 
             
             /**
              * 服务实例提供者

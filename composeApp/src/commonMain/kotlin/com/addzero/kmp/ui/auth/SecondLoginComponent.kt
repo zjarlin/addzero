@@ -17,11 +17,11 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.addzero.kmp.api.SignInStatus
+import com.addzero.kmp.entity.SignInStatus
 import com.addzero.kmp.component.button.AddIconButton
-import com.addzero.kmp.component.form.AddPasswordField
-import com.addzero.kmp.component.form.AddTextField
-import com.addzero.kmp.enums.RegexEnum
+import com.addzero.kmp.component.form.text.AddPasswordField
+import com.addzero.kmp.component.form.text.AddTextField
+import com.addzero.kmp.core.validation.RegexEnum
 import com.addzero.kmp.viewmodel.LoginViewModel
 import org.koin.compose.viewmodel.koinViewModel
 

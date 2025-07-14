@@ -1,7 +1,7 @@
 package com.addzero.web.modules.sys_dept.controller
 
 import com.addzero.common.consts.sql
-import com.addzero.kmp.isomorphic.SysDeptIso
+import com.addzero.kmp.generated.isomorphic.SysDeptIso
 import com.addzero.kmp.jdbc.meta.public.table.impl.ISysUserImpl
 import com.addzero.web.infra.jimmer.base.BaseTreeApi
 import com.addzero.web.infra.jimmer.toJimmerEntity

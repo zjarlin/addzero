@@ -1,3 +1,8 @@
+import org.babyfish.jimmer.Vars
+import org.babyfish.jimmer.Vars.commonMainKspBuildMetaDataDir
+import org.babyfish.jimmer.Vars.commonMainSourceDir
+import org.babyfish.jimmer.Vars.jvmMainKspBuildMetaDataDir
+import org.babyfish.jimmer.Vars.jvmMainSourceDir
 
 plugins {
 //    id("com.google.devtools.ksp")
@@ -17,14 +22,105 @@ allOpen {
 }
 
 
-
 ksp {
-
 
     val srcDir = sourceSets.main.get().kotlin.srcDirs.first().absolutePath
     val resourceDir = sourceSets.main.get().resources.srcDirs.first().absolutePath
-    arg("module.main.src.dir", srcDir)
-    arg("module.main.resource.dir", resourceDir)
+    // 计算各模块目录（使用常量字符串）
+
+
+    val backendProject = project(":backend")
+
+    val composeProject = project(":composeApp")
+    val sharedProject = project(":shared")
+
+
+    val backendSourceDir = backendProject.projectDir.resolve(jvmMainSourceDir).absolutePath
+    val backendBuildDir = backendProject.projectDir.resolve(jvmMainKspBuildMetaDataDir).absolutePath
+
+    val composeSourceDir = composeProject.projectDir.resolve(commonMainSourceDir).absolutePath
+    val composeBuildDir = composeProject.projectDir.resolve(commonMainKspBuildMetaDataDir).absolutePath
+
+    val sharedSourceDir = sharedProject.projectDir.resolve(commonMainSourceDir).absolutePath
+    val sharedBuildDir = sharedProject.projectDir.resolve(commonMainKspBuildMetaDataDir).absolutePath
+    // 模块目录配置（小驼峰命名）
+    arg("moduleMainSrcDir", srcDir)
+    arg("moduleMainResourceDir", resourceDir)
+
+
+
+    arg("backendSourceDir", backendSourceDir)
+    arg("backendBuildDir", backendBuildDir)
+
+    arg("composeSourceDir", composeSourceDir)
+    arg("composeBuildDir", composeBuildDir)
+    arg("sharedSourceDir", sharedSourceDir)
+    arg("sharedBuildDir", sharedBuildDir)
+
+    // 包名配置（小驼峰命名，outputDir 由扩展属性计算）
+    arg("isomorphicPackageName", "com.addzero.kmp.generated.isomorphic")
+    arg("formPackageName", "com.addzero.kmp.generated.forms")
+    arg("enumOutputPackage", "com.addzero.kmp.generated.enums")
+    arg("apiClientPackageName", "com.addzero.kmp.generated.api")
+    arg("iso2DataProviderPackage", "com.addzero.kmp.generated.forms.dataprovider")
+
+
+    // JDBC 配置（小驼峰命名）
+    arg("jdbcUrl", "jdbc:postgresql://localhost:15432/postgres")
+    arg("jdbcUsername", "postgres")
+    arg("jdbcPassword", "postgres")
+    arg("jdbcSchema", "public")
+    arg("jdbcDriver", "org.postgresql.Driver")
+    arg("outputPackage", "com.addzero.kmp.jdbc.meta")
+    // 可选：指定要排除的表（逗号分隔）
+    arg("excludeTables", "flyway_schema_history,vector_store")
+
+    // 字典表配置（小驼峰命名）
+    arg("dictTableName", "sys_dict")
+    arg("dictIdColumn", "id")
+    arg("dictCodeColumn", "dict_code")
+    arg("dictNameColumn", "dict_name")
+    arg("dictItemTableName", "sys_dict_item")
+    arg("dictItemForeignKeyColumn", "dict_id")
+    arg("dictItemCodeColumn", "item_value")
+    arg("dictItemNameColumn", "item_text")
+
+    // 其他配置（小驼峰命名）
+    arg("skipExistsFiles", "false")
+
+    //同构体类名后缀
+    arg("isomorphicClassSuffix", "Iso")
+
+    //autoddl ksp参数
+
+    arg("dbType", "pg") //可选项仅有mysql oracle pg dm h2
+    arg("idType", "bigint")
+    arg("id", "id")
+    arg("createBy", "create_by")
+    arg("updateBy", "update_by")
+    arg("createTime", "create_time")
+    arg("updateTime", "update_time")
+
+    arg("metaJsonSavePath", "db/autoddl/meta")
+    arg("metaJsonSaveName", "jimmer_ddlcontext.json")
+
+    //建议检查生成的sql后放到flyway的规范目录(以下为resource资源目录的相对目录)
+    arg("sqlSavePath", "db/autoddl")
+
+
+    // JDBC元数据处理器配置
+    arg("jdbcUrl", "jdbc:postgresql://localhost:15432/postgres")
+    arg("jdbcUsername", "postgres")
+    arg("jdbcPassword", "postgres")
+    arg("jdbcSchema", "public")
+    arg("jdbcDriver", "org.postgresql.Driver")
+    arg("outputPackage", "com.addzero.kmp.jdbc.meta")
+
+
+    arg("jimmer.dto.dirs", "src/main/kotlin")
+    arg("jimmer.dto.defaultNullableInputModifier", "dynamic")
+    arg("jimmer.dto.mutable", "true")
+
 
 }
 
@@ -37,21 +133,31 @@ ksp {
 dependencies {
     //通用库
     implementation(projects.lib.addzeroTool)
-    //通用ksp 解析Controller转为ktorfitApi
-    ksp(projects.lib.addzeroController2apiProcessor)
-    //通用ksp jdbc元数据转Controller
-    ksp(projects.lib.addzeroJdbc2controllerProcessor)
-    //内部使用:后台实体转composeApp form
-    ksp(projects.lib.addzeroEntity2formProcessor)
+
     //实体表单核心注解
     implementation(projects.lib.addzeroEntity2formCore)
+
     //内部使用:共享业务逻辑
     implementation(projects.shared)
 
 
+    // 阶段2: 同构体生成（依赖枚举）
+    ksp(projects.lib.addzeroEntity2isoProcessor)
+
+    //jdbc元数据转controller
+    ksp(projects.lib.addzeroJdbc2controllerProcessor)
+
+    // 阶段3: 依赖同构体的处理器
+    ksp(projects.lib.addzeroController2apiProcessor)
+    ksp(projects.lib.addzeroEntity2formProcessor)
+
+    // 阶段4: 控制器转 Iso2DataProvider（生成到 shared 编译目录）
+    ksp(projects.lib.addzeroController2iso2dataproviderProcessor)
+
+
 // 引入 Spring AI 相关依赖
     implementation(libs.spring.ai.starter.mcp.server.webflux)
-       // 引入 BOM（管理版本）
+    // 引入 BOM（管理版本）
     implementation(platform(libs.spring.ai.bom))
 //   implementation platform("org.springframework.ai:spring-ai-bom:1.0.0-M7")
 // Spring AI PGVector Store Starter

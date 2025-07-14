@@ -1,7 +1,7 @@
-package com.addzero.kmp.api.mavenapi
+package com.addzero.kmp.generated.api.mavenapi
 
-import com.addzero.kmp.api.mavenapi.MavenCentralApi.getLatestVersion
-import com.addzero.kmp.api.mavenapi.entity.MavenRes
+import com.addzero.kmp.generated.api.mavenapi.MavenCentralApi.getLatestVersion
+import com.addzero.kmp.generated.api.mavenapi.entity.MavenRes
 import com.addzero.kmp.network.apiClient
 import io.ktor.client.call.*
 import io.ktor.client.request.*

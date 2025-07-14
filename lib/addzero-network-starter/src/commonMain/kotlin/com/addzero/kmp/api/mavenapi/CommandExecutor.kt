@@ -1,4 +1,4 @@
-//package com.addzero.kmp.api.mavenapi
+//package com.addzero.kmp.generated.api.mavenapi
 //
 //import java.io.BufferedReader
 //import java.io.InputStreamReader
