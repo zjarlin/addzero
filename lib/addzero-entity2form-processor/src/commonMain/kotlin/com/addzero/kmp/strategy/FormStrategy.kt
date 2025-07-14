@@ -88,7 +88,7 @@ object FormStrategyManager {
      * 生成代码
      */
     fun generateCode(property: KSPropertyDeclaration): String {
-        println("策略有${strategies.size}个")
+//        println("策略有${strategies.size}个")
 
         // 使用函数式编程风格：计算权重并找到最大权重的策略
         val bestStrategyWithWeight = strategies

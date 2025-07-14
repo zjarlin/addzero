@@ -26,7 +26,6 @@ import com.addzero.kmp.component.form.date.DateType
 import com.addzero.kmp.component.form.switch.AddSwitchField
 import com.addzero.kmp.component.form.selector.AddGenericSingleSelector
 import com.addzero.kmp.component.form.selector.AddGenericMultiSelector
-import com.addzero.kmp.component.form.selector.AddEnumSelector
 import com.addzero.kmp.core.ext.parseObjectByKtx
 import com.addzero.kmp.core.validation.RegexEnum
 import com.addzero.kmp.generated.isomorphic.*

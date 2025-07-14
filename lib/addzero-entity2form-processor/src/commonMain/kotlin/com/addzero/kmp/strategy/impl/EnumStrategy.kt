@@ -38,12 +38,13 @@ object EnumStrategy : FormStrategy {
 
         return """
             |        ${entityClassName}FormProps.$name to {
-            |            AddEnumSelector(
+            |            AddGenericSingleSelector(
             |                value = state.value.$name,
             |                onValueChange = { state.value = state.value.copy($name = it) },
-            |                label = $label,
-            |                enumClass = $typeName::class,
-            |                isRequired = $isRequired
+            |                placeholder = $label,
+            |                dataProvider = { $typeName.entries },
+            |                getId = { it.name },
+            |                getLabel = { it.name }
             |            )
             |        }
         """.trimMargin()
@@ -100,11 +101,10 @@ object EnumListStrategy : FormStrategy {
             |            AddGenericMultiSelector(
             |                value = state.value.$name ?: emptyList(),
             |                onValueChange = { state.value = state.value.copy($name = it) },
-            |                label = $label,
-            |                options = $enumTypeName.entries.toList(),
+            |                placeholder = $label,
+            |                dataProvider = { $enumTypeName.entries },
             |                getId = { it.name },
-            |                getLabel = { it.name },
-            |                isRequired = $isRequired
+            |                getLabel = { it.name }
             |            )
             |        }
         """.trimMargin()

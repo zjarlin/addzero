@@ -5,6 +5,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.addzero.kmp.generated.enums.EnumOsType
+import com.addzero.kmp.enums.EnumUtils
+import com.addzero.kmp.enums.EnumUtils.getEnumValues
 import kotlin.reflect.KClass
 
 /**
@@ -13,9 +16,9 @@ import kotlin.reflect.KClass
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun <T : Enum<T>> AddEnumSelector(
+inline fun <reified T : Enum<T>> AddEnumSelector(
     value: T?,
-    onValueChange: (T?) -> Unit,
+    crossinline onValueChange: (T?) -> Unit,
     label: String,
     isRequired: Boolean = false,
     enabled: Boolean = true,
@@ -25,9 +28,10 @@ fun <T : Enum<T>> AddEnumSelector(
 ) {
     var expanded by remember { mutableStateOf(false) }
     
-    // 获取所有枚举值
+    // 获取所有枚举值（KMP 兼容方式）
     val enumValues = remember(enumClass) {
-        enumClass.java.enumConstants?.toList() ?: emptyList()
+        val enumValues = getEnumValues<T>()
+        enumValues
     }
     
     Column(modifier = modifier) {

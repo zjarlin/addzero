@@ -37,7 +37,7 @@ class ControllerProcessor(
         val tableName = table.tableName
         val entityName = tableName.toBigCamelCase()
         val dir = SettingContext.settings.backendSourceDir
-        println("后端源码目录为: $dir")
+//        println("后端源码目录为: $dir")
 
         val pkgGang = "com/addzero/web/modules/$tableName/controller"
 

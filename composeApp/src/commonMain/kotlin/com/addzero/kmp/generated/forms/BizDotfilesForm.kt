@@ -26,7 +26,6 @@ import com.addzero.kmp.component.form.date.DateType
 import com.addzero.kmp.component.form.switch.AddSwitchField
 import com.addzero.kmp.component.form.selector.AddGenericSingleSelector
 import com.addzero.kmp.component.form.selector.AddGenericMultiSelector
-import com.addzero.kmp.component.form.selector.AddEnumSelector
 import com.addzero.kmp.core.ext.parseObjectByKtx
 import com.addzero.kmp.core.validation.RegexEnum
 import com.addzero.kmp.generated.isomorphic.*
@@ -98,12 +97,13 @@ fun BizDotfilesFormOriginal(
             )
         },
         BizDotfilesFormProps.osStructure to {
-            AddEnumSelector(
+            AddGenericSingleSelector(
                 value = state.value.osStructure,
                 onValueChange = { state.value = state.value.copy(osStructure = it) },
-                label = "系统架构arm64=arm64x86=x86不限=不限",
-                enumClass = EnumShellPlatforms::class,
-                isRequired = false
+                placeholder = "系统架构arm64=arm64x86=x86不限=不限",
+                dataProvider = { EnumShellPlatforms.entries },
+                getId = { it.name },
+                getLabel = { it.name }
             )
         },
         BizDotfilesFormProps.defType to {
