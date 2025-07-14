@@ -38,7 +38,7 @@ data class UploadTask(
     val progress: Float = 0f,                         // 上传进度 0-1
     val status: UploadTaskStatus = UploadTaskStatus.PENDING,
     val errorMessage: String? = null,                 // 错误信息
-    val createTime: LocalDateTime = LocalDateTime.now(),
+    val createTime: LocalDateTime = now,
     val completeTime: LocalDateTime? = null
 ) {
     // 计算上传速度等辅助属性可以在这里添加

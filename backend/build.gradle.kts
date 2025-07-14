@@ -131,6 +131,8 @@ ksp {
 
 
 dependencies {
+    implementation(libs.kotlinx.datetime)
+
     //通用库
     implementation(projects.lib.addzeroTool)
     //天气库

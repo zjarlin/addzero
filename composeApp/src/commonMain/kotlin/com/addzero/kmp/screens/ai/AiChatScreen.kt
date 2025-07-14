@@ -9,13 +9,25 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Palette
+
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Replay
+import androidx.compose.material.icons.filled.ContentCopy
+import androidx.compose.material.icons.filled.Lightbulb
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.text.font.FontWeight as ComposeFontWeight
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,16 +36,16 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
-import com.addzero.kmp.component.background.ChatBackground
-import com.addzero.kmp.component.background.ChatBackgroundSelectorDialog
+
 import com.addzero.kmp.component.text.SafeSelectionContainer
+import com.addzero.kmp.settings.SettingContext4Compose
 import com.addzero.kmp.settings.SettingContext4Compose.AI_AVATAR_1
+import com.addzero.kmp.settings.SettingContext4Compose.AI_DESCRIPTION
 import com.addzero.kmp.settings.SettingContext4Compose.AI_WELCOME_MSG
-import com.addzero.kmp.viewmodel.ChatBackgroundViewModel
+
 import com.addzero.kmp.viewmodel.ChatViewModel
 import com.mikepenz.markdown.m3.Markdown
 import kotlinx.coroutines.delay
@@ -62,7 +74,7 @@ fun AiChatScreen() {
 @Composable
 private fun AiChatScreenContent() {
     val chatViewModel = koinViewModel<ChatViewModel>()
-    val backgroundViewModel = koinViewModel<ChatBackgroundViewModel>()
+
     val scrollState = rememberScrollState()
     val coroutineScope = rememberCoroutineScope()
     var input by remember { mutableStateOf("") }
@@ -77,8 +89,7 @@ private fun AiChatScreenContent() {
         ), label = "heartBeat"
     )
 
-    ChatBackground(
-        config = backgroundViewModel.currentBackground,
+    androidx.compose.material3.Surface(
         modifier = Modifier
             .width(420.dp)
             .fillMaxHeight()
@@ -87,7 +98,8 @@ private fun AiChatScreenContent() {
                 shape = RoundedCornerShape(topStart = 24.dp, bottomStart = 24.dp),
                 clip = false
             )
-            .clip(RoundedCornerShape(topStart = 24.dp, bottomStart = 24.dp))
+            .clip(RoundedCornerShape(topStart = 24.dp, bottomStart = 24.dp)),
+        color = MaterialTheme.colorScheme.surface
     ) {
         Column(
             modifier = Modifier
@@ -99,7 +111,6 @@ private fun AiChatScreenContent() {
             LabubuTopBar(
                 onClose = { chatViewModel.showChatBot = false },
                 onNewChat = { chatViewModel.startNewChat() },
-                onBackgroundSettings = { backgroundViewModel.showSelector() },
                 heartBeat = heartBeat
             )
             // Labubu风格的聊天消息区 - 使用SafeSelectionContainer包装
@@ -111,6 +122,7 @@ private fun AiChatScreenContent() {
                     scrollState = scrollState,
                     isAiThinking = chatViewModel.isAiThinking,
                     onRetryMessage = { messageId -> chatViewModel.retryMessage(messageId) },
+                    onRetryUserMessage = { message -> chatViewModel.sendMessage(message) },
                     retryingMessageId = chatViewModel.retryingMessageId,
                     modifier = Modifier.fillMaxSize()
                 )
@@ -122,6 +134,16 @@ private fun AiChatScreenContent() {
                     scrollState.animateScrollTo(scrollState.maxValue)
                 }
             }
+            // 常用提示词区域（仅在没有消息时显示）
+            if (chatViewModel.chatMessages.isEmpty()) {
+                LabubuPromptSuggestions(
+                    onPromptSelected = { prompt ->
+                        input = prompt
+                    },
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                )
+            }
+
             // Labubu风格的输入区
             LabubuInputArea(
                 input = input,
@@ -137,11 +159,7 @@ private fun AiChatScreenContent() {
         }
     }
 
-    // 背景选择器对话框
-    ChatBackgroundSelectorDialog(
-        backgroundViewModel = backgroundViewModel,
-        onDismiss = { backgroundViewModel.hideSelector() }
-    )
+
 }
 
 // Labubu风格的顶部栏
@@ -149,21 +167,13 @@ private fun AiChatScreenContent() {
 private fun LabubuTopBar(
     onClose: () -> Unit,
     onNewChat: () -> Unit,
-    onBackgroundSettings: () -> Unit,
     heartBeat: Float
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(72.dp)
-            .background(
-                Brush.horizontalGradient(
-                    colors = listOf(
-                        LabubuColors.PrimaryPink,
-                        LabubuColors.SecondaryPurple
-                    )
-                )
-            )
+            .background(MaterialTheme.colorScheme.primary)
             .padding(horizontal = 20.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -173,10 +183,9 @@ private fun LabubuTopBar(
                 .size(40.dp)
                 .scale(heartBeat)
                 .background(
-                    Color.White,
+                    MaterialTheme.colorScheme.surface,
                     CircleShape
-                )
-                .border(2.dp, LabubuColors.AccentYellow, CircleShape),
+                ),
             contentAlignment = Alignment.Center
         ) {
 
@@ -192,41 +201,23 @@ private fun LabubuTopBar(
 
         Column {
             Text(
-                text = "Labubu AI",
+                text = SettingContext4Compose.AI_NAME,
                 style = MaterialTheme.typography.titleMedium.copy(
-                    fontWeight = FontWeight.Bold,
+                    fontWeight = ComposeFontWeight.Bold,
                     fontSize = 18.sp
                 ),
-                color = Color.White
+                color = MaterialTheme.colorScheme.onPrimary
             )
             Text(
-                text = "在线 • 随时为您服务",
+                text = AI_DESCRIPTION,
                 style = MaterialTheme.typography.bodySmall,
-                color = Color.White.copy(alpha = 0.8f)
+                color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
             )
         }
 
         Spacer(modifier = Modifier.weight(1f))
 
-        // 背景设置按钮
-        IconButton(
-            onClick = onBackgroundSettings,
-            modifier = Modifier
-                .size(36.dp)
-                .background(
-                    Color.White.copy(alpha = 0.2f),
-                    CircleShape
-                )
-        ) {
-            Icon(
-                Icons.Default.Palette,
-                contentDescription = "背景设置",
-                tint = Color.White,
-                modifier = Modifier.size(20.dp)
-            )
-        }
 
-        Spacer(modifier = Modifier.width(8.dp))
 
         // 新聊天按钮 - 带旋转动画
         var isPressed by remember { mutableStateOf(false) }
@@ -239,12 +230,7 @@ private fun LabubuTopBar(
             modifier = Modifier
                 .size(36.dp)
                 .background(
-                    Brush.radialGradient(
-                        colors = listOf(
-                            LabubuColors.AccentYellow.copy(alpha = 0.8f),
-                            Color.White.copy(alpha = 0.3f)
-                        )
-                    ),
+                    MaterialTheme.colorScheme.secondary.copy(alpha = 0.8f),
                     CircleShape
                 )
         ) {
@@ -257,7 +243,7 @@ private fun LabubuTopBar(
                 Icon(
                     if (pressed) Icons.Default.Refresh else Icons.Default.Add,
                     contentDescription = "新聊天",
-                    tint = Color.White,
+                    tint = MaterialTheme.colorScheme.onSecondary,
                     modifier = Modifier
                         .size(20.dp)
                         .scale(if (pressed) 1.2f else 1f)
@@ -281,14 +267,14 @@ private fun LabubuTopBar(
             modifier = Modifier
                 .size(36.dp)
                 .background(
-                    Color.White.copy(alpha = 0.2f),
+                    MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.2f),
                     CircleShape
                 )
         ) {
             Icon(
                 Icons.Default.Close,
                 contentDescription = "关闭",
-                tint = Color.White,
+                tint = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier.size(20.dp)
             )
         }
@@ -303,6 +289,7 @@ private fun LabubuChatMessages(
     scrollState: ScrollState,
     isAiThinking: Boolean = false,
     onRetryMessage: (String) -> Unit = {},
+    onRetryUserMessage: (String) -> Unit = {},
     retryingMessageId: String? = null,
     modifier: Modifier = Modifier
 ) {
@@ -324,7 +311,9 @@ private fun LabubuChatMessages(
                 chatMessage = chatMessage,
                 animationDelay = index * 100,
                 onRetryMessage = onRetryMessage,
-                isRetrying = retryingMessageId == chatMessage.id
+                onRetryUserMessage = onRetryUserMessage,
+                isRetrying = retryingMessageId == chatMessage.id,
+                isAiThinking = isAiThinking
             )
             Spacer(modifier = Modifier.height(12.dp))
         }
@@ -379,7 +368,7 @@ private fun LabubuWelcomeMessage(welcomMsg: String) {
         Text(
             text = welcomMsg,
             style = MaterialTheme.typography.headlineSmall.copy(
-                fontWeight = FontWeight.Bold
+                fontWeight = ComposeFontWeight.Bold
             ),
             color = LabubuColors.DarkText
         )
@@ -418,7 +407,9 @@ private fun LabubuChatBubble(
     chatMessage: com.addzero.kmp.viewmodel.ChatMessage,
     animationDelay: Int = 0,
     onRetryMessage: (String) -> Unit = {},
-    isRetrying: Boolean = false
+    onRetryUserMessage: (String) -> Unit = {},
+    isRetrying: Boolean = false,
+    isAiThinking: Boolean = false
 ) {
     // 入场动画
     var visible by remember { mutableStateOf(false) }
@@ -468,7 +459,7 @@ private fun LabubuChatBubble(
 
             // 消息气泡容器
             Column {
-                // 消息气泡
+                // 消息气泡（带复制按钮）
                 Box(
                     modifier = Modifier
                         .background(
@@ -514,28 +505,109 @@ private fun LabubuChatBubble(
                                 bottomEnd = if (chatMessage.isUser) 4.dp else 20.dp
                             )
                         )
-                        .padding(horizontal = 16.dp, vertical = 12.dp)
                         .widthIn(max = 280.dp)
                 ) {
+                    // 消息内容
                     Markdown(
                         content = chatMessage.content,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                start = 16.dp,
+                                end = if (chatMessage.isUser) 72.dp else 40.dp, // 用户消息需要更多右边距
+                                top = 12.dp,
+                                bottom = 12.dp
+                            )
                     )
+
+                    // 右上角按钮组 - 复制和重新发送
+                    val clipboardManager = LocalClipboardManager.current
+                    var showCopyFeedback by remember { mutableStateOf(false) }
+
+                    Row(
+                        modifier = Modifier
+                            .align(Alignment.TopEnd)
+                            .padding(4.dp),
+                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        // 重新发送按钮（仅用户消息显示）
+                        if (chatMessage.isUser) {
+                            IconButton(
+                                onClick = { onRetryUserMessage(chatMessage.content) },
+                                enabled = !isAiThinking, // AI思考时禁用
+                                modifier = Modifier.size(28.dp)
+                            ) {
+                                Icon(
+                                    Icons.Default.Refresh,
+                                    contentDescription = "重新发送",
+                                    modifier = Modifier.size(14.dp),
+                                    tint = if (isAiThinking) {
+                                        Color.Gray.copy(alpha = 0.5f)
+                                    } else {
+                                        Color.White.copy(alpha = 0.7f)
+                                    }
+                                )
+                            }
+                        }
+
+                        // 复制按钮
+                        IconButton(
+                            onClick = {
+                                clipboardManager.setText(AnnotatedString(chatMessage.content))
+                                showCopyFeedback = true
+                            },
+                            modifier = Modifier.size(28.dp)
+                        ) {
+                            Icon(
+                                Icons.Default.ContentCopy,
+                                contentDescription = "复制消息",
+                                modifier = Modifier.size(14.dp),
+                                tint = if (chatMessage.isUser) {
+                                    Color.White.copy(alpha = 0.7f)
+                                } else {
+                                    LabubuColors.PrimaryPink.copy(alpha = 0.7f)
+                                }
+                            )
+                        }
+                    }
+
+                    // 复制反馈动画
+                    if (showCopyFeedback) {
+                        LaunchedEffect(showCopyFeedback) {
+                            kotlinx.coroutines.delay(1000)
+                            showCopyFeedback = false
+                        }
+
+                        Box(
+                            modifier = Modifier
+                                .align(Alignment.TopEnd)
+                                .padding(4.dp)
+                                .background(
+                                    Color.Black.copy(alpha = 0.8f),
+                                    RoundedCornerShape(4.dp)
+                                )
+                                .padding(horizontal = 8.dp, vertical = 4.dp)
+                        ) {
+                            Text(
+                                "已复制",
+                                color = Color.White,
+                                fontSize = 10.sp
+                            )
+                        }
+                    }
                 }
 
-                // 重试按钮（仅对错误消息显示）
-                if (chatMessage.canRetry && chatMessage.isError) {
+                // AI错误消息的重试按钮（保留在下方）
+                if (chatMessage.canRetry && chatMessage.isError && !chatMessage.isUser) {
                     Spacer(modifier = Modifier.height(4.dp))
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = if (chatMessage.isUser) Arrangement.End else Arrangement.Start
+                        horizontalArrangement = Arrangement.Start
                     ) {
-                        if (!chatMessage.isUser) {
-                            Spacer(modifier = Modifier.width(40.dp)) // 对齐AI头像
-                        }
+                        Spacer(modifier = Modifier.width(40.dp)) // 对齐AI头像
 
-                        // 重试按钮
+                        // AI重试按钮
                         androidx.compose.material3.OutlinedButton(
                             onClick = { onRetryMessage(chatMessage.id) },
                             enabled = !isRetrying,
@@ -562,10 +634,6 @@ private fun LabubuChatBubble(
                                 Spacer(modifier = Modifier.width(4.dp))
                                 Text("重试", fontSize = 12.sp)
                             }
-                        }
-
-                        if (chatMessage.isUser) {
-                            Spacer(modifier = Modifier.width(40.dp)) // 对齐用户头像
                         }
                     }
                 }
@@ -606,5 +674,101 @@ private fun Avatar() {
         contentDescription = null,
 
         )
+}
+
+// Labubu风格的常用提示词建议
+@Composable
+private fun LabubuPromptSuggestions(
+    onPromptSelected: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val commonPrompts = listOf(
+        "帮我审查这段代码的质量和最佳实践",
+        "请优化这个SQL查询的性能",
+        "设计一个RESTful API接口",
+        "分析这个bug的根本原因",
+        "编写技术文档说明",
+        "设计系统架构方案",
+        "生成测试用例",
+        "性能调优建议",
+        "安全漏洞检查",
+        "数据分析报告"
+    )
+
+    Column(modifier = modifier) {
+        // 标题
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(bottom = 12.dp)
+        ) {
+            Icon(
+                Icons.Default.Lightbulb,
+                contentDescription = "常用提示词",
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(20.dp)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = "💡 常用提示词",
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurface,
+                fontWeight = ComposeFontWeight.Medium
+            )
+        }
+
+        // 提示词网格
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.height(200.dp)
+        ) {
+            items(commonPrompts) { prompt ->
+                PromptSuggestionCard(
+                    prompt = prompt,
+                    onClick = { onPromptSelected(prompt) }
+                )
+            }
+        }
+    }
+}
+
+// 提示词建议卡片
+@Composable
+private fun PromptSuggestionCard(
+    prompt: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    androidx.compose.material3.Card(
+        onClick = onClick,
+        modifier = modifier
+            .fillMaxWidth()
+            .height(80.dp),
+        colors = androidx.compose.material3.CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f)
+        ),
+        elevation = androidx.compose.material3.CardDefaults.cardElevation(
+            defaultElevation = 2.dp,
+            pressedElevation = 4.dp
+        )
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(12.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = prompt,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center,
+                maxLines = 3,
+                overflow = TextOverflow.Ellipsis,
+                lineHeight = 16.sp
+            )
+        }
+    }
 }
 

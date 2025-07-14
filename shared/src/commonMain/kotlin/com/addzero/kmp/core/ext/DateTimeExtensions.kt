@@ -55,7 +55,7 @@ fun LocalTime.format(pattern: String): String {
 }
 
 fun nowLong(): Long {
-    val toEpochMilliseconds = LocalDateTime.now().toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds()
+    val toEpochMilliseconds = now.toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds()
     return toEpochMilliseconds
 }
 
@@ -71,7 +71,7 @@ val now: LocalDateTime get() = Clock.System.now().toLocalDateTime(TimeZone.curre
 
 // 转换为友好显示 (如"2小时前")
 fun LocalDateTime.toFriendlyString(): String {
-    val now = LocalDateTime.now()
+    val now = now()
     val duration = now.toInstant(TimeZone.currentSystemDefault()) - this.toInstant(TimeZone.currentSystemDefault())
 
     return when {
@@ -86,11 +86,11 @@ fun LocalDateTime.toFriendlyString(): String {
 
 
 // 判断是否是未来时间
-fun LocalDateTime.isFuture(): Boolean = this > LocalDateTime.now()
+fun LocalDateTime.isFuture(): Boolean = this > now
 
-fun LocalDateTime.Companion.now(): LocalDateTime = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-fun LocalDate.Companion.now(): LocalDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
-fun LocalTime.Companion.now(): LocalTime = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).time
+fun LocalDateTime.now(): LocalDateTime = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+fun LocalDate.now(): LocalDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+fun LocalTime.now(): LocalTime = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).time
 
 fun String.toLocalDateTimeOrNull(): LocalDateTime? = runCatching { LocalDateTime.parse(this) }.getOrNull()
 fun String.toLocalDateOrNull(): LocalDate? = runCatching { LocalDate.parse(this) }.getOrNull()
