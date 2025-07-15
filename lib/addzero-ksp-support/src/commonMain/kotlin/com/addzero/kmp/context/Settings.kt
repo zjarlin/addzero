@@ -18,8 +18,13 @@ data class Settings(
     val composeBuildDir: String = "",
     val sharedSourceDir: String = "",
     val sharedBuildDir: String = "",
-    val backendSourceDir: String = "",
-    val backendBuildDir: String = "",
+    val serverSourceDir: String = "",
+    val serverBuildDir: String = "",
+
+
+    val modelSourceDir: String = "",
+    val modelBuildDir: String = "",
+    val modelPackageName: String = "",
 
     // 包名配置（小驼峰命名）
     val isomorphicPackageName: String = "com.addzero.kmp.generated.isomorphic",
@@ -76,17 +81,13 @@ data class Settings(
     val apiClientOutputDir: String
         get() = "$sharedSourceDir/${apiClientPackageName.replace(".", "/")}"
 
-    /**
-     * 后端控制器输出目录（backend 源码目录）
-     */
-    val backendControllerOutputDir: String
-        get() = "$backendSourceDir/com/addzero/web/modules"
 
     /**
-     * 后端实体输出目录（backend 源码目录）
+     * 模型输出目录
      */
-    val backendEntityOutputDir: String
-        get() = "$backendSourceDir/com/addzero/web/modules"
+    val modelOutputDir: String
+        get() = "${modelSourceDir}/${modelPackageName.replace(".", "/")}"
+
 
 
 }

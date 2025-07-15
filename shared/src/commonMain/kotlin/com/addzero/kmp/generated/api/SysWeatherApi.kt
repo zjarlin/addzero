@@ -4,7 +4,7 @@ import de.jensklingenberg.ktorfit.http.*
 
 /**
  * Ktorfit接口 - 由KSP自动生成
- * 原始Controller: com.addzero.web.modules.sys_weather.controller.SysWeatherController
+ * 原始Controller: com.addzero.web.modules.controller.sys_weather.controller.SysWeatherController
  * 基础路径: /sysWeather
  * 输出目录: /Users/zjarlin/AquaProjects/addzero/shared/src/commonMain/kotlin/com/addzero/kmp/generated/api
  */

@@ -27,7 +27,12 @@ object TypeMapper {
     /**
      * 将数据库类型映射到Kotlin类型
      */
-    fun mapToKotlinType(columnType: String): String {
+    fun mapToKotlinType(columnType: String,isKmp: Boolean=true): String {
+        val string = if (isKmp) {
+            "kotlinx.datetime.LocalDateTime"
+        } else {
+            "java.time.LocalDate"
+        }
         return when {
             columnType.contains("char", ignoreCase = true) -> "String"
             columnType.contains("varchar", ignoreCase = true) -> "String"
@@ -40,7 +45,9 @@ object TypeMapper {
             columnType.contains("double", ignoreCase = true) -> "Double"
             columnType.contains("real", ignoreCase = true) -> "Float"
             columnType.contains("bool", ignoreCase = true) -> "Boolean"
-            else -> columnType.toBigCamelCase()
+            columnType.contains("timestamp", ignoreCase = true) -> string
+//            else -> columnType.toBigCamelCase()
+            else -> "String"
         }
     }
 

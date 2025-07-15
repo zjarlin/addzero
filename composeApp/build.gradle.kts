@@ -130,7 +130,8 @@ kotlin {
 // 确保所有 Kotlin 编译任务都依赖于 shared 模块的 KSP 元数据生成
 tasks.withType<KotlinCompilationTask<*>>().configureEach {
     if (name != "kspCommonMainKotlinMetadata") {
-        dependsOn(":backend:kspKotlin")
+        dependsOn(":backend:server:kspKotlin")
+//        dependsOn(":backend:model:kspKotlin")
         dependsOn(":shared:kspCommonMainKotlinMetadata")
         dependsOn(":composeApp:kspCommonMainKotlinMetadata")
     }

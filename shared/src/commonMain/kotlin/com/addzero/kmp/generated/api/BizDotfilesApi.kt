@@ -4,7 +4,7 @@ import de.jensklingenberg.ktorfit.http.*
 
 /**
  * Ktorfit接口 - 由KSP自动生成
- * 原始Controller: com.addzero.web.modules.biz_dotfiles.controller.BizDotfilesController
+ * 原始Controller: com.addzero.web.modules.controller.BizDotfilesController
  * 基础路径: /bizDotfiles
  * 输出目录: /Users/zjarlin/AquaProjects/addzero/shared/src/commonMain/kotlin/com/addzero/kmp/generated/api
  */

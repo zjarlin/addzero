@@ -4,7 +4,7 @@ import de.jensklingenberg.ktorfit.http.*
 
 /**
  * Ktorfit接口 - 由KSP自动生成
- * 原始Controller: com.addzero.web.modules.sys_ai_prompt.controller.SysAiPromptController
+ * 原始Controller: com.addzero.web.modules.controller.SysAiPromptController
  * 基础路径: /sysAiPrompt
  * 输出目录: /Users/zjarlin/AquaProjects/addzero/shared/src/commonMain/kotlin/com/addzero/kmp/generated/api
  */

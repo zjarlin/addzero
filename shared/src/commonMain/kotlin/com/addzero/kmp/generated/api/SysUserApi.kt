@@ -5,7 +5,7 @@ import com.addzero.kmp.entity.PageResult
 
 /**
  * Ktorfit接口 - 由KSP自动生成
- * 原始Controller: com.addzero.web.modules.sys_user.controller.SysUserController
+ * 原始Controller: com.addzero.web.modules.controller.SysUserController
  * 基础路径: /sysUser
  * 输出目录: /Users/zjarlin/AquaProjects/addzero/shared/src/commonMain/kotlin/com/addzero/kmp/generated/api
  */

@@ -7,7 +7,7 @@ import com.addzero.kmp.entity.low_table.TableSaveOrUpdateDTO
 
 /**
  * Ktorfit接口 - 由KSP自动生成
- * 原始Controller: com.addzero.web.modules.sys.common.CommonController
+ * 原始Controller: com.addzero.web.modules.controller.CommonController
  * 基础路径: 
  * 输出目录: /Users/zjarlin/AquaProjects/addzero/shared/src/commonMain/kotlin/com/addzero/kmp/generated/api
  */

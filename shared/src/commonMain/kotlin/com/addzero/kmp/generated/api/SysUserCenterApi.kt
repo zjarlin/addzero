@@ -5,7 +5,7 @@ import com.addzero.kmp.generated.isomorphic.SysUserIso
 
 /**
  * Ktorfit接口 - 由KSP自动生成
- * 原始Controller: com.addzero.web.modules.sys_user.controller.SysUserCenterController
+ * 原始Controller: com.addzero.web.modules.controller.SysUserCenterController
  * 基础路径: /sysUser
  * 输出目录: /Users/zjarlin/AquaProjects/addzero/shared/src/commonMain/kotlin/com/addzero/kmp/generated/api
  */

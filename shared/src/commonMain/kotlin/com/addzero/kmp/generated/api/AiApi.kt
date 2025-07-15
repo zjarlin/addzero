@@ -10,7 +10,7 @@ import com.addzero.kmp.entity.sys.ai.SearchPromptRequest
 
 /**
  * Ktorfit接口 - 由KSP自动生成
- * 原始Controller: com.addzero.web.modules.sys.ai.AiController
+ * 原始Controller: com.addzero.web.modules.controller.AiController
  * 基础路径: /ai
  * 输出目录: /Users/zjarlin/AquaProjects/addzero/shared/src/commonMain/kotlin/com/addzero/kmp/generated/api
  */

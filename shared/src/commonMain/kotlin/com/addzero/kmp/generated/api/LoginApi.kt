@@ -8,7 +8,7 @@ import com.addzero.kmp.entity.SecondLoginDTO
 
 /**
  * Ktorfit接口 - 由KSP自动生成
- * 原始Controller: com.addzero.web.modules.sys.login.LoginController
+ * 原始Controller: com.addzero.web.modules.controller.LoginController
  * 基础路径: /sys/login
  * 输出目录: /Users/zjarlin/AquaProjects/addzero/shared/src/commonMain/kotlin/com/addzero/kmp/generated/api
  */

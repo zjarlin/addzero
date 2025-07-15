@@ -61,12 +61,19 @@ fun Pair<String, List<String>>.useFile() {
 }
 
 // 主要模块
-listOf("backend", "composeApp", "shared").forEach { module ->
+listOf("backend", "composeApp", "shared","lib").forEach { module ->
     include(module)
 }
 
-// lib 根模块
-include("lib")
+
+
+// KSP 支持模块
+("backend" to listOf(
+    "server",
+    "model"
+)).useFile()
+
+
 
 // KSP 支持模块
 ("lib" to listOf(
@@ -86,7 +93,8 @@ include("lib")
 // JDBC 相关处理器
 ("lib" to listOf(
     "addzero-jdbc2controller-processor",
-    "addzero-jdbc2enum-processor"
+    "addzero-jdbc2enum-processor",
+    "addzero-jdbc2entity-processor"
 )).useFile()
 
 // API 相关处理器
@@ -122,5 +130,3 @@ include("lib")
 
 // 网络模块（暂时注释）
 // ("lib" to listOf("addzero-network-starter")).useFile()
-//include("lib:addzero-tool-weather")
-//findProject(":lib:addzero-tool-weather")?.name = "addzero-tool-weather"

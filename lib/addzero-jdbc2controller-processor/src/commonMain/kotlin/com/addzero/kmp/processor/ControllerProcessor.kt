@@ -1,7 +1,6 @@
 package com.addzero.kmp.processor
 
 import com.addzero.kmp.context.SettingContext
-import com.addzero.kmp.context.Settings
 import com.addzero.kmp.entity.*
 
 
@@ -36,10 +35,10 @@ class ControllerProcessor(
     private fun generateFormFile(table: JdbcTableMetadata) {
         val tableName = table.tableName
         val entityName = tableName.toBigCamelCase()
-        val dir = SettingContext.settings.backendSourceDir
+        val dir = SettingContext.settings.serverSourceDir
 //        println("后端源码目录为: $dir")
 
-        val pkgGang = "com/addzero/web/modules/$tableName/controller"
+        val pkgGang = "com/addzero/web/modules/controller"
 
 //        val pkg = StrUtil.replace(pkgGang, "//", ".")
 
@@ -52,7 +51,7 @@ class ControllerProcessor(
         val targetFile = File("$dir/$pkgGang/$fileName")
         targetFile.parentFile?.mkdirs()
         if (targetFile.exists()) {
-            environment.logger.info("文件已存在，跳过生成: ${targetFile.path}")
+            environment.logger.info("Controller文件已存在，跳过生成: ${targetFile.path}")
             return
         }
 

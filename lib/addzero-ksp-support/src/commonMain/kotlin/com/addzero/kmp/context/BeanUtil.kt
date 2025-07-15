@@ -17,10 +17,17 @@ object BeanUtil {
         "moduleMainResourceDir" to moduleMainResourceDir,
         "composeSourceDir" to composeSourceDir,
         "composeBuildDir" to composeBuildDir,
+
         "sharedSourceDir" to sharedSourceDir,
         "sharedBuildDir" to sharedBuildDir,
-        "backendSourceDir" to backendSourceDir,
-        "backendBuildDir" to backendBuildDir,
+
+        "serverSourceDir" to serverSourceDir,
+        "serverBuildDir" to serverBuildDir,
+
+
+        "modelSourceDir" to modelSourceDir,
+        "modelBuildDir" to modelBuildDir,
+        "modelPackageName" to modelPackageName,
 
         // 包名配置（小驼峰命名）
         "isomorphicPackageName" to isomorphicPackageName,
@@ -67,8 +74,14 @@ object BeanUtil {
         composeBuildDir = map["composeBuildDir"] ?: "",
         sharedSourceDir = map["sharedSourceDir"] ?: "",
         sharedBuildDir = map["sharedBuildDir"] ?: "",
-        backendSourceDir = map["backendSourceDir"] ?: "",
-        backendBuildDir = map["backendBuildDir"] ?: "",
+
+        serverSourceDir = map["serverSourceDir"] ?: "",
+        serverBuildDir = map["serverBuildDir"] ?: "",
+
+        modelSourceDir = map["modelSourceDir"] ?: "",
+        modelBuildDir = map["modelBuildDir"] ?: "",
+        modelPackageName = map["modelPackageName"] ?: "",
+
 
         // 包名配置（小驼峰命名）
         isomorphicPackageName = map["isomorphicPackageName"] ?: "com.addzero.kmp.generated.isomorphic",

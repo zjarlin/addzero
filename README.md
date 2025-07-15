@@ -396,9 +396,9 @@ interface UserProfile {
 ```kotlin
 // build.gradle.kts
 ksp {
-    arg("entityPackage", "com.example.entity")
-    arg("formOutputPackage", "com.example.generated.forms")
-    arg("apiOutputPackage", "com.example.generated.api")
+    arg("entityPackage", "com.addzero.entity")
+    arg("formOutputPackage", "com.addzero.generated.forms")
+    arg("apiOutputPackage", "com.addzero.generated.api")
 }
 ```
 

@@ -1,7 +1,6 @@
 package com.addzero.kmp.processor
 
 import com.addzero.kmp.context.SettingContext
-import com.addzero.kmp.context.sharedBuildDir
 import com.google.devtools.ksp.processing.*
 import com.google.devtools.ksp.symbol.*
 import com.google.devtools.ksp.validate
