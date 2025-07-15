@@ -2,7 +2,7 @@ package com.addzero.kmp.entity.analysis.model
 
 /**
  * Jimmer 实体元数据
- * 
+ *
  * 包含生成同构体和表单所需的所有信息
  */
 data class EntityMetadata(
@@ -11,7 +11,10 @@ data class EntityMetadata(
     val qualifiedName: String,
     val properties: List<PropertyMetadata>,
     val imports: Set<String>,
-    
+
+    // 实体描述信息（从注解中提取）
+    val description: String = "",
+
     // 生成相关信息
     val isoClassName: String = "${className}Iso",
     val formClassName: String = "${className}Form"

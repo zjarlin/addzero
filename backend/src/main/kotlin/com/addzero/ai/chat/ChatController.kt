@@ -39,8 +39,6 @@ class ChatController(
 
     @PostMapping("/chatClient")
     fun chat(text: String): String? {
-        println(text)
-
         val call = chatClient.prompt().user {
             it.text(text)
         }.call().content()

@@ -29,6 +29,9 @@ class JimmerEntityAnalyzer(
             // 收集导入信息
             val imports = mutableSetOf<String>()
 
+            // 提取实体描述
+            val description = extractEntityDescription(entity)
+
             // 分析属性
             val properties = entity.getAllProperties().map { prop ->
                 analyzeProperty(prop, imports)
@@ -39,12 +42,108 @@ class JimmerEntityAnalyzer(
                 packageName = packageName,
                 qualifiedName = qualifiedName,
                 properties = properties,
-                imports = imports
+                imports = imports,
+                description = description
             )
 
         } catch (e: Exception) {
             logger.error("分析实体失败: ${entity.simpleName.asString()}, 错误: ${e.message}")
             throw e
+        }
+    }
+
+    /**
+     * 提取实体描述信息
+     * 支持多种注解类型，使用简单名称判断
+     */
+    private fun extractEntityDescription(entity: KSClassDeclaration): String {
+        entity.annotations.forEach { annotation ->
+            val annotationName = annotation.shortName.asString()
+
+            // 支持的描述注解类型（使用简单名称）
+            when (annotationName) {
+                "Schema" -> {
+                    // Swagger/OpenAPI @Schema(description = "...")
+                    val description = getAnnotationStringValue(annotation, "description")
+                    if (description.isNotBlank()) return description
+                }
+                "ApiModel" -> {
+                    // Swagger @ApiModel(description = "...")
+                    val description = getAnnotationStringValue(annotation, "description")
+                        ?: getAnnotationStringValue(annotation, "value")
+                    if (description.isNotBlank()) return description
+                }
+                "Entity" -> {
+                    // JPA @Entity(description = "...")
+                    val description = getAnnotationStringValue(annotation, "description")
+                    if (description.isNotBlank()) return description
+                }
+                "Table" -> {
+                    // JPA @Table(comment = "...")
+                    val description = getAnnotationStringValue(annotation, "comment")
+                    if (description.isNotBlank()) return description
+                }
+                "Comment" -> {
+                    // 自定义 @Comment("...")
+                    val description = getAnnotationStringValue(annotation, "value")
+                    if (description.isNotBlank()) return description
+                }
+                "Description" -> {
+                    // 自定义 @Description("...")
+                    val description = getAnnotationStringValue(annotation, "value")
+                    if (description.isNotBlank()) return description
+                }
+                "JsonPropertyDescription" -> {
+                    // Jackson @JsonPropertyDescription("...")
+                    val description = getAnnotationStringValue(annotation, "value")
+                    if (description.isNotBlank()) return description
+                }
+            }
+        }
+
+        // 如果没有找到注解描述，使用预定义的映射规则
+        return getDefaultEntityDescription(entity.simpleName.asString())
+    }
+
+    /**
+     * 获取默认的实体描述
+     */
+    private fun getDefaultEntityDescription(className: String): String {
+        return when (className) {
+            "SysDict" -> "字典"
+            "SysUser" -> "用户"
+            "SysDept" -> "部门"
+            "SysRole" -> "角色"
+            "BizNote" -> "笔记"
+            "BizTag" -> "标签"
+            "BizDotfiles" -> "配置文件"
+            "SysWeather" -> "天气"
+            "SysDictItem" -> "字典项"
+            "SysAiPrompt" -> "AI提示词"
+            else -> {
+                // 默认转换：去掉Sys/Biz前缀，转换为中文描述
+                val simpleName = className
+                    .removePrefix("Sys")
+                    .removePrefix("Biz")
+
+                // 这里可以添加更多的转换规则
+                simpleName.lowercase()
+            }
+        }
+    }
+
+    /**
+     * 从注解中获取字符串值
+     */
+    private fun getAnnotationStringValue(annotation: KSAnnotation, parameterName: String): String {
+        return try {
+            annotation.arguments.find { it.name?.asString() == parameterName }
+                ?.value?.toString()
+                ?.removeSurrounding("\"") // 移除引号
+                ?: ""
+        } catch (e: Exception) {
+            logger.warn("提取注解参数失败: ${annotation.shortName.asString()}.$parameterName, 错误: ${e.message}")
+            ""
         }
     }
 

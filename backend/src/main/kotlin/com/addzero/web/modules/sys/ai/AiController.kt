@@ -32,10 +32,6 @@ class AiController(
     // 内存存储常用提示词（生产环境应使用数据库）
     private val prompts = mutableMapOf<String, AiPrompt>()
 
-    init {
-        // 初始化常用提示词
-        initBuiltInPrompts()
-    }
 
     /**
      * 🚀 初始化内置常用提示词

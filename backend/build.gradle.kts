@@ -154,6 +154,7 @@ dependencies {
     // 阶段3: 依赖同构体的处理器
     ksp(projects.lib.addzeroController2apiProcessor)
     ksp(projects.lib.addzeroEntity2formProcessor)
+    ksp(projects.lib.addzeroEntity2mcpProcessor)
 
     // 阶段4: 控制器转 Iso2DataProvider（生成到 shared 编译目录）
     ksp(projects.lib.addzeroController2iso2dataproviderProcessor)

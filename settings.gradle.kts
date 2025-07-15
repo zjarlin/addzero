@@ -1,5 +1,3 @@
-import org.apache.tools.ant.property.LocalProperties
-
 rootProject.name = "addzero"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
@@ -81,7 +79,8 @@ include("lib")
     "addzero-entity2analysed-support",
     "addzero-entity2iso-processor",
     "addzero-entity2form-processor",
-    "addzero-entity2form-core"
+    "addzero-entity2form-core",
+    "addzero-entity2mcp-processor"
 )).useFile()
 
 // JDBC 相关处理器
@@ -117,10 +116,11 @@ include("lib")
 
 // 工具模块
 ("lib" to listOf(
-    "addzero-tool"
+    "addzero-tool",
+    "addzero-tool-weather"
 )).useFile()
 
 // 网络模块（暂时注释）
 // ("lib" to listOf("addzero-network-starter")).useFile()
-include("lib:addzero-tool-weather")
-findProject(":lib:addzero-tool-weather")?.name = "addzero-tool-weather"
+//include("lib:addzero-tool-weather")
+//findProject(":lib:addzero-tool-weather")?.name = "addzero-tool-weather"

@@ -2,7 +2,6 @@ package com.addzero.ai.config
 
 import cn.hutool.core.util.ReflectUtil
 import com.addzero.ai.config.AiCtx.defaultChatClient
-import com.addzero.ai.mcp.DictService
 import com.addzero.kmp.generated.isomorphic.SysDictIso
 import org.springframework.ai.chat.client.ChatClient
 import org.springframework.ai.deepseek.DeepSeekChatModel
