@@ -978,11 +978,6 @@ fun renderNavContent(navController: NavHostController) {
 - **智能推断** - 根据上下文自动选择最佳实现
 - **即时反馈** - 编译时错误检查和提示
 
-## 🙏 致谢
-
-感谢 [JetBrains](https://www.jetbrains.com) 为开源项目提供免费许可证支持。
-
-[<img src="https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg" width="100">](https://www.jetbrains.com)
 
 ---
 
