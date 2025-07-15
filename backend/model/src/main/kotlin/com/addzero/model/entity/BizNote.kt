@@ -82,24 +82,6 @@ interface BizNote : BaseEntity {
     )
     val tags: List<BizTag>
 
-//    /**
-//     * 笔记的子节点列表，表示当前笔记的子笔记。
-//     * 通过 {@link OneToMany} 注解与父笔记关联。
-//     *
-//     * @return 子笔记列表
-//     */
-//    @OneToMany(mappedBy = "parent")
-//    val children: List<BizNote>
-
-//    /**
-//     * 笔记的父节点，表示当前笔记的父笔记。
-//     * 通过 {@link ManyToOne} 注解与子笔记关联。
-//     *
-//     * @return 父笔记，如果没有父笔记则返回 null
-//     */
-//    @ManyToOne
-//    val parent: BizNote?
-
     /**
      * 笔记的路径
      *

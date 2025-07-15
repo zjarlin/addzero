@@ -21,17 +21,6 @@ import org.babyfish.jimmer.sql.Table
  * @since 1.0.0
  * @author AddZero Team
  *
- * @sample
- * ```kotlin
- * val city = Citys {
- *     areaId = "57073"
- *     pinyin = "luoyang"
- *     py = "ly"
- *     areaName = "洛阳"
- *     cityName = "洛阳市"
- *     provinceName = "河南省"
- * }
- * ```
  */
 @Entity
 @Table(name = "citys")
