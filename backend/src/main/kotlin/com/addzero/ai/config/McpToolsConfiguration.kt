@@ -1,6 +1,7 @@
 package com.addzero.ai.config
 
 import org.slf4j.LoggerFactory
+import org.springframework.ai.tool.method.MethodToolCallback
 import org.springframework.ai.tool.method.MethodToolCallbackProvider
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.CommandLineRunner
@@ -12,7 +13,8 @@ import org.springframework.context.annotation.Configuration
  */
 @Configuration
 class McpToolsConfiguration(
-   private val methodToolCallbackProvider: MethodToolCallbackProvider
+   private val methodToolCallbackProvider: MethodToolCallbackProvider,
+//    private val methodToolCallback:MethodToolCallback
 ) : CommandLineRunner {
 
     private val logger = LoggerFactory.getLogger(McpToolsConfiguration::class.java)
@@ -31,6 +33,8 @@ class McpToolsConfiguration(
         logger.info("=".repeat(80))
 
         val tools = methodToolCallbackProvider.toolCallbacks
+//        +methodToolCallback
+//
 
         if (tools.isEmpty()) {
             logger.warn("⚠️  未发现任何MCP工具！")

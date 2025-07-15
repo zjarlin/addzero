@@ -125,9 +125,9 @@ ksp {
 }
 
 
-//springBoot {
-//    mainClass.set("com.addzero.SpringBootAppKt")
-//}
+springBoot {
+    mainClass.set("com.addzero.SpringBootAppKt")
+}
 
 
 dependencies {

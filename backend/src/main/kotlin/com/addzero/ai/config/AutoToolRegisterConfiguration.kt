@@ -1,4 +1,3 @@
-
 package com.addzero.ai.config
 
 import cn.hutool.extra.spring.SpringUtil
@@ -28,7 +27,7 @@ fun getFunctionObjects(): Array<Any?> {
 
         // 检查类中是否有@Tool注解的方法
         var hasToolMethod = false
-        for (method in clazz.getDeclaredMethods()) {
+        for (method in clazz.declaredMethods) {
             if (AnnotationUtils.findAnnotation<Tool?>(method, Tool::class.java) != null) {
                 hasToolMethod = true
                 break
@@ -44,14 +43,12 @@ fun getFunctionObjects(): Array<Any?> {
 }
 
 
-
-
 /**
  * 自动扫描并注册带有@Tool注解的组件
  */
 @Configuration
-class AutoToolRegisterConfiguration (private val applicationContext: ApplicationContext) {
-    private lateinit var toolObjects: MutableList<Any?>
+class AutoToolRegisterConfiguration() {
+//    private lateinit var toolObjects: MutableList<Any?>
 
     @Bean
     fun methodToolCallbackProvider(): MethodToolCallbackProvider {
@@ -59,8 +56,7 @@ class AutoToolRegisterConfiguration (private val applicationContext: Application
         // 构建并返回ToolCallbackProvider
         val build = MethodToolCallbackProvider.builder()
             .toolObjects(*functionObjects)
-            .build()
-        return build
+        return build.build()
     }
 }
 

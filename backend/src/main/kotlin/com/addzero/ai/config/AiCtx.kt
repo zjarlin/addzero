@@ -16,6 +16,7 @@ import org.springframework.ai.chat.client.ChatClient
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor
 import org.springframework.ai.chat.model.ChatModel
 import org.springframework.ai.tool.ToolCallbackProvider
+import org.springframework.ai.tool.method.MethodToolCallback
 
 object AiCtx {
 
@@ -131,11 +132,16 @@ object AiCtx {
 
         // 只有当工具提供者不为空时才添加工具
 
+        //默认注册tool注解
         val beansOfType = SpringUtil.getBean(ToolCallbackProvider::class.java)
+        //ai增删改查
+//        val tollcall = SpringUtil.getBean(MethodToolCallback::class.java)
+
         val toolCallbacks = beansOfType.toolCallbacks
 
         if (toolCallbacks.isNotEmpty()) {
             chatClientBuilder.defaultToolCallbacks(*toolCallbacks)
+//            .defaultToolCallbacks(tollcall)
         }
         chatClientBuilder.defaultOptions(buildOpt)
         val chatClient = chatClientBuilder.build()

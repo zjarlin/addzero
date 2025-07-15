@@ -1,5 +1,6 @@
 package com.addzero.web.modules.sys_dict.controller
 
+import cn.hutool.extra.spring.SpringUtil
 import com.addzero.common.consts.sql
 import com.addzero.kmp.generated.isomorphic.SysDictIso
 import com.addzero.kmp.generated.isomorphic.SysDictItemIso
@@ -13,6 +14,7 @@ import com.addzero.web.modules.sys_dict.entity.sysDictItems
 import com.addzero.web.modules.sys_dict_item.entity.SysDictItem
 import com.addzero.web.modules.sys_dict_item.entity.itemText
 import com.addzero.web.modules.sys_dict_item.entity.sortOrder
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.babyfish.jimmer.ImmutableObjects
 import org.babyfish.jimmer.sql.kt.ast.expression.KNonNullExpression
 import org.babyfish.jimmer.sql.kt.ast.expression.asc

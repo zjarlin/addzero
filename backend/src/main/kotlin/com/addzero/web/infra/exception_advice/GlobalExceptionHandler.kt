@@ -50,7 +50,7 @@ class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception::class)
     fun handleException(e: Exception): Any {
-        e.printStackTrace()
+//        e.printStackTrace()
         log.error("系统异常", e)
 //        val message = e?.message
         val buildMessage = e.buildMessage()
