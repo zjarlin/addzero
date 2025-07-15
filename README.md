@@ -103,8 +103,7 @@
 - 依赖注入支持
 
 #### 🔧 **addzero-jdbc2controller-processor** - Controller 生成器
-- 基于数据库表结构生成标准 CRUD Controller
-- 自动生成 Service 层代码
+- 基于数据库表结构生成 Controller 定义
 - 集成 Jimmer ORM
 
 #### 🧭 **addzero-route-core** - 路由核心库

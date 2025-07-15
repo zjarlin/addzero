@@ -21,6 +21,7 @@ configure<KtorfitPluginExtension> {
 
 
 dependencies {
+
     // 暂时注释掉枚举生成，避免依赖顺序问题
      kspCommonMainMetadata(projects.lib.addzeroJdbc2enumProcessor)
 
@@ -83,6 +84,7 @@ ksp {
 kotlin {
     sourceSets {
         commonMain.dependencies {
+
             implementation(libs.kotlinx.datetime)
 
             implementation(projects.lib.addzeroTool)

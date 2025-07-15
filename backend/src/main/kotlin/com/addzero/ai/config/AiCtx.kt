@@ -2,6 +2,7 @@ package com.addzero.ai.config
 
 //import org.springframework.ai.ollama.OllamaChatModel
 //import org.springframework.ai.ollama.api.OllamaOptions
+import cn.hutool.core.lang.TypeReference
 import cn.hutool.core.util.ReflectUtil
 import cn.hutool.core.util.StrUtil
 import cn.hutool.extra.spring.SpringUtil
@@ -134,14 +135,10 @@ object AiCtx {
 
         //默认注册tool注解
         val beansOfType = SpringUtil.getBean(ToolCallbackProvider::class.java)
-        //ai增删改查
-//        val tollcall = SpringUtil.getBean(MethodToolCallback::class.java)
 
         val toolCallbacks = beansOfType.toolCallbacks
-
         if (toolCallbacks.isNotEmpty()) {
             chatClientBuilder.defaultToolCallbacks(*toolCallbacks)
-//            .defaultToolCallbacks(tollcall)
         }
         chatClientBuilder.defaultOptions(buildOpt)
         val chatClient = chatClientBuilder.build()

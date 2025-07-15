@@ -1,6 +1,5 @@
 package com.addzero.ai.util.ai
 
-import com.addzero.ai.config.DefaultCtx
 import com.addzero.ai.util.ai.ai_abs_builder.AiUtil
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.web.bind.annotation.GetMapping
@@ -16,7 +15,7 @@ class HttpAiController {
     fun ask(
         @RequestParam question: String,
         @RequestParam promptTemplate: String = "",
-        @RequestParam chatModel: String = DefaultCtx.defaultChatModelName,
+        @RequestParam chatModel: String ,
         @RequestParam formatJson: String = "",
         @RequestParam formatJsonComment: String = "",
     ): String {

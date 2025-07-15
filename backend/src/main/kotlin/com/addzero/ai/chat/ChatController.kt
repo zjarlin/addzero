@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import reactor.core.publisher.Flux
 
 
 @RestController
@@ -20,6 +21,8 @@ class ChatController(
 //    private val chatmodel :ChatModel,
     private val chatClient: ChatClient,
     private val chatModels: List<ChatModel>,
+
+//    private val methodToolCallback: List<MethodToolCallback>,
 
 //    private val imageModel: ImageModel,
 ) {
@@ -40,9 +43,13 @@ class ChatController(
 
         val call = chatClient.prompt().user {
             it.text(text)
-        }.call()
+        }.call().content()
+//        .stream().content()
+        return call
+//            .toolCallbacks(methodToolCallback)
+//            .call()
 
-        return call.content()
+//        return call.content()
 
 
     }

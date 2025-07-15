@@ -3,9 +3,9 @@ package com.addzero.ai.config
 import cn.hutool.extra.spring.SpringUtil
 import org.springframework.ai.tool.annotation.Tool
 import org.springframework.ai.tool.method.MethodToolCallbackProvider
-import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Primary
 import org.springframework.core.annotation.AnnotationUtils
 import org.springframework.stereotype.Service
 
@@ -51,12 +51,14 @@ class AutoToolRegisterConfiguration() {
 //    private lateinit var toolObjects: MutableList<Any?>
 
     @Bean
+    @Primary
     fun methodToolCallbackProvider(): MethodToolCallbackProvider {
+        // 获取所有带有@Tool注解的对象
         val functionObjects = getFunctionObjects()
-        // 构建并返回ToolCallbackProvider
-        val build = MethodToolCallbackProvider.builder()
+
+        return MethodToolCallbackProvider.builder()
             .toolObjects(*functionObjects)
-        return build.build()
+            .build()
     }
 }
 

@@ -4,7 +4,6 @@ import cn.hutool.core.util.ArrayUtil
 import cn.hutool.core.util.StrUtil
 import cn.hutool.extra.spring.SpringUtil
 import com.addzero.ai.config.AiCtx
-import com.addzero.ai.config.DefaultCtx
 import com.alibaba.fastjson2.toJSONString
 import org.springframework.ai.chat.client.ChatClient.ChatClientRequestSpec
 import org.springframework.ai.chat.client.ChatClient.PromptUserSpec
@@ -40,7 +39,7 @@ fun PromptUserSpec.useStructuredOutput(
 
 
 class AbsChatBuilder<V : VectorStore>(
-    modelName: String = DefaultCtx.defaultChatModelName,
+    modelName: String ,
     promptUserSpecConsumer: Consumer<PromptUserSpec>,
 ) {
     private val spec: ChatClientRequestSpec

@@ -17,18 +17,6 @@ import com.addzero.kmp.entity.sys.ai.SearchPromptRequest
 interface AiApi {
 
 /**
- * ask
- * HTTP方法: GET
- * 路径: /ai/ask
- * 参数:
- *   - promt: kotlin.String (Query)
- * 返回类型: kotlin.String
- */
-    @GET("/ai/ask")    suspend fun ask(
-        @Query("promt") promt: kotlin.String
-    ): kotlin.String
-
-/**
  * getDeepSeekBalance
  * HTTP方法: GET
  * 路径: /aigetDeepSeekBalance

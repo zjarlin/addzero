@@ -1,6 +1,5 @@
 package com.addzero.ai.graphrag.controller
 
-import com.addzero.ai.config.DefaultCtx
 import com.addzero.ai.util.ai.ai_abs_builder.AiUtil
 import com.addzero.ai.util.ai.ai_abs_builder.toGraphQuestion
 import com.addzero.kmp.entity.graph.entity.GraphPO
@@ -49,7 +48,7 @@ class GraphController {
     @PostMapping("extractGraphFile")
     @Operation(summary = "附件graph抽取")
     fun createGraph(
-        @RequestParam modelName: String = DefaultCtx.defaultChatModelName, @RequestParam file: MultipartFile
+        @RequestParam modelName: String , @RequestParam file: MultipartFile
     ): List<GraphPO> {
 // 读取文件内容
         val readContent = AiUtil.readContent(file)

@@ -4,6 +4,8 @@ import com.addzero.kmp.entity2form.annotation.LabelProp
 import com.addzero.web.infra.jimmer.base.BaseDeletedEntity
 import com.addzero.web.infra.jimmer.base.baseentity.BaseEntity
 import com.addzero.web.modules.sys_dict_item.entity.SysDictItem
+import com.fasterxml.jackson.annotation.JsonPropertyDescription
+import io.swagger.v3.oas.annotations.media.Schema
 import org.babyfish.jimmer.sql.Column
 import org.babyfish.jimmer.sql.Entity
 import org.babyfish.jimmer.sql.Key
@@ -19,6 +21,7 @@ import org.babyfish.jimmer.sql.Table
  * @constructor 创建[SysDict]
  */
 @Entity
+@Schema(description = "字典")
 @Table(name = "sys_dict")
 interface SysDict : BaseEntity, BaseDeletedEntity {
 

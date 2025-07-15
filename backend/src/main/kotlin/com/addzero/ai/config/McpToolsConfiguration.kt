@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class McpToolsConfiguration(
    private val methodToolCallbackProvider: MethodToolCallbackProvider,
-//    private val methodToolCallback:MethodToolCallback
 ) : CommandLineRunner {
 
     private val logger = LoggerFactory.getLogger(McpToolsConfiguration::class.java)
@@ -33,8 +32,6 @@ class McpToolsConfiguration(
         logger.info("=".repeat(80))
 
         val tools = methodToolCallbackProvider.toolCallbacks
-//        +methodToolCallback
-//
 
         if (tools.isEmpty()) {
             logger.warn("⚠️  未发现任何MCP工具！")

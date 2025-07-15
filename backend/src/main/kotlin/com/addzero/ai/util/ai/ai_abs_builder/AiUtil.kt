@@ -7,7 +7,6 @@ import cn.hutool.core.util.StrUtil
 import cn.hutool.extra.spring.SpringUtil
 import com.addzero.ai.config.AiCtx
 import com.addzero.ai.config.AiCtx.structuredOutputContext
-import com.addzero.ai.config.DefaultCtx
 import com.addzero.ai.util.metainfo.MetaInfoUtils.getSimpleFieldInfoStr
 import com.addzero.kmp.constant.Promts
 import com.addzero.kmp.constant.Promts.PROMT_HIS
@@ -34,7 +33,7 @@ import java.util.stream.Collectors
  * @param [content]
  * @return [GraphPO]
  */
-fun String?.toGraphQuestion(modelName: String = DefaultCtx.defaultChatModelName): GraphPO {
+fun String?.toGraphQuestion(modelName: String ): GraphPO {
     val document = this?.let { Document(it) }
     val documents = listOf(document)
     val mergedGraphPO = GraphPO()
@@ -61,7 +60,7 @@ fun String?.toGraphQuestion(modelName: String = DefaultCtx.defaultChatModelName)
 }
 
 class AiUtil(
-    private val modelName: String = DefaultCtx.defaultChatModelName,
+    private val modelName: String ,
     private val question: String,
     private val promptTemplate: String = "",
 ) {

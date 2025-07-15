@@ -9,7 +9,7 @@ import com.addzero.kmp.entity.VisionRequest
 import com.addzero.kmp.entity.sys.ai.*
 import com.addzero.kmp.exp.BizException
 import org.springframework.ai.chat.client.ChatClient
-import org.springframework.ai.tool.ToolCallback
+import org.springframework.ai.tool.method.MethodToolCallback
 import org.springframework.ai.tool.method.MethodToolCallbackProvider
 import org.springframework.web.bind.annotation.*
 
@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/ai")
 class AiController(
     private val methodToolCallbackProvider: MethodToolCallbackProvider,
+    private val methodToolCallback: List<MethodToolCallback>,
+
 
     private val deepSeekService: DeepSeekService,
     private val doubaoService: DoubaoService,
@@ -128,30 +130,33 @@ class AiController(
         }
     }
 
-    /**
-     * 对话
-     * @param [promt]
-     * @return [DeepSeekChatResponse]
-     */
-    @GetMapping("/ask")
-    fun ask(promt: String): String {
-//        log.info("promt: $promt")
-//        val chat = deepSeekService.chat(promt).parseObject<DeepSeekChatResponse>()
-//        val joinToString = chat.choices?.map { it.message }?.joinToString(System.lineSeparator())
-//        log.info("chat response: ${joinToString.toNotBlankStr()}")
-
-
-        val call = chatClient.prompt().user { u: ChatClient.PromptUserSpec ->
-            u.text(promt)
-//                .params(map)
-        }.call()
-
-        val content = call.content()
-        return content!!
-
-
-//        return chat
-    }
+//    /**
+//     * 对话
+//     * @param [promt]
+//     * @return [DeepSeekChatResponse]
+//     */
+//    @GetMapping("/ask")
+//    fun ask(promt: String): String {
+////        log.info("promt: $promt")
+////        val chat = deepSeekService.chat(promt).parseObject<DeepSeekChatResponse>()
+////        val joinToString = chat.choices?.map { it.message }?.joinToString(System.lineSeparator())
+////        log.info("chat response: ${joinToString.toNotBlankStr()}")
+//
+//
+//        val call = chatClient.prompt()
+//            .user { u: ChatClient.PromptUserSpec ->
+//                u.text(promt)
+////                .params(map)
+//            }
+//
+//            .call()
+//
+//        val content = call.content()
+//        return content!!
+//
+//
+////        return chat
+//    }
 
     /**
      * deepseek余额查询
