@@ -62,12 +62,13 @@ import org.springframework.stereotype.Service
 @Service
 open class DictService {
     @Tool(description = "保存字典")
-    fun save(entity: SysDict): SysDict {
+    fun save(entity: SysDictIso): String {
         val toJson = entity.toJson()
         val fromString = ImmutableObjects.fromString(SysDict::class.java, toJson)
         val save = sql.save(entity)
         val modifiedEntity = save.modifiedEntity
-        return modifiedEntity
+        return "保存成功"
+//        return modifiedEntity
 //        return modifiedEntity
     }
 }
