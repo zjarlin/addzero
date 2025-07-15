@@ -13,10 +13,7 @@ import org.springframework.test.context.TestConstructor
 class 测试结构化输出(
     val sql: KSqlClient,
     private val chatClient: ChatClient
-
 ) {
-
-
     @Test
     fun test() {
         val entity = chatClient.prompt().user {
