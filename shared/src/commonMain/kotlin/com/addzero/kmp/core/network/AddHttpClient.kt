@@ -63,19 +63,9 @@ object AddHttpClient {
         install(createClientPlugin("HttpResponseInterceptor") {
             onResponse { response ->
                 val bool = response.status.value != HttpStatusCode.OK.value
-//                val orNull = runCatching {
-//                    // 在协程作用域内执行挂起操作
-//                    val bodyAsText = response.bodyAsText()
-//                    bodyAsText
-//                }.getOrNull()
-
                 if (bool) {
-//                    println("异常body: $orNull")
-
                     GlobalEventDispatcher.handler(response)
-
                 }
-
             }
         })
         //基础url配置

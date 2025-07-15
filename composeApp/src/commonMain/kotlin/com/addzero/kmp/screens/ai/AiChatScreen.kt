@@ -17,11 +17,13 @@ import androidx.compose.material.icons.filled.Lightbulb
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.items
+import com.addzero.kmp.component.high_level.AddMultiColumnContainer
+import com.addzero.kmp.component.card.AddJetBrainsSimpleCard
+import com.addzero.kmp.entity.sys.ai.AiPrompt
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.ui.graphics.Color as ComposeColor
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
@@ -29,6 +31,7 @@ import androidx.compose.ui.text.font.FontWeight as ComposeFontWeight
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.runtime.*
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,14 +40,13 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
+import com.addzero.kmp.component.card.AddJetBrainsGradientCard
 
 import com.addzero.kmp.component.text.SafeSelectionContainer
 import com.addzero.kmp.settings.SettingContext4Compose
 import com.addzero.kmp.settings.SettingContext4Compose.AI_AVATAR_1
 import com.addzero.kmp.settings.SettingContext4Compose.AI_DESCRIPTION
-import com.addzero.kmp.settings.SettingContext4Compose.AI_WELCOME_MSG
 
 import com.addzero.kmp.viewmodel.ChatViewModel
 import com.mikepenz.markdown.m3.Markdown
@@ -78,6 +80,11 @@ private fun AiChatScreenContent() {
     val scrollState = rememberScrollState()
     val coroutineScope = rememberCoroutineScope()
     var input by remember { mutableStateOf("") }
+
+    // 初始化ViewModel
+    LaunchedEffect(Unit) {
+        chatViewModel.initialize()
+    }
 
     // 可爱的动画效果
     val heartBeat by rememberInfiniteTransition(label = "heartBeat").animateFloat(
@@ -117,15 +124,31 @@ private fun AiChatScreenContent() {
             SafeSelectionContainer(
                 modifier = Modifier.weight(1f)
             ) {
-                LabubuChatMessages(
-                    messages = chatViewModel.chatMessages,
-                    scrollState = scrollState,
-                    isAiThinking = chatViewModel.isAiThinking,
-                    onRetryMessage = { messageId -> chatViewModel.retryMessage(messageId) },
-                    onRetryUserMessage = { message -> chatViewModel.sendMessage(message) },
-                    retryingMessageId = chatViewModel.retryingMessageId,
-                    modifier = Modifier.fillMaxSize()
-                )
+                Column(modifier = Modifier.fillMaxSize()) {
+
+                    // 常用提示词区域（仅在没有消息时显示）
+                    if (chatViewModel.chatMessages.isEmpty()) {
+                        LabubuPromptSuggestions(
+                            prompts = chatViewModel.commonPrompts,
+                            isLoading = chatViewModel.isLoadingPrompts,
+                            onPromptSelected = { prompt ->
+                                input = prompt.content
+                            },
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                        )
+                    }
+
+                    // 聊天消息
+                    LabubuChatMessages(
+                        messages = chatViewModel.chatMessages,
+                        scrollState = scrollState,
+                        isAiThinking = chatViewModel.isAiThinking,
+                        onRetryMessage = { messageId -> chatViewModel.retryMessage(messageId) },
+                        onRetryUserMessage = { message -> chatViewModel.sendMessage(message) },
+                        retryingMessageId = chatViewModel.retryingMessageId,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
             }
 
             // 自动滚动到底部 - 消息变化或AI思考状态变化时都滚动
@@ -133,15 +156,6 @@ private fun AiChatScreenContent() {
                 coroutineScope.launch {
                     scrollState.animateScrollTo(scrollState.maxValue)
                 }
-            }
-            // 常用提示词区域（仅在没有消息时显示）
-            if (chatViewModel.chatMessages.isEmpty()) {
-                LabubuPromptSuggestions(
-                    onPromptSelected = { prompt ->
-                        input = prompt
-                    },
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-                )
             }
 
             // Labubu风格的输入区
@@ -300,10 +314,6 @@ private fun LabubuChatMessages(
             .verticalScroll(scrollState, enabled = true),
         verticalArrangement = Arrangement.Bottom
     ) {
-        // 欢迎消息
-        if (messages.isEmpty()) {
-            LabubuWelcomeMessage(AI_WELCOME_MSG)
-        }
 
         // 聊天消息
         messages.forEachIndexed { index, chatMessage ->
@@ -325,78 +335,6 @@ private fun LabubuChatMessages(
                 modifier = Modifier.padding(vertical = 4.dp)
             )
             Spacer(modifier = Modifier.height(12.dp))
-        }
-    }
-}
-
-// Labubu风格的欢迎消息
-@Composable
-private fun LabubuWelcomeMessage(welcomMsg: String) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 32.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        // 大号可爱头像
-        Box(
-            modifier = Modifier
-                .size(80.dp)
-                .background(
-                    Brush.radialGradient(
-                        colors = listOf(
-                            LabubuColors.AccentYellow,
-                            LabubuColors.PrimaryPink
-                        )
-                    ),
-                    CircleShape
-                )
-                .border(3.dp, Color.White, CircleShape),
-            contentAlignment = Alignment.Center
-        ) {
-
-            Avatar()
-
-//            Text(
-//                text = "🤖",
-//                fontSize = 40.sp
-//            )
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text(
-            text = welcomMsg,
-            style = MaterialTheme.typography.headlineSmall.copy(
-                fontWeight = ComposeFontWeight.Bold
-            ),
-            color = LabubuColors.DarkText
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Text(
-            text = "有什么可以帮助您的吗？ 💕",
-            style = MaterialTheme.typography.bodyLarge,
-            color = LabubuColors.LightText
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // 可爱的装饰
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            repeat(3) {
-                Box(
-                    modifier = Modifier
-                        .size(8.dp)
-                        .background(
-                            LabubuColors.PrimaryPink.copy(alpha = 0.6f),
-                            CircleShape
-                        )
-                )
-            }
         }
     }
 }
@@ -679,21 +617,11 @@ private fun Avatar() {
 // Labubu风格的常用提示词建议
 @Composable
 private fun LabubuPromptSuggestions(
-    onPromptSelected: (String) -> Unit,
+    prompts: List<AiPrompt>,
+    isLoading: Boolean,
+    onPromptSelected: (AiPrompt) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val commonPrompts = listOf(
-        "帮我审查这段代码的质量和最佳实践",
-        "请优化这个SQL查询的性能",
-        "设计一个RESTful API接口",
-        "分析这个bug的根本原因",
-        "编写技术文档说明",
-        "设计系统架构方案",
-        "生成测试用例",
-        "性能调优建议",
-        "安全漏洞检查",
-        "数据分析报告"
-    )
 
     Column(modifier = modifier) {
         // 标题
@@ -716,59 +644,75 @@ private fun LabubuPromptSuggestions(
             )
         }
 
-        // 提示词网格
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.height(200.dp)
-        ) {
-            items(commonPrompts) { prompt ->
-                PromptSuggestionCard(
-                    prompt = prompt,
-                    onClick = { onPromptSelected(prompt) }
+        // 加载状态或提示词网格
+        if (isLoading) {
+            // 加载状态
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(120.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(20.dp),
+                        strokeWidth = 2.dp
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = "正在加载提示词...",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+        } else if (prompts.isEmpty()) {
+            // 空状态
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(120.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "暂无可用的提示词",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
-        }
-    }
-}
-
-// 提示词建议卡片
-@Composable
-private fun PromptSuggestionCard(
-    prompt: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    androidx.compose.material3.Card(
-        onClick = onClick,
-        modifier = modifier
-            .fillMaxWidth()
-            .height(80.dp),
-        colors = androidx.compose.material3.CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f)
-        ),
-        elevation = androidx.compose.material3.CardDefaults.cardElevation(
-            defaultElevation = 2.dp,
-            pressedElevation = 4.dp
-        )
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(12.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = prompt,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                textAlign = TextAlign.Center,
-                maxLines = 3,
-                overflow = TextOverflow.Ellipsis,
-                lineHeight = 16.sp
+        } else {
+            // 提示词网格 - 使用AddMultiColumnContainer和JetBrains风格卡片
+            AddMultiColumnContainer(
+                howMuchColumn = 2,
+                horizontalGap = 12,
+                verticalGap = 12,
+                modifier = Modifier,
+                items = prompts.take(4).map { prompt ->
+                    {
+                        AddJetBrainsGradientCard(
+                            onClick = { onPromptSelected(prompt) },
+                            modifier = Modifier.fillMaxWidth(),
+                            hoverColor = ComposeColor(0xFF6B73FF)
+                        ) {
+                            Text(
+                                text = prompt.title,
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurface,
+                                textAlign = TextAlign.Center,
+                                maxLines = 3,
+                                overflow = TextOverflow.Ellipsis,
+                                lineHeight = 16.sp,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
+                    }
+                }
             )
         }
     }
 }
+
 

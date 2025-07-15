@@ -5,6 +5,7 @@ import androidx.compose.runtime.LaunchedEffect
 import com.addzero.kmp.component.toast.ToastManager
 import com.addzero.kmp.core.network.AddHttpClient
 import com.addzero.kmp.entity.Res
+import com.addzero.kmp.ui.infra.theme.ThemeViewModel
 import com.addzero.kmp.viewmodel.LoginViewModel
 import io.ktor.client.call.*
 import io.ktor.client.statement.*
@@ -18,7 +19,8 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun EventBusConsumer() {
     val koinViewModel = koinViewModel<LoginViewModel>()
-//    val hasPermition = koinViewModel.hasPermission(permissionCode)
+
+    val themeViewModel = koinViewModel<ThemeViewModel>()
 
     LaunchedEffect(Unit) {
         EventBus.consumer<HttpResponse> {

@@ -85,6 +85,14 @@ interface AiApi {
     ): kotlin.collections.List<com.addzero.kmp.entity.sys.ai.AiPrompt>
 
 /**
+ * getTools
+ * HTTP方法: GET
+ * 路径: /ai/tools
+ * 返回类型: kotlin.collections.List<kotlin.String>
+ */
+    @GET("/ai/tools")    suspend fun getTools(): kotlin.collections.List<kotlin.String>
+
+/**
  * getPromptById
  * HTTP方法: GET
  * 路径: /ai/prompts/{id}

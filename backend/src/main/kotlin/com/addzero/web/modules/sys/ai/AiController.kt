@@ -6,33 +6,26 @@ import cn.hutool.ai.model.doubao.DoubaoCommon
 import cn.hutool.ai.model.doubao.DoubaoService
 import com.addzero.kmp.core.ext.now
 import com.addzero.kmp.entity.VisionRequest
-import com.addzero.kmp.entity.sys.ai.AiPrompt
-import com.addzero.kmp.entity.sys.ai.ChatWithPromptRequest
-import com.addzero.kmp.entity.sys.ai.DeepSeekChatResponse
-import com.addzero.kmp.entity.sys.ai.PromptStatistics
-import com.addzero.kmp.entity.sys.ai.SavePromptRequest
-import com.addzero.kmp.entity.sys.ai.SearchPromptRequest
+import com.addzero.kmp.entity.sys.ai.*
 import com.addzero.kmp.exp.BizException
 import org.springframework.ai.chat.client.ChatClient
-import java.time.LocalDateTime
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
-
+import org.springframework.ai.tool.ToolCallback
+import org.springframework.ai.tool.method.MethodToolCallbackProvider
+import org.springframework.web.bind.annotation.*
 
 
 @RestController
 @RequestMapping("/ai")
 class AiController(
+    private val methodToolCallbackProvider: MethodToolCallbackProvider,
+
     private val deepSeekService: DeepSeekService,
     private val doubaoService: DoubaoService,
     private val deepSeekConfig: DeepSeekConfig,
 //    @Value("\${doubao.key}") private val doubaoKey: String,
 
     private val chatClient: ChatClient
-){
+) {
 
     // 内存存储常用提示词（生产环境应使用数据库）
     private val prompts = mutableMapOf<String, AiPrompt>()
@@ -141,12 +134,11 @@ class AiController(
      * @return [DeepSeekChatResponse]
      */
     @GetMapping("/ask")
-     fun ask(promt: String): String {
+    fun ask(promt: String): String {
 //        log.info("promt: $promt")
 //        val chat = deepSeekService.chat(promt).parseObject<DeepSeekChatResponse>()
 //        val joinToString = chat.choices?.map { it.message }?.joinToString(System.lineSeparator())
 //        log.info("chat response: ${joinToString.toNotBlankStr()}")
-
 
 
         val call = chatClient.prompt().user { u: ChatClient.PromptUserSpec ->
@@ -158,8 +150,6 @@ class AiController(
         return content!!
 
 
-
-
 //        return chat
     }
 
@@ -168,7 +158,7 @@ class AiController(
      * @return [Unit]
      */
     @GetMapping("getDeepSeekBalance")
-     fun getDeepSeekBalance(): String? {
+    fun getDeepSeekBalance(): String? {
         val balance: String? = deepSeekService.balance()
         return balance
     }
@@ -180,7 +170,7 @@ class AiController(
         return chatVision
     }
 
-       @PostMapping("/genVideo")
+    @PostMapping("/genVideo")
     fun genVideo(@RequestBody visionRequest: VisionRequest): String? {
 
         val (promt, images) = visionRequest
@@ -217,6 +207,17 @@ class AiController(
         } else {
             prompts.values.filter { it.category == category }.sortedBy { it.title }
         }
+    }
+
+    /**
+     * 🔧 获取所有MCP工具描述
+     *
+     * @return 工具描述列表
+     */
+    @GetMapping("/tools")
+    fun getTools(): List<String> {
+        val tools = methodToolCallbackProvider.toolCallbacks
+        return tools.map { it.toolDefinition.description() }
     }
 
     /**
@@ -331,9 +332,9 @@ class AiController(
 
         return prompts.values.filter { prompt ->
             prompt.title.contains(keyword, ignoreCase = true) ||
-            prompt.content.contains(keyword, ignoreCase = true) ||
-            prompt.category.contains(keyword, ignoreCase = true) ||
-            prompt.tags.any { it.contains(keyword, ignoreCase = true) }
+                    prompt.content.contains(keyword, ignoreCase = true) ||
+                    prompt.category.contains(keyword, ignoreCase = true) ||
+                    prompt.tags.any { it.contains(keyword, ignoreCase = true) }
         }.sortedBy { it.title }
     }
 
@@ -422,9 +423,9 @@ class AiController(
             if (keyword.isNotBlank()) {
                 results = results.filter { prompt ->
                     prompt.title.contains(keyword, ignoreCase = true) ||
-                    prompt.content.contains(keyword, ignoreCase = true) ||
-                    prompt.category.contains(keyword, ignoreCase = true) ||
-                    prompt.tags.any { it.contains(keyword, ignoreCase = true) }
+                            prompt.content.contains(keyword, ignoreCase = true) ||
+                            prompt.category.contains(keyword, ignoreCase = true) ||
+                            prompt.tags.any { it.contains(keyword, ignoreCase = true) }
                 }
             }
         }
