@@ -1,0 +1,18 @@
+export com.addzero.model.entity.BizDotfiles
+ -> package com.addzero.model.entity.dto
+
+BizDotfilesVO {
+    id
+    createTime
+    updateTime
+    osType
+    osStructure
+    defType
+    name
+    value
+    describtion
+    status
+    fileUrl
+    location
+}
+

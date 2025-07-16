@@ -12,24 +12,20 @@ plugins {
 
 dependencies {
     ksp(libs.jimmer.ksp)
-
     ksp(projects.lib.addzeroJdbc2entityProcessor)
     ksp(projects.lib.addzeroEntity2isoProcessor)
     ksp(projects.lib.addzeroEntity2formProcessor)
     ksp(projects.lib.addzeroEntity2mcpProcessor)
-
-
     implementation(libs.jimmer.sql.kotlin)
     //easy-excel
     implementation(libs.fastexcel)
 //    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 //    implementation ("cn.hutool:hutool-core:${libs.versions.hutoolAll}" )
     // 仅注解
-    implementation("jakarta.validation:jakarta.validation-api:3.0.2")
+//    implementation("jakarta.validation:jakarta.validation-api:3.0.2")
     //实体表单核心注解
     implementation(projects.lib.addzeroEntity2formCore)
     implementation(projects.shared)
-
     implementation (libs.hutool.all)
 }
 val modelProject = project(":backend:model")

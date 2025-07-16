@@ -5,8 +5,8 @@ package com.addzero.model.entity
 import com.addzero.kmp.entity2form.annotation.LabelProp
 import com.addzero.model.common.BaseDateTime
 import com.addzero.model.common.SnowflakeIdGenerator
-import jakarta.validation.constraints.NotBlank
-import jakarta.validation.constraints.Pattern
+//import jakarta.validation.constraints.NotBlank
+//import jakarta.validation.constraints.Pattern
 import org.babyfish.jimmer.sql.*
 
 /**
@@ -40,8 +40,8 @@ interface SysUser : BaseDateTime {
      * 手机号
      */
     @Key(group = "phone")
-    @get:Pattern(regexp = "^1[3-9]\\d{9}$", message = "手机号格式不正确")
-    @get:NotBlank
+//    @get:Pattern(regexp = "^1[3-9]\\d{9}$", message = "手机号格式不正确")
+//    @get:NotBlank
     val phone: String?
 
 
