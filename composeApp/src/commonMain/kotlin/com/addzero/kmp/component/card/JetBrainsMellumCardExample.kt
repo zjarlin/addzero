@@ -170,7 +170,7 @@ fun JetBrainsMellumCardExample() {
  * 产品卡片内容组件
  */
 @Composable
-private fun ProductCardContent(
+fun ProductCardContent(
     title: String,
     subtitle: String,
     icon: ImageVector,
@@ -184,7 +184,7 @@ private fun ProductCardContent(
             Icon(
                 imageVector = icon,
                 contentDescription = title,
-                tint = Color.White.copy(alpha = 0.9f),
+                tint = LocalContentColor.current.copy(alpha = 0.9f),
                 modifier = Modifier.size(32.dp)
             )
             Spacer(modifier = Modifier.width(16.dp))
@@ -193,26 +193,26 @@ private fun ProductCardContent(
                     text = title,
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
-                    color = Color.White,
+                    color = LocalContentColor.current,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
                     text = subtitle,
                     style = MaterialTheme.typography.titleMedium,
-                    color = Color.White.copy(alpha = 0.8f),
+                    color = LocalContentColor.current.copy(alpha = 0.8f),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
             }
         }
-        
+
         Spacer(modifier = Modifier.height(12.dp))
-        
+
         Text(
             text = description,
             style = MaterialTheme.typography.bodyMedium,
-            color = Color.White.copy(alpha = 0.7f),
+            color = LocalContentColor.current.copy(alpha = 0.7f),
             lineHeight = 20.sp
         )
     }
@@ -231,13 +231,13 @@ private fun SimpleCardContent(
             text = title,
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
-            color = Color.White
+            color = LocalContentColor.current
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = description,
             style = MaterialTheme.typography.bodyMedium,
-            color = Color.White.copy(alpha = 0.8f),
+            color = LocalContentColor.current.copy(alpha = 0.8f),
             lineHeight = 20.sp
         )
     }
@@ -259,7 +259,7 @@ private fun StatCardContent(
         Icon(
             imageVector = icon,
             contentDescription = label,
-            tint = Color.White.copy(alpha = 0.9f),
+            tint = LocalContentColor.current.copy(alpha = 0.9f),
             modifier = Modifier.size(28.dp)
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -267,12 +267,12 @@ private fun StatCardContent(
             text = value,
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
-            color = Color.White
+            color = LocalContentColor.current
         )
         Text(
             text = label,
             style = MaterialTheme.typography.bodyMedium,
-            color = Color.White.copy(alpha = 0.8f)
+            color = LocalContentColor.current.copy(alpha = 0.8f)
         )
         Text(
             text = trend,
@@ -298,7 +298,7 @@ private fun ActionCardContent(
         Icon(
             imageVector = icon,
             contentDescription = title,
-            tint = Color.White.copy(alpha = 0.9f),
+            tint = LocalContentColor.current.copy(alpha = 0.9f),
             modifier = Modifier.size(32.dp)
         )
         Spacer(modifier = Modifier.height(12.dp))
@@ -306,13 +306,13 @@ private fun ActionCardContent(
             text = title,
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
-            color = Color.White
+            color = LocalContentColor.current
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = action,
             style = MaterialTheme.typography.bodyMedium,
-            color = Color.White.copy(alpha = 0.8f)
+            color = LocalContentColor.current.copy(alpha = 0.8f)
         )
     }
 }

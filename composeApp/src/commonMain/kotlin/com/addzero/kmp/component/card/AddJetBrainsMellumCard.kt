@@ -45,7 +45,7 @@ fun AddJetBrainsMellumCard(
     cornerRadius: Dp = 16.dp,
     elevation: Dp = 4.dp,
     padding: Dp = 20.dp,
-    backgroundType: MellumCardType = MellumCardType.Light,
+    backgroundType: MellumCardType = MellumCardType.Purple,
     animationDuration: Int = 300,
     content: @Composable () -> Unit
 ) {
@@ -65,10 +65,35 @@ fun AddJetBrainsMellumCard(
         label = "elevation_animation"
     )
 
+    // 荧光色边框动画
+    val glowAlpha by animateFloatAsState(
+        targetValue = if (isHovered) 0.8f else 0f,
+        animationSpec = tween(durationMillis = animationDuration, easing = EaseOutCubic),
+        label = "glow_animation"
+    )
+
     // 使用Surface而不是Box，确保正确的Material Design行为
     Surface(
         modifier = modifier
             .scale(scaleAnimation)
+            // 添加荧光色外发光效果
+            .then(
+                if (isHovered) {
+                    Modifier
+                        .background(
+                            brush = Brush.radialGradient(
+                                colors = listOf(
+                                    backgroundType.hoverColor.copy(alpha = glowAlpha * 0.3f),
+                                    backgroundType.hoverColor.copy(alpha = glowAlpha * 0.1f),
+                                    Color.Transparent
+                                ),
+                                radius = 200f
+                            ),
+                            shape = RoundedCornerShape(cornerRadius + 8.dp)
+                        )
+                        .padding(8.dp)
+                } else Modifier
+            )
             .then(
                 if (onClick != null) {
                     Modifier.clickable(
@@ -90,11 +115,25 @@ fun AddJetBrainsMellumCard(
                     brush = backgroundType.backgroundBrush,
                     shape = RoundedCornerShape(cornerRadius)
                 )
+                // 荧光色边框效果
                 .border(
-                    width = 1.dp,
-                    color = backgroundType.borderColor.copy(
-                        alpha = if (isHovered) 0.4f else 0.2f
-                    ),
+                    width = if (isHovered) 2.dp else 1.dp,
+                    brush = if (isHovered) {
+                        Brush.linearGradient(
+                            colors = listOf(
+                                backgroundType.hoverColor.copy(alpha = glowAlpha),
+                                backgroundType.hoverColor.copy(alpha = glowAlpha * 0.6f),
+                                backgroundType.borderColor.copy(alpha = 0.3f)
+                            )
+                        )
+                    } else {
+                        Brush.linearGradient(
+                            colors = listOf(
+                                backgroundType.borderColor.copy(alpha = 0.2f),
+                                backgroundType.borderColor.copy(alpha = 0.1f)
+                            )
+                        )
+                    },
                     shape = RoundedCornerShape(cornerRadius)
                 )
                 .padding(padding)
@@ -124,15 +163,15 @@ enum class MellumCardType(
     Light(
         backgroundBrush = Brush.linearGradient(
             colors = listOf(
-                Color(0xFFFAFAFA),
-                Color(0xFFF0F0F0),
-                Color(0xFFE0E0E0)
+                Color(0xFFFFFFFF),  // 纯白色
+                Color(0xFFF8FAFC),  // 浅灰色
+                Color(0xFFE2E8F0)   // 中灰色
             )
         ),
-        hoverColor = Color(0xFF6B7280),
-        backgroundColor = Color(0xFFFAFAFA),
-        borderColor = Color(0xFFE0E0E0),
-        contentColor = Color(0xFF000000)
+        hoverColor = Color(0xFF3B82F6),
+        backgroundColor = Color(0xFFFFFFFF),
+        borderColor = Color(0xFFE2E8F0),
+        contentColor = Color(0xFF1E293B)  // 深色文字，确保对比度
     ),
     Purple(
         backgroundBrush = Brush.linearGradient(
@@ -142,7 +181,7 @@ enum class MellumCardType(
                 Color(0xFF0F0A1F)
             )
         ),
-        hoverColor = Color(0xFF6B73FF),
+        hoverColor = Color(0xFF00D4FF),  // 青色荧光
         backgroundColor = Color(0xFF2D1B69),
         borderColor = Color(0xFF6B73FF),
         contentColor = Color(0xFFFFFFFF)
@@ -155,7 +194,7 @@ enum class MellumCardType(
                 Color(0xFF0F172A)
             )
         ),
-        hoverColor = Color(0xFF3B82F6),
+        hoverColor = Color(0xFF00FFFF),  // 亮青色荧光
         backgroundColor = Color(0xFF1E3A8A),
         borderColor = Color(0xFF3B82F6),
         contentColor = Color(0xFFFFFFFF)
@@ -168,7 +207,7 @@ enum class MellumCardType(
                 Color(0xFF111827)
             )
         ),
-        hoverColor = Color(0xFF14B8A6),
+        hoverColor = Color(0xFF00FF88),  // 荧光绿色
         backgroundColor = Color(0xFF134E4A),
         borderColor = Color(0xFF14B8A6),
         contentColor = Color(0xFFFFFFFF)
@@ -181,7 +220,7 @@ enum class MellumCardType(
                 Color(0xFF431407)
             )
         ),
-        hoverColor = Color(0xFFF97316),
+        hoverColor = Color(0xFFFF6600),  // 荧光橙色
         backgroundColor = Color(0xFF9A3412),
         borderColor = Color(0xFFF97316),
         contentColor = Color(0xFFFFFFFF)
@@ -194,7 +233,7 @@ enum class MellumCardType(
                 Color(0xFF111827)
             )
         ),
-        hoverColor = Color(0xFF6B7280),
+        hoverColor = Color(0xFFFFFFFF),  // 白色荧光
         backgroundColor = Color(0xFF374151),
         borderColor = Color(0xFF6B7280),
         contentColor = Color(0xFFFFFFFF)
@@ -208,11 +247,11 @@ enum class MellumCardType(
                 Color(0xFF1F2937)
             )
         ),
-        hoverColor = Color(0xFF8B5CF6),
+        hoverColor = Color(0xFFFF00FF),  // 荧光紫红色
         backgroundColor = Color(0xFF8B5CF6),
         borderColor = Color(0xFF8B5CF6),
         contentColor = Color(0xFFFFFFFF)
-    );
+    )
 }
 
 /**

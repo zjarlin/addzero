@@ -3,31 +3,36 @@ package com.addzero.kmp.screens.ai
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
-import com.addzero.kmp.component.card.AddJetBrainsGradientCard
+import com.addzero.kmp.component.card.AddJetBrainsMellumCard
+import com.addzero.kmp.component.card.MellumCardType
+import com.addzero.kmp.component.card.ProductCardContent
 import com.addzero.kmp.component.high_level.AddMultiColumnContainer
 import com.addzero.kmp.component.text.SafeSelectionContainer
 import com.addzero.kmp.generated.isomorphic.SysAiPromptIso
@@ -79,7 +84,7 @@ private fun AiChatScreenContent() {
         ), label = "heartBeat"
     )
 
-    androidx.compose.material3.Surface(
+    Surface(
         modifier = Modifier.width(420.dp).fillMaxHeight().shadow(
             elevation = 12.dp, shape = RoundedCornerShape(topStart = 24.dp, bottomStart = 24.dp), clip = false
         ).clip(RoundedCornerShape(topStart = 24.dp, bottomStart = 24.dp)), color = MaterialTheme.colorScheme.surface
@@ -447,24 +452,256 @@ private fun Avatar() {
     )
 }
 
-// Labubu风格的常用提示词建议
+// 🤖 美化的AI提示词建议组件
 @Composable
-private fun LabubuPromptSuggestions(
-    prompts: List<SysAiPromptIso>, onPromptSelected: (SysAiPromptIso) -> Unit
+fun LabubuPromptSuggestions(
+    prompts: List<SysAiPromptIso>,
+    onPromptSelected: (SysAiPromptIso) -> Unit
 ) {
-    if (prompts.isEmpty()) {
-        Text("暂无可用的提示词")
-        return
-    }
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(24.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        // 标题区域
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Icon(
+                Icons.Default.Psychology,
+                contentDescription = "AI提示词",
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(24.dp)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = "💡 常用提示词",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+        }
 
+        if (prompts.isEmpty()) {
+            // 空状态
+            EmptyPromptState()
+        } else {
+            // 提示词网格
+            PromptGrid(
+                prompts = prompts,
+                onPromptSelected = onPromptSelected
+            )
+        }
+    }
+}
+
+/**
+ * 空状态组件
+ */
+@Composable
+private fun EmptyPromptState() {
+    AddJetBrainsMellumCard(
+        backgroundType = MellumCardType.Light,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Icon(
+                Icons.Default.OutdoorGrill,
+                contentDescription = "暂无提示词",
+                modifier = Modifier.size(32.dp),
+                tint = LocalContentColor.current.copy(alpha = 0.6f)
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = "暂无可用的提示词",
+                style = MaterialTheme.typography.bodyMedium,
+                color = LocalContentColor.current.copy(alpha = 0.7f)
+            )
+        }
+    }
+}
+
+/**
+ * 提示词网格组件 - 使用高阶组件
+ */
+@Composable
+private fun PromptGrid(
+    prompts: List<SysAiPromptIso>,
+    onPromptSelected: (SysAiPromptIso) -> Unit
+) {
     AddMultiColumnContainer(
-        howMuchColumn = 2, items = prompts.map { prompt ->
+        howMuchColumn = 1,
+        items = prompts.map { prompt ->
             {
-                AddJetBrainsGradientCard(onClick = { onPromptSelected(prompt) }) {
-                    Text( text = prompt.title ) }
+                PromptCard(
+                    prompt = prompt,
+                    onSelected = { onPromptSelected(prompt) }
+                )
             }
         }
     )
+}
+
+/**
+ * 单个提示词卡片 - 参考HackathonCard样式
+ */
+@Composable
+private fun PromptCard(
+    prompt: SysAiPromptIso,
+    onSelected: () -> Unit
+) {
+    val cardTypes = listOf(
+        MellumCardType.Purple,
+        MellumCardType.Blue,
+        MellumCardType.Teal,
+        MellumCardType.Orange
+    )
+    // 根据提示词ID选择卡片类型，确保一致性
+    val cardType = cardTypes[(prompt.id?.toInt() ?: 0) % cardTypes.size]
+
+    // 悬浮提示状态
+    var showTooltip by remember { mutableStateOf(false) }
+    val interactionSource = remember { MutableInteractionSource() }
+    val isHovered by interactionSource.collectIsHoveredAsState()
+
+    // 延迟显示提示，避免快速移动时闪烁
+    LaunchedEffect(isHovered) {
+        if (isHovered) {
+            kotlinx.coroutines.delay(500) // 延迟500ms显示
+            showTooltip = true
+        } else {
+            showTooltip = false
+        }
+    }
+
+    // 提示框透明度动画
+    val tooltipAlpha by animateFloatAsState(
+        targetValue = if (showTooltip && prompt.content.length > 50) 1f else 0f,
+        animationSpec = tween(durationMillis = 200),
+        label = "tooltip_alpha"
+    )
+
+    Box {
+        AddJetBrainsMellumCard(
+            onClick = onSelected,
+            backgroundType = cardType,
+            modifier = Modifier
+                .fillMaxWidth()
+                .hoverable(interactionSource)
+        ) {
+            ProductCardContent(
+                title = prompt.title ?: "AI提示词",
+                subtitle = getPromptSubtitle(prompt.content),
+                icon = getPromptIcon(prompt.content),
+                description = prompt.content
+            )
+        }
+
+        // 悬浮提示框 - 显示完整内容
+        if (tooltipAlpha > 0f) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .offset(y = (-12).dp)
+                    .alpha(tooltipAlpha),
+                contentAlignment = Alignment.TopCenter
+            ) {
+                Surface(
+                    modifier = Modifier
+                        .widthIn(max = 350.dp)
+                        .padding(horizontal = 16.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    color = MaterialTheme.colorScheme.inverseSurface,
+                    shadowElevation = 12.dp,
+                    tonalElevation = 8.dp
+                ) {
+                    Text(
+                        text = prompt.content.trim(),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.inverseOnSurface,
+                        modifier = Modifier.padding(16.dp),
+                        lineHeight = 20.sp
+                    )
+                }
+            }
+        }
+    }
+}
+
+/**
+ * 根据提示词内容获取合适的图标
+ */
+private fun getPromptIcon(content: String): ImageVector {
+    return when {
+        content.contains("代码", ignoreCase = true) ||
+                content.contains("编程", ignoreCase = true) ||
+                content.contains("code", ignoreCase = true) -> Icons.Default.Code
+
+        content.contains("写作", ignoreCase = true) ||
+                content.contains("文章", ignoreCase = true) ||
+                content.contains("write", ignoreCase = true) -> Icons.Default.Edit
+
+        content.contains("翻译", ignoreCase = true) ||
+                content.contains("translate", ignoreCase = true) -> Icons.Default.Translate
+
+        content.contains("分析", ignoreCase = true) ||
+                content.contains("analyze", ignoreCase = true) -> Icons.Default.Analytics
+
+        content.contains("创意", ignoreCase = true) ||
+                content.contains("创作", ignoreCase = true) ||
+                content.contains("creative", ignoreCase = true) -> Icons.Default.Lightbulb
+
+        content.contains("学习", ignoreCase = true) ||
+                content.contains("教学", ignoreCase = true) ||
+                content.contains("learn", ignoreCase = true) -> Icons.Default.School
+
+        else -> Icons.Default.ChatBubbleOutline
+    }
+}
+
+/**
+ * 根据提示词内容生成副标题
+ */
+private fun getPromptSubtitle(content: String): String {
+    return when {
+        content.contains("代码", ignoreCase = true) ||
+                content.contains("编程", ignoreCase = true) ||
+                content.contains("code", ignoreCase = true) -> "代码助手"
+
+        content.contains("写作", ignoreCase = true) ||
+                content.contains("文章", ignoreCase = true) ||
+                content.contains("write", ignoreCase = true) -> "写作助手"
+
+        content.contains("翻译", ignoreCase = true) ||
+                content.contains("translate", ignoreCase = true) -> "翻译助手"
+
+        content.contains("分析", ignoreCase = true) ||
+                content.contains("analyze", ignoreCase = true) -> "分析助手"
+
+        content.contains("创意", ignoreCase = true) ||
+                content.contains("创作", ignoreCase = true) ||
+                content.contains("creative", ignoreCase = true) -> "创意助手"
+
+        content.contains("学习", ignoreCase = true) ||
+                content.contains("教学", ignoreCase = true) ||
+                content.contains("learn", ignoreCase = true) -> "学习助手"
+
+        content.contains("优化", ignoreCase = true) ||
+                content.contains("improve", ignoreCase = true) -> "优化助手"
+
+        content.contains("测试", ignoreCase = true) ||
+                content.contains("test", ignoreCase = true) -> "测试助手"
+
+        content.contains("设计", ignoreCase = true) ||
+                content.contains("design", ignoreCase = true) -> "设计助手"
+
+        else -> "AI助手"
+    }
 }
 
 
