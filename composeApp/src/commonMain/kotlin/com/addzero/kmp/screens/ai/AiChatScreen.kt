@@ -40,7 +40,6 @@ import com.mikepenz.markdown.m3.Markdown
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
-import androidx.compose.ui.graphics.Color as ComposeColor
 import androidx.compose.ui.text.font.FontWeight as ComposeFontWeight
 
 // Labubu风格的颜色主题
@@ -65,7 +64,7 @@ fun AiChatScreen() {
 @Composable
 private fun AiChatScreenContent() {
     val chatViewModel = koinViewModel<ChatViewModel>()
-    val  aiPromptViewModel= koinViewModel<AiPromptViewModel>()
+    val aiPromptViewModel = koinViewModel<AiPromptViewModel>()
 
 
     val scrollState = rememberScrollState()
@@ -101,13 +100,11 @@ private fun AiChatScreenContent() {
                     // 常用提示词区域（仅在没有消息时显示）
                     if (chatViewModel.chatMessages.isEmpty()) {
                         LabubuPromptSuggestions(
-                            prompts = aiPromptViewModel.prompts
-                            , onPromptSelected = { prompt ->
+                            prompts = aiPromptViewModel.prompts, onPromptSelected = { prompt ->
                                 input = prompt.content
                             }
                         )
                     }
-
                     // 聊天消息
                     LabubuChatMessages(
                         messages = chatViewModel.chatMessages, scrollState = scrollState, isAiThinking = chatViewModel.isAiThinking, onRetryMessage = { messageId -> chatViewModel.retryMessage(messageId) }, onRetryUserMessage = { message -> chatViewModel.sendMessage(message) }, retryingMessageId = chatViewModel.retryingMessageId, modifier = Modifier.weight(1f)
@@ -461,15 +458,10 @@ private fun LabubuPromptSuggestions(
     }
 
     AddMultiColumnContainer(
-        howMuchColumn = 2, horizontalGap = 12, verticalGap = 12, modifier = Modifier, items = prompts.take(4).map { prompt ->
+        howMuchColumn = 2, items = prompts.map { prompt ->
             {
-                AddJetBrainsGradientCard(
-                    onClick = { onPromptSelected(prompt) }, modifier = Modifier.fillMaxWidth(), hoverColor = ComposeColor(0xFF6B73FF)
-                ) {
-                    Text(
-                        text = prompt.title, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurface, textAlign = TextAlign.Center, maxLines = 3, overflow = TextOverflow.Ellipsis, lineHeight = 16.sp, modifier = Modifier.fillMaxWidth()
-                    )
-                }
+                AddJetBrainsGradientCard(onClick = { onPromptSelected(prompt) }) {
+                    Text( text = prompt.title ) }
             }
         }
     )

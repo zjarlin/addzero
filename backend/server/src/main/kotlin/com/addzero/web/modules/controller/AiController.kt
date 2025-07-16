@@ -8,6 +8,7 @@ import com.addzero.kmp.entity.sys.ai.AiPrompt
 import com.addzero.kmp.exp.BizException
 import com.addzero.model.entity.SysAiPrompt
 import org.springframework.ai.chat.client.ChatClient
+import org.springframework.ai.tool.ToolCallbackProvider
 import org.springframework.ai.tool.method.MethodToolCallback
 import org.springframework.ai.tool.method.MethodToolCallbackProvider
 import org.springframework.web.bind.annotation.*
@@ -15,8 +16,8 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/ai")
 class AiController(
-    private val methodToolCallbackProvider: MethodToolCallbackProvider,
-    private val methodToolCallback: List<MethodToolCallback>,
+    private val toolCallbackProvider: ToolCallbackProvider,
+
 
 
     private val deepSeekService: DeepSeekService,
@@ -172,11 +173,13 @@ class AiController(
      */
     @GetMapping("/getPrompts")
     fun getPrompts(): List<SysAiPrompt> {
-        val tools = methodToolCallbackProvider.toolCallbacks
+        val tools = toolCallbackProvider.toolCallbacks
         val map = tools.map {
-            val description = it.toolDefinition.description()
+            val toolDefinition = it.toolDefinition
+            val name = toolDefinition.name()
+            val description = toolDefinition.description()
             SysAiPrompt {
-                title = description
+                title = name
                 content = description
                 category = description
                 tags = description
