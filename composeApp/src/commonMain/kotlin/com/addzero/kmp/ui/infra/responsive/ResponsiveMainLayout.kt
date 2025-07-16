@@ -6,7 +6,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.key.*
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
@@ -36,7 +35,6 @@ fun ResponsiveMainLayout(
     val navController = rememberNavController()
     val vm = koinViewModel<RecentTabsManager>()
     val chatViewModel = koinViewModel<ChatViewModel>()
-    val showChatBot = chatViewModel.showChatBot
     val focusManager = LocalFocusManager.current
 
     // 获取响应式配置
@@ -68,7 +66,7 @@ fun ResponsiveMainLayout(
                 navController = navController,
                 vm = vm,
                 chatViewModel = chatViewModel,
-                showChatBot = showChatBot,
+                showChatBot = chatViewModel.showChatBot,
                 isSearchOpen = isSearchOpen,
                 config = config
             )
@@ -79,7 +77,7 @@ fun ResponsiveMainLayout(
                 navController = navController,
                 vm = vm,
                 chatViewModel = chatViewModel,
-                showChatBot = showChatBot,
+                showChatBot = chatViewModel.showChatBot,
                 isSearchOpen = isSearchOpen,
                 config = config
             )
@@ -117,9 +115,7 @@ private fun SidebarLayout(
 
             // 主内容区
             Column(
-                modifier = Modifier.weight(
-                    if (showChatBot) 1f else 1f
-                )
+                modifier = Modifier.weight( 1f )
             ) {
                 // 面包屑导航
                 Breadcrumb(

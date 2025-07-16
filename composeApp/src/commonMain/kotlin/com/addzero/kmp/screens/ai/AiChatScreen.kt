@@ -6,9 +6,6 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -30,6 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
+import com.addzero.kmp.component.button.AddIconButton
 import com.addzero.kmp.component.card.AddJetBrainsMellumCard
 import com.addzero.kmp.component.card.MellumCardType
 import com.addzero.kmp.component.card.ProductCardContent
@@ -40,6 +38,7 @@ import com.addzero.kmp.settings.SettingContext4Compose
 import com.addzero.kmp.settings.SettingContext4Compose.AI_AVATAR_1
 import com.addzero.kmp.settings.SettingContext4Compose.AI_DESCRIPTION
 import com.addzero.kmp.viewmodel.AiPromptViewModel
+import com.addzero.kmp.viewmodel.ChatMessage
 import com.addzero.kmp.viewmodel.ChatViewModel
 import com.mikepenz.markdown.m3.Markdown
 import kotlinx.coroutines.delay
@@ -66,6 +65,7 @@ fun AiChatScreen() {
     AiChatScreenContent()
 }
 
+
 @Composable
 private fun AiChatScreenContent() {
     val chatViewModel = koinViewModel<ChatViewModel>()
@@ -85,7 +85,7 @@ private fun AiChatScreenContent() {
     )
 
     Surface(
-        modifier = Modifier.width(420.dp).fillMaxHeight().shadow(
+        modifier = Modifier.width(800.dp).fillMaxHeight().shadow(
             elevation = 12.dp, shape = RoundedCornerShape(topStart = 24.dp, bottomStart = 24.dp), clip = false
         ).clip(RoundedCornerShape(topStart = 24.dp, bottomStart = 24.dp)), color = MaterialTheme.colorScheme.surface
     ) {
@@ -169,51 +169,12 @@ private fun LabubuTopBar(
             )
         }
 
-        Spacer(modifier = Modifier.weight(1f))
 
 
-        // 新聊天按钮 - 带旋转动画
-        var isPressed by remember { mutableStateOf(false) }
+        AddIconButton(imageVector = Icons.Default.Add, text = "新建聊天") { onNewChat() }
 
-        IconButton(
-            onClick = {
-                isPressed = true
-                onNewChat()
-            }, modifier = Modifier.size(36.dp).background(
-                MaterialTheme.colorScheme.secondary.copy(alpha = 0.8f), CircleShape
-            )
-        ) {
-            AnimatedContent(
-                targetState = isPressed, transitionSpec = {
-                    (scaleIn() + fadeIn()) togetherWith (scaleOut() + fadeOut())
-                }, label = "newChatIcon"
-            ) { pressed ->
-                Icon(
-                    if (pressed) Icons.Default.Refresh else Icons.Default.Add, contentDescription = "新聊天", tint = MaterialTheme.colorScheme.onSecondary, modifier = Modifier.size(20.dp).scale(if (pressed) 1.2f else 1f)
-                )
-            }
-        }
+        AddIconButton(imageVector = Icons.Default.Close, text = "关闭") { onClose() }
 
-        // 重置按钮状态
-        LaunchedEffect(isPressed) {
-            if (isPressed) {
-                delay(300)
-                isPressed = false
-            }
-        }
-
-        Spacer(modifier = Modifier.width(8.dp))
-
-        // 可爱的关闭按钮
-        IconButton(
-            onClick = onClose, modifier = Modifier.size(36.dp).background(
-                MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.2f), CircleShape
-            )
-        ) {
-            Icon(
-                Icons.Default.Close, contentDescription = "关闭", tint = MaterialTheme.colorScheme.onPrimary, modifier = Modifier.size(20.dp)
-            )
-        }
     }
 }
 
@@ -221,7 +182,7 @@ private fun LabubuTopBar(
 // Labubu风格的聊天消息区
 @Composable
 private fun LabubuChatMessages(
-    messages: List<com.addzero.kmp.viewmodel.ChatMessage>, scrollState: ScrollState, isAiThinking: Boolean = false, onRetryMessage: (String) -> Unit = {}, onRetryUserMessage: (String) -> Unit = {}, retryingMessageId: String? = null, modifier: Modifier = Modifier
+    messages: List<ChatMessage>, scrollState: ScrollState, isAiThinking: Boolean = false, onRetryMessage: (String) -> Unit = {}, onRetryUserMessage: (String) -> Unit = {}, retryingMessageId: String? = null, modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp).verticalScroll(scrollState, enabled = true), verticalArrangement = Arrangement.Bottom
@@ -248,7 +209,7 @@ private fun LabubuChatMessages(
 // Labubu风格的聊天气泡
 @Composable
 private fun LabubuChatBubble(
-    chatMessage: com.addzero.kmp.viewmodel.ChatMessage, animationDelay: Int = 0, onRetryMessage: (String) -> Unit = {}, onRetryUserMessage: (String) -> Unit = {}, isRetrying: Boolean = false, isAiThinking: Boolean = false
+    chatMessage: ChatMessage, animationDelay: Int = 0, onRetryMessage: (String) -> Unit = {}, onRetryUserMessage: (String) -> Unit = {}, isRetrying: Boolean = false, isAiThinking: Boolean = false
 ) {
     // 入场动画
     var visible by remember { mutableStateOf(false) }
@@ -373,7 +334,7 @@ private fun LabubuChatBubble(
                     // 复制反馈动画
                     if (showCopyFeedback) {
                         LaunchedEffect(showCopyFeedback) {
-                            kotlinx.coroutines.delay(1000)
+                            delay(1000)
                             showCopyFeedback = false
                         }
 
@@ -399,14 +360,14 @@ private fun LabubuChatBubble(
                         Spacer(modifier = Modifier.width(40.dp)) // 对齐AI头像
 
                         // AI重试按钮
-                        androidx.compose.material3.OutlinedButton(
-                            onClick = { onRetryMessage(chatMessage.id) }, enabled = !isRetrying, modifier = Modifier.height(32.dp), colors = androidx.compose.material3.ButtonDefaults.outlinedButtonColors(
+                        OutlinedButton(
+                            onClick = { onRetryMessage(chatMessage.id) }, enabled = !isRetrying, modifier = Modifier.height(32.dp), colors = ButtonDefaults.outlinedButtonColors(
                                 contentColor = if (isRetrying) Color.Gray else LabubuColors.PrimaryPink
                             )
                         ) {
                             if (isRetrying) {
                                 // 显示加载动画
-                                androidx.compose.material3.CircularProgressIndicator(
+                                CircularProgressIndicator(
                                     modifier = Modifier.size(16.dp), strokeWidth = 2.dp, color = LabubuColors.PrimaryPink
                                 )
                                 Spacer(modifier = Modifier.width(4.dp))
@@ -572,7 +533,7 @@ private fun PromptCard(
     // 延迟显示提示，避免快速移动时闪烁
     LaunchedEffect(isHovered) {
         if (isHovered) {
-            kotlinx.coroutines.delay(500) // 延迟500ms显示
+            delay(500) // 延迟500ms显示
             showTooltip = true
         } else {
             showTooltip = false
