@@ -147,6 +147,8 @@ private fun LabubuTopBar(
     Row(
         modifier = Modifier.fillMaxWidth().height(72.dp).background(MaterialTheme.colorScheme.primary).padding(horizontal = 20.dp), verticalAlignment = Alignment.CenterVertically
     ) {
+
+
         // 可爱的AI头像
         Box(
             modifier = Modifier.size(40.dp).scale(heartBeat).background(
@@ -171,9 +173,13 @@ private fun LabubuTopBar(
 
 
 
-        AddIconButton(imageVector = Icons.Default.Add, text = "新建聊天") { onNewChat() }
+        Row (horizontalArrangement = Arrangement.End) {
+            AddIconButton(imageVector = Icons.Default.Add, text = "新建聊天") { onNewChat() }
+            AddIconButton(imageVector = Icons.Default.Close, text = "关闭") { onClose() }
+         }
 
-        AddIconButton(imageVector = Icons.Default.Close, text = "关闭") { onClose() }
+
+
 
     }
 }

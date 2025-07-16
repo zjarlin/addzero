@@ -15,14 +15,13 @@ fun AddIconButton(
     text: String,
     imageVector: ImageVector = Icons.Default.Add,
     modifier: Modifier = Modifier,
-    tint: Color = MaterialTheme.colorScheme.primary,
+    tint: Color =  LocalContentColor.current,
     content: (@Composable () -> Unit)? = null,
     onClick: () -> Unit
 ) {
 
 
     val defaultContent: @Composable () -> Unit = content ?: {
-
         IconButton(
             onClick = onClick,
         ) {
@@ -33,6 +32,7 @@ fun AddIconButton(
 
 
     }
+
 
 
     AddTooltipBox(text) {
