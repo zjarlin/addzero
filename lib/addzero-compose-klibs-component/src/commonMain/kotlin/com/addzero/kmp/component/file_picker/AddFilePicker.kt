@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalTime::class)
 
-package com.addzero.kmp.component.form.file
+package com.addzero.kmp.component.file_picker
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable

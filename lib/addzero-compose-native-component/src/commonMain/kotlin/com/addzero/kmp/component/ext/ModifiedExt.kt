@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalTime::class)
+
 package com.addzero.kmp.component.ext
 
 import androidx.compose.foundation.gestures.Orientation
@@ -17,10 +19,10 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
-import com.addzero.kmp.core.ext.nowLong
-import kotlinx.datetime.Instant
+
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.ExperimentalTime
 
 /**
  * 可滚动容器扩展函数
@@ -36,7 +38,6 @@ fun Modifier.scrollable(
         else -> this.verticalScroll(scrollState)
     }
 }
-
 
 
 /**
@@ -62,7 +63,7 @@ fun Modifier.debouncedClickable(
     Modifier.semantics(mergeDescendants = true) {
         role = Role.Button
         onClick(action = {
-            val currentTime = nowLong()
+            val currentTime = kotlin.time.Clock.System.now().toEpochMilliseconds()
             if (currentTime - lastClickTime >= timeout.inWholeMilliseconds) {
                 lastClickTime = currentTime
                 if (hapticFeedBack) haptic.performHapticFeedback(HapticFeedbackType.LongPress)

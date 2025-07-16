@@ -1,12 +1,12 @@
 package com.addzero.kmp.component.form.selector
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.addzero.kmp.generated.enums.EnumOsType
-import com.addzero.kmp.enums.EnumUtils
 import com.addzero.kmp.enums.EnumUtils.getEnumValues
 import kotlin.reflect.KClass
 
@@ -27,13 +27,13 @@ inline fun <reified T : Enum<T>> AddEnumSelector(
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
-    
+
     // 获取所有枚举值（KMP 兼容方式）
     val enumValues = remember(enumClass) {
         val enumValues = getEnumValues<T>()
         enumValues
     }
-    
+
     Column(modifier = modifier) {
         // 标签
         if (label.isNotEmpty()) {
@@ -44,7 +44,7 @@ inline fun <reified T : Enum<T>> AddEnumSelector(
                 modifier = Modifier.padding(bottom = 4.dp)
             )
         }
-        
+
         // 下拉选择框
         ExposedDropdownMenuBox(
             expanded = expanded,
@@ -62,7 +62,7 @@ inline fun <reified T : Enum<T>> AddEnumSelector(
                     .menuAnchor()
                     .fillMaxWidth()
             )
-            
+
             ExposedDropdownMenu(
                 expanded = expanded,
                 onDismissRequest = { expanded = false }
@@ -77,7 +77,7 @@ inline fun <reified T : Enum<T>> AddEnumSelector(
                         }
                     )
                 }
-                
+
                 // 枚举值选项
                 enumValues.forEach { enumValue ->
                     DropdownMenuItem(

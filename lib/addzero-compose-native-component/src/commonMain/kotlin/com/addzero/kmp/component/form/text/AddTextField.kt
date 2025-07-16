@@ -20,7 +20,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import com.addzero.kmp.generated.api.ApiProvider.commonApi
 import com.addzero.kmp.core.validation.RegexEnum
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -63,6 +62,7 @@ fun AddTextField(
     onErrMsgChange: ((String, String) -> Unit)? = null,
     errorMessages: List<String> = emptyList(),
     remoteValidationConfig: RemoteValidationConfig? = null,
+    remoteValidationConfigPredicate: (RemoteValidationConfig, String) -> Boolean = { _, _ -> true },
 ) {
     var isError by remember { mutableStateOf(false) }
     var errorMessages by remember { mutableStateOf(errorMessages) }
@@ -113,11 +113,8 @@ fun AddTextField(
             remoteValidationJob?.cancel() // 取消之前的远程校验任务
             remoteValidationJob = coroutineScope.launch {
                 delay(remoteValidationConfig.debounceTime)
-                val exists = commonApi.checkExist(
-                    remoteValidationConfig.tableName,
-                    remoteValidationConfig.column,
-                    input
-                )
+                val exists = remoteValidationConfigPredicate(remoteValidationConfig, input)
+
                 if (exists) {
                     errors.add("${label}已存在")
                     isError = true

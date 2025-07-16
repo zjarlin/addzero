@@ -18,7 +18,6 @@ import androidx.compose.ui.unit.dp
 import com.addzero.kmp.component.AddInputDescribe
 import com.addzero.kmp.component.drawer.AddDrawer
 import com.addzero.kmp.component.drawer.DrawerDirection
-import com.addzero.kmp.component.form.file.formatFileSize
 import io.github.vinceglb.filekit.compose.rememberFilePickerLauncher
 import io.github.vinceglb.filekit.core.PickerMode
 import io.github.vinceglb.filekit.core.PlatformFiles

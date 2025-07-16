@@ -29,6 +29,8 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             // Compose 基础依赖
+
+            implementation(projects.lib.addzeroTool)
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)

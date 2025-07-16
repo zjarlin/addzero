@@ -5,6 +5,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.addzero.kmp.annotation.Route
 import com.addzero.kmp.component.form.text.*
 import com.addzero.kmp.component.form.number.*
 import com.addzero.kmp.component.form.date.*
@@ -16,6 +17,7 @@ import kotlinx.datetime.LocalDateTime
  * 测试所有新创建的表单组件
  */
 @Composable
+@Route
 fun ComponentTestScreen() {
     var phoneValue by remember { mutableStateOf("") }
     var usernameValue by remember { mutableStateOf("") }

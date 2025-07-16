@@ -103,8 +103,8 @@ fun AddDrawer(
             .fillMaxSize()
             .zIndex(11f),
         contentAlignment = when (direction) {
-            DrawerDirection.RIGHT -> Alignment.CenterEnd
-            DrawerDirection.LEFT -> Alignment.CenterStart
+            DrawerDirection.RIGHT -> Alignment.BottomEnd
+            DrawerDirection.LEFT -> Alignment.BottomStart
             DrawerDirection.TOP -> Alignment.TopCenter
             DrawerDirection.BOTTOM -> Alignment.BottomCenter
         }
