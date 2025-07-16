@@ -5,14 +5,11 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.addzero.kmp.core.ext.now
 import com.addzero.kmp.core.ext.nowLong
 import com.addzero.kmp.generated.api.ApiProvider.chatApi
 import com.addzero.kmp.generated.api.ApiProvider.aiApi
-import com.addzero.kmp.entity.sys.ai.AiPrompt
 import com.addzero.kmp.ext.api
 import org.koin.android.annotation.KoinViewModel
-import org.koin.core.component.KoinComponent
 
 /**
  * 🤖 聊天视图模型
@@ -38,13 +35,6 @@ class ChatViewModel : ViewModel() {
     var retryingMessageId by mutableStateOf<String?>(null)
         private set
 
-    // 常用提示词列表
-    var commonPrompts = mutableStateListOf<AiPrompt>()
-        private set
-
-    // 提示词加载状态
-    var isLoadingPrompts by mutableStateOf(false)
-        private set
 
     /**
      * 发送消息
@@ -148,10 +138,6 @@ class ChatViewModel : ViewModel() {
         }
     }
 
-    fun updateInput(value: String) {
-        chatInput = value
-    }
-
     /**
      * 开始新聊天 - 清空聊天记录
      */
@@ -186,74 +172,7 @@ class ChatViewModel : ViewModel() {
         }
     }
 
-    /**
-     * 🔄 加载常用提示词
-     */
-    fun loadCommonPrompts() {
-        // 如果已经加载过了，就不重复加载
-        if (commonPrompts.isNotEmpty()) return
 
-        api(isLoadingPrompts, onLodingChange = { isLoadingPrompts = it }) {
-            try {
-                val prompts = aiApi.getPrompts(category = null)
-                commonPrompts.clear()
-                commonPrompts.addAll(prompts)
-            } catch (e: Exception) {
-                // 如果API调用失败，使用默认提示词
-                loadDefaultPrompts()
-            }
-        }
-    }
-
-    /**
-     * 🚀 初始化ViewModel（在UI中调用）
-     */
-    fun initialize() {
-        loadCommonPrompts()
-    }
-
-    /**
-     * 📝 加载默认提示词（作为备用方案）
-     */
-    private fun loadDefaultPrompts() {
-        val defaultPrompts = listOf(
-            AiPrompt(
-                id = "default_1",
-                title = "代码审查助手",
-                content = "帮我审查这段代码的质量和最佳实践",
-                category = "编程开发",
-                tags = listOf("代码审查"),
-                isBuiltIn = true
-            ),
-            AiPrompt(
-                id = "default_2",
-                title = "SQL优化专家",
-                content = "请优化这个SQL查询的性能",
-                category = "数据库",
-                tags = listOf("SQL优化"),
-                isBuiltIn = true
-            ),
-            AiPrompt(
-                id = "default_3",
-                title = "API设计师",
-                content = "设计一个RESTful API接口",
-                category = "编程开发",
-                tags = listOf("API设计"),
-                isBuiltIn = true
-            ),
-            AiPrompt(
-                id = "default_4",
-                title = "Bug分析专家",
-                content = "分析这个bug的根本原因",
-                category = "问题解决",
-                tags = listOf("bug分析"),
-                isBuiltIn = true
-            )
-        )
-
-        commonPrompts.clear()
-        commonPrompts.addAll(defaultPrompts)
-    }
 }
 
 /**

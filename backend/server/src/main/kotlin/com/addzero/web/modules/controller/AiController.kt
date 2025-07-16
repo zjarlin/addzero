@@ -3,22 +3,14 @@ package com.addzero.web.modules.controller
 import cn.hutool.ai.model.deepseek.DeepSeekService
 import cn.hutool.ai.model.doubao.DoubaoCommon
 import cn.hutool.ai.model.doubao.DoubaoService
-import com.addzero.kmp.core.ext.now
 import com.addzero.kmp.entity.VisionRequest
 import com.addzero.kmp.entity.sys.ai.AiPrompt
-import com.addzero.kmp.entity.sys.ai.ChatWithPromptRequest
-import com.addzero.kmp.entity.sys.ai.PromptStatistics
-import com.addzero.kmp.entity.sys.ai.SavePromptRequest
-import com.addzero.kmp.entity.sys.ai.SearchPromptRequest
 import com.addzero.kmp.exp.BizException
+import com.addzero.model.entity.SysAiPrompt
 import org.springframework.ai.chat.client.ChatClient
 import org.springframework.ai.tool.method.MethodToolCallback
 import org.springframework.ai.tool.method.MethodToolCallbackProvider
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/ai")
@@ -172,116 +164,27 @@ class AiController(
 
     // ==================== 提示词管理 API ====================
 
-    /**
-     * 📋 获取所有常用提示词
-     *
-     * @param category 分类筛选（可选）
-     * @return 提示词列表
-     */
-    @GetMapping("/prompts")
-    fun getPrompts(category: String?): List<AiPrompt> {
-        return if (category.isNullOrBlank()) {
-            prompts.values.sortedBy { it.category }
-        } else {
-            prompts.values.filter { it.category == category }.sortedBy { it.title }
-        }
-    }
 
     /**
      * 🔧 获取所有MCP工具描述
      *
      * @return 工具描述列表
      */
-    @GetMapping("/tools")
-    fun getTools(): List<String> {
+    @GetMapping("/getPrompts")
+    fun getPrompts(): List<SysAiPrompt> {
         val tools = methodToolCallbackProvider.toolCallbacks
-        return tools.map { it.toolDefinition.description() }
-    }
-
-
-
-    /**
-     * 🎯 使用提示词进行对话（新版本，使用共享数据类）
-     *
-     * @param request 聊天请求
-     * @return AI回复
-     */
-    @PostMapping("/prompts/chat")
-    fun chatWithPromptV2(@RequestBody request: ChatWithPromptRequest): String {
-        val prompt = prompts[request.promptId] ?: throw BizException("提示词不存在")
-
-        // 替换提示词中的变量
-        var processedContent = prompt.content
-        request.variables.forEach { (key, value) ->
-            processedContent = processedContent.replace("{$key}", value)
-        }
-
-        // 调用AI进行对话
-        val call = chatClient.prompt().user { u: ChatClient.PromptUserSpec ->
-            u.text(processedContent)
-        }.call()
-
-        return call.content() ?: "AI回复异常"
-    }
-
-    /**
-     * 📊 获取提示词统计信息
-     *
-     * @return 统计信息
-     */
-    @GetMapping("/prompts/statistics")
-    fun getPromptStatistics(): PromptStatistics {
-        val allPrompts = prompts.values
-        val builtInCount = allPrompts.count { it.isBuiltIn }
-        val customCount = allPrompts.count { !it.isBuiltIn }
-        val categoryCount = allPrompts.groupBy { it.category }
-            .mapValues { it.value.size }
-
-        return PromptStatistics(
-            totalCount = allPrompts.size,
-            builtInCount = builtInCount,
-            customCount = customCount,
-            categoryCount = categoryCount
-        )
-    }
-
-    /**
-     * 🔍 高级搜索提示词（使用共享数据类）
-     *
-     * @param request 搜索请求
-     * @return 搜索结果
-     */
-    @PostMapping("/prompts/search")
-    fun searchPromptsV2(@RequestBody request: SearchPromptRequest): List<AiPrompt> {
-        var results = prompts.values.toList()
-
-        // 关键词搜索
-        request.keyword?.let { keyword ->
-            if (keyword.isNotBlank()) {
-                results = results.filter { prompt ->
-                    prompt.title.contains(keyword, ignoreCase = true) ||
-                            prompt.content.contains(keyword, ignoreCase = true) ||
-                            prompt.category.contains(keyword, ignoreCase = true) ||
-                            prompt.tags.any { it.contains(keyword, ignoreCase = true) }
-                }
+        val map = tools.map {
+            val description = it.toolDefinition.description()
+            SysAiPrompt {
+                title = description
+                content = description
+                category = description
+                tags = description
+                isBuiltIn = true
             }
         }
-
-        // 分类筛选
-        request.category?.let { category ->
-            if (category.isNotBlank()) {
-                results = results.filter { it.category == category }
-            }
-        }
-
-        // 标签筛选
-        if (request.tags.isNotEmpty()) {
-            results = results.filter { prompt ->
-                request.tags.any { tag -> prompt.tags.contains(tag) }
-            }
-        }
-
-        return results.sortedBy { it.title }
+        return map
     }
+
 
 }
