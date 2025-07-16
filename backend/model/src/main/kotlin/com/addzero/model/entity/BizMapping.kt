@@ -21,14 +21,12 @@ interface BizMapping {
      * fromId
      */
     @Column(name = "from_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     val fromId: Long
 
     /**
      * toId
      */
     @Column(name = "to_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     val toId: Long
 
     /**

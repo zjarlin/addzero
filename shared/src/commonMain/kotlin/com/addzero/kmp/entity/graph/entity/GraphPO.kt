@@ -7,5 +7,3 @@ data class GraphPO(
     /** 三元组属性列表 */ var spos: List<SPO> = ArrayList()
 )
 
-
-//}

@@ -11,7 +11,7 @@ import java.util.regex.Pattern
 /**
  * sql注入处理工具类
  *
- * @author zhoujf
+ * @author zjarlin
  */
 object SqlInjectionUtil {
     /**

@@ -3,6 +3,7 @@ import org.babyfish.jimmer.Vars.jvmMainSourceDir
 
 plugins {
     id("kotlin-convention")
+
     id("com.google.devtools.ksp")
     id("ksp4jdbc")
     id("ksp4iso")
@@ -11,8 +12,8 @@ plugins {
 
 dependencies {
     ksp(libs.jimmer.ksp)
-    ksp(projects.lib.addzeroJdbc2entityProcessor)
 
+    ksp(projects.lib.addzeroJdbc2entityProcessor)
     ksp(projects.lib.addzeroEntity2isoProcessor)
     ksp(projects.lib.addzeroEntity2formProcessor)
     ksp(projects.lib.addzeroEntity2mcpProcessor)
@@ -21,7 +22,7 @@ dependencies {
     implementation(libs.jimmer.sql.kotlin)
     //easy-excel
     implementation(libs.fastexcel)
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+//    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 //    implementation ("cn.hutool:hutool-core:${libs.versions.hutoolAll}" )
     // 仅注解
     implementation("jakarta.validation:jakarta.validation-api:3.0.2")
