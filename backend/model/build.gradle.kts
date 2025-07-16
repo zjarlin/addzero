@@ -5,12 +5,19 @@ plugins {
     id("kotlin-convention")
     id("com.google.devtools.ksp")
     id("ksp4jdbc")
-
+    id("ksp4iso")
+    id("ksp4projectdir")
 }
 
 dependencies {
     ksp(libs.jimmer.ksp)
     ksp(projects.lib.addzeroJdbc2entityProcessor)
+
+    ksp(projects.lib.addzeroEntity2isoProcessor)
+    ksp(projects.lib.addzeroEntity2formProcessor)
+    ksp(projects.lib.addzeroEntity2mcpProcessor)
+
+
     implementation(libs.jimmer.sql.kotlin)
     //easy-excel
     implementation(libs.fastexcel)
@@ -25,10 +32,10 @@ dependencies {
     implementation (libs.hutool.all)
 }
 val modelProject = project(":backend:model")
-
 val modelSourceDir = modelProject.projectDir.resolve(jvmMainSourceDir).absolutePath
 val modelBuildDir = modelProject.projectDir.resolve(jvmMainKspBuildMetaDataDir).absolutePath
 ksp {
+
     arg("modelSourceDir", modelSourceDir)
     arg("modelBuildDir", modelBuildDir)
     arg("modelPackageName", "com.addzero.model.entity")

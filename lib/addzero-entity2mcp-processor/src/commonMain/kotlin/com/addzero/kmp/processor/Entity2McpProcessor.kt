@@ -1,11 +1,12 @@
 package com.addzero.kmp.processor
 
+import com.addzero.kmp.context.SettingContext
 import com.addzero.kmp.entity.analysis.model.EntityMetadata
 import com.addzero.kmp.entity.analysis.processor.BaseJimmerProcessor
+import com.addzero.kmp.util.genCode
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.Dependencies
 import com.google.devtools.ksp.processing.KSPLogger
-import com.google.devtools.ksp.symbol.KSClassDeclaration
 import java.io.OutputStreamWriter
 
 /**
@@ -24,7 +25,6 @@ class Entity2McpProcessor(
 
     // 跟踪已生成的MCP服务，避免重复生成
     private val generatedMcpServices = mutableSetOf<String>()
-
 
 
     // MCP服务代码生成器
@@ -90,7 +90,11 @@ class McpServiceCodeGenerator(
 
         // 构建实体类名和同构体类名
         val entityFullName = "${entity.packageName}.${entity.className}"
-        val isoFullName = "com.addzero.kmp.generated.isomorphic.${entity.className}Iso"
+//        isomorphicPackageName
+        val settings = SettingContext.settings
+        val isomorphicPackageName = settings.isomorphicPackageName
+        val isomorphicClassSuffix = settings.isomorphicClassSuffix
+        val isoFullName = "$isomorphicPackageName.${entity.className}$isomorphicClassSuffix"
 
         // 获取实体描述（现在直接从EntityMetadata中获取）
         val entityDescription = entity.description.ifBlank { entity.className.lowercase() }
@@ -105,17 +109,11 @@ class McpServiceCodeGenerator(
             isoFullName = isoFullName,
             entityDescription = entityDescription
         )
+        val mcpdir = "${settings.serverSourceDir}/${packageName.replace(".", 
+            "/")}/$fileName"
 
-        // 创建文件
-        val dependencies = Dependencies(false)
-        val file = codeGenerator.createNewFile(dependencies, packageName, fileName)
-
-        // 写入内容
-        OutputStreamWriter(file).use { writer ->
-            writer.write(fileContent)
-        }
+        genCode(mcpdir,fileContent,false)
     }
-
 
 
     /**

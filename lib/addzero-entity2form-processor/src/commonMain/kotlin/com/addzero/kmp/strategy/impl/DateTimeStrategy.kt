@@ -11,9 +11,9 @@ import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.addzero.kmp.util.plus
 
 /**
- * 日期策略
+ * 日期时间策略
  */
-object DateStrategy : FormStrategy {
+object DateTimeStrategy : FormStrategy {
     
     override val name: String = "DateStrategy"
 
@@ -21,10 +21,10 @@ object DateStrategy : FormStrategy {
         val ktName = prop.name
         val typeName = prop.typeName
 
-        return ktName.contains("date", ignoreCase = true) +
-               ktName.contains("日期", ignoreCase = true) +
-               (typeName == "LocalDate") +
-               ktName.equals("date", ignoreCase = true)
+        return ktName.contains("datetime", ignoreCase = true) +
+               ktName.contains("日期时间", ignoreCase = true) +
+               (typeName == "LocalDateTime") +
+               ktName.equals("datetime", ignoreCase = true)
     }
 
     override fun genCode(prop: KSPropertyDeclaration): String {
@@ -46,14 +46,13 @@ object DateStrategy : FormStrategy {
 
         return """
             |        ${entityClassName}FormProps.$name to {
-            |            AddDateField(
+            |            AddDateTimeField(
             |                value = state.value.$name,
             |                onValueChange = {
             |                if(it==null){
             |                    state.value = state.value
             |                }else{
             |                    state.value = state.value.copy($name = it!!)
-            |                
             |                }
             |                },
             |                label = $label,

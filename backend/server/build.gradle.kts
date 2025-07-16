@@ -2,15 +2,18 @@ import org.babyfish.jimmer.Vars.commonMainKspBuildMetaDataDir
 import org.babyfish.jimmer.Vars.commonMainSourceDir
 import org.babyfish.jimmer.Vars.jvmMainKspBuildMetaDataDir
 import org.babyfish.jimmer.Vars.jvmMainSourceDir
+import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 plugins {
 //    id("com.google.devtools.ksp")
     id("spring-conventions")
     id("test-conventions")
     id("com.google.devtools.ksp")
-    id("ksp4jdbc")
 
-//    id("com.google.devtools.ksp")
+    id("ksp4iso")
+    id("ksp4dict")
+    id("ksp4projectdir")
     id("org.jetbrains.kotlin.plugin.noarg") version libs.versions.kotlin
 //    application
 }
@@ -25,96 +28,11 @@ allOpen {
 
 ksp {
 
-    val srcDir = sourceSets.main.get().kotlin.srcDirs.first().absolutePath
-    val resourceDir = sourceSets.main.get().resources.srcDirs.first().absolutePath
-    // 计算各模块目录（使用常量字符串）
-
-
-    val serverProject = project(":backend:server")
-    val composeProject = project(":composeApp")
-    val sharedProject = project(":shared")
-
-
-    val serverSourceDir = serverProject.projectDir.resolve(jvmMainSourceDir).absolutePath
-    val serverBuildDir = serverProject.projectDir.resolve(jvmMainKspBuildMetaDataDir).absolutePath
-
-
-
-
-    val composeSourceDir = composeProject.projectDir.resolve(commonMainSourceDir).absolutePath
-    val composeBuildDir = composeProject.projectDir.resolve(commonMainKspBuildMetaDataDir).absolutePath
-
-    val sharedSourceDir = sharedProject.projectDir.resolve(commonMainSourceDir).absolutePath
-    val sharedBuildDir = sharedProject.projectDir.resolve(commonMainKspBuildMetaDataDir).absolutePath
-
-
-
-    // 模块目录配置（小驼峰命名）
-    arg("moduleMainSrcDir", srcDir)
-    arg("moduleMainResourceDir", resourceDir)
-
-
-    arg("serverSourceDir", serverSourceDir)
-    arg("serverBuildDir", serverBuildDir)
-
-
-
-    arg("composeSourceDir", composeSourceDir)
-    arg("composeBuildDir", composeBuildDir)
-    arg("sharedSourceDir", sharedSourceDir)
-    arg("sharedBuildDir", sharedBuildDir)
 
     // 包名配置（小驼峰命名，outputDir 由扩展属性计算）
-    arg("isomorphicPackageName", "com.addzero.kmp.generated.isomorphic")
-    arg("formPackageName", "com.addzero.kmp.generated.forms")
-    arg("enumOutputPackage", "com.addzero.kmp.generated.enums")
+
+
     arg("apiClientPackageName", "com.addzero.kmp.generated.api")
-    arg("iso2DataProviderPackage", "com.addzero.kmp.generated.forms.dataprovider")
-
-    arg("outputPackage", "com.addzero.kmp.jdbc.meta")
-
-    // 字典表配置（小驼峰命名）
-    arg("dictTableName", "sys_dict")
-    arg("dictIdColumn", "id")
-    arg("dictCodeColumn", "dict_code")
-    arg("dictNameColumn", "dict_name")
-    arg("dictItemTableName", "sys_dict_item")
-    arg("dictItemForeignKeyColumn", "dict_id")
-    arg("dictItemCodeColumn", "item_value")
-    arg("dictItemNameColumn", "item_text")
-
-    // 其他配置（小驼峰命名）
-    arg("skipExistsFiles", "false")
-
-    //同构体类名后缀
-    arg("isomorphicClassSuffix", "Iso")
-
-    //autoddl ksp参数
-
-    arg("dbType", "pg") //可选项仅有mysql oracle pg dm h2
-    arg("idType", "bigint")
-    arg("id", "id")
-    arg("createBy", "create_by")
-    arg("updateBy", "update_by")
-    arg("createTime", "create_time")
-    arg("updateTime", "update_time")
-
-    arg("metaJsonSavePath", "db/autoddl/meta")
-    arg("metaJsonSaveName", "jimmer_ddlcontext.json")
-
-    //建议检查生成的sql后放到flyway的规范目录(以下为resource资源目录的相对目录)
-    arg("sqlSavePath", "db/autoddl")
-
-
-    // JDBC元数据处理器配置
-    arg("jdbcUrl", "jdbc:postgresql://localhost:15432/postgres")
-    arg("jdbcUsername", "postgres")
-    arg("jdbcPassword", "postgres")
-    arg("jdbcSchema", "public")
-    arg("jdbcDriver", "org.postgresql.Driver")
-    arg("outputPackage", "com.addzero.kmp.jdbc.meta")
-
-
     arg("jimmer.dto.dirs", "src/main/kotlin")
     arg("jimmer.dto.defaultNullableInputModifier", "dynamic")
     arg("jimmer.dto.mutable", "true")
@@ -142,16 +60,12 @@ dependencies {
     implementation(projects.backend.model)
 
 
-    // 阶段2: 同构体生成（依赖枚举）
-    ksp(projects.lib.addzeroEntity2isoProcessor)
 
     //jdbc元数据转controller
     ksp(projects.lib.addzeroJdbc2controllerProcessor)
 
     // 阶段3: 依赖同构体的处理器
     ksp(projects.lib.addzeroController2apiProcessor)
-    ksp(projects.lib.addzeroEntity2formProcessor)
-    ksp(projects.lib.addzeroEntity2mcpProcessor)
 
     // 阶段4: 控制器转 Iso2DataProvider（生成到 shared 编译目录）
     ksp(projects.lib.addzeroController2iso2dataproviderProcessor)
@@ -252,3 +166,11 @@ dependencies {
     implementation(libs.flyway.database.postgresql)
 
 }
+// 确保所有 Kotlin 编译任务都依赖于 shared 模块的 KSP 元数据生成
+tasks.withType<KotlinCompilationTask<*>>().configureEach {
+    if (name != "kspKotlin") {
+        dependsOn(":backend:model:kspKotlin")
+        dependsOn(":shared:kspCommonMainKotlinMetadata")
+    }
+}
+

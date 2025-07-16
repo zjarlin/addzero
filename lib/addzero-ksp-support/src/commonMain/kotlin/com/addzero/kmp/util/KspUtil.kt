@@ -109,7 +109,7 @@ private fun KSType.isJimmerEntity(): Boolean {
 
 
 
-fun genCode(pathname: String, toJsonStr: String, skipExistFile: Boolean = false) {
+fun genCode(pathname: String, code: String, skipExistFile: Boolean = false) {
 //        val file = FileUtil.file(pathname)
 //        FileUtil.writeUtf8String(toJsonStr, file)
 
@@ -121,7 +121,7 @@ fun genCode(pathname: String, toJsonStr: String, skipExistFile: Boolean = false)
         }
 
     }
-    targetFile.writeText(toJsonStr)
+    targetFile.writeText(code)
 
 }
 

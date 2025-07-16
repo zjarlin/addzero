@@ -169,7 +169,7 @@ class JimmerEntityCodeGenerator(
      */
     private fun getKotlinType(column: JdbcColumnMetadata): String {
         // 先获取基础类型
-        val baseType = mapToKotlinType(column.columnType)
+        val baseType = mapToKotlinType(column.columnType, false)
 
         // 再处理可空性
         return if (column.nullable) {

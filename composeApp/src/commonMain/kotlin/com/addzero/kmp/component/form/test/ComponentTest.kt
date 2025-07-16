@@ -11,9 +11,6 @@ import com.addzero.kmp.component.form.date.*
 import com.addzero.kmp.component.form.switch.*
 import com.addzero.kmp.component.form.selector.*
 import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.Clock
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 
 /**
  * 测试所有新创建的表单组件
@@ -86,8 +83,8 @@ fun ComponentTestScreen() {
             decimalPlaces = 2
         )
 
-        // 测试 AddDateField
-        AddDateField(
+        // 测试 AddDateTimeField
+        AddDateTimeField(
             value = dateValue,
             onValueChange = { dateValue = it },
             label = "日期",

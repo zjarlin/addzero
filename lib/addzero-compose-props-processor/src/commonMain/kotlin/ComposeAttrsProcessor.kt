@@ -8,6 +8,8 @@ import com.addzero.kmp.util.getSimplifiedTypeString
 
 private const val propsXd = "var"
 
+private const val COM_ADDZERO_KMP_GENERATED_ATTRS = "com.addzero.kmp.generated.attrs"
+
 /**
  * Compose参数打包处理器
  * 类似Vue的$attrs功能，为原生Compose函数生成参数打包
@@ -771,7 +773,7 @@ fun ${adjustedGenericDeclaration}remember${functionName}State(
      */
     private fun generateNativeDataClassCode(componentName: String, parameters: List<NativeParameterInfo>, suffix: String): String {
         val className = "${componentName}${suffix}"
-        val packageName = "com.addzero.kmp.generated.attrs"
+        val packageName = COM_ADDZERO_KMP_GENERATED_ATTRS
 
         // 生成data class
         val dataClassCode = generateNativeDataClass(className, parameters)
@@ -1080,7 +1082,7 @@ fun remember${componentName}State(
      */
     private fun writeNativeGeneratedCode(componentName: String, generatedCode: String, suffix: String) {
         val fileName = "${componentName}${suffix}"
-        val packageName = "com.addzero.kmp.generated.attrs"
+        val packageName = COM_ADDZERO_KMP_GENERATED_ATTRS
         val packagePath = packageName.replace(".", "/")
 
         try {

@@ -1,4 +1,4 @@
-package com.addzero.jlstarter.common.util
+package com.addzero.common.util
 
 import cn.hutool.core.codec.Base64
 import cn.hutool.core.io.FileUtil
@@ -6,6 +6,7 @@ import cn.hutool.core.text.CharSequenceUtil
 import cn.hutool.core.util.RandomUtil
 import cn.hutool.core.util.StrUtil
 import cn.hutool.core.util.ZipUtil
+import com.addzero.common.consts.Vars
 import java.io.File
 import java.io.FileOutputStream
 import java.time.LocalDateTime
@@ -60,7 +61,7 @@ interface FileBusinessUtil {
 
             paths.forEach(Consumer { p: String? -> FileUtil.copy(p, tmpAbsolutePath, true) })
             val zip = ZipUtil.zip(tmpAbsolutePath)
-            val newName = if (CharSequenceUtil.isBlank(zipFileName)) "${com.addzero.common.consts.Vars.timePrefix}.zip"
+            val newName = if (CharSequenceUtil.isBlank(zipFileName)) "${Vars.timePrefix}.zip"
             else
                 "$zipFileName.zip"
             val rename = FileUtil.rename(zip, newName, true)

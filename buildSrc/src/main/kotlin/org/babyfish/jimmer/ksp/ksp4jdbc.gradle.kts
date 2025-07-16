@@ -1,3 +1,5 @@
+import org.babyfish.jimmer.Vars.jvmMainKspBuildMetaDataDir
+import org.babyfish.jimmer.Vars.jvmMainSourceDir
 
 plugins {
     id("com.google.devtools.ksp")

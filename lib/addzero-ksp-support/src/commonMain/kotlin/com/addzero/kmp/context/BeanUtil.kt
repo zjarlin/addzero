@@ -10,11 +10,7 @@ object BeanUtil {
         "updateBy" to updateBy,
         "createTime" to createTime,
         "updateTime" to updateTime,
-        "skipExistsFiles" to skipExistsFiles,
 
-        // 模块目录配置
-        "moduleMainSrcDir" to moduleMainSrcDir,
-        "moduleMainResourceDir" to moduleMainResourceDir,
         "composeSourceDir" to composeSourceDir,
         "composeBuildDir" to composeBuildDir,
 
@@ -65,11 +61,7 @@ object BeanUtil {
         updateBy = map["updateBy"] ?: "",
         createTime = map["createTime"] ?: "",
         updateTime = map["updateTime"] ?: "",
-        skipExistsFiles = map["skipExistsFiles"] ?: "false",
 
-        // 模块目录配置
-        moduleMainSrcDir = map["moduleMainSrcDir"] ?: "",
-        moduleMainResourceDir = map["moduleMainResourceDir"] ?: "",
         composeSourceDir = map["composeSourceDir"] ?: "",
         composeBuildDir = map["composeBuildDir"] ?: "",
         sharedSourceDir = map["sharedSourceDir"] ?: "",

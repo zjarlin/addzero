@@ -9,11 +9,7 @@ data class Settings(
     val updateBy: String = "",
     val createTime: String = "",
     val updateTime: String = "",
-    val skipExistsFiles: String = "false", // 是否跳过已存在的文件
 
-    // 模块目录配置
-    val moduleMainSrcDir: String = "",
-    val moduleMainResourceDir: String = "",
     val composeSourceDir: String = "",
     val composeBuildDir: String = "",
     val sharedSourceDir: String = "",

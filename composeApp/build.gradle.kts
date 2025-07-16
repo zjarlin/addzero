@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 plugins {
@@ -15,37 +14,6 @@ dependencies {
 }
 
 
-//dependencies {
-//    with(projects.lib.addzeroRouteProcessor) {
-//        add("kspCommonMainMetadata", this)
-//    }
-//    //koin依赖注入
-//    with("io.insert-koin:koin-ksp-compiler:+") {
-//        add("kspCommonMainMetadata", this)
-//    }
-//
-////    with("io.github.ltttttttttttt:LazyPeopleHttp:${lazyhttpV}") {
-////        add("kspCommonMainMetadata", this)
-////    }
-//}
-
-ksp {
-
-
-    // JDBC元数据处理器配置
-    arg("jdbcUrl", "jdbc:postgresql://localhost:15432/postgres")
-    arg("jdbcUsername", "postgres")
-    arg("jdbcPassword", "postgres")
-    arg("jdbcSchema", "public")
-    arg("jdbcDriver", "org.postgresql.Driver")
-    arg("outputPackage", "com.addzero.kmp.jdbc.meta")
-    // 可选：指定要包含的表（逗号分隔）
-    // arg("includeTables", "user_info,product")
-    // 可选：指定要排除的表（逗号分隔）
-    arg("excludeTables", "flyway_schema_history,vector_store")
-
-
-}
 kotlin {
     sourceSets {
         commonMain.dependencies {
@@ -57,7 +25,7 @@ kotlin {
 //            implementation(projects.lib.addzeroComposeKlibsComponent)
 
             // 原来的 FileKit 依赖现在由 klibs-component 模块提供
-             implementation(libs.filekit.compose) // 移除，由组件模块提供
+            implementation(libs.filekit.compose) // 移除，由组件模块提供
 
 
             //日志库
@@ -86,8 +54,8 @@ kotlin {
             implementation(libs.navigation.compose)
 
             // 图片加载库现在由 klibs-component 模块提供
-             implementation(libs.coil.compose) // 移除，由组件模块提供
-             implementation(libs.coil.network.ktor3) // 移除，由组件模块提供
+            implementation(libs.coil.compose) // 移除，由组件模块提供
+            implementation(libs.coil.network.ktor3) // 移除，由组件模块提供
 
             //拖拽库
             implementation(libs.compose.dnd)
@@ -113,13 +81,13 @@ kotlin {
 
 
             // 网络和依赖注入现在由 klibs-component 模块提供
-             implementation(libs.ktorfit.lib) // 移除，由组件模块提供
-             implementation(project.dependencies.platform(libs.koin.bom)) // 移除，由组件模块提供
-             implementation(libs.koin.annotations) // 移除，由组件模块提供
-             implementation(libs.koin.core) // 移除，由组件模块提供
-             implementation(libs.koin.compose) // 移除，由组件模块提供
-             implementation(libs.koin.compose.viewmodel) // 移除，由组件模块提供
-             implementation(libs.koin.compose.viewmodel.navigation) // 移除，由组件模块提供
+            implementation(libs.ktorfit.lib) // 移除，由组件模块提供
+            implementation(project.dependencies.platform(libs.koin.bom)) // 移除，由组件模块提供
+            implementation(libs.koin.annotations) // 移除，由组件模块提供
+            implementation(libs.koin.core) // 移除，由组件模块提供
+            implementation(libs.koin.compose) // 移除，由组件模块提供
+            implementation(libs.koin.compose.viewmodel) // 移除，由组件模块提供
+            implementation(libs.koin.compose.viewmodel.navigation) // 移除，由组件模块提供
 
 
         }
@@ -130,8 +98,8 @@ kotlin {
 // 确保所有 Kotlin 编译任务都依赖于 shared 模块的 KSP 元数据生成
 tasks.withType<KotlinCompilationTask<*>>().configureEach {
     if (name != "kspCommonMainKotlinMetadata") {
+        dependsOn(":backend:model:kspKotlin")
         dependsOn(":backend:server:kspKotlin")
-//        dependsOn(":backend:model:kspKotlin")
         dependsOn(":shared:kspCommonMainKotlinMetadata")
         dependsOn(":composeApp:kspCommonMainKotlinMetadata")
     }

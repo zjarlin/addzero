@@ -70,6 +70,7 @@ object FormStrategyManager {
         PercentageStrategy,
         BankCardStrategy,
         DateStrategy,
+        DateTimeStrategy,
 
         // 通用策略（低优先级）
         GenericSingleStrategy,
