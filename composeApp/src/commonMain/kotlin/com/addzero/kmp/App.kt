@@ -26,7 +26,6 @@ class MyModule
 @Composable
 fun App() {
     initKoin()
-    AddHttpClient.setBaseUrl(SettingContext4Compose.BASE_URL)
     emitEventBus()
     EventBusConsumer()
     val loginViewModel = koinViewModel<LoginViewModel>()

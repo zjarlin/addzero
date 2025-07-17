@@ -80,7 +80,6 @@ class UserCenterViewModel(
             loginViewModel.logout()
             val logout = sysUserCenterApi.logout()
 
-
             AddHttpClient.setToken(null)
 
         }
