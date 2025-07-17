@@ -49,6 +49,8 @@ android {
 
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.compileSdk.get().toInt()
+//        testOptions.targetSdk = libs.versions.android.compileSdk.get().toInt()
+
 //        versionCode = findProperty("version").toString().toInt()
 //        versionName = findProperty("version").toString()
 

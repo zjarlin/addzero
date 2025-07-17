@@ -1,5 +1,4 @@
 import org.babyfish.jimmer.Vars
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 val libs = the<org.gradle.accessors.dm.LibrariesForLibs>()
@@ -12,7 +11,7 @@ plugins {
 //    kotlin("plugin.serialization")
 }
 
-kotlin{
+kotlin {
     androidTarget {
 //        @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
@@ -38,7 +37,8 @@ android {
 
 
         minSdk = libs.versions.android.minSdk.get().toInt()
-        targetSdk = libs.versions.android.compileSdk.get().toInt()
+        testOptions.targetSdk = libs.versions.android.compileSdk.get().toInt()
+
 //        versionCode = findProperty("version").toString().toInt()
 //        versionName = findProperty("version").toString()
 

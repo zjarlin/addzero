@@ -14,9 +14,6 @@ import kotlin.reflect.KClass
 import kotlin.reflect.full.memberProperties
 
 
-private const val CHILDREN = "children"
-
-private const val PARENT = "parent"
 
 /**
  *任意位置的下拉框,需要配合Iso2DataProvider做下拉数据的提供者,然后jimmer实体中的关联关系就可以用这个下拉框展示
@@ -91,16 +88,12 @@ interface BaseTreeApi<E : Any> {
             sql.executeQuery(CLASS()) {
                 val propExpression = table.get<String>(keywordProp)
                 val parentexpression = table.getAssociatedId<Long>(parentProp)
-
-
                 where(
                     or(
                         propExpression `ilike?` keyword, table.exists<E>(prop) { propExpression `ilike?` keyword }
                     ), parentexpression.isNull()
 
                 )
-
-
                 val _fetcher = FetcherImpl(CLASS().java)
                 select(
                     table.fetch(
@@ -136,5 +129,8 @@ interface BaseTreeApi<E : Any> {
         return type.kotlin
     }
 
-
 }
+private const val CHILDREN = "children"
+
+private const val PARENT = "parent"
+
