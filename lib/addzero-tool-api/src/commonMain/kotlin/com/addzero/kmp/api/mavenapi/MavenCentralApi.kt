@@ -8,8 +8,9 @@ import io.ktor.client.request.*
 
 object MavenCentralApi {
 
-    suspend fun getLatestVersion(groupId: String, artifactId: String): String {
-        val response: MavenRes = apiClient.get("https://search.maven" +
+     suspend fun getLatestVersion(groupId: String, artifactId: String): String {
+
+         val response: MavenRes = apiClient.get("https://search.maven" +
                 ".org/solrsearch/select") {
             url {
                 parameters.apply {

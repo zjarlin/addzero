@@ -79,19 +79,10 @@ object FormStrategyManager {
     )
 
     /**
-     * 注册新策略（支持用户扩展）
-     */
-    fun registerStrategy(strategy: FormStrategy) {
-        strategies.add(strategy)
-    }
-
-    /**
      * 生成代码
      */
     fun generateCode(property: KSPropertyDeclaration): String {
-//        println("策略有${strategies.size}个")
 
-        // 使用函数式编程风格：计算权重并找到最大权重的策略
         val bestStrategyWithWeight = strategies
             .map { strategy -> strategy to strategy.calculateWeight(property) }
             .filter { (_, weight) -> weight > 0 }

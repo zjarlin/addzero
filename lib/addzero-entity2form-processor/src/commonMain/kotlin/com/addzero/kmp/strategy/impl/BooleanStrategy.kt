@@ -19,7 +19,7 @@ object BooleanStrategy : FormStrategy {
         val typeName = prop.typeName
         val ktName = prop.name
 
-        // 使用布尔值 + 操作符累加计算权重，每个条件都是平等的 0 或 1
+        // 使用布尔值 + 操作符累加计算权重
         return (typeName == "Boolean") +
                ktName.contains("enable", ignoreCase = true) +
                ktName.contains("active", ignoreCase = true) +

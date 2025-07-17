@@ -10,7 +10,7 @@ import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.addzero.kmp.util.plus
 
 /**
- * URL策略
+ * 用户名策略
  */
 object UsernameStrategy : FormStrategy {
 

@@ -53,6 +53,7 @@ dependencies {
     implementation(projects.lib.addzeroTool)
     //天气库
     implementation(projects.lib.addzeroToolWeather)
+    implementation(projects.lib.addzeroToolApi)
 
 
     //内部使用:共享业务逻辑

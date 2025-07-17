@@ -130,3 +130,5 @@ listOf("backend", "composeApp", "shared","lib").forEach { module ->
 
 // 网络模块（暂时注释）
  ("lib" to listOf("addzero-network-starter")).useFile()
+include("lib:addzero-tool-api")
+findProject(":lib:addzero-tool-api")?.name = "addzero-tool-api"
