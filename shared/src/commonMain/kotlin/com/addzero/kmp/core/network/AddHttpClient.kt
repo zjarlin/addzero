@@ -1,7 +1,7 @@
 package com.addzero.kmp.core.network// 在 commonMain 中定义共享代码
 //import com.lt.lazy_people_http.config.LazyPeopleHttpConfig
 import com.addzero.kmp.core.network.json.globalSerializersModule
-import com.addzero.kmp.settings.SettingContext4Compose.BASE_URL
+import com.addzero.kmp.core.network.json.globalSerializersModule
 import de.jensklingenberg.ktorfit.Ktorfit
 import io.ktor.client.*
 import io.ktor.client.plugins.*
@@ -35,6 +35,11 @@ val json = Json {
 
 object AddHttpClient {
 
+    private var baseUrl: String = "http://localhost:8080" // 默认的BaseUrl
+
+    fun setBaseUrl(url: String) {
+        baseUrl = url
+    }
 
     //    val hfconfig = LazyPeopleHttpConfig(apiClient)
     val ktorfit = Ktorfit.Builder().httpClient(apiClient).build()
@@ -82,7 +87,7 @@ object AddHttpClient {
     fun HttpClientConfig<*>.configUrl() {
         defaultRequest {
 //            url("https://api.apiopen.top")
-            url(BASE_URL)
+            url(baseUrl)
         }
     }
 

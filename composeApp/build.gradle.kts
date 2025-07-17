@@ -20,6 +20,8 @@ kotlin {
             implementation(projects.shared)
             implementation(projects.lib.addzeroTool)
 
+            implementation(projects.lib.addzeroComposeNativeComponent)
+
             // 组件库依赖
 //            implementation(projects.lib.addzeroComposeNativeComponent)
 //            implementation(projects.lib.addzeroComposeKlibsComponent)

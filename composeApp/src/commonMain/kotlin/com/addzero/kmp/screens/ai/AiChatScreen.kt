@@ -8,6 +8,7 @@ import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -32,7 +33,6 @@ import com.addzero.kmp.component.card.AddJetBrainsMellumCard
 import com.addzero.kmp.component.card.MellumCardType
 import com.addzero.kmp.component.card.ProductCardContent
 import com.addzero.kmp.component.high_level.AddMultiColumnContainer
-import com.addzero.kmp.component.text.SafeSelectionContainer
 import com.addzero.kmp.generated.isomorphic.SysAiPromptIso
 import com.addzero.kmp.settings.SettingContext4Compose
 import com.addzero.kmp.settings.SettingContext4Compose.AI_AVATAR_1
@@ -74,7 +74,6 @@ private fun AiChatScreenContent() {
 
     val scrollState = rememberScrollState()
     val coroutineScope = rememberCoroutineScope()
-    var input by remember { mutableStateOf("") }
 
 
     // 可爱的动画效果
@@ -97,7 +96,7 @@ private fun AiChatScreenContent() {
                 onClose = { chatViewModel.showChatBot = false }, onNewChat = { chatViewModel.startNewChat() }, heartBeat = heartBeat
             )
             // Labubu风格的聊天消息区 - 使用SafeSelectionContainer包装
-            SafeSelectionContainer(
+            SelectionContainer(
                 modifier = Modifier.weight(1f)
             ) {
                 Column(modifier = Modifier.fillMaxSize()) {
@@ -106,7 +105,7 @@ private fun AiChatScreenContent() {
                     if (chatViewModel.chatMessages.isEmpty()) {
                         LabubuPromptSuggestions(
                             prompts = aiPromptViewModel.prompts, onPromptSelected = { prompt ->
-                                input = prompt.content
+                                chatViewModel.chatInput = prompt.content
                             }
                         )
                     }
@@ -126,12 +125,12 @@ private fun AiChatScreenContent() {
 
             // Labubu风格的输入区
             LabubuInputArea(
-                input = input, onInputChange = { input = it }, onSend = {
-                    if (input.isNotBlank()) {
-                        chatViewModel.sendMessage(input)
-                        input = ""
+                input = chatViewModel.chatInput, onInputChange = { chatViewModel.chatInput = it }, onSend = {
+                    if (chatViewModel.chatInput.isNotBlank()) {
+                        chatViewModel.sendMessage()
+                        chatViewModel.chatInput = ""
                     }
-                }, enabled = input.isNotBlank()
+                }, enabled = chatViewModel.chatInput.isNotBlank()
             )
         }
     }

@@ -2,8 +2,10 @@ package com.addzero.kmp
 
 import androidx.compose.runtime.Composable
 import com.addzero.kmp.component.toast.ToastListener
+import com.addzero.kmp.core.network.AddHttpClient
 import com.addzero.kmp.events.EventBusConsumer
 import com.addzero.kmp.events.emitEventBus
+import com.addzero.kmp.settings.SettingContext4Compose
 import com.addzero.kmp.ui.auth.LoginScreen
 import com.addzero.kmp.ui.infra.MainLayout
 import com.addzero.kmp.ui.infra.theme.AppThemes
@@ -24,6 +26,7 @@ class MyModule
 @Composable
 fun App() {
     initKoin()
+    AddHttpClient.setBaseUrl(SettingContext4Compose.BASE_URL)
     emitEventBus()
     EventBusConsumer()
     val loginViewModel = koinViewModel<LoginViewModel>()

@@ -25,10 +25,9 @@ fun  DynamicForm(
         modifier = modifier,
         items = columns.map { column ->
             {
-                val key = column.key
-                column.getFun(item, key)
-                val customFormRender = column.customFormRender
-                customFormRender(item)
+//                val key = column.key
+//                column.getFun(item, key)
+                column.customFormRender(item)
             }
         }
     )

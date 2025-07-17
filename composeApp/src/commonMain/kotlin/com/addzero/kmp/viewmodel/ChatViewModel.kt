@@ -25,7 +25,6 @@ class ChatViewModel : ViewModel() {
         private set
 
     var chatInput by mutableStateOf("")
-        private set
 
     // AI思考状态
     var isAiThinking by mutableStateOf(false)

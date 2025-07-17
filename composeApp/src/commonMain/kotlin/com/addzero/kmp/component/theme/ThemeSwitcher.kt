@@ -3,8 +3,6 @@ package com.addzero.kmp.component.theme
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
@@ -15,57 +13,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.addzero.kmp.ui.infra.theme.*
 import com.addzero.kmp.component.button.AddFloatingActionButton
 import org.koin.compose.viewmodel.koinViewModel
-
-/**
- * 主题切换器组件
- */
-@Composable
-fun ThemeSwitcher(
-    modifier: Modifier = Modifier,
-    onThemeSelected: (AppThemeType) -> Unit = {}
-) {
-    val themeViewModel = koinViewModel<ThemeViewModel>()
-    val currentTheme = themeViewModel.currentTheme
-    val allThemes = themeViewModel.getAllThemes()
-
-    Card(
-        modifier = modifier.width(300.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Text(
-                text = "选择主题",
-                style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(bottom = 16.dp)
-            )
-
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier.height(400.dp)
-            ) {
-                items(allThemes) { theme ->
-                    ThemeItem(
-                        theme = theme,
-                        isSelected = theme == currentTheme,
-                        onClick = {
-                            themeViewModel.setTheme(theme)
-                            onThemeSelected(theme)
-                        }
-                    )
-                }
-            }
-        }
-    }
-}
 
 /**
  * 主题项组件
@@ -136,42 +88,6 @@ private fun ThemeItem(
                 tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(20.dp)
             )
-        }
-    }
-}
-
-/**
- * 渐变主题预览卡片
- */
-@Composable
-fun GradientThemePreview(
-    theme: AppThemeType,
-    modifier: Modifier = Modifier
-) {
-    val gradientConfig = AppThemes.getGradientConfig(theme)
-
-    if (gradientConfig != null && theme.isGradient()) {
-        Card(
-            modifier = modifier.size(120.dp, 80.dp),
-            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-        ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(
-                        brush = Brush.linearGradient(
-                            colors = gradientConfig.colors
-                        )
-                    ),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = theme.getDisplayName(),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold
-                )
-            }
         }
     }
 }

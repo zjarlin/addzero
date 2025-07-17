@@ -19,15 +19,19 @@ expect val apiClient: HttpClient
 object AddHttpClient {
 
 
-    //    val hfconfig = LazyPeopleHttpConfig(apiClient)
-//    val ktorfit = Ktorfit.Builder().httpClient(apiClient).build()
-
+    private var baseUrl: String = "http://localhost:8080" // 默认的BaseUrl
     // Mock的token获取方式
     private var mytoken: String? = null
 
+    fun setBaseUrl(url: String) {
+        baseUrl = url
+    }
+    //    val hfconfig = LazyPeopleHttpConfig(apiClient)
+//    val ktorfit = Ktorfit.Builder().httpClient(apiClient).build()
+
+
     // 设置mock token
     fun setToken(token: String?) {
-
 //        Validator.Pattern
         mytoken = token
     }
@@ -52,15 +56,12 @@ object AddHttpClient {
                         response.bodyAsText()
                     }.getOrNull()
                     println("异常body: $orNull")
-
                     GlobalEventDispatcher.handler(response)
-
                 }
-
             }
         })
         //基础url配置
-//        configUrl()
+        configUrl()
         //日志插件
         configLog()
         //json解析插件
