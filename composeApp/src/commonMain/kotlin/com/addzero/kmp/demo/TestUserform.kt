@@ -8,7 +8,7 @@ import com.addzero.kmp.generated.forms.rememberSysUserFormState
 
 
 @Composable
-@Route
+@Route("组件示例", "测试用户表单")
 fun TestUserForm() {
     val state = rememberSysUserFormState()
     SysUserFormOriginal(state) {
@@ -22,7 +22,7 @@ fun TestUserForm() {
         }
         nickname() {
             val state = it
-            Text("我是有自定义逻辑的属性, 昵称${state.value.nickname + state.value.username}")
+            Text("我是有自定义逻辑的属性(显示username的值, 昵称为${state.value.username}")
 
         }
     }
