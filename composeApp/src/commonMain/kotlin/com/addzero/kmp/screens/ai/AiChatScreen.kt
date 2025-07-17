@@ -145,9 +145,9 @@ private fun LabubuTopBar(
     onClose: () -> Unit, onNewChat: () -> Unit, heartBeat: Float
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth().height(72.dp).background(MaterialTheme.colorScheme.primary).padding(horizontal = 20.dp), verticalAlignment = Alignment.CenterVertically
+        modifier = Modifier.fillMaxWidth().height(72.dp).background(MaterialTheme.colorScheme.primary).padding(horizontal = 20.dp), 
+        verticalAlignment = Alignment.CenterVertically
     ) {
-
 
         // 可爱的AI头像
         Box(
@@ -171,16 +171,10 @@ private fun LabubuTopBar(
             )
         }
 
+        Spacer(modifier = Modifier.weight(1f))
 
-
-        Row (horizontalArrangement = Arrangement.End) {
             AddIconButton(imageVector = Icons.Default.Add, text = "新建聊天") { onNewChat() }
             AddIconButton(imageVector = Icons.Default.Close, text = "关闭") { onClose() }
-         }
-
-
-
-
     }
 }
 
@@ -485,7 +479,7 @@ private fun EmptyPromptState() {
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "暂无可用的提示词",
+                text = "暂可用用的提示词",
                 style = MaterialTheme.typography.bodyMedium,
                 color = LocalContentColor.current.copy(alpha = 0.7f)
             )
