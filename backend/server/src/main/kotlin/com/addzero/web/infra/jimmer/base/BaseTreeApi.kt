@@ -92,13 +92,14 @@ interface BaseTreeApi<E : Any> {
                 val propExpression = table.get<String>(keywordProp)
                 val parentexpression = table.getAssociatedId<Long>(parentProp)
 
+
                 where(
                     or(
-                        propExpression `ilike?` keyword,
-                        table.exists<E>(prop) { propExpression `ilike?` keyword }
-                    ),
-                    parentexpression.isNull()
+                        propExpression `ilike?` keyword, table.exists<E>(prop) { propExpression `ilike?` keyword }
+                    ), parentexpression.isNull()
+
                 )
+
 
                 val _fetcher = FetcherImpl(CLASS().java)
                 select(

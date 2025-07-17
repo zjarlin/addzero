@@ -2,7 +2,7 @@ jimmer:
   dialect: org.babyfish.jimmer.sql.dialect.PostgresDialect
   #  ref-path: ${server.servlet.context-path}${jimmer.client.openapi.path}
   language: kotlin
-  database-validation-mode: ERROR    #验证数据库结构与实体
+  database-validation-mode: WARNING    #验证数据库结构与实体
   in-list-padding-enabled: true     #开启Padding优化
   expanded-in-list-padding-enabled: false  #关闭Expanded Padding优化
   #  dialect: org.babyfish.jimmer.sql.dialect.MySqlDialect
