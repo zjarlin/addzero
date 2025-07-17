@@ -129,4 +129,4 @@ listOf("backend", "composeApp", "shared","lib").forEach { module ->
 )).useFile()
 
 // 网络模块（暂时注释）
-// ("lib" to listOf("addzero-network-starter")).useFile()
+ ("lib" to listOf("addzero-network-starter")).useFile()

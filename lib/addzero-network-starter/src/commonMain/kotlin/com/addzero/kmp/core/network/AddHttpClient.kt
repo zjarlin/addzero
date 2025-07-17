@@ -1,7 +1,5 @@
-package com.addzero.kmp.core.network// 在 commonMain 中定义共享代码
-//import com.lt.lazy_people_http.config.LazyPeopleHttpConfig
-import com.addzero.kmp.core.network.json.globalSerializersModule
-import com.addzero.kmp.core.network.json.globalSerializersModule
+package com.addzero.kmp.core.network
+import com.addzero.kmp.core.network.json.json
 import de.jensklingenberg.ktorfit.Ktorfit
 import io.ktor.client.*
 import io.ktor.client.plugins.*
@@ -12,44 +10,24 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
-import kotlinx.serialization.json.Json
 import kotlin.time.Duration.Companion.minutes
 
 // 创建一个通用的 HTTP 客户端工具类
 expect val apiClient: HttpClient
 
-val json = Json {
-//    encodeDefaults = false
-    //显示null
-//    explicitNulls = true
-    ignoreUnknownKeys = true
-    isLenient = true
-//    prettyPrint = true
-    useAlternativeNames = false
-    // 允许将值强制转换为目标类型
-    coerceInputValues = true
-    //注册Any序列化器
-    serializersModule = globalSerializersModule
-}
-
-
 object AddHttpClient {
-
-    private var baseUrl: String = "http://localhost:8080" // 默认的BaseUrl
+    private var baseUrl: String = ""
+    // Mock的token获取方式
+    private var mytoken: String? = null
 
     fun setBaseUrl(url: String) {
         baseUrl = url
     }
-
     //    val hfconfig = LazyPeopleHttpConfig(apiClient)
     val ktorfit = Ktorfit.Builder().httpClient(apiClient).build()
 
-    // Mock的token获取方式
-    private var mytoken: String? = null
-
     // 设置mock token
     fun setToken(token: String?) {
-
 //        Validator.Pattern
         mytoken = token
     }
@@ -69,6 +47,11 @@ object AddHttpClient {
             onResponse { response ->
                 val bool = response.status.value != HttpStatusCode.OK.value
                 if (bool) {
+                    val orNull = runCatching {
+                        // 在协程作用域内执行挂起操作
+                        response.bodyAsText()
+                    }.getOrNull()
+                    println("异常body: $orNull")
                     GlobalEventDispatcher.handler(response)
                 }
             }
@@ -109,13 +92,6 @@ object AddHttpClient {
         }
     }
 
-    fun HttpClientConfig<*>.configBaseRes() {
-        install(BaseResponsePlugin) {
-            keysForStatus = listOf("code")
-            successCode = "200"
-            keysForData = listOf("data")
-        }
-    }
 
     fun HttpClientConfig<*>.configLog() {
         install(Logging) {

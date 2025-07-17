@@ -1,4 +1,4 @@
-package com.addzero.kmp.network.json
+package com.addzero.kmp.core.network.json
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerializationException
@@ -7,7 +7,6 @@ import kotlinx.serialization.descriptors.buildClassSerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.*
-import kotlinx.serialization.modules.SerializersModule
 import kotlin.toString
 
 

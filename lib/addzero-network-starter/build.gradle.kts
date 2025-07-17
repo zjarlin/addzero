@@ -1,5 +1,6 @@
 plugins {
     id("kmp-shared")
+    id("de.jensklingenberg.ktorfit") version "+"
 }
 kotlin {
     sourceSets {
@@ -14,16 +15,16 @@ kotlin {
         //懒人http
 //            implementation(libs.lazy.people.http)
         androidMain.dependencies {
-            implementation(libs.ktor.client.cio)
+            api(libs.ktor.client.cio)
         }
         jvmMain.dependencies {
-            implementation(libs.ktor.client.cio)
+            api(libs.ktor.client.cio)
         }
         wasmJsMain.dependencies {
-            implementation(libs.ktor.client.js)
+            api(libs.ktor.client.js)
         }
         nativeMain.dependencies {
-            implementation(libs.ktor.client.cio)
+            api(libs.ktor.client.darwin)
         }
 
 

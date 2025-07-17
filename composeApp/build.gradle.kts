@@ -22,6 +22,8 @@ kotlin {
 
             implementation(projects.lib.addzeroComposeNativeComponent)
 
+            implementation(projects.lib.addzeroNetworkStarter)
+
             // 组件库依赖
 //            implementation(projects.lib.addzeroComposeNativeComponent)
 //            implementation(projects.lib.addzeroComposeKlibsComponent)
@@ -83,7 +85,6 @@ kotlin {
 
 
             // 网络和依赖注入现在由 klibs-component 模块提供
-            implementation(libs.ktorfit.lib) // 移除，由组件模块提供
             implementation(project.dependencies.platform(libs.koin.bom)) // 移除，由组件模块提供
             implementation(libs.koin.annotations) // 移除，由组件模块提供
             implementation(libs.koin.core) // 移除，由组件模块提供
