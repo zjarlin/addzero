@@ -1,11 +1,36 @@
 package com.addzero.kmp.generated.forms
 
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.addzero.kmp.component.high_level.AddMultiColumnContainer
 import com.addzero.kmp.component.drawer.AddDrawer
+import com.addzero.kmp.component.form.*
+import com.addzero.kmp.component.form.number.AddMoneyField
+import com.addzero.kmp.component.form.number.AddNumberField
 import com.addzero.kmp.component.form.number.AddIntegerField
+import com.addzero.kmp.component.form.number.AddDecimalField
+import com.addzero.kmp.component.form.number.AddPercentageField
+import com.addzero.kmp.component.form.text.AddTextField
+import com.addzero.kmp.component.form.text.AddPasswordField
+import com.addzero.kmp.component.form.text.AddEmailField
+import com.addzero.kmp.component.form.text.AddPhoneField
+import com.addzero.kmp.component.form.text.AddUrlField
+import com.addzero.kmp.component.form.text.AddUsernameField
+import com.addzero.kmp.component.form.text.AddIdCardField
+import com.addzero.kmp.component.form.text.AddBankCardField
+import com.addzero.kmp.component.form.date.AddDateField
+import com.addzero.kmp.component.form.date.DateType
+import com.addzero.kmp.component.form.switch.AddSwitchField
+import com.addzero.kmp.component.form.selector.AddGenericSingleSelector
+import com.addzero.kmp.component.form.selector.AddGenericMultiSelector
 import com.addzero.kmp.core.ext.parseObjectByKtx
+import com.addzero.kmp.core.validation.RegexEnum
 import com.addzero.kmp.generated.isomorphic.*
+import com.addzero.kmp.generated.forms.dataprovider.Iso2DataProvider
+            import com.addzero.kmp.generated.enums.*
 
 
 /**

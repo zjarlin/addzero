@@ -13,6 +13,6 @@ ksp {
     arg("jdbcSchema", "public")
     arg("jdbcDriver", "org.postgresql.Driver")
     // 可选：指定要排除的表（逗号分隔）
-    arg("excludeTables", "flyway_schema_history,vector_store")
+    arg("excludeTables", "flyway_schema_history,vector_store,biz_mapping,sys_dept_sys_user_mapping,sys_role_sys_user_mapping")
 
 }
