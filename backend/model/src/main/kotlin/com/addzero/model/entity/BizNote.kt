@@ -13,9 +13,9 @@ import org.babyfish.jimmer.sql.*
 @Table(name = "biz_note")
 interface BizNote : BaseEntity {
 
-    @Formula(dependencies = ["children"])
-    val leafFlag: Boolean
-        get() = children.isEmpty()
+//    @Formula(dependencies = ["children"])
+//    val leafFlag: Boolean
+//        get() = children.isEmpty()
 
     /**
      * 笔记的子节点列表，表示当前笔记的子笔记。
@@ -23,8 +23,8 @@ interface BizNote : BaseEntity {
      *
      * @return 子笔记列表
      */
-    @OneToMany(mappedBy = "parent")
-    val children: List<BizNote>
+//    @OneToMany(mappedBy = "parent")
+//    val children: List<BizNote>
 
     /**
      * 笔记的父节点，表示当前笔记的父笔记。
@@ -32,9 +32,9 @@ interface BizNote : BaseEntity {
      *
      * @return 父笔记，如果没有父笔记则返回 null
      */
-    @ManyToOne
+//    @ManyToOne
 //    @Column("sss")
-    val parent: BizNote?
+//    val parent: BizNote?
 
 
     /**

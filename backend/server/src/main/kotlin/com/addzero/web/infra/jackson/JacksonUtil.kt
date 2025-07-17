@@ -102,6 +102,7 @@ fun <T : Any> Any.convertToList(kclass: KClass<T>): List<T> {
     val toJson = this.toJson()
     return toJson.parseListByKtxByKClass(kclass)
 }
+
 //fun <T> Any.convertToNoInline(Kclass: Class<T>): T {
 //    val toJson = this.toJson()
 //    val parseObjectByKtx = parseObjectByKtx(toJson, Kclass)

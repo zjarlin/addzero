@@ -1,45 +1,20 @@
 package com.addzero.kmp.generated.forms
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import com.addzero.kmp.component.high_level.AddMultiColumnContainer
 import com.addzero.kmp.component.drawer.AddDrawer
-import com.addzero.kmp.component.form.*
-import com.addzero.kmp.component.form.number.AddMoneyField
-import com.addzero.kmp.component.form.number.AddNumberField
-import com.addzero.kmp.component.form.number.AddIntegerField
-import com.addzero.kmp.component.form.number.AddDecimalField
-import com.addzero.kmp.component.form.number.AddPercentageField
 import com.addzero.kmp.component.form.text.AddTextField
-import com.addzero.kmp.component.form.text.AddPasswordField
-import com.addzero.kmp.component.form.text.AddEmailField
-import com.addzero.kmp.component.form.text.AddPhoneField
 import com.addzero.kmp.component.form.text.AddUrlField
-import com.addzero.kmp.component.form.text.AddUsernameField
-import com.addzero.kmp.component.form.text.AddIdCardField
-import com.addzero.kmp.component.form.text.AddBankCardField
-import com.addzero.kmp.component.form.date.AddDateField
-import com.addzero.kmp.component.form.date.DateType
-import com.addzero.kmp.component.form.switch.AddSwitchField
-import com.addzero.kmp.component.form.selector.AddGenericSingleSelector
 import com.addzero.kmp.component.form.selector.AddGenericMultiSelector
 import com.addzero.kmp.core.ext.parseObjectByKtx
-import com.addzero.kmp.core.validation.RegexEnum
 import com.addzero.kmp.generated.isomorphic.*
 import com.addzero.kmp.generated.forms.dataprovider.Iso2DataProvider
-            import com.addzero.kmp.generated.enums.*
 
 
 /**
  * BizNote 表单属性常量
  */
 object BizNoteFormProps {
-    const val leafFlag = "leafFlag"
-    const val children = "children"
-    const val parent = "parent"
     const val title = "title"
     const val content = "content"
     const val type = "type"
@@ -51,7 +26,7 @@ object BizNoteFormProps {
      * 获取所有字段名列表（按默认顺序）
      */
     fun getAllFields(): List<String> {
-        return listOf(leafFlag, children, parent, title, content, type, tags, path, fileUrl)
+        return listOf(title, content, type, tags, path, fileUrl)
     }
 }
 
@@ -86,57 +61,6 @@ fun BizNoteFormOriginal(
 
     // 默认字段渲染映射（保持原有顺序）
     val defaultRenderMap = linkedMapOf<String, @Composable () -> Unit>(
-        BizNoteFormProps.leafFlag to {
-            AddSwitchField(
-                value = state.value.leafFlag ?: false,
-                onValueChange = { state.value = state.value.copy(leafFlag = it) },
-                label = "leafFlag"
-            )
-        },
-        BizNoteFormProps.children to {
-            var dataList by remember { mutableStateOf<List<BizNoteIso>>(emptyList()) }
-
-            LaunchedEffect(Unit) {
-                try {
-                    val provider = Iso2DataProvider.isoToDataProvider[BizNoteIso::class]
-                    dataList = provider?.invoke("") as? List<BizNoteIso> ?: emptyList()
-                } catch (e: Exception) {
-                    println("加载 children 数据失败: ${e.message}")
-                    dataList = emptyList()
-                }
-            }
-
-            AddGenericMultiSelector(
-                value = state.value.children ?: emptyList(),
-                onValueChange = { state.value = state.value.copy(children = it) },
-                placeholder = "笔记的子节点列表，表示当前笔记的子笔记。通过{@linkOneToMany}注解与父笔记关联。@return子笔记列表",
-                dataProvider = { dataList },
-                getId = { it.id ?: 0L },
-                getLabel = { it.title ?: "" }
-            )
-        },
-        BizNoteFormProps.parent to {
-            var dataList by remember { mutableStateOf<List<BizNoteIso>>(emptyList()) }
-
-            LaunchedEffect(Unit) {
-                try {
-                    val provider = Iso2DataProvider.isoToDataProvider[BizNoteIso::class]
-                    dataList = provider?.invoke("") as? List<BizNoteIso> ?: emptyList()
-                } catch (e: Exception) {
-                    println("加载 parent 数据失败: ${e.message}")
-                    dataList = emptyList()
-                }
-            }
-
-            AddGenericSingleSelector(
-                value = state.value.parent,
-                onValueChange = { state.value = state.value.copy(parent = it) },
-                placeholder = "笔记的父节点，表示当前笔记的父笔记。通过{@linkManyToOne}注解与子笔记关联。@return父笔记，如果没有父笔记则返回null",
-                dataProvider = { dataList },
-                getId = { it.id ?: 0L },
-                getLabel = { it.title ?: "" }
-            )
-        },
         BizNoteFormProps.title to {
             AddTextField(
                 value = state.value.title?.toString() ?: "",
@@ -253,102 +177,6 @@ class BizNoteFormDsl(
 
     // 字段排序映射：字段名 -> 排序值
     private val fieldOrderMap = mutableMapOf<String, Int>()
-
-    /**
-     * 配置 leafFlag 字段
-     * @param hidden 是否隐藏该字段
-     * @param order 字段显示顺序（数值越小越靠前）
-     * @param render 自定义渲染函数
-     */
-    fun leafFlag(
-        hidden: Boolean = false,
-        order: Int? = null,
-        render: (@Composable (MutableState<BizNoteIso>) -> Unit)? = null
-    ) {
-        when {
-            hidden -> {
-                hiddenFields.add("leafFlag")
-                renderMap.remove("leafFlag")
-            }
-            render != null -> {
-                hiddenFields.remove("leafFlag")
-                renderMap["leafFlag"] = { render(state) }
-            }
-            else -> {
-                hiddenFields.remove("leafFlag")
-                renderMap.remove("leafFlag")
-            }
-        }
-
-        // 处理排序
-        order?.let { orderValue ->
-            updateFieldOrder("leafFlag", orderValue)
-        }
-    }
-
-    /**
-     * 配置 children 字段
-     * @param hidden 是否隐藏该字段
-     * @param order 字段显示顺序（数值越小越靠前）
-     * @param render 自定义渲染函数
-     */
-    fun children(
-        hidden: Boolean = false,
-        order: Int? = null,
-        render: (@Composable (MutableState<BizNoteIso>) -> Unit)? = null
-    ) {
-        when {
-            hidden -> {
-                hiddenFields.add("children")
-                renderMap.remove("children")
-            }
-            render != null -> {
-                hiddenFields.remove("children")
-                renderMap["children"] = { render(state) }
-            }
-            else -> {
-                hiddenFields.remove("children")
-                renderMap.remove("children")
-            }
-        }
-
-        // 处理排序
-        order?.let { orderValue ->
-            updateFieldOrder("children", orderValue)
-        }
-    }
-
-    /**
-     * 配置 parent 字段
-     * @param hidden 是否隐藏该字段
-     * @param order 字段显示顺序（数值越小越靠前）
-     * @param render 自定义渲染函数
-     */
-    fun parent(
-        hidden: Boolean = false,
-        order: Int? = null,
-        render: (@Composable (MutableState<BizNoteIso>) -> Unit)? = null
-    ) {
-        when {
-            hidden -> {
-                hiddenFields.add("parent")
-                renderMap.remove("parent")
-            }
-            render != null -> {
-                hiddenFields.remove("parent")
-                renderMap["parent"] = { render(state) }
-            }
-            else -> {
-                hiddenFields.remove("parent")
-                renderMap.remove("parent")
-            }
-        }
-
-        // 处理排序
-        order?.let { orderValue ->
-            updateFieldOrder("parent", orderValue)
-        }
-    }
 
     /**
      * 配置 title 字段

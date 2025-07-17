@@ -11,9 +11,6 @@ import kotlinx.serialization.Contextual
 
 @Serializable
 data class BizNoteIso(
-    val leafFlag: Boolean = false,
-    val children: List<BizNoteIso> = emptyList(),
-    val parent: BizNoteIso? = null,
     val title: String = "",
     val content: String = "",
     val type: String? = null,
