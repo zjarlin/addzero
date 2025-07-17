@@ -110,7 +110,8 @@ fun SysDeptFormOriginal(
                 placeholder = "parent",
                 dataProvider = { dataList },
                 getId = { it.id ?: 0L },
-                getLabel = { it.name ?: "" }
+                getLabel = { it.name ?: "" },
+               getChildren = { it.children?:emptyList() } 
             )
         },
         SysDeptFormProps.children to {
@@ -132,7 +133,8 @@ fun SysDeptFormOriginal(
                 placeholder = "children",
                 dataProvider = { dataList },
                 getId = { it.id ?: 0L },
-                getLabel = { it.name ?: "" }
+                getLabel = { it.name ?: "" },
+                getChildren = { it.children?:emptyList() }
             )
         },
         SysDeptFormProps.sysUsers to {
@@ -154,7 +156,8 @@ fun SysDeptFormOriginal(
                 placeholder = "部门用户",
                 dataProvider = { dataList },
                 getId = { it.id ?: 0L },
-                getLabel = { it.email ?: "" }
+                getLabel = { it.email ?: "" },
+                
             )
         }
     )

@@ -79,12 +79,14 @@ object GenericListStrategy : FormStrategy {
 
         // 新逻辑：查找字段类型的属性中带有 @LabelProp 注解的属性
         val labelField = findLabelPropInType(typeOrGenericClassDeclaration)
+        val istree = typeOrGenericClassDeclaration.hasProperty("children")
         val simpleName = typeOrGenericClassDeclaration.simpleName.asString()
 
         // 只有 Jimmer 实体才添加 Iso 后缀
         val isJimmerEntityType = isJimmerEntity(typeOrGenericClassDeclaration)
         val isoTypeName = if (isJimmerEntityType) "${simpleName}Iso" else simpleName
 
+        val treedsl = if (istree) """getChildren = { it.children?:emptyList() }""" else ""
         return if (isJimmerEntityType) {
             // Jimmer 实体类型：使用 Iso2DataProvider 加载数据
             """
@@ -107,7 +109,8 @@ object GenericListStrategy : FormStrategy {
             |                placeholder = $label,
             |                dataProvider = { dataList },
             |                getId = { it.id ?: 0L },
-            |                getLabel = { it.$labelField ?: "" }
+            |                getLabel = { it.$labelField ?: "" },
+            |                $treedsl
             |            )
             |        }
             """.trimMargin()
@@ -121,7 +124,9 @@ object GenericListStrategy : FormStrategy {
             |                placeholder = $label,
             |                dataProvider = { emptyList<$isoTypeName>() }, // 需要根据具体类型提供数据
             |                getId = { it.toString() },
-            |                getLabel = { it.toString() }
+            |                getLabel = { it.toString() },
+            |               $treedsl 
+            |                
             |            )
             |        }
             """.trimMargin()

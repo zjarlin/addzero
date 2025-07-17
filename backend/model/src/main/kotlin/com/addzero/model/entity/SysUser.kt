@@ -2,11 +2,11 @@ package com.addzero.model.entity
 
 // 临时注释掉，避免 KSP 处理顺序问题
 // import com.addzero.kmp.generated.enums.EnumSysGender
+//import jakarta.validation.constraints.NotBlank
+//import jakarta.validation.constraints.Pattern
 import com.addzero.kmp.entity2form.annotation.LabelProp
 import com.addzero.model.common.BaseDateTime
 import com.addzero.model.common.SnowflakeIdGenerator
-//import jakarta.validation.constraints.NotBlank
-//import jakarta.validation.constraints.Pattern
 import org.babyfish.jimmer.sql.*
 
 /**
@@ -19,6 +19,8 @@ import org.babyfish.jimmer.sql.*
 @Entity
 @Table(name = "sys_user")
 interface SysUser : BaseDateTime {
+
+
     /**
      *价格
      */

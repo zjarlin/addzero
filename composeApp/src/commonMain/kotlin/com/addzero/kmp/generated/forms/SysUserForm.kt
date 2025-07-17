@@ -199,7 +199,8 @@ fun SysUserFormOriginal(
                 placeholder = "所属部门",
                 dataProvider = { dataList },
                 getId = { it.id ?: 0L },
-                getLabel = { it.name ?: "" }
+                getLabel = { it.name ?: "" },
+                getChildren = { it.children?:emptyList() }
             )
         },
         SysUserFormProps.roles to {
@@ -221,7 +222,8 @@ fun SysUserFormOriginal(
                 placeholder = "角色列表",
                 dataProvider = { dataList },
                 getId = { it.id ?: 0L },
-                getLabel = { it.roleName ?: "" }
+                getLabel = { it.roleName ?: "" },
+                
             )
         }
     )

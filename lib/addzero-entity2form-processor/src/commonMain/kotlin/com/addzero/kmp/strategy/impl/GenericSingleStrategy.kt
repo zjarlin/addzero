@@ -108,6 +108,9 @@ object GenericSingleStrategy : FormStrategy {
         val simpleName = typeOrGenericClassDeclaration.simpleName.asString()
         val isoTypeName = "${simpleName}Iso"
 
+        val istree = typeOrGenericClassDeclaration.hasProperty("children")
+        val treedsl = if (istree) """getChildren = { it.children?:emptyList() }""" else ""
+
         return """
             |        ${entityClassName}FormProps.$name to {
             |            var dataList by remember { mutableStateOf<List<${isoTypeName}>>(emptyList()) }
@@ -128,7 +131,8 @@ object GenericSingleStrategy : FormStrategy {
             |                placeholder = $label,
             |                dataProvider = { dataList },
             |                getId = { it.id ?: 0L },
-            |                getLabel = { it.$labelField ?: "" }
+            |                getLabel = { it.$labelField ?: "" },
+            |               $treedsl 
             |            )
             |        }
         """.trimMargin()

@@ -132,7 +132,8 @@ fun BizNoteFormOriginal(
                 placeholder = "笔记的标签列表，用于分类和检索。通过中间表实现与标签的多对多关系@return标签列表",
                 dataProvider = { dataList },
                 getId = { it.id ?: 0L },
-                getLabel = { it.name ?: "" }
+                getLabel = { it.name ?: "" },
+                
             )
         },
         BizNoteFormProps.path to {

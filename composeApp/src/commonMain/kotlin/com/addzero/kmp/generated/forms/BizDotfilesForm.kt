@@ -93,7 +93,9 @@ fun BizDotfilesFormOriginal(
                 placeholder = "操作系统win=winlinux=linuxmac=macnull=不限",
                 dataProvider = { emptyList<String>() }, // 需要根据具体类型提供数据
                 getId = { it.toString() },
-                getLabel = { it.toString() }
+                getLabel = { it.toString() },
+                
+                
             )
         },
         BizDotfilesFormProps.osStructure to {

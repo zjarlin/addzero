@@ -152,7 +152,8 @@ fun SysDictItemFormOriginal(
                 placeholder = "sysDict",
                 dataProvider = { dataList },
                 getId = { it.id ?: 0L },
-                getLabel = { it.dictName ?: "" }
+                getLabel = { it.dictName ?: "" },
+                
             )
         }
     )
