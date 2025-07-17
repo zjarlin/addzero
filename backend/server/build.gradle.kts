@@ -52,7 +52,7 @@ dependencies {
     //通用库
     implementation(projects.lib.addzeroTool)
     //天气库
-    implementation(projects.lib.addzeroToolWeather)
+    implementation(projects.lib.addzeroToolApiJvm)
     implementation(projects.lib.addzeroToolApi)
 
 

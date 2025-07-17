@@ -12,10 +12,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.addzero.kmp.annotation.Route
-import com.addzero.kmp.component.upload_manager.GlobalUploadManager
-import com.addzero.kmp.component.upload_manager.UploadManagerUI
-import com.addzero.kmp.ext.toMultipartFile
 import io.github.vinceglb.filekit.compose.rememberFilePickerLauncher
 import io.github.vinceglb.filekit.core.PickerMode
 import io.ktor.client.request.forms.*
@@ -85,7 +81,6 @@ suspend fun mockQueryProgress(redisKey: String): MockFileUploadResponse {
     return MockFileUploadResponse(fileUrl, progress)
 }
 
-@Route
 @Composable
 fun FilePickerDemo(): Unit {
     var useMock by remember { mutableStateOf(USE_MOCK_FILE_UPLOAD) }

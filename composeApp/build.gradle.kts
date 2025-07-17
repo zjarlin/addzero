@@ -2,9 +2,13 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 plugins {
     id("kmp")
+    id("kmp-android-application")
     id("com.google.devtools.ksp")
-
+//    id("com.android.application")
 //    alias(libs.plugins.compose.hot.reload)
+}
+dependencies {
+    debugImplementation(compose.uiTooling)
 }
 
 dependencies {
@@ -20,12 +24,11 @@ kotlin {
             implementation(projects.shared)
             implementation(projects.lib.addzeroTool)
 
-            implementation(projects.lib.addzeroComposeNativeComponent)
 
             implementation(projects.lib.addzeroNetworkStarter)
 
             // 组件库依赖
-//            implementation(projects.lib.addzeroComposeNativeComponent)
+            implementation(projects.lib.addzeroComposeNativeComponent)
 //            implementation(projects.lib.addzeroComposeKlibsComponent)
 
             // 原来的 FileKit 依赖现在由 klibs-component 模块提供

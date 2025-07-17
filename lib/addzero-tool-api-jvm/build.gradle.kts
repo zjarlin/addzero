@@ -8,7 +8,7 @@ plugins {
 dependencies {
     implementation("org.jsoup:jsoup:1.10.2")
     // OkHttp 核心库
-//    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation(libs.hutool.all)
     implementation(libs.fastjson2.kotlin)
 

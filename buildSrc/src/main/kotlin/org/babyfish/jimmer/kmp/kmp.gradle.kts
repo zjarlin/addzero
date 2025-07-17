@@ -13,11 +13,9 @@ val libs = the<org.gradle.accessors.dm.LibrariesForLibs>()
 plugins {
     id("org.jetbrains.compose")
     id("org.jetbrains.kotlin.multiplatform")
-    id("com.android.application")
     id("org.jetbrains.kotlin.plugin.compose")
     kotlin("plugin.serialization")
 }
-
 //val libs = the<LibrariesForLibs>()
 
 
@@ -25,13 +23,6 @@ plugins {
 //version = myVersion
 
 kotlin {
-    androidTarget {
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
-        compilerOptions {
-            jvmTarget.set(JvmTarget.fromTarget(libs.versions.jdk.get()))
-
-        }
-    }
     val defIos = defIos()
 
     doIos(defIos)
@@ -95,46 +86,43 @@ kotlin {
     }
 }
 
-android {
+//android {
+//
+//    namespace = Vars.applicationNamespace
+//
+//    compileSdk = libs.versions.android.compileSdk.get().toInt()
+//
+//    compileOptions {
+//        val toVersion = JavaVersion.toVersion(libs.versions.jdk.get())
+//        sourceCompatibility = toVersion
+//        targetCompatibility = toVersion
+//    }
+//
+//    defaultConfig {
+//
+//        applicationId = Vars.applicationId
+//
+//        minSdk = libs.versions.android.minSdk.get().toInt()
+//        targetSdk = libs.versions.android.compileSdk.get().toInt()
+////        versionCode = findProperty("version").toString().toInt()
+////        versionName = findProperty("version").toString()
+//
+//    }
+//
+//    packaging {
+//        resources {
+//            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+//        }
+//    }
+//
+//    buildTypes {
+//        getByName("release") {
+//            isMinifyEnabled = false
+//        }
+//    }
+//
+//}
 
-    namespace = Vars.applicationNamespace
-
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
-
-    compileOptions {
-        val toVersion = JavaVersion.toVersion(libs.versions.jdk.get())
-        sourceCompatibility = toVersion
-        targetCompatibility = toVersion
-    }
-
-    defaultConfig {
-
-        applicationId = Vars.applicationId
-
-        minSdk = libs.versions.android.minSdk.get().toInt()
-        targetSdk = libs.versions.android.compileSdk.get().toInt()
-//        versionCode = findProperty("version").toString().toInt()
-//        versionName = findProperty("version").toString()
-
-    }
-
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
-
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-        }
-    }
-
-}
-
-dependencies {
-    debugImplementation(compose.uiTooling)
-}
 
 compose.desktop {
     application {

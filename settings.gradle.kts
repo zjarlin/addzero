@@ -61,10 +61,9 @@ fun Pair<String, List<String>>.useFile() {
 }
 
 // 主要模块
-listOf("backend", "composeApp", "shared","lib").forEach { module ->
+listOf("backend", "composeApp", "shared", "lib").forEach { module ->
     include(module)
 }
-
 
 
 // KSP 支持模块
@@ -72,7 +71,6 @@ listOf("backend", "composeApp", "shared","lib").forEach { module ->
     "server",
     "model"
 )).useFile()
-
 
 
 // KSP 支持模块
@@ -122,13 +120,12 @@ listOf("backend", "composeApp", "shared","lib").forEach { module ->
     "addzero-compose-klibs-component"
 )).useFile()
 
+("lib" to listOf("addzero-network-starter")).useFile()
 // 工具模块
 ("lib" to listOf(
     "addzero-tool",
-    "addzero-tool-weather"
+    "addzero-tool-api-jvm",
+    "addzero-tool-api"
 )).useFile()
 
-// 网络模块（暂时注释）
- ("lib" to listOf("addzero-network-starter")).useFile()
-include("lib:addzero-tool-api")
-findProject(":lib:addzero-tool-api")?.name = "addzero-tool-api"
+
