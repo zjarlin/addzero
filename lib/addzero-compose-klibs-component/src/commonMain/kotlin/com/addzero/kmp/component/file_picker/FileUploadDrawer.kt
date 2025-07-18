@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.addzero.kmp.component.AddInputDescribe
+import com.addzero.kmp.component.form.text.AddIconText
 import com.addzero.kmp.component.drawer.AddDrawer
 import com.addzero.kmp.component.drawer.DrawerDirection
 import io.github.vinceglb.filekit.compose.rememberFilePickerLauncher
@@ -124,7 +124,7 @@ fun AddFileUploadDrawer(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             // 说明区域
-            AddInputDescribe(showFlag = showDescription, describe = description)
+            AddIconText(showFlag = showDescription, describe = description)
 
             // 模板下载区域
             Surface(

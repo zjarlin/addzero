@@ -16,12 +16,6 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose")
     kotlin("plugin.serialization")
 }
-//val libs = the<LibrariesForLibs>()
-
-
-//group = myGroup
-//version = myVersion
-
 kotlin {
     val defIos = defIos()
 
@@ -86,43 +80,6 @@ kotlin {
     }
 }
 
-//android {
-//
-//    namespace = Vars.applicationNamespace
-//
-//    compileSdk = libs.versions.android.compileSdk.get().toInt()
-//
-//    compileOptions {
-//        val toVersion = JavaVersion.toVersion(libs.versions.jdk.get())
-//        sourceCompatibility = toVersion
-//        targetCompatibility = toVersion
-//    }
-//
-//    defaultConfig {
-//
-//        applicationId = Vars.applicationId
-//
-//        minSdk = libs.versions.android.minSdk.get().toInt()
-//        targetSdk = libs.versions.android.compileSdk.get().toInt()
-////        versionCode = findProperty("version").toString().toInt()
-////        versionName = findProperty("version").toString()
-//
-//    }
-//
-//    packaging {
-//        resources {
-//            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-//        }
-//    }
-//
-//    buildTypes {
-//        getByName("release") {
-//            isMinifyEnabled = false
-//        }
-//    }
-//
-//}
-
 
 compose.desktop {
     application {
@@ -138,29 +95,4 @@ compose.desktop {
 }
 
 
-
-// 确保 KSP 任务的执行顺序：先执行 shared 模块的 KSP，再执行 backend 模块的 KSP
-//tasks.configureEach {
-//    when (name) {
-//        "kspKotlin" -> {
-//            // backend 模块的 KSP 任务依赖 shared 模块的 KSP 任务
-//            dependsOn(":shared:kspCommonMainKotlinMetadata")
-//        }
-//        "compileKotlin" -> {
-//            // Kotlin 编译任务依赖 KSP 任务
-//            dependsOn("kspKotlin")
-//        }
-//    }
-//}
-
-
-//tasks.withType<KotlinCompilationTask<*>>().all {
-//    val kspCommonMainKotlinMetadata = "kspCommonMainKotlinMetadata"
-//
-//    // 只处理 shared 模块内部的依赖，避免跨模块循环依赖
-//    if (name != kspCommonMainKotlinMetadata &&
-//        project.tasks.findByName(kspCommonMainKotlinMetadata) != null) {
-//        dependsOn(kspCommonMainKotlinMetadata)
-//    }
-//}
 

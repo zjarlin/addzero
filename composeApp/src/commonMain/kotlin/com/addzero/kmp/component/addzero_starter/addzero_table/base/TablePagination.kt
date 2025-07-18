@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.addzero.kmp.entity.low_table.StatePagination
+import com.addzero.kmp.viewmodel.table.StatePagination
 
 /**
  * 表格分页控件组件

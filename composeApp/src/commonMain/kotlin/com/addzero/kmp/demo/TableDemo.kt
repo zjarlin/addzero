@@ -17,6 +17,11 @@ import com.addzero.kmp.component.table.AddColumn
 import com.addzero.kmp.component.table.SysColumnMetaConfig
 import com.addzero.kmp.entity.low_table.*
 import com.addzero.kmp.annotation.Route
+import com.addzero.kmp.viewmodel.table.TableApiConfig
+import com.addzero.kmp.viewmodel.table.TableConfig
+import com.addzero.kmp.viewmodel.table.TableDataConfig
+import com.addzero.kmp.viewmodel.table.TableImportConfig
+import com.addzero.kmp.viewmodel.table.TableUiConfig
 
 import kotlinx.coroutines.launch
 
@@ -69,51 +74,55 @@ fun AddGenericTableExample() {
     )
 
     // 使用新API创建表格配置
-    val tableConfig = TableConfig(
-        apiConfig = TableApiConfig(
-            onLoadData = { input ->
-                println("Load data with input: $input")
-                val specPageResult = SpecPageResult(
-                    rows = data,
-                    totalRowCount = data.size.toLong(),
-                    totalPageCount = 1
-                )
-                specPageResult
+    var apiConfig = TableApiConfig(
+        onLoadData = { input ->
+            println("Load data with input: $input")
+            val specPageResult = SpecPageResult(
+                rows = data,
+                totalRowCount = data.size.toLong(),
+                totalPageCount = 1
+            )
+            specPageResult
 
-            },
-            onEdit = { item ->
-                println("Edit item: $item")
-                true
-            },
-            onDelete = { id ->
-                println("Delete item with id: $id")
-                true
-            },
-            onSave = { item ->
-                println("Save item: $item")
-                true
-            },
-            onExport = { param ->
-                println("Export data with param: $param")
-                true
-            },
-            onUpload = { content ->
-                rememberCoroutineScope.launch {
-                    val uywopload = fileApi.upload(content)
-                    println(uywopload)
-                }
-                "success"
-            },
+        },
+        onEdit = { item ->
+            println("Edit item: $item")
+            true
+        },
+        onDelete = { id ->
+            println("Delete item with id: $id")
+            true
+        },
+        onSave = { item ->
+            println("Save item: $item")
+            true
+        },
+        onExport = { param ->
+            println("Export data with param: $param")
+            true
+        },
+        onUpload = { content ->
+            rememberCoroutineScope.launch {
+                val uywopload = fileApi.upload(content)
+                println(uywopload)
+            }
+            "success"
+        },
 //            onCustomEvent = { event, data ->
 //                println("Custom event: $event, data: $data")
 //                true
 //            }
-        ),
-        dataConfig = TableDataConfig(
-            initData = data,
-            columns = columns,
-            onRowClick = { item -> println("Row clicked: $item") }
-        ),
+    )
+    var dataConfig = TableDataConfig(
+        initData = data,
+        columns = columns,
+//        onRowClick = { item -> println("Row clicked: $item") }
+    )
+
+
+    val tableConfig = TableConfig(
+        apiConfig = apiConfig,
+        dataConfig = dataConfig,
         uiConfig = TableUiConfig(
             rowHeight = 56,
             headerHeight = 56,

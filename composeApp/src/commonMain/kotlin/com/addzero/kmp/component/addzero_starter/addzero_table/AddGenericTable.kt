@@ -13,7 +13,7 @@ import com.addzero.kmp.component.button.AddPermissionIconButton
 import com.addzero.kmp.component.file_picker.AddFileUploadDrawer
 import com.addzero.kmp.component.table.generictable.components.ExportButtonContent
 import com.addzero.kmp.compose.icons.IconKeys
-import com.addzero.kmp.entity.low_table.TableConfig
+import com.addzero.kmp.viewmodel.table.TableConfig
 import com.addzero.kmp.viewmodel.table.TableCompositeViewModel
 import org.koin.compose.viewmodel.koinViewModel
 

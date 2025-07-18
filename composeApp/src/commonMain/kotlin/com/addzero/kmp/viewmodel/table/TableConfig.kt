@@ -1,7 +1,10 @@
-package com.addzero.kmp.entity.low_table
+package com.addzero.kmp.viewmodel.table
 
 import com.addzero.kmp.component.addzero_starter.addzero_table.TableColumnType
 import com.addzero.kmp.component.addzero_starter.addzero_table.TableRowType
+import com.addzero.kmp.entity.low_table.CommonTableDaTaInputDTO
+import com.addzero.kmp.entity.low_table.ExportParam
+import com.addzero.kmp.entity.low_table.SpecPageResult
 import io.ktor.client.request.forms.*
 
 /**
@@ -10,7 +13,7 @@ import io.ktor.client.request.forms.*
  */
 data class TableApiConfig(
     // 数据加载
-    val onLoadData: (CommonTableDaTaInputDTO) -> SpecPageResult<TableRowType> = { SpecPageResult.empty() },
+    val onLoadData: (CommonTableDaTaInputDTO) -> SpecPageResult<TableRowType> = { SpecPageResult.Companion.empty() },
     // CRUD操作
     val onEdit: (TableRowType) -> Boolean = { false },
     val onDelete: (Any) -> Boolean = { false },

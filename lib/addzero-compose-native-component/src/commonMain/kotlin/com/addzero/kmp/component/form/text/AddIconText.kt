@@ -1,4 +1,4 @@
-package com.addzero.kmp.component
+package com.addzero.kmp.component.form.text
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 
 /**
@@ -18,7 +19,7 @@ import androidx.compose.ui.unit.dp
  * @param [describe] 描述
  */
 @Composable
- fun AddInputDescribe(showFlag: Boolean, describe: String) {
+fun AddIconText(showFlag: Boolean = true, imageVector: ImageVector = Icons.Default.Info, describe: String) {
     if (!showFlag) {
         return
     }
@@ -33,7 +34,7 @@ import androidx.compose.ui.unit.dp
             modifier = Modifier.Companion.padding(12.dp)
         ) {
             Icon(
-                imageVector = Icons.Default.Info,
+                imageVector = imageVector,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.secondary
             )

@@ -20,7 +20,7 @@ import com.addzero.kmp.component.addzero_starter.addzero_table.base.header.colum
 import com.addzero.kmp.component.button.AddEditDeleteButton
 import com.addzero.kmp.entity.low_table.EnumButtonColor
 import com.addzero.kmp.entity.low_table.StateActionButton
-import com.addzero.kmp.entity.low_table.StatePagination
+import com.addzero.kmp.viewmodel.table.StatePagination
 
 /**
  * 表格内容区组件

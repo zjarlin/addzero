@@ -3,7 +3,6 @@ package com.addzero.kmp.viewmodel.table
 import androidx.lifecycle.ViewModel
 import com.addzero.kmp.component.addzero_starter.addzero_table.TableColumnType
 import com.addzero.kmp.component.addzero_starter.addzero_table.TableRowType
-import com.addzero.kmp.entity.low_table.TableConfig
 import org.koin.android.annotation.KoinViewModel
 
 /**
@@ -11,18 +10,18 @@ import org.koin.android.annotation.KoinViewModel
  * 协调各个子 ViewModel 的交互，提供统一的接口
  */
 @KoinViewModel
-class TableCompositeViewModel() : ViewModel() {
+class TableCompositeViewModel(
+    val searchViewModel: TableSearchViewModel ,
+    val selectionViewModel: TableSelectionViewModel ,
+    val paginationViewModel: TablePaginationViewModel,
+    val sortViewModel: TableSortViewModel ,
+    val uiStateViewModel: TableUIStateViewModel,
+    val dataViewModel: TableDataViewModel ,
+    ) : ViewModel() {
 
     private lateinit var config: TableConfig
 
-    // 各个子 ViewModel
-    val searchViewModel = TableSearchViewModel()
-    val selectionViewModel = TableSelectionViewModel()
-    val paginationViewModel = TablePaginationViewModel()
-    val sortViewModel = TableSortViewModel()
-    val uiStateViewModel = TableUIStateViewModel()
-    val dataViewModel = TableDataViewModel()
-
+    //
     /**
      * 初始化配置
      */
