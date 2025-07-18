@@ -28,44 +28,48 @@ class JdbcService(
         return try {
             if (tableName.isBlank()) {
                 // 查询所有表
-                val tables = jdbcClient.sql("""
+                val tables = jdbcClient.sql(
+                    """
                     SELECT table_name, table_comment
                     FROM information_schema.tables
                     WHERE table_schema = 'public'
                     ORDER BY table_name
-                """)
-                .query { rs, _ ->
-                    "${rs.getString("table_name")} - ${rs.getString("table_comment") ?: "无注释"}"
-                }
-                .list()
+                """
+                )
+                    .query { rs, _ ->
+                        "${rs.getString("table_name")} - ${rs.getString("table_comment") ?: "无注释"}"
+                    }
+                    .list()
 
                 "数据库中的表 (${tables.size} 个):\n" + tables.joinToString("\n")
             } else {
                 // 查询指定表的结构
-                val columns = jdbcClient.sql("""
+                val columns = jdbcClient.sql(
+                    """
                     SELECT column_name, data_type, is_nullable, column_default,
                            character_maximum_length, column_comment
                     FROM information_schema.columns
                     WHERE table_name = :tableName
                     ORDER BY ordinal_position
-                """)
-                .param("tableName", tableName)
-                .query { rs, _ ->
-                    val columnName = rs.getString("column_name")
-                    val dataType = rs.getString("data_type")
-                    val maxLength = rs.getInt("character_maximum_length")
-                    val nullable = rs.getString("is_nullable")
-                    val defaultValue = rs.getString("column_default")
-                    val comment = rs.getString("column_comment")
+                """
+                )
+                    .param("tableName", tableName)
+                    .query { rs, _ ->
+                        val columnName = rs.getString("column_name")
+                        val dataType = rs.getString("data_type")
+                        val maxLength = rs.getInt("character_maximum_length")
+                        val nullable = rs.getString("is_nullable")
+                        val defaultValue = rs.getString("column_default")
+                        val comment = rs.getString("column_comment")
 
-                    val typeInfo = if (maxLength > 0) "$dataType($maxLength)" else dataType
-                    val nullableInfo = if (nullable == "YES") "NULL" else "NOT NULL"
-                    val defaultInfo = if (defaultValue != null) " DEFAULT $defaultValue" else ""
-                    val commentInfo = if (comment != null) " -- $comment" else ""
+                        val typeInfo = if (maxLength > 0) "$dataType($maxLength)" else dataType
+                        val nullableInfo = if (nullable == "YES") "NULL" else "NOT NULL"
+                        val defaultInfo = if (defaultValue != null) " DEFAULT $defaultValue" else ""
+                        val commentInfo = if (comment != null) " -- $comment" else ""
 
-                    "$columnName $typeInfo $nullableInfo$defaultInfo$commentInfo"
-                }
-                .list()
+                        "$columnName $typeInfo $nullableInfo$defaultInfo$commentInfo"
+                    }
+                    .list()
 
                 if (columns.isEmpty()) {
                     "表 '$tableName' 不存在或无权限访问"
@@ -129,7 +133,7 @@ class JdbcService(
                 }
 
                 "查询结果 (${results.size} 行):\n$headerLine\n$separator\n" +
-                dataLines.joinToString("\n")
+                        dataLines.joinToString("\n")
             }
         } catch (e: Exception) {
             "SQL查询执行失败: ${e.message}"
@@ -142,7 +146,12 @@ class JdbcService(
      * @param ddl DDL语句
      * @return 执行结果
      */
-    @Tool(description = "执行DDL语句，如CREATE TABLE、ALTER TABLE等数据库结构操作")
+    @Tool(
+        description = """
+     执行DDL语句，如CREATE TABLE、ALTER TABLE等数据库结构操作,
+    要包含id, update_by ,create_by ,create_time, update_time四个字段
+    """
+    )
     @Transactional(readOnly = false)
     fun executeDDL(ddl: String): String {
         return try {
@@ -184,7 +193,8 @@ class JdbcService(
 
             val searchValue = if (exactMatch) columnName else "%$columnName%"
 
-            val results = jdbcClient.sql("""
+            val results = jdbcClient.sql(
+                """
                 SELECT
                     c.table_name,
                     c.column_name,
@@ -211,23 +221,24 @@ class JdbcService(
                   AND $searchCondition
                 ORDER BY
                     c.table_name, c.ordinal_position
-            """)
-            .param(if (exactMatch) "columnName" else "searchPattern", searchValue)
-            .query { rs, _ ->
-                mapOf(
-                    "tableName" to rs.getString("table_name"),
-                    "columnName" to rs.getString("column_name"),
-                    "dataType" to rs.getString("data_type"),
-                    "isNullable" to rs.getString("is_nullable"),
-                    "columnDefault" to rs.getString("column_default"),
-                    "maxLength" to rs.getInt("character_maximum_length"),
-                    "numericPrecision" to rs.getInt("numeric_precision"),
-                    "numericScale" to rs.getInt("numeric_scale"),
-                    "comment" to rs.getString("column_comment"),
-                    "position" to rs.getInt("ordinal_position")
-                )
-            }
-            .list()
+            """
+            )
+                .param(if (exactMatch) "columnName" else "searchPattern", searchValue)
+                .query { rs, _ ->
+                    mapOf(
+                        "tableName" to rs.getString("table_name"),
+                        "columnName" to rs.getString("column_name"),
+                        "dataType" to rs.getString("data_type"),
+                        "isNullable" to rs.getString("is_nullable"),
+                        "columnDefault" to rs.getString("column_default"),
+                        "maxLength" to rs.getInt("character_maximum_length"),
+                        "numericPrecision" to rs.getInt("numeric_precision"),
+                        "numericScale" to rs.getInt("numeric_scale"),
+                        "comment" to rs.getString("column_comment"),
+                        "position" to rs.getInt("ordinal_position")
+                    )
+                }
+                .list()
 
             if (results.isEmpty()) {
                 val matchType = if (exactMatch) "精确匹配" else "模糊匹配"
@@ -239,30 +250,34 @@ class JdbcService(
                 """
                 找到 ${results.size} 个列在 ${groupedByTable.size} 个表中 ($matchType '$columnName'):
 
-                ${groupedByTable.entries.joinToString("\n\n") { (tableName, columns) ->
-                    """
+                ${
+                    groupedByTable.entries.joinToString("\n\n") { (tableName, columns) ->
+                        """
                     📋 表: $tableName (${columns.size} 个匹配列)
-                    ${columns.joinToString("\n") { column ->
-                        val dataType = column["dataType"] as String
-                        val maxLength = column["maxLength"] as Int
-                        val precision = column["numericPrecision"] as Int
-                        val scale = column["numericScale"] as Int
-                        val nullable = if ((column["isNullable"] as String) == "YES") "NULL" else "NOT NULL"
-                        val defaultValue = (column["columnDefault"] as String?)?.let { " DEFAULT $it" } ?: ""
-                        val comment = (column["comment"] as String?)?.let { " -- $it" } ?: ""
-                        val position = column["position"] as Int
+                    ${
+                            columns.joinToString("\n") { column ->
+                                val dataType = column["dataType"] as String
+                                val maxLength = column["maxLength"] as Int
+                                val precision = column["numericPrecision"] as Int
+                                val scale = column["numericScale"] as Int
+                                val nullable = if ((column["isNullable"] as String) == "YES") "NULL" else "NOT NULL"
+                                val defaultValue = (column["columnDefault"] as String?)?.let { " DEFAULT $it" } ?: ""
+                                val comment = (column["comment"] as String?)?.let { " -- $it" } ?: ""
+                                val position = column["position"] as Int
 
-                        val typeInfo = when {
-                            maxLength > 0 -> "$dataType($maxLength)"
-                            precision > 0 && scale > 0 -> "$dataType($precision,$scale)"
-                            precision > 0 -> "$dataType($precision)"
-                            else -> dataType
+                                val typeInfo = when {
+                                    maxLength > 0 -> "$dataType($maxLength)"
+                                    precision > 0 && scale > 0 -> "$dataType($precision,$scale)"
+                                    precision > 0 -> "$dataType($precision)"
+                                    else -> dataType
+                                }
+
+                                "  [$position] ${column["columnName"]} $typeInfo $nullable$defaultValue$comment"
+                            }
                         }
-
-                        "  [$position] ${column["columnName"]} $typeInfo $nullable$defaultValue$comment"
-                    }}
                     """.trimIndent()
-                }}
+                    }
+                }
                 """.trimIndent()
             }
         } catch (e: Exception) {
@@ -336,18 +351,20 @@ class JdbcService(
                 """
                 $scope 的外键关联关系 (${relations.size} 个):
 
-                ${relations.joinToString("\n") { relation ->
-                    val updateRule = relation["updateRule"] as String?
-                    val deleteRule = relation["deleteRule"] as String?
-                    val rules = listOfNotNull(
-                        updateRule?.let { "UPDATE $it" },
-                        deleteRule?.let { "DELETE $it" }
-                    ).joinToString(", ")
-                    val rulesInfo = if (rules.isNotEmpty()) " [$rules]" else ""
+                ${
+                    relations.joinToString("\n") { relation ->
+                        val updateRule = relation["updateRule"] as String?
+                        val deleteRule = relation["deleteRule"] as String?
+                        val rules = listOfNotNull(
+                            updateRule?.let { "UPDATE $it" },
+                            deleteRule?.let { "DELETE $it" }
+                        ).joinToString(", ")
+                        val rulesInfo = if (rules.isNotEmpty()) " [$rules]" else ""
 
-                    "🔗 ${relation["sourceTable"]}.${relation["sourceColumn"]} → " +
-                    "${relation["targetTable"]}.${relation["targetColumn"]}$rulesInfo"
-                }}
+                        "🔗 ${relation["sourceTable"]}.${relation["sourceColumn"]} → " +
+                                "${relation["targetTable"]}.${relation["targetColumn"]}$rulesInfo"
+                    }
+                }
                 """.trimIndent()
             }
         } catch (e: Exception) {

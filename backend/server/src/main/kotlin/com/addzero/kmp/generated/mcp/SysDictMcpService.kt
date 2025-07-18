@@ -18,7 +18,6 @@
     @Service
     class SysDictMcpService  {
 
-
         @Tool(description = "保存字典数据到数据库")
         fun saveSysDict(@ToolParam(description = "字典数据对象") entity: SysDictIso): String {
                val toJson = entity.toJson()

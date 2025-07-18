@@ -50,8 +50,13 @@ fun SysTopBar(
 
     TopAppBar(
         title = {
-            // 🎨 美化的标题组件
-            BeautifulTitle(appName = APP_NAME, currentTheme = currentTheme)
+            // 居中显示常用标签页
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                FavoriteTabsBar(navController = navController)
+            }
         },
         navigationIcon = {
 
@@ -151,7 +156,6 @@ fun SysTopBar(
                 ) {
                     chatViewModel.showChatBot = !chatViewModel.showChatBot
                 }
-
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
