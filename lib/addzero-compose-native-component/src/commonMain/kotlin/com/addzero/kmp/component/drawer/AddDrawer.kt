@@ -60,7 +60,7 @@ fun AddDrawer(
     confirmText: String = "提交",
     cancelText: String = "取消",
     direction: DrawerDirection = DrawerDirection.RIGHT,
-    width: Int = 360,
+    width: Int = 555,
     height: Int = 400,
     showButtons: Boolean = true,
     content: @Composable ColumnScope.() -> Unit

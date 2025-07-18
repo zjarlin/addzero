@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun AddDualCardLayout(
     modifier: Modifier = Modifier,
-    leftCardWidth: Int = 300,
+    leftCardWidth: Int = 555,
     cardElevation: Int = 4,
     cardShape: Int = 16,
     cardSpacing: Int = 20,

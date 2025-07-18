@@ -32,7 +32,7 @@ kotlin {
 //            implementation(projects.lib.addzeroComposeKlibsComponent)
 
             // 原来的 FileKit 依赖现在由 klibs-component 模块提供
-            implementation(libs.filekit.compose) // 移除，由组件模块提供
+            implementation(libs.filekit.compose) 
 
 
             //日志库
@@ -61,8 +61,8 @@ kotlin {
             implementation(libs.navigation.compose)
 
             // 图片加载库现在由 klibs-component 模块提供
-            implementation(libs.coil.compose) // 移除，由组件模块提供
-            implementation(libs.coil.network.ktor3) // 移除，由组件模块提供
+            implementation(libs.coil.compose) 
+            implementation(libs.coil.network.ktor3) 
 
             //拖拽库
             implementation(libs.compose.dnd)
@@ -88,12 +88,12 @@ kotlin {
 
 
             // 网络和依赖注入现在由 klibs-component 模块提供
-            implementation(project.dependencies.platform(libs.koin.bom)) // 移除，由组件模块提供
-            implementation(libs.koin.annotations) // 移除，由组件模块提供
-            implementation(libs.koin.core) // 移除，由组件模块提供
-            implementation(libs.koin.compose) // 移除，由组件模块提供
-            implementation(libs.koin.compose.viewmodel) // 移除，由组件模块提供
-            implementation(libs.koin.compose.viewmodel.navigation) // 移除，由组件模块提供
+            implementation(project.dependencies.platform(libs.koin.bom)) 
+            implementation(libs.koin.annotations) 
+            implementation(libs.koin.core) 
+            implementation(libs.koin.compose) 
+            implementation(libs.koin.compose.viewmodel) 
+            implementation(libs.koin.compose.viewmodel.navigation) 
 
 
         }

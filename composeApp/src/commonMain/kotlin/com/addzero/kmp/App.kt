@@ -60,7 +60,7 @@ private fun AppContent(loginViewModel: LoginViewModel) {
 private fun initKoin() {
     startKoin {
         printLogger()
-        this.modules(
+        modules(
             MyModule().module
         )
     }
