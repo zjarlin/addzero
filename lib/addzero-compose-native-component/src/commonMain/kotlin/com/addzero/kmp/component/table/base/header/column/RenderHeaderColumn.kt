@@ -1,8 +1,12 @@
 package com.addzero.kmp.component.table.base.header.column
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Sort
 import androidx.compose.material.icons.filled.ArrowDownward
@@ -16,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.addzero.kmp.component.table.TableColumnType
+import com.addzero.kmp.component.table.getTableCellAlignment
 import com.addzero.kmp.component.table.getTableTextAlign
 import com.addzero.kmp.entity.low_table.EnumSortDirection
 
@@ -40,20 +45,28 @@ fun RenderHeaderColumn(
     val sortable = metaconfig.sortable
     val textAlign = getTableTextAlign(column)
 
-    Surface {
+    // 使用Box来确保表头列有正确的宽度和对齐方式
+    Box(
+        modifier = Modifier
+            .width((column.metaconfig.widthRatio * 150).dp)
+            .fillMaxHeight()
+            .padding(horizontal = 8.dp, vertical = 4.dp),
+        contentAlignment = getTableCellAlignment(column)
+    ) {
         Row(
-            verticalAlignment = Alignment.Companion.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             //渲染标题
             Text(
                 text = title,
                 style = MaterialTheme.typography.titleSmall.copy(
-                    fontWeight = FontWeight.Companion.Bold
+                    fontWeight = FontWeight.Bold
                 ),
                 maxLines = 1,
-                overflow = TextOverflow.Companion.Ellipsis,
+                overflow = TextOverflow.Ellipsis,
                 textAlign = textAlign,
-                modifier = Modifier.Companion.weight(1f)
+                modifier = Modifier.weight(1f)
             )
 
             // 排序图标 - 使用本地状态
@@ -64,7 +77,7 @@ fun RenderHeaderColumn(
                             imageVector = Icons.Default.ArrowUpward,
                             contentDescription = "升序",
                             tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.Companion.size(16.dp)
+                            modifier = Modifier.size(16.dp)
                         )
                     }
 
@@ -73,7 +86,7 @@ fun RenderHeaderColumn(
                             imageVector = Icons.Default.ArrowDownward,
                             contentDescription = "降序",
                             tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.Companion.size(16.dp)
+                            modifier = Modifier.size(16.dp)
                         )
                     }
 
@@ -82,7 +95,7 @@ fun RenderHeaderColumn(
                             imageVector = Icons.AutoMirrored.Filled.Sort,
                             contentDescription = "排序",
                             tint = LocalContentColor.current.copy(alpha = 0.5f),
-                            modifier = Modifier.Companion.alpha(0.5f).size(16.dp)
+                            modifier = Modifier.alpha(0.5f).size(16.dp)
                         )
                     }
                 }
@@ -94,7 +107,6 @@ fun RenderHeaderColumn(
                 column = column,
                 onColumnAdvSearchClick = onColumnAdvSearchClick
             )
-
         }
     }
 }

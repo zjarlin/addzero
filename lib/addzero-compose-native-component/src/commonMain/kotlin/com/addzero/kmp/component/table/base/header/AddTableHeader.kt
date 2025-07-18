@@ -100,8 +100,9 @@ fun AddTableHeader(
                 modifier = Modifier.weight(1f).fillMaxHeight().horizontalScroll(horizontalScrollState)
                     .padding(horizontal = 8.dp), verticalAlignment = Alignment.CenterVertically
             ) {
-                // 数据列
-                for (column in columns) {
+                // 数据列 - 只显示可见的列
+                val visibleColumns = columns.filter { it.metaconfig.showInList }
+                for (column in visibleColumns) {
                     RenderHeaderColumn(
                         column = column,
                         sortDirection = getSortDirection(column.key, stateSorts = stateSorts),

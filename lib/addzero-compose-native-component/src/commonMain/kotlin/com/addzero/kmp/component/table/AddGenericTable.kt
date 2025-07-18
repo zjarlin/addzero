@@ -5,6 +5,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Deselect
+import androidx.compose.material.icons.filled.DownloadForOffline
 import androidx.compose.material.icons.filled.FileDownload
 import androidx.compose.material.icons.filled.SelectAll
 import androidx.compose.material.icons.filled.Upload
@@ -178,7 +179,7 @@ fun DefaultTableButtons(
     // 导出按钮
     AddIconButton(
         text = "导出",
-        imageVector = Icons.Default.FileDownload,
+        imageVector = Icons.Default.DownloadForOffline,
         onClick = { tableViewModel.uiStateViewModel.showExportDropDown() }
     )
 }
