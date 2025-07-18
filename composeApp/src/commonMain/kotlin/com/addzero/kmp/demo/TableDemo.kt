@@ -10,18 +10,18 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.addzero.kmp.generated.api.ApiProvider.fileApi
-import com.addzero.kmp.component.addzero_starter.addzero_table.AddGenericTable
-import com.addzero.kmp.component.addzero_starter.addzero_table.TableRowType
+import com.addzero.kmp.component.table.AddGenericTable
+import com.addzero.kmp.component.table.TableRowType
 import com.addzero.kmp.component.form.DynamicFormItem
-import com.addzero.kmp.component.table.AddColumn
-import com.addzero.kmp.component.table.SysColumnMetaConfig
+import com.addzero.kmp.component.table.model.AddColumn
+import com.addzero.kmp.component.table.model.SysColumnMetaConfig
 import com.addzero.kmp.entity.low_table.*
 import com.addzero.kmp.annotation.Route
-import com.addzero.kmp.viewmodel.table.TableApiConfig
-import com.addzero.kmp.viewmodel.table.TableConfig
-import com.addzero.kmp.viewmodel.table.TableDataConfig
-import com.addzero.kmp.viewmodel.table.TableImportConfig
-import com.addzero.kmp.viewmodel.table.TableUiConfig
+import com.addzero.kmp.component.table.viewmodel.TableApiConfig
+import com.addzero.kmp.component.table.viewmodel.TableConfig
+import com.addzero.kmp.component.table.viewmodel.TableDataConfig
+import com.addzero.kmp.component.table.viewmodel.TableImportConfig
+import com.addzero.kmp.component.table.viewmodel.TableUiConfig
 
 import kotlinx.coroutines.launch
 
@@ -101,13 +101,13 @@ fun AddGenericTableExample() {
             println("Export data with param: $param")
             true
         },
-        onUpload = { content ->
-            rememberCoroutineScope.launch {
-                val uywopload = fileApi.upload(content)
-                println(uywopload)
-            }
-            "success"
-        },
+//        onUpload = { content ->
+//            rememberCoroutineScope.launch {
+//                val uywopload = fileApi.upload(content)
+//                println(uywopload)
+//            }
+//            "success"
+//        },
 //            onCustomEvent = { event, data ->
 //                println("Custom event: $event, data: $data")
 //                true

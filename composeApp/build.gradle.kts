@@ -29,6 +29,7 @@ kotlin {
 
             // 组件库依赖
             implementation(projects.lib.addzeroComposeNativeComponent)
+            implementation(projects.lib.addzeroComposeModelComponent)
 //            implementation(projects.lib.addzeroComposeKlibsComponent)
 
             // 原来的 FileKit 依赖现在由 klibs-component 模块提供
@@ -107,6 +108,7 @@ tasks.withType<KotlinCompilationTask<*>>().configureEach {
         dependsOn(":backend:model:kspKotlin")
         dependsOn(":backend:server:kspKotlin")
         dependsOn(":shared:kspCommonMainKotlinMetadata")
+        dependsOn(":lib:addzero-compose-native-component:kspCommonMainKotlinMetadata")
         dependsOn(":composeApp:kspCommonMainKotlinMetadata")
     }
 }

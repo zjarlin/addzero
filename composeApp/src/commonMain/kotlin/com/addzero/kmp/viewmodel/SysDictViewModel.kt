@@ -1,6 +1,5 @@
 package com.addzero.kmp.viewmodel
 
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -8,7 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.addzero.kmp.generated.api.ApiProvider
-import com.addzero.kmp.ext.api
+import com.addzero.kmp.assist.api
 import com.addzero.kmp.generated.isomorphic.SysDictIso
 import com.addzero.kmp.generated.isomorphic.SysDictItemIso
 import kotlinx.coroutines.launch

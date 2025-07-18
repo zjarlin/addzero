@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.addzero.kmp.core.ext.now
-import com.addzero.kmp.ext.api
+import com.addzero.kmp.assist.api
 import kotlinx.coroutines.delay
 import kotlinx.datetime.LocalDateTime
 import org.koin.android.annotation.KoinViewModel

@@ -32,7 +32,7 @@ fun LoginComponent(logo: ImageVector = Icons.Default.Email, onWeChatLogin: () ->
             label = "用户名/邮箱/手机号",
             leadingIcon = Icons.Default.PeopleAlt,
             trailingIcon ={
-                AddIconButton("继续", Icons.AutoMirrored.Filled.Login, onClick = onLogin)
+                AddIconButton(text = "继续", imageVector = Icons.AutoMirrored.Filled .Login, onClick = onLogin)
             },
 //            errorMessages = errorMessages
         

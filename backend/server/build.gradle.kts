@@ -48,6 +48,7 @@ springBoot {
 
 dependencies {
     implementation(libs.kotlinx.datetime)
+    implementation(projects.lib.addzeroComposeModelComponent)
 
     //通用库
     implementation(projects.lib.addzeroTool)

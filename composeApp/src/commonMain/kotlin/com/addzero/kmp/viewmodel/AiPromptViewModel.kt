@@ -4,7 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.addzero.kmp.ext.api
+import com.addzero.kmp.assist.api
 import com.addzero.kmp.generated.api.ApiProvider.aiApi
 import com.addzero.kmp.generated.isomorphic.SysAiPromptIso
 import org.koin.android.annotation.KoinViewModel

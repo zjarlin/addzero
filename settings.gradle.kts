@@ -127,5 +127,5 @@ listOf("backend", "composeApp", "shared", "lib").forEach { module ->
     "addzero-tool-api-jvm",
     "addzero-tool-api"
 )).useFile()
-
-
+include("lib:addzero-compose-model-component")
+findProject(":lib:addzero-compose-model-component")?.name = "addzero-compose-model-component"

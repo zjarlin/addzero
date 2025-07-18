@@ -63,6 +63,7 @@ kotlin {
             implementation(libs.kotlinx.datetime)
 
             implementation(projects.lib.addzeroTool)
+            implementation(projects.lib.addzeroComposeModelComponent)
 
             implementation(projects.lib.addzeroNetworkStarter)
 

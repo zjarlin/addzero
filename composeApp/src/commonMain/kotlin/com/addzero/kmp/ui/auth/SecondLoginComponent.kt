@@ -72,7 +72,8 @@ fun SecondLoginComponent(
                     text = "登录", imageVector = Icons.AutoMirrored.Filled.Login, onClick = onSecondLogin
                 )
 
-                AddIconButton("切换账号", imageVector = Icons.Default.SwitchAccount) { viewModel.singinStatus = SignInStatus.None }
+                AddIconButton(text = "切换账号", imageVector = Icons.Default
+                    .SwitchAccount) { viewModel.singinStatus = SignInStatus.None }
 
             },
 //        , errorMessages = errorMessages

@@ -15,6 +15,7 @@ import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.Module
 import org.koin.core.context.startKoin
+import org.koin.ksp.generated.defaultModule
 import org.koin.ksp.generated.module
 
 @Module
@@ -59,7 +60,7 @@ private fun initKoin() {
     startKoin {
         printLogger()
         modules(
-            MyModule().module
+            MyModule().module,defaultModule
         )
     }
 }

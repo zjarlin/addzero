@@ -10,9 +10,8 @@ import com.addzero.kmp.entity.SecondLoginDTO
 import com.addzero.kmp.entity.SignInStatus
 import com.addzero.kmp.component.toast.ToastManager
 import com.addzero.kmp.core.network.AddHttpClient
-import com.addzero.kmp.ext.api
+import com.addzero.kmp.assist.api
 import com.addzero.kmp.generated.api.ApiProvider.sysUserCenterApi
-import com.addzero.kmp.generated.api.SysUserCenterApi
 import com.addzero.kmp.generated.isomorphic.SysUserIso
 import com.addzero.kmp.settings.SettingContext4Compose
 import org.koin.android.annotation.KoinViewModel

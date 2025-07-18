@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.addzero.kmp.generated.api.ApiProvider.sysDeptApi
-import com.addzero.kmp.ext.api
+import com.addzero.kmp.assist.api
 import com.addzero.kmp.generated.isomorphic.SysDeptIso
 import com.addzero.kmp.mock.sampleSysUserVos
 import org.koin.android.annotation.KoinViewModel
