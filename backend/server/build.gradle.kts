@@ -1,8 +1,3 @@
-import org.babyfish.jimmer.Vars.commonMainKspBuildMetaDataDir
-import org.babyfish.jimmer.Vars.commonMainSourceDir
-import org.babyfish.jimmer.Vars.jvmMainKspBuildMetaDataDir
-import org.babyfish.jimmer.Vars.jvmMainSourceDir
-import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 plugins {
@@ -60,7 +55,6 @@ dependencies {
     //内部使用:共享业务逻辑
     implementation(projects.shared)
     implementation(projects.backend.model)
-
 
 
     //jdbc元数据转controller
@@ -170,7 +164,7 @@ dependencies {
 }
 // 确保所有 Kotlin 编译任务都依赖于 shared 模块的 KSP 元数据生成
 tasks.withType<KotlinCompilationTask<*>>().configureEach {
-    if (name != "kspKotlin") {
+    if (name != "kspKotlin" || name != "kspCommonMainKotlinMetadata") {
         dependsOn(":backend:model:kspKotlin")
         dependsOn(":shared:kspCommonMainKotlinMetadata")
     }

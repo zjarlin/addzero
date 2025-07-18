@@ -8,8 +8,8 @@ import androidx.lifecycle.viewModelScope
 import com.addzero.kmp.entity.sys.menu.SysMenuVO
 import com.addzero.kmp.core.network.AddHttpClient
 import com.addzero.kmp.generated.RouteTable
-import com.addzero.kmp.generated.api.ApiProvider.favoriteTabsApi
-import com.addzero.kmp.generated.api.FavoriteTabsApi
+import com.addzero.kmp.generated.api.ApiProvider.sysFavoriteTabApi
+import com.addzero.kmp.generated.api.SysFavoriteTabApi
 import com.addzero.kmp.ui.infra.model.menu.MenuViewModel
 import io.ktor.client.call.*
 import io.ktor.client.request.*
@@ -53,7 +53,7 @@ class FavoriteTabsViewModel : ViewModel() {
                 errorMessage = null
                 
                 // 调用后台API获取常用路由键
-                var favoriteRouteKeys = favoriteTabsApi.getFavoriteRoutes()
+                var favoriteRouteKeys = sysFavoriteTabApi.topFavoriteRoutes(5)
 
                 var associateBy = RouteTable.allMeta.associateBy { it.routePath }
                 // 将路由键转换为标签页对象

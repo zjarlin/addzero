@@ -16,6 +16,7 @@ object MenuViewModel {
 
     fun updateRoute(string: String) {
         currentRoute = string
+
         NavgationService.navigate(currentRoute)
     }
 
