@@ -23,10 +23,14 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.addzero.kmp.component.button.AddIconButton
+import com.addzero.kmp.component.form.text.AddIconText
 import com.addzero.kmp.ui.infra.model.favorite.FavoriteTab
 import com.addzero.kmp.ui.infra.model.favorite.FavoriteTabsViewModel
 import com.addzero.kmp.ui.infra.model.menu.MenuViewModel
 import com.addzero.kmp.compose.icons.IconMap
+import com.addzero.kmp.generated.isomorphic.SysFavoriteTabIso
+import com.addzero.kmp.settings.SettingContext4Compose
+import com.addzero.kmp.ui.infra.theme.ThemeViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
 /**
@@ -41,13 +45,16 @@ fun FavoriteTabsBar(
     val favoriteViewModel = koinViewModel<FavoriteTabsViewModel>()
     val favoriteTabs = favoriteViewModel.favoriteTabs
     val currentRoute = MenuViewModel.currentRoute
-    
+//    ThemeViewModel
+
+    val themeViewModel = koinViewModel<ThemeViewModel>()
+    var currentTheme = themeViewModel.currentTheme
+
     if (favoriteTabs.isEmpty() && !favoriteViewModel.isLoading) {
         // 如果没有常用标签页，显示应用名称
-        Text(
-            text = "Addzero",
-            style = MaterialTheme.typography.titleLarge,
-            color = MaterialTheme.colorScheme.onPrimaryContainer
+        BeautifulTitle(
+            appName = SettingContext4Compose.APP_NAME,
+            currentTheme = currentTheme,
         )
         return
     }
@@ -128,17 +135,17 @@ fun FavoriteTabsBar(
         }
 
         // 添加当前页面到常用标签页按钮
-        if (!favoriteViewModel.isFavorite(currentRoute)) {
-            Spacer(modifier = Modifier.width(8.dp))
-            AddIconButton(
-                imageVector = Icons.Default.StarBorder,
-                text = "添加到常用",
-                onClick = {
-                    favoriteViewModel.addToFavorites(currentRoute)
-                },
-                modifier = Modifier.size(28.dp)
-            )
-        }
+//        if (!favoriteViewModel.isFavorite(currentRoute)) {
+//            Spacer(modifier = Modifier.width(8.dp))
+//            AddIconButton(
+//                imageVector = Icons.Default.StarBorder,
+//                text = "添加到常用",
+//                onClick = {
+//                    favoriteViewModel.addToFavorites(currentRoute)
+//                },
+//                modifier = Modifier.size(28.dp)
+//            )
+//        }
 
         Spacer(modifier = Modifier.width(8.dp))
 
@@ -154,13 +161,6 @@ fun FavoriteTabsBar(
         )
     }
     
-    // 显示错误信息
-    favoriteViewModel.errorMessage?.let { error ->
-        LaunchedEffect(error) {
-            // TODO: 显示错误提示
-            println("常用标签页错误: $error")
-        }
-    }
 }
 
 /**
@@ -168,7 +168,7 @@ fun FavoriteTabsBar(
  */
 @Composable
 private fun FavoriteTabItem(
-    tab: FavoriteTab,
+    tab: SysFavoriteTabIso,
     isActive: Boolean,
     onClick: () -> Unit,
     onRemove: () -> Unit,
@@ -204,27 +204,28 @@ private fun FavoriteTabItem(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
+//            AddIconText()
             // 图标
-            if (tab.icon.isNotBlank()) {
-                val iconData = IconMap[tab.icon]
-                Icon(
-                    imageVector = iconData.vector,
-                    contentDescription = null,
-                    tint = contentColor,
-                    modifier = Modifier.size(16.dp)
-                )
-            }
+//            if (tab.icon.isNotBlank()) {
+//                val iconData = IconMap[tab.icon]
+//                Icon(
+//                    imageVector = iconData.vector,
+//                    contentDescription = null,
+//                    tint = contentColor,
+//                    modifier = Modifier.size(16.dp)
+//                )
+//            }
             
             // 标题
-            Text(
-                text = tab.title,
-                color = contentColor,
-                style = MaterialTheme.typography.labelMedium.copy(
-                    fontWeight = if (isActive) FontWeight.Medium else FontWeight.Normal
-                ),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
+//            Text(
+//                text = tab.title,
+//                color = contentColor,
+//                style = MaterialTheme.typography.labelMedium.copy(
+//                    fontWeight = if (isActive) FontWeight.Medium else FontWeight.Normal
+//                ),
+//                maxLines = 1,
+//                overflow = TextOverflow.Ellipsis
+//            )
             
             // 移除按钮（仅在激活状态或鼠标悬停时显示）
             if (isActive) {

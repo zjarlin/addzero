@@ -5,13 +5,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.addzero.kmp.entity.sys.menu.SysMenuVO
 import com.addzero.kmp.core.network.AddHttpClient
+import com.addzero.kmp.generated.RouteKeys
 import com.addzero.kmp.generated.RouteTable
 import com.addzero.kmp.generated.api.ApiProvider.sysFavoriteTabApi
-import com.addzero.kmp.generated.api.SysFavoriteTabApi
+import com.addzero.kmp.generated.isomorphic.SysFavoriteTabIso
 import com.addzero.kmp.ui.infra.model.menu.MenuViewModel
-import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import kotlinx.coroutines.launch
@@ -28,7 +27,7 @@ class FavoriteTabsViewModel : ViewModel() {
     private val httpClient = AddHttpClient.httpclient
 
     // 常用标签页列表
-    var favoriteTabs by mutableStateOf<List<FavoriteTab>>(emptyList())
+    var favoriteTabs by mutableStateOf<List<SysFavoriteTabIso>>(emptyList())
         private set
 
     // 加载状态
@@ -60,15 +59,12 @@ class FavoriteTabsViewModel : ViewModel() {
                 val tabs = favoriteRouteKeys.mapNotNull { routeKey ->
                     var route = associateBy[routeKey]
                     val menu = MenuViewModel.getRouteByKey(routeKey)
-                    menu?.let { 
-                        FavoriteTab(
+                    menu?.let {
+                        SysFavoriteTabIso(
                             routeKey = routeKey,
-                            title = it.title,
-                            icon = it.icon,
-                            order = it.sort.toInt()
                         )
                     }
-                }.sortedBy { it.order }
+                }
                 
                 favoriteTabs = tabs
                 
@@ -90,15 +86,10 @@ class FavoriteTabsViewModel : ViewModel() {
             try {
                 val menu = MenuViewModel.getRouteByKey(routeKey)
                 if (menu != null && !favoriteTabs.any { it.routeKey == routeKey }) {
-                    val newTab = FavoriteTab(
+                    val newTab = SysFavoriteTabIso(
                         routeKey = routeKey,
-                        title = menu.title,
-                        icon = menu.icon,
-                        order = favoriteTabs.size
                     )
-                    
                     favoriteTabs = favoriteTabs + newTab
-                    
                     // 同步到后台
                     httpClient.post("/sysMenu/addFavoriteRoute") {
                         contentType(ContentType.Application.Json)
@@ -130,31 +121,7 @@ class FavoriteTabsViewModel : ViewModel() {
             }
         }
     }
-    
-    /**
-     * 重新排序常用标签页
-     */
-    fun reorderFavoriteTabs(newOrder: List<FavoriteTab>) {
-        viewModelScope.launch {
-            try {
-                val reorderedTabs = newOrder.mapIndexed { index, tab ->
-                    tab.copy(order = index)
-                }
-                favoriteTabs = reorderedTabs
-                
-                // 同步到后台
-                val routeKeys = reorderedTabs.map { it.routeKey }
-                httpClient.post("/sysMenu/updateFavoriteRoutesOrder") {
-                    contentType(ContentType.Application.Json)
-                    setBody(mapOf("routeKeys" to routeKeys))
-                }
-                
-            } catch (e: Exception) {
-                errorMessage = "重新排序失败: ${e.message}"
-            }
-        }
-    }
-    
+
     /**
      * 检查路由是否在常用标签页中
      */
@@ -167,20 +134,15 @@ class FavoriteTabsViewModel : ViewModel() {
      */
     private fun loadDefaultFavoriteTabs() {
         val defaultRouteKeys = listOf(
-            "/home",
-            "/system/role", 
-            "/system/user",
-            "/system/dict"
+            RouteKeys.DICT_MANAGER_SCREEN,
+            RouteKeys.SYS_DEPT_SCREEN,
         )
         
         val tabs = defaultRouteKeys.mapIndexedNotNull { index, routeKey ->
             val menu = MenuViewModel.getRouteByKey(routeKey)
             menu?.let {
-                FavoriteTab(
+                SysFavoriteTabIso(
                     routeKey = routeKey,
-                    title = it.title,
-                    icon = it.icon,
-                    order = index
                 )
             }
         }
@@ -199,6 +161,7 @@ class FavoriteTabsViewModel : ViewModel() {
 /**
  * 常用标签页数据类
  */
+@Deprecated("daosidj")
 data class FavoriteTab(
     val routeKey: String,
     val title: String,
