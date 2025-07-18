@@ -8,6 +8,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer
 import com.fasterxml.jackson.module.kotlin.KotlinModule
+import com.fasterxml.jackson.module.kotlin.KotlinFeature
 import org.babyfish.jimmer.jackson.ImmutableModule
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer
@@ -75,6 +76,12 @@ class JacksonConfig {
                 }
             }
         }
+        
+        @OptIn(ExperimentalTime::class)
+        override fun getNullValue(ctxt: DeserializationContext?): KotlinxLocalDateTime {
+            // 当遇到 null 值时返回当前时间作为默认值
+            return kotlin.time.Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+        }
     }
 
     @Bean
@@ -83,7 +90,12 @@ class JacksonConfig {
             builder
                 // 注册模块
                 .modules(
-                    KotlinModule.Builder().build(),
+                    KotlinModule.Builder()
+                        .configure(KotlinFeature.NullToEmptyCollection, false)
+                        .configure(KotlinFeature.NullToEmptyMap, false)
+                        .configure(KotlinFeature.NullIsSameAsDefault, true) // 关键配置：null 值使用默认值
+                        .configure(KotlinFeature.StrictNullChecks, false) // 关键配置：不严格检查 null
+                        .build(),
                     JavaTimeModule().apply {
                         addSerializer(LocalDateTime::class.java, LocalDateTimeSerializer(dateTimeFormatter))
                         addDeserializer(LocalDateTime::class.java, LocalDateTimeDeserializer(dateTimeFormatter))
@@ -106,4 +118,49 @@ class JacksonConfig {
                 )
         }
     }
+
+    /**
+     * 创建主要的 ObjectMapper Bean，确保 Spring AI 也使用这个配置
+     */
+//    @Bean
+//    @Primary
+//    fun objectMapper(): ObjectMapper {
+//        return ObjectMapper().apply {
+//            // 注册 Kotlin 模块
+//            registerModule(
+//                KotlinModule.Builder()
+//                    .configure(KotlinFeature.NullToEmptyCollection, false)
+//                    .configure(KotlinFeature.NullToEmptyMap, false)
+//                    .configure(KotlinFeature.NullIsSameAsDefault, true) // 关键配置：null 值使用默认值
+//                    .configure(KotlinFeature.StrictNullChecks, false) // 关键配置：不严格检查 null
+//                    .build()
+//            )
+//
+//            // 注册 Java Time 模块
+//            registerModule(JavaTimeModule().apply {
+//                addSerializer(LocalDateTime::class.java, LocalDateTimeSerializer(dateTimeFormatter))
+//                addDeserializer(LocalDateTime::class.java, LocalDateTimeDeserializer(dateTimeFormatter))
+//            })
+//
+//            // 注册 kotlinx.datetime 模块
+//            registerModule(SimpleModule().apply {
+//                addSerializer(KotlinxLocalDateTime::class.java, KotlinxLocalDateTimeSerializer())
+//                addDeserializer(KotlinxLocalDateTime::class.java, KotlinxLocalDateTimeDeserializer())
+//            })
+//
+//            // 注册 Jimmer 模块
+//            registerModule(ImmutableModule())
+//
+//            // 配置序列化特性
+//            setSerializationInclusion(JsonInclude.Include.NON_NULL)
+//            enable(SerializationFeature.INDENT_OUTPUT)
+//            disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+//
+//            // 配置反序列化特性
+//            disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+//            disable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES)
+//            disable(DeserializationFeature.FAIL_ON_MISSING_CREATOR_PROPERTIES)
+//            disable(DeserializationFeature.FAIL_ON_NULL_CREATOR_PROPERTIES) // 额外添加这个
+//        }
+//    }
 }
