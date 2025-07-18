@@ -1,6 +1,7 @@
 package com.addzero.web.modules.service
 
 import cn.dev33.satoken.stp.StpUtil
+import cn.hutool.http.HttpUtil
 import com.addzero.common.consts.sql
 import com.addzero.kmp.entity.CheckSignInput
 import com.addzero.kmp.entity.SecondLoginDTO
@@ -9,17 +10,27 @@ import com.addzero.model.entity.SysUser
 import com.addzero.model.entity.email
 import com.addzero.model.entity.phone
 import com.addzero.model.entity.username
+import cn.dev33.satoken.config.SaTokenConfig
+import jakarta.servlet.http.HttpServletRequest
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.springframework.stereotype.Service
-
 @Service
-class SysUserService {
+class SysUserService(
+    private val request: HttpServletRequest,
+    private val saTokenConfig: cn.dev33.satoken.config.SaTokenConfig
+) {
     fun getCurrentUser(): SysUser {
+        // 获取请求头中的token
+        val tokenFromHeader = request.getHeader(saTokenConfig.tokenName)
+        println("请求头中的token: $tokenFromHeader")
+
         // 获取当前登录用户ID
+        var tokenInfo = StpUtil.getTokenInfo()
+        println("SaToken信息: $tokenInfo")
+
         val userId = StpUtil.getLoginIdAsLong()
         val findById = sql.findById(SysUser::class, userId) ?: throw BizException("用户未找到")
         return findById
-
     }
 
     fun findByUserRegFormState(secondLoginDTO: SecondLoginDTO): SysUser? {

@@ -21,15 +21,15 @@ import org.babyfish.jimmer.sql.*
 interface SysUser : BaseDateTime {
 
 
-    /**
-     *价格
-     */
-    val price: String
-
-    /**
-     *整数
-     */
-    val testInt: Int
+//    /**
+//     *价格
+//     */
+//    val price: String
+//
+//    /**
+//     *整数
+//     */
+//    val testInt: Int
 
     /**
      * 主键
