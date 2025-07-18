@@ -38,7 +38,6 @@ interface SysDict : BaseEntity, BaseDeletedEntity {
 
 
     @OneToMany(mappedBy = "sysDict")
-    @OnDissociate(DissociateAction.DELETE)
     val sysDictItems: List<SysDictItem>
 
 
