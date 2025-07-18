@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.addzero.kmp.entity.sys.menu.SysMenuVO
 import com.addzero.kmp.core.network.AddHttpClient
+import com.addzero.kmp.generated.RouteTable
 import com.addzero.kmp.generated.api.ApiProvider.favoriteTabsApi
 import com.addzero.kmp.generated.api.FavoriteTabsApi
 import com.addzero.kmp.ui.infra.model.menu.MenuViewModel
@@ -54,8 +55,10 @@ class FavoriteTabsViewModel : ViewModel() {
                 // 调用后台API获取常用路由键
                 var favoriteRouteKeys = favoriteTabsApi.getFavoriteRoutes()
 
+                var associateBy = RouteTable.allMeta.associateBy { it.routePath }
                 // 将路由键转换为标签页对象
                 val tabs = favoriteRouteKeys.mapNotNull { routeKey ->
+                    var route = associateBy[routeKey]
                     val menu = MenuViewModel.getRouteByKey(routeKey)
                     menu?.let { 
                         FavoriteTab(
@@ -172,7 +175,7 @@ class FavoriteTabsViewModel : ViewModel() {
         
         val tabs = defaultRouteKeys.mapIndexedNotNull { index, routeKey ->
             val menu = MenuViewModel.getRouteByKey(routeKey)
-            menu?.let { 
+            menu?.let {
                 FavoriteTab(
                     routeKey = routeKey,
                     title = it.title,

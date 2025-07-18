@@ -1,5 +1,6 @@
 package com.addzero.kmp.ui.infra
 
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
@@ -15,6 +16,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -49,12 +52,61 @@ fun FavoriteTabsBar(
         return
     }
 
+    // 星星动画效果
+    val infiniteTransition = rememberInfiniteTransition(label = "star_animation")
+
+    // 左侧星星的旋转动画
+    val leftStarRotation by infiniteTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = 360f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(8000, easing = LinearEasing),
+            repeatMode = RepeatMode.Restart
+        ),
+        label = "left_star_rotation"
+    )
+
+    // 右侧星星的旋转动画（反向）
+    val rightStarRotation by infiniteTransition.animateFloat(
+        initialValue = 360f,
+        targetValue = 0f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(6000, easing = LinearEasing),
+            repeatMode = RepeatMode.Restart
+        ),
+        label = "right_star_rotation"
+    )
+
+    // 星星的缩放动画
+    val starScale by infiniteTransition.animateFloat(
+        initialValue = 0.8f,
+        targetValue = 1.2f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(2000, easing = EaseInOutSine),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "star_scale"
+    )
+
     // 直接显示内容，不使用Surface包装（因为已经在TopAppBar中）
     Row(
         modifier = modifier.padding(horizontal = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
+        // 左侧装饰星星
+        Icon(
+            imageVector = Icons.Default.Star,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f),
+            modifier = Modifier
+                .size(18.dp)
+                .rotate(leftStarRotation)
+                .scale(starScale)
+        )
+
+        Spacer(modifier = Modifier.width(8.dp))
+
         // 标签页列表（可水平滚动）
         Row(
             modifier = Modifier
@@ -87,6 +139,19 @@ fun FavoriteTabsBar(
                 modifier = Modifier.size(28.dp)
             )
         }
+
+        Spacer(modifier = Modifier.width(8.dp))
+
+        // 右侧装饰星星
+        Icon(
+            imageVector = Icons.Default.Star,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f),
+            modifier = Modifier
+                .size(18.dp)
+                .rotate(rightStarRotation)
+                .scale(starScale)
+        )
     }
     
     // 显示错误信息
@@ -110,13 +175,13 @@ private fun FavoriteTabItem(
     modifier: Modifier = Modifier
 ) {
     val backgroundColor = if (isActive) {
-        MaterialTheme.colorScheme.primaryContainer
+        MaterialTheme.colorScheme.primary
     } else {
         MaterialTheme.colorScheme.surface
     }
-    
+
     val contentColor = if (isActive) {
-        MaterialTheme.colorScheme.onPrimaryContainer
+        MaterialTheme.colorScheme.onPrimary
     } else {
         MaterialTheme.colorScheme.onSurface
     }
@@ -129,8 +194,9 @@ private fun FavoriteTabItem(
             .height(36.dp)
             .clip(RoundedCornerShape(18.dp)),
         color = backgroundColor,
-        tonalElevation = if (isActive) 2.dp else 0.dp,
-        shape = RoundedCornerShape(18.dp)
+        tonalElevation = if (isActive) 4.dp else 0.dp,
+        shape = RoundedCornerShape(18.dp),
+        shadowElevation = if (isActive) 2.dp else 0.dp
     ) {
         Row(
             modifier = Modifier
