@@ -14,7 +14,10 @@ import com.addzero.kmp.assist.api
 import com.addzero.kmp.generated.api.ApiProvider.sysUserCenterApi
 import com.addzero.kmp.generated.isomorphic.SysUserIso
 import com.addzero.kmp.settings.SettingContext4Compose
+import com.addzero.kmp.ui.infra.model.navigation.RecentTabsManager
 import org.koin.android.annotation.KoinViewModel
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 private const val defaultUsername = "admin"
 
@@ -23,7 +26,10 @@ private const val defaultUsername = "admin"
  * 登录状态管理
  */
 @KoinViewModel
-class LoginViewModel : ViewModel() {
+class LoginViewModel : ViewModel(), KoinComponent {
+
+    // 注入最近标签页管理器
+    private val recentTabsManager: RecentTabsManager by inject()
 
     var singinStatus: SignInStatus by mutableStateOf(
         SignInStatus.None
@@ -104,6 +110,9 @@ class LoginViewModel : ViewModel() {
             sysUserCenterApi.logout()
             currentToken = null
             AddHttpClient.setToken(null)
+
+            // 清空最近的标签页
+            recentTabsManager.clear()
         }
     }
 

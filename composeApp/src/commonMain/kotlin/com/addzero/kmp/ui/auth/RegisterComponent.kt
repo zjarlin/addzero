@@ -52,8 +52,6 @@ fun RegisterComponent(logo: ImageVector = Icons.Default.EmojiPeople, onReg: () -
             leadingIcon = Icons.Default.PeopleAlt,
             disable = checkSignInput == USERNAME,
             onErrMsgChange = { input, msg -> errorMsgs.add(msg) },
-
-
             remoteValidationConfig = RemoteValidationConfig(
                 tableName = "sys_user",
                 column = "username",
