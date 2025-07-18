@@ -1,5 +1,6 @@
 package com.addzero.web.modules.controller
 
+import com.addzero.kmp.generated.RouteKeys
 import org.springframework.web.bind.annotation.*
 
 /**
@@ -16,11 +17,8 @@ class FavoriteTabsController {
     @GetMapping("/getFavoriteRoutes")
     fun getFavoriteRoutes(): List<String> {
         return listOf(
-            "/home",
-            "/system/role", 
-            "/system/user",
-            "/system/dict",
-            "/demo/table-example"
+            RouteKeys.DICT_MANAGER_SCREEN,
+            RouteKeys.DEPT_SELECTOR_EXAMPLE,
         )
     }
     
