@@ -29,8 +29,6 @@ data class SampleData(
 @Composable
 @Route("组件示例", "测试表格")
 fun AddGenericTableExample() {
-
-
     // 示例数据
     val data: List<TableRowType> = listOf(
         mutableMapOf("id" to 1, "name" to "Alice", "age" to 25),
