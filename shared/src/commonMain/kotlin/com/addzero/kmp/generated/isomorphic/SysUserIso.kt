@@ -11,8 +11,6 @@ import kotlinx.serialization.Contextual
 
 @Serializable
 data class SysUserIso(
-    val price: String = "",
-    val testInt: Int = 0,
     val id: Long? = null,
     val phone: String? = null,
     val email: String = "",

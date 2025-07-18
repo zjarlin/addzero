@@ -12,8 +12,14 @@ object AddHttpClient {
         this.mytoken = token
     }
 
+
+    fun getToken(): String? {
+        return mytoken
+    }
+
+
     val httpclient = apiClient.config {
-        configToken(mytoken)
+        configToken(getToken())
         configBaseUrl(SettingContext4Compose.BASE_URL)
     }
     val ktorfit = Ktorfit.Builder().httpClient(httpclient).build()

@@ -37,8 +37,6 @@ import com.addzero.kmp.generated.forms.dataprovider.Iso2DataProvider
  * SysUser 表单属性常量
  */
 object SysUserFormProps {
-    const val price = "price"
-    const val testInt = "testInt"
     const val phone = "phone"
     const val email = "email"
     const val username = "username"
@@ -53,7 +51,7 @@ object SysUserFormProps {
      * 获取所有字段名列表（按默认顺序）
      */
     fun getAllFields(): List<String> {
-        return listOf(price, testInt, phone, email, username, password, avatar, nickname, gender, depts, roles)
+        return listOf(phone, email, username, password, avatar, nickname, gender, depts, roles)
     }
 }
 
@@ -88,27 +86,6 @@ fun SysUserFormOriginal(
 
     // 默认字段渲染映射（保持原有顺序）
     val defaultRenderMap = linkedMapOf<String, @Composable () -> Unit>(
-        SysUserFormProps.price to {
-            AddMoneyField(
-                value = state.value.price?.toString() ?: "",
-                onValueChange = {
-                    state.value = state.value.copy(price = if (it.isBlank()) "" else it.parseObjectByKtx())
-                },
-                label = "价格",
-                isRequired = true,
-                currency = "CNY"
-            )
-        },
-        SysUserFormProps.testInt to {
-            AddIntegerField(
-                value = state.value.testInt?.toString() ?: "",
-                onValueChange = {
-                    state.value = state.value.copy(testInt = if (it.isBlank()) 0 else it.parseObjectByKtx())
-                },
-                label = "整数",
-                isRequired = true
-            )
-        },
         SysUserFormProps.phone to {
             AddPhoneField(
                 value = state.value.phone?.toString() ?: "",
@@ -270,70 +247,6 @@ class SysUserFormDsl(
 
     // 字段排序映射：字段名 -> 排序值
     private val fieldOrderMap = mutableMapOf<String, Int>()
-
-    /**
-     * 配置 price 字段
-     * @param hidden 是否隐藏该字段
-     * @param order 字段显示顺序（数值越小越靠前）
-     * @param render 自定义渲染函数
-     */
-    fun price(
-        hidden: Boolean = false,
-        order: Int? = null,
-        render: (@Composable (MutableState<SysUserIso>) -> Unit)? = null
-    ) {
-        when {
-            hidden -> {
-                hiddenFields.add("price")
-                renderMap.remove("price")
-            }
-            render != null -> {
-                hiddenFields.remove("price")
-                renderMap["price"] = { render(state) }
-            }
-            else -> {
-                hiddenFields.remove("price")
-                renderMap.remove("price")
-            }
-        }
-
-        // 处理排序
-        order?.let { orderValue ->
-            updateFieldOrder("price", orderValue)
-        }
-    }
-
-    /**
-     * 配置 testInt 字段
-     * @param hidden 是否隐藏该字段
-     * @param order 字段显示顺序（数值越小越靠前）
-     * @param render 自定义渲染函数
-     */
-    fun testInt(
-        hidden: Boolean = false,
-        order: Int? = null,
-        render: (@Composable (MutableState<SysUserIso>) -> Unit)? = null
-    ) {
-        when {
-            hidden -> {
-                hiddenFields.add("testInt")
-                renderMap.remove("testInt")
-            }
-            render != null -> {
-                hiddenFields.remove("testInt")
-                renderMap["testInt"] = { render(state) }
-            }
-            else -> {
-                hiddenFields.remove("testInt")
-                renderMap.remove("testInt")
-            }
-        }
-
-        // 处理排序
-        order?.let { orderValue ->
-            updateFieldOrder("testInt", orderValue)
-        }
-    }
 
     /**
      * 配置 phone 字段
