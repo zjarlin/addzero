@@ -3,6 +3,8 @@ package com.addzero.kmp.processor
 import com.addzero.kmp.consts.GEN_PKG
 import com.addzero.kmp.annotation.Route
 import com.addzero.kmp.context.SettingContext
+import com.addzero.kmp.context.toSharedSourceDir
+import com.addzero.kmp.util.genCode
 import com.addzero.kmp.util.toUnderLineCase
 import com.google.devtools.ksp.processing.*
 import com.google.devtools.ksp.symbol.*
@@ -195,14 +197,15 @@ class RouteMetadataProcessor(
             logger.warn("开始生成路由键")
 
 
+            genCode("${GEN_PKG.toSharedSourceDir()}/${ROUTE_KEYS_NAME}.kt", routeKeysTemplate)
 
-            codeGenerator.createNewFile(
-                dependencies = Dependencies(true),
-                packageName = GEN_PKG,
-                fileName = ROUTE_KEYS_NAME
-            ).use { stream ->
-                stream.write(routeKeysTemplate.toByteArray())
-            }
+//            codeGenerator.createNewFile(
+//                dependencies = Dependencies(true),
+//                packageName = GEN_PKG,
+//                fileName = ROUTE_KEYS_NAME
+//            ).use { stream ->
+//                stream.write(routeKeysTemplate.toByteArray())
+//            }
 
 
 

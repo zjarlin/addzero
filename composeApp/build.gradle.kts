@@ -4,6 +4,7 @@ plugins {
     id("kmp")
     id("kmp-android-application")
     id("com.google.devtools.ksp")
+    id("ksp4projectdir")
 //    id("com.android.application")
 //    alias(libs.plugins.compose.hot.reload)
 }
