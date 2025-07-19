@@ -237,7 +237,6 @@ private fun DefaultTableButtonsWithCards(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         buttonSlot?.invoke()
-
         // 多选模式按钮
         AddIconButton(
             text = if (tableViewModel.selectionViewModel.enableEditMode) "退出多选" else "多选",

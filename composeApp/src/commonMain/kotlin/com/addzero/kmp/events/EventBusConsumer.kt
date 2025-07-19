@@ -18,9 +18,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun EventBusConsumer() {
-    val koinViewModel = koinViewModel<LoginViewModel>()
-
-    val themeViewModel = koinViewModel<ThemeViewModel>()
+    val loginViewModel = koinViewModel<LoginViewModel>()
 
     LaunchedEffect(Unit) {
         EventBus.consumer<HttpResponse> {
@@ -41,7 +39,7 @@ fun EventBusConsumer() {
                 Unauthorized -> {
 //                    LoginScreen()
 //                    LoginUtil.viewModel= LoginViewModel()
-                    koinViewModel.currentToken = null
+                    loginViewModel.currentToken = null
                     AddHttpClient.setToken(null)
 
                     show(message)

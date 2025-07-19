@@ -8,7 +8,7 @@ import org.koin.android.annotation.KoinViewModel
 import org.koin.core.annotation.Single
 
 /**
- * 主题视图模型，使用 Koin 进行依赖注入
+ * 主题视图模型
  * @author zjarlin
  * @date 2025/04/11
  */
