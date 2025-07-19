@@ -16,6 +16,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose")
     kotlin("plugin.serialization")
 }
+
 kotlin {
     val defIos = defIos()
 
@@ -41,6 +42,7 @@ kotlin {
             }
         }
         binaries.executable()
+
     }
 
     sourceSets {

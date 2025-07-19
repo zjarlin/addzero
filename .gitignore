@@ -1,5 +1,6 @@
 *.iml
 .autoddl
+data
 .kotlin
 .gradle
 **/build/
