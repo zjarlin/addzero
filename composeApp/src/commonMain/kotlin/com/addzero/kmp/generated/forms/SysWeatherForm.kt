@@ -100,7 +100,6 @@ fun SysWeatherFormOriginal(
                 },
                 label = "日期",
                 isRequired = true,
-                dateType = DateType.DATE
             )
         },
         SysWeatherFormProps.highTemp to {

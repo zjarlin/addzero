@@ -141,10 +141,25 @@ fun AddTextField(
                 } else newValue
 
                 onValueChange(finalValue)
-                // 仅在有错误时，输入过程中消除错误提示
-                if (isError) validate(finalValue)
-                // 每次值改变都触发校验，包括远程校验
-                validate(finalValue)
+
+                // 仅在有错误时，输入过程中消除错误提示（实时清除错误）
+                if (isError) {
+                    val errors = mutableListOf<String>()
+
+                    // 只检查必填和长度，不做复杂校验
+                    if (isRequired && finalValue.isBlank()) {
+                        errors.add("${label}为必填项")
+                    }
+                    if (maxLength != null && finalValue.length > maxLength) {
+                        errors.add("输入内容不能超过${maxLength}个字符")
+                    }
+
+                    // 如果基础错误消除了，清除错误状态
+                    if (errors.isEmpty()) {
+                        isError = false
+                        errorMessages = emptyList()
+                    }
+                }
             },
             leadingIcon = {
                 if (leadingIcon != null) {
@@ -163,8 +178,10 @@ fun AddTextField(
             maxLines = maxLines,
             shape = textFieldShape,
             modifier = textFieldModifier.onFocusChanged { focusState: FocusState ->
-                // 失去焦点时进行校验
+                hasFocus = focusState.isFocused
+
                 if (!focusState.isFocused) {
+                    // 失去焦点时进行完整校验
                     validate(value)
                 } else {
                     // 获得焦点时，清除远程校验的错误信息，以便重新输入

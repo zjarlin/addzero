@@ -1,4 +1,4 @@
-package com.addzero.kmp.component.card
+package com.addzero.kmp.demo
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,6 +16,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.addzero.kmp.annotation.Route
+import com.addzero.kmp.component.card.AddJetBrainsMellumCard
+import com.addzero.kmp.component.card.JetBrainsMellumCards
+import com.addzero.kmp.component.card.MellumCardType
 
 /**
  * 🎨 JetBrains Mellum卡片使用示例
@@ -109,7 +112,7 @@ fun JetBrainsMellumCardExample() {
             )
         }
         
-        items(MellumCardType.entries.toTypedArray()) { cardType ->
+        items(MellumCardType.allTypes) { cardType ->
             AddJetBrainsMellumCard(
                 onClick = { println("${cardType.name}卡片被点击") },
                 modifier = Modifier.fillMaxWidth(),

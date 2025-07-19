@@ -58,7 +58,6 @@ object DateStrategy : FormStrategy {
             |                },
             |                label = $label,
             |                isRequired = $isRequired,
-            |                dateType = $dateType
             |            )
             |        }
         """.trimMargin()

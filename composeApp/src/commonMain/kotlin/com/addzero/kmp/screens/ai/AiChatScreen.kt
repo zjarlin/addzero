@@ -31,7 +31,7 @@ import coil3.compose.AsyncImage
 import com.addzero.kmp.component.button.AddIconButton
 import com.addzero.kmp.component.card.AddJetBrainsMellumCard
 import com.addzero.kmp.component.card.MellumCardType
-import com.addzero.kmp.component.card.ProductCardContent
+import com.addzero.kmp.demo.ProductCardContent
 import com.addzero.kmp.component.high_level.AddMultiColumnContainer
 import com.addzero.kmp.generated.isomorphic.SysAiPromptIso
 import com.addzero.kmp.settings.SettingContext4Compose

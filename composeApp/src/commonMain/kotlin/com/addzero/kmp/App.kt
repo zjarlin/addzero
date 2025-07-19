@@ -27,7 +27,6 @@ fun App() {
     initKoin()
     emitEventBus()
     EventBusConsumer()
-    val loginViewModel = koinViewModel<LoginViewModel>()
     val themeViewModel = koinViewModel<ThemeViewModel>()
     // 已登录时渲染主界面
     val currentTheme = themeViewModel.currentTheme
@@ -35,15 +34,16 @@ fun App() {
 
     FollowSystemTheme(colorScheme = colorScheme) {
         GradientThemeWrapper(themeType = currentTheme) {
-            AppContent(loginViewModel)
-//            MainLayout()
+//            MainLayoutWithLogin()
+            MainLayout()
             ToastListener()
         }
     }
 }
 
 @Composable
-private fun AppContent(loginViewModel: LoginViewModel) {
+private fun MainLayoutWithLogin() {
+    var loginViewModel = koinViewModel<LoginViewModel>()
     if (loginViewModel.currentToken == null
 //        && AddHttpClient .getCurrentToken()==null
     ) {
@@ -60,7 +60,7 @@ private fun initKoin() {
     startKoin {
         printLogger()
         modules(
-            MyModule().module,defaultModule
+            MyModule().module, defaultModule
         )
     }
 }

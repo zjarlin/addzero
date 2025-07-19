@@ -1,16 +1,20 @@
 package com.addzero.kmp.demo
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.addzero.kmp.generated.api.ApiProvider.fileApi
 import com.addzero.kmp.component.table.AddGenericTable
+import com.addzero.kmp.component.table.AddGenericTableWithCards
+import com.addzero.kmp.component.table.TableCardStyles
+import com.addzero.kmp.component.card.MellumCardType
+import com.addzero.kmp.component.button.AddIconButton
 import com.addzero.kmp.component.table.TableRowType
 import com.addzero.kmp.component.form.DynamicFormItem
 import com.addzero.kmp.component.table.model.AddColumn
@@ -140,36 +144,135 @@ fun AddGenericTableExample() {
         )
     )
 
-    // 表格组件
-    AddGenericTable(
-        modifier = Modifier,
-        config = tableConfig,
-        buttonSlot = {
-            // 这里可以添加自定义按钮
-        },
-        actionSlot = {
-            // 定义自定义操作按钮列表
-            val customActions = listOf("查看详情", "导出数据", "更多信息")
+    // 表格组件选择器
+    var useCardStyle by remember { mutableStateOf(false) }
+    var selectedTheme by remember { mutableStateOf("Light") }
 
-            // 只有当有自定义操作时才渲染菜单
-            if (customActions.isNotEmpty()) {
-                var showMenu by remember { mutableStateOf(false) }
+    Column(
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        // 样式选择器
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
+            )
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                Text(
+                    text = "🎨 表格样式选择",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
 
-                Box {
-                    // 三点菜单按钮
-                    IconButton(
-                        onClick = { showMenu = true },
-                        modifier = Modifier.size(36.dp)
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        Icon(
-                            imageVector = Icons.Default.MoreVert,
-                            contentDescription = "更多操作",
-                            modifier = Modifier.size(28.dp)
+                        Checkbox(
+                            checked = useCardStyle,
+                            onCheckedChange = { useCardStyle = it }
                         )
+                        Text("使用卡片风格", style = MaterialTheme.typography.bodyMedium)
+                    }
+
+                    if (useCardStyle) {
+                        Text("主题:", style = MaterialTheme.typography.bodyMedium)
+                        val themes = listOf("Light", "Dark")
+                        themes.forEach { theme ->
+                            FilterChip(
+                                onClick = { selectedTheme = theme },
+                                label = { Text(theme, style = MaterialTheme.typography.bodySmall) },
+                                selected = selectedTheme == theme
+                            )
+                        }
                     }
                 }
             }
         }
-    )
+
+        // 表格组件
+        if (useCardStyle) {
+            // 使用卡片风格的表格
+            when (selectedTheme) {
+                "Light" -> {
+                    TableCardStyles.LightTheme(
+                        modifier = Modifier.fillMaxWidth(),
+                        config = tableConfig,
+                        buttonSlot = { SampleCustomButtons() }
+                    )
+                }
+                "Dark" -> {
+                    TableCardStyles.DarkTheme(
+                        modifier = Modifier.fillMaxWidth(),
+                        config = tableConfig,
+                        buttonSlot = { SampleCustomButtons() }
+                    )
+                }
+
+            }
+        } else {
+            // 使用原始表格
+            AddGenericTable(
+                modifier = Modifier,
+                config = tableConfig,
+                buttonSlot = {
+                    // 这里可以添加自定义按钮
+                },
+                actionSlot = {
+                    // 定义自定义操作按钮列表
+                    val customActions = listOf("查看详情", "导出数据", "更多信息")
+
+                    // 只有当有自定义操作时才渲染菜单
+                    if (customActions.isNotEmpty()) {
+                        var showMenu by remember { mutableStateOf(false) }
+
+                        Box {
+                            // 三点菜单按钮
+                            IconButton(
+                                onClick = { showMenu = true },
+                                modifier = Modifier.size(36.dp)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.MoreVert,
+                                    contentDescription = "更多操作",
+                                    modifier = Modifier.size(28.dp)
+                                )
+                            }
+                        }
+                    }
+                }
+            )
+        }
+    }
+}
+
+/**
+ * 示例自定义按钮
+ */
+@Composable
+private fun SampleCustomButtons() {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        AddIconButton(
+            text = "刷新",
+            imageVector = Icons.Default.Refresh,
+            onClick = { println("刷新数据") }
+        )
+
+        AddIconButton(
+            text = "设置",
+            imageVector = Icons.Default.Settings,
+            onClick = { println("打开设置") }
+        )
+    }
 }
 

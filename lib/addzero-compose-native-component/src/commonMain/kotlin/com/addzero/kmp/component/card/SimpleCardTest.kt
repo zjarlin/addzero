@@ -31,7 +31,7 @@ fun SimpleCardTest() {
         )
         
         // 测试不同类型的卡片
-        MellumCardType.values().forEach { cardType ->
+        MellumCardType.allTypes.forEach { cardType ->
             TestCard(
                 title = "${cardType.name} 卡片",
                 description = "这是${cardType.name}类型的测试卡片，用于验证文字显示效果。",
@@ -61,13 +61,14 @@ private fun TestCard(
         ) {
             Icon(
                 imageVector = when (cardType) {
-                    Purple -> Icons.Default.Psychology
-                    Blue -> Icons.Default.Code
-                    Teal -> Icons.Default.CloudUpload
-                    Orange -> Icons.Default.Warning
+                    MellumCardType.Purple -> Icons.Default.Psychology
+                    MellumCardType.Blue -> Icons.Default.Code
+                    MellumCardType.Teal -> Icons.Default.CloudUpload
+                    MellumCardType.Orange -> Icons.Default.Warning
                     MellumCardType.Light -> Icons.Default.LightMode
-                    Dark -> Icons.Default.DarkMode
-                    Rainbow -> Icons.Default.DarkMode
+                    MellumCardType.Dark -> Icons.Default.DarkMode
+                    MellumCardType.Rainbow -> Icons.Default.Palette
+                    else -> Icons.Default.Circle
                 },
                 contentDescription = title,
                 modifier = Modifier.size(24.dp)

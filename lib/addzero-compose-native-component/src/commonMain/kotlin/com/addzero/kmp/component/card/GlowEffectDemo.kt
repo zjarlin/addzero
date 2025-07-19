@@ -4,12 +4,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
@@ -40,7 +42,7 @@ fun GlowEffectDemo() {
         }
         
         // 展示所有卡片类型的荧光效果
-        items(MellumCardType.values()) { cardType ->
+        items(MellumCardType.allTypes) { cardType ->
             GlowCard(cardType = cardType)
         }
         
@@ -57,7 +59,7 @@ fun GlowEffectDemo() {
             Column(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                MellumCardType.values().forEach { cardType ->
+                MellumCardType.allTypes.forEach { cardType ->
                     ColorInfo(cardType = cardType)
                 }
             }
@@ -88,6 +90,7 @@ private fun GlowCard(cardType: MellumCardType) {
                     MellumCardType.Light -> Icons.Default.LightMode
                     MellumCardType.Dark -> Icons.Default.DarkMode
                     MellumCardType.Rainbow -> Icons.Default.Palette
+                    else -> Icons.Default.Circle
                 },
                 contentDescription = cardType.name,
                 modifier = Modifier.size(32.dp)
@@ -130,7 +133,7 @@ private fun ColorInfo(cardType: MellumCardType) {
                 .size(24.dp)
                 .background(
                     color = cardType.hoverColor,
-                    shape = androidx.compose.foundation.shape.CircleShape
+                    shape = CircleShape
                 )
         )
         
@@ -163,13 +166,14 @@ private fun getGlowColorName(cardType: MellumCardType): String {
         MellumCardType.Light -> "蓝色"
         MellumCardType.Dark -> "白色"
         MellumCardType.Rainbow -> "荧光紫红"
+        else -> "未知"
     }
 }
 
 /**
  * 获取颜色的十六进制值
  */
-private fun getColorHex(color: androidx.compose.ui.graphics.Color): String {
+private fun getColorHex(color: Color): String {
     val red = (color.red * 255).toInt()
     val green = (color.green * 255).toInt()
     val blue = (color.blue * 255).toInt()
