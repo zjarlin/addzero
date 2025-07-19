@@ -113,7 +113,7 @@ listOf("backend", "composeApp", "shared", "lib").forEach { module ->
     "addzero-compose-props-annotations",
     "addzero-compose-props-processor",
     "addzero-compose-model-component",
-    "addzero-compose-hook-component"
+//    "addzero-compose-hook-component"
 )).useFile()
 
 // 组件模块
