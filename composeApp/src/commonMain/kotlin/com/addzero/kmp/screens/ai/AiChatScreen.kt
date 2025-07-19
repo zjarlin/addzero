@@ -106,8 +106,12 @@ private fun AiChatScreenContent() {
                     // 常用提示词区域（仅在没有消息时显示）
                     if (chatViewModel.chatMessages.isEmpty()) {
                         LabubuPromptSuggestions(
-                            prompts = aiPromptViewModel.prompts, onPromptSelected = { prompt ->
+                            prompts = aiPromptViewModel.prompts, 
+                            onPromptSelected = { prompt ->
                                 chatViewModel.chatInput = prompt.content
+                            },
+                            onRefresh = {
+                                aiPromptViewModel.loadPrompts()
                             })
                     }
                     // 聊天消息
@@ -415,7 +419,9 @@ private fun Avatar() {
 // 🤖 美化的AI提示词建议组件
 @Composable
 fun LabubuPromptSuggestions(
-    prompts: List<SysAiPromptIso>, onPromptSelected: (SysAiPromptIso) -> Unit
+    prompts: List<SysAiPromptIso>, 
+    onPromptSelected: (SysAiPromptIso) -> Unit,
+    onRefresh: () -> Unit = {}
 ) {
     Column(
         modifier = Modifier.fillMaxWidth().padding(24.dp), verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -435,7 +441,7 @@ fun LabubuPromptSuggestions(
 
         if (prompts.isEmpty()) {
             // 空状态
-            EmptyPromptState()
+            EmptyPromptState(onRefresh = onRefresh)
         } else {
             // 提示词网格
             PromptGrid(
@@ -449,7 +455,7 @@ fun LabubuPromptSuggestions(
  * 空状态组件
  */
 @Composable
-private fun EmptyPromptState() {
+private fun EmptyPromptState(onRefresh: () -> Unit) {
     AddCard(
 //        backgroundType = MellumCardType.Light
 //        , modifier = Modifier.fillMaxWidth()
@@ -461,9 +467,25 @@ private fun EmptyPromptState() {
                 Icons.Default.OutdoorGrill, contentDescription = "暂无提示词", modifier = Modifier.size(32.dp), tint = LocalContentColor.current.copy(alpha = 0.6f)
             )
             Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = "暂无可用的提示词", style = MaterialTheme.typography.bodyMedium, color = LocalContentColor.current.copy(alpha = 0.7f)
-            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Text(
+                    text = "暂无可用的提示词", style = MaterialTheme.typography.bodyMedium, color = LocalContentColor.current.copy(alpha = 0.7f)
+                )
+                IconButton(
+                    onClick = onRefresh,
+                    modifier = Modifier.size(24.dp)
+                ) {
+                    Icon(
+                        Icons.Default.Refresh,
+                        contentDescription = "刷新提示词",
+                        modifier = Modifier.size(16.dp),
+                        tint = LocalContentColor.current.copy(alpha = 0.7f)
+                    )
+                }
+            }
         }
     }
 }
