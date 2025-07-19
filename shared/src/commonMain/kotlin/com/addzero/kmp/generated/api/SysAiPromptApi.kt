@@ -11,19 +11,11 @@ import de.jensklingenberg.ktorfit.http.*
 interface SysAiPromptApi {
 
 /**
- * page
+ * getPrompts
  * HTTP方法: GET
- * 路径: /sysAiPrompt/page
- * 返回类型: kotlin.Unit
+ * 路径: /sysAiPrompt/getPrompts
+ * 返回类型: kotlin.collections.List<com.addzero.kmp.generated.isomorphic.SysAiPromptIso>
  */
-    @GET("/sysAiPrompt/page")    suspend fun page(): kotlin.Unit
-
-/**
- * save
- * HTTP方法: POST
- * 路径: /sysAiPrompt/save
- * 返回类型: kotlin.Unit
- */
-    @POST("/sysAiPrompt/save")    suspend fun save(): kotlin.Unit
+    @GET("/sysAiPrompt/getPrompts")    suspend fun getPrompts(): kotlin.collections.List<com.addzero.kmp.generated.isomorphic.SysAiPromptIso>
 
 }

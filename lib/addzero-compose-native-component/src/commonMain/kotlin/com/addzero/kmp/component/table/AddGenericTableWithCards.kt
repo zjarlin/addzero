@@ -199,7 +199,6 @@ object TableCardStyles {
             statsCardType = MellumCardType.Dark
         )
     }
-    
 
 
     

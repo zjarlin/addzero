@@ -461,7 +461,7 @@ private fun EmptyPromptState() {
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "暂可用用的提示词", style = MaterialTheme.typography.bodyMedium, color = LocalContentColor.current.copy(alpha = 0.7f)
+                text = "暂无可用的提示词", style = MaterialTheme.typography.bodyMedium, color = LocalContentColor.current.copy(alpha = 0.7f)
             )
         }
     }

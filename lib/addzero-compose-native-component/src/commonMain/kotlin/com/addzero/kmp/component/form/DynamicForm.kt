@@ -15,7 +15,7 @@ import com.addzero.kmp.component.high_level.AddMultiColumnContainer
  */
 @Composable
 fun  DynamicForm(
-    columns: List<com.addzero.kmp.component.table.TableColumnType>,
+    columns: List<TableColumnType>,
     item: TableRowType?,
     modifier: Modifier = Modifier,
     howMuchColumn: Int = 2,

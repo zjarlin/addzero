@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile
 
 @RestController
 @RequestMapping("/sys/file")
-class FileController {
+class SysFileController {
     @PostMapping("/upload")
     fun upload(@RequestPart file: MultipartFile): String {
 

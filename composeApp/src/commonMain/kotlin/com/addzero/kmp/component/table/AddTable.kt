@@ -1,4 +1,4 @@
-package com.addzero.kmp.demo
+package com.addzero.kmp.component.table
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -10,63 +10,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.addzero.kmp.annotation.Route
 import com.addzero.kmp.component.button.AddIconButton
-import com.addzero.kmp.component.form.DynamicFormItem
-import com.addzero.kmp.component.table.TableCardStyles
-import com.addzero.kmp.component.table.TableRowType
 import com.addzero.kmp.component.table.model.AddColumn
-import com.addzero.kmp.component.table.model.SysColumnMetaConfig
 import com.addzero.kmp.component.table.viewmodel.*
 import com.addzero.kmp.entity.low_table.SpecPageResult
 
 
-// 示例数据类
-data class SampleData(
-    val id: Int, var name: String, var age: Int
-)
-
 @Composable
-@Route("组件示例", "测试表格")
-fun AddGenericTableExample() {
-    // 示例数据
-    val data: List<TableRowType> = listOf(
-        mutableMapOf("id" to 1, "name" to "Alice", "age" to 25),
-        mutableMapOf("id" to 2, "name" to "Bob", "age" to 30),
-        mutableMapOf("id" to 3, "name" to "Charlie", "age" to 35)
-
-    )
-//    val koinViewModel = koinViewModel<GenericTableViewModel<SampleData>>()
-//    GenericTableViewModel<SampleData>(tableConfig)
-    val rememberCoroutineScope = rememberCoroutineScope()
-
-    // 示例列配置
-    val columns = listOf(
-        AddColumn(
-            key = "name",
-            title = "姓名",
-        ).apply {
-            customFormRender = { item ->
-                // 即使item为null也能正确处理
-                DynamicFormItem(
-                    value = getFun(item, key),
-                    onValueChange = { newValue ->
-                        // 确保item不为null时才设置值
-                        if (item != null) {
-                            setFun(item, key, newValue)
-                        }
-                    },
-                    title = title,
-                    kmpType = metaconfig.kmpType
-                )
-            }
-        },
-        AddColumn(
-            metaconfig = SysColumnMetaConfig().copy(kmpType = "Int"),
-            key = "age",
-            title = "年龄",
-        )
-    )
+fun AddTable(data: List<TableRowType>, columns: List<AddColumn>) {
 
     // 使用新API创建表格配置
     var apiConfig = TableApiConfig(
@@ -111,7 +62,6 @@ fun AddGenericTableExample() {
     var dataConfig = TableDataConfig(
         initData = data,
         columns = columns,
-//        onRowClick = { item -> println("Row clicked: $item") }
     )
 
 
@@ -137,6 +87,7 @@ fun AddGenericTableExample() {
 
     // 表格组件选择器
     var useCardStyle by remember { mutableStateOf(false) }
+//    var koinViewModel = koinViewModel<ThemeViewModel>()
     var selectedTheme by remember { mutableStateOf("Light") }
 
     Column(
@@ -209,6 +160,7 @@ fun AddGenericTableExample() {
             }
 
         }
+
     }
 }
 

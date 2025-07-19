@@ -16,9 +16,6 @@ data class AddColumn(
     override val title: String,
     ) : TableColumnType {
 
-
-
-
     override val get: (TableRowType) -> Any?
         get() = { it[key] }
     override val getFun: (TableRowType?, String) -> Any?
@@ -29,9 +26,6 @@ data class AddColumn(
         get() = { row, mykey, value -> row?.put(mykey, value) }
 
     override var customFormRender: @Composable ((TableRowType?) -> Unit) = { item ->
-
-
-
         DynamicFormItem(
             value = getFun(item, key),
             onValueChange = { newValue ->
@@ -87,7 +81,6 @@ interface GenericColumn {
                 kmpType = this.metaconfig.kmpType
             )
         }
-
 
 //    val widthRatio: Float = 1f,
 //    val alignment: EnumColumnAlignment = EnumColumnAlignment.CENTER,

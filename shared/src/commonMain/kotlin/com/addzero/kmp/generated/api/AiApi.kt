@@ -55,12 +55,4 @@ interface AiApi {
         @Query("taskkId") taskkId: kotlin.String
     ): kotlin.Unit
 
-/**
- * getPrompts
- * HTTP方法: GET
- * 路径: /ai/getPrompts
- * 返回类型: kotlin.collections.List<com.addzero.kmp.generated.isomorphic.SysAiPromptIso>
- */
-    @GET("/ai/getPrompts")    suspend fun getPrompts(): kotlin.collections.List<com.addzero.kmp.generated.isomorphic.SysAiPromptIso>
-
 }
