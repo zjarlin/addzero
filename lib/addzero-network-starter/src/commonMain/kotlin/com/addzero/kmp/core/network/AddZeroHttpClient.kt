@@ -60,21 +60,21 @@ private fun HttpClientConfig<*>.configHeaders() {
 }
 
 
-fun HttpClientConfig<*>.configToken(token: String?) {
-    defaultRequest {
-        // 添加基础请求头
-        headers {
-            append(HttpHeaders.Accept, "application/json")
-            append(HttpHeaders.ContentType, "application/json")
-        }
-        // 添加token
-        headers {
-            if (token != null) {
-                append(HttpHeaders.Authorization, token)
-            }
-        }
-    }
-}
+//fun HttpClientConfig<*>.configToken(token: String?) {
+//    defaultRequest {
+//        // 添加基础请求头
+//        headers {
+//            append(HttpHeaders.Accept, "application/json")
+//            append(HttpHeaders.ContentType, "application/json")
+//        }
+//        // 添加token
+//        headers {
+//            if (token != null) {
+//                append(HttpHeaders.Authorization, token)
+//            }
+//        }
+//    }
+//}
 
 
 private fun HttpClientConfig<*>.configLog() {
