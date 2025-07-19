@@ -33,11 +33,11 @@ fun App() {
     val colorScheme = AppThemes.getColorScheme(currentTheme)
 
     FollowSystemTheme(colorScheme = colorScheme) {
-        GradientThemeWrapper(themeType = currentTheme) {
+//        GradientThemeWrapper(themeType = currentTheme) {
             MainLayoutWithLogin()
 //            MainLayout()
             ToastListener()
-        }
+//        }
     }
 }
 
