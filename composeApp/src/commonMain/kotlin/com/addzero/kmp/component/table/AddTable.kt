@@ -21,7 +21,7 @@ import com.addzero.kmp.entity.low_table.SpecPageResult
 
 
 @Composable
-fun AddTable(data: List<TableRowType>, columns: List<AddColumn>, buttonSloat: () -> Unit) {
+fun AddTable(data: List<TableRowType>, columns: List<AddColumn>, buttonSloat:@Composable (() -> Unit)? = null,) {
 
     // 使用新API创建表格配置
     var apiConfig = TableApiConfig(
