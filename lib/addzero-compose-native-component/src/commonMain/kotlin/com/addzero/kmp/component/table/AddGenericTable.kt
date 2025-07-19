@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.addzero.kmp.component.button.AddIconButton
 import com.addzero.kmp.component.card.MellumCardType
-import com.addzero.kmp.component.table.base.TableContent
+import com.addzero.kmp.component.table.body.TableContent
 import com.addzero.kmp.component.table.header.AddAdvSearchPopBar
 import com.addzero.kmp.component.table.header.AddTableHeader
 import com.addzero.kmp.component.table.pagination.AddTablePagination

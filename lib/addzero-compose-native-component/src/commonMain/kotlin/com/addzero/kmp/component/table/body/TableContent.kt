@@ -1,4 +1,4 @@
-package com.addzero.kmp.component.table.base
+package com.addzero.kmp.component.table.body
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*

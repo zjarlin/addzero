@@ -15,9 +15,9 @@ import com.addzero.kmp.component.card.AddCard
 import com.addzero.kmp.component.card.MellumCardType
 import com.addzero.kmp.component.search_bar.AddSearchBar
 import com.addzero.kmp.component.table.TableColumnType
-import com.addzero.kmp.component.table.header.column.RenderHeaderColumn
 import com.addzero.kmp.component.table.getIsFiltered
 import com.addzero.kmp.component.table.getSortDirection
+import com.addzero.kmp.component.table.header.column.RenderHeaderColumn
 import com.addzero.kmp.entity.low_table.StateSearchForm
 import com.addzero.kmp.entity.low_table.StateSort
 
@@ -260,7 +260,7 @@ fun AddTableStatsCard(
 
             // 过滤后数量（如果有过滤）
             if (filteredCount != null && filteredCount != totalCount) {
-                Divider(
+                HorizontalDivider(
                     modifier = Modifier
                         .height(24.dp)
                         .width(1.dp),
