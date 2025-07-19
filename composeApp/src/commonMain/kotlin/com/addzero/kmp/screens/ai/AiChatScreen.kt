@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.addzero.kmp.component.button.AddIconButton
-import com.addzero.kmp.component.card.AddJetBrainsMellumCard
+import com.addzero.kmp.component.card.AddCard
 import com.addzero.kmp.component.card.MellumCardType
 import com.addzero.kmp.component.high_level.AddMultiColumnContainer
 import com.addzero.kmp.demo.ProductCardContent
@@ -450,8 +450,9 @@ fun LabubuPromptSuggestions(
  */
 @Composable
 private fun EmptyPromptState() {
-    AddJetBrainsMellumCard(
-        backgroundType = MellumCardType.Light, modifier = Modifier.fillMaxWidth()
+    AddCard(
+//        backgroundType = MellumCardType.Light
+//        , modifier = Modifier.fillMaxWidth()
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()
@@ -517,7 +518,7 @@ private fun PromptCard(
     )
 
     Box {
-        AddJetBrainsMellumCard(
+        AddCard(
             onClick = onSelected, backgroundType = cardType, modifier = Modifier.fillMaxWidth().hoverable(interactionSource)
         ) {
             ProductCardContent(

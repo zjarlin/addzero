@@ -13,7 +13,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
@@ -41,9 +40,7 @@ private fun Color.luminance(): Float {
 }
 
 /**
- * 🎨 JetBrains Mellum风格卡片组件
- *
- * 参考JetBrains官方设计的现代化材质卡片，具有：
+ * 🎨 卡片组件
  * - 清晰的渐变背景
  * - 微妙的边框效果
  * - 流畅的悬浮动画
@@ -59,7 +56,7 @@ private fun Color.luminance(): Float {
  * @param content 卡片内容插槽
  */
 @Composable
-fun AddJetBrainsMellumCard(
+fun AddCard(
     onClick: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
     cornerRadius: Dp = 16.dp,
@@ -354,7 +351,7 @@ fun adaptiveMellumCardType(): MellumCardType {
  * 
  * 提供一些常用的预设样式，方便快速使用
  */
-object JetBrainsMellumCards {
+object AddCards {
     
     /**
      * Koog Agent风格卡片
@@ -365,7 +362,7 @@ object JetBrainsMellumCards {
         modifier: Modifier = Modifier,
         content: @Composable () -> Unit
     ) {
-        AddJetBrainsMellumCard(
+        AddCard(
             onClick = onClick,
             modifier = modifier,
             backgroundType = MellumCardType.Purple,
@@ -382,7 +379,7 @@ object JetBrainsMellumCards {
         modifier: Modifier = Modifier,
         content: @Composable () -> Unit
     ) {
-        AddJetBrainsMellumCard(
+        AddCard(
             onClick = onClick,
             modifier = modifier,
             backgroundType = MellumCardType.Blue,
@@ -399,7 +396,7 @@ object JetBrainsMellumCards {
         modifier: Modifier = Modifier,
         content: @Composable () -> Unit
     ) {
-        AddJetBrainsMellumCard(
+        AddCard(
             onClick = onClick,
             modifier = modifier,
             backgroundType = MellumCardType.Teal,

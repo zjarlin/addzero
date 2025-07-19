@@ -6,6 +6,7 @@ package com.addzero.kmp.generated
  */
 object RouteKeys {
     const val RICH_TEXT_DEMO = "com.addzero.kmp.demo.RichTextDemo"
+    const val ADD_CARD_EXAMPLE = "com.addzero.kmp.demo.AddCardExample"
     const val ADD_GENERIC_TABLE_EXAMPLE = "com.addzero.kmp.demo.AddGenericTableExample"
     const val U_I_COMPONENTS_DEMO = "com.addzero.kmp.demo.UIComponentsDemo"
     const val TIME_PICKER_EXAMPLE = "com.addzero.kmp.demo.date_test.TimePickerExample"
@@ -13,7 +14,6 @@ object RouteKeys {
     const val DATE_PICKER_FIELD_TEST = "com.addzero.kmp.demo.date_test.DatePickerFieldTest"
     const val DATE_TIME_PICKER_EXAMPLE = "com.addzero.kmp.demo.date_test.DateTimePickerExample"
     const val DATE_RANGE_PICKER_FIELD_TEST = "com.addzero.kmp.demo.date_test.DateRangePickerFieldTest"
-    const val JET_BRAINS_MELLUM_CARD_EXAMPLE = "com.addzero.kmp.demo.JetBrainsMellumCardExample"
     const val SYS_ICON_SCREEN = "com.addzero.kmp.demo.icon.SysIconScreen"
     const val WE_CHAT_ICON = "/component/wechatIcon"
     const val DRAG_LIST_DEMO = "com.addzero.kmp.demo.DragListDemo"

@@ -1,6 +1,5 @@
 package com.addzero.kmp.component.table.card
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -10,10 +9,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import com.addzero.kmp.component.card.AddJetBrainsMellumCard
+import com.addzero.kmp.component.card.AddCard
 import com.addzero.kmp.component.card.MellumCardType
 import com.addzero.kmp.component.table.base.header.column.RenderHeaderColumn
 import com.addzero.kmp.component.search_bar.AddSearchBar
@@ -67,7 +65,7 @@ fun AddTableHeaderCard(
 ) {
     val horizontalScrollState = rememberScrollState()
     
-    AddJetBrainsMellumCard(
+    AddCard(
         onClick = if (enableHoverEffect) { {} } else null,
         modifier = modifier
             .fillMaxWidth()
@@ -209,7 +207,7 @@ fun AddTableStatsCard(
     filteredCount: Int? = null,
     cardType: MellumCardType = MellumCardType.Blue
 ) {
-    AddJetBrainsMellumCard(
+    AddCard(
         modifier = modifier,
         backgroundType = cardType,
         cornerRadius = 8.dp,

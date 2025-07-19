@@ -16,8 +16,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.addzero.kmp.annotation.Route
-import com.addzero.kmp.component.card.AddJetBrainsMellumCard
-import com.addzero.kmp.component.card.JetBrainsMellumCards
+import com.addzero.kmp.component.card.AddCard
+import com.addzero.kmp.component.card.AddCards
 import com.addzero.kmp.component.card.MellumCardType
 
 /**
@@ -27,7 +27,7 @@ import com.addzero.kmp.component.card.MellumCardType
  */
 @Composable
 @Route
-fun JetBrainsMellumCardExample() {
+fun AddCardExample() {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -62,7 +62,7 @@ fun JetBrainsMellumCardExample() {
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 // Koog Agent风格
-                JetBrainsMellumCards.KoogAgentCard(
+                AddCards.KoogAgentCard(
                     onClick = { println("Koog Agent卡片被点击") },
                     modifier = Modifier.fillMaxWidth()
                 ) {
@@ -75,7 +75,7 @@ fun JetBrainsMellumCardExample() {
                 }
                 
                 // Hackathon风格
-                JetBrainsMellumCards.HackathonCard(
+                AddCards.HackathonCard(
                     onClick = { println("Hackathon卡片被点击") },
                     modifier = Modifier.fillMaxWidth()
                 ) {
@@ -88,7 +88,7 @@ fun JetBrainsMellumCardExample() {
                 }
                 
                 // Deploy Mellum风格
-                JetBrainsMellumCards.DeployMellumCard(
+                AddCards.DeployMellumCard(
                     onClick = { println("Deploy Mellum卡片被点击") },
                     modifier = Modifier.fillMaxWidth()
                 ) {
@@ -113,7 +113,7 @@ fun JetBrainsMellumCardExample() {
         }
         
         items(MellumCardType.allTypes) { cardType ->
-            AddJetBrainsMellumCard(
+            AddCard(
                 onClick = { println("${cardType.name}卡片被点击") },
                 modifier = Modifier.fillMaxWidth(),
                 backgroundType = cardType
@@ -139,7 +139,7 @@ fun JetBrainsMellumCardExample() {
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 // 统计卡片
-                AddJetBrainsMellumCard(
+                AddCard(
                     onClick = { println("统计卡片被点击") },
                     modifier = Modifier.weight(1f),
                     backgroundType = MellumCardType.Purple
@@ -153,7 +153,7 @@ fun JetBrainsMellumCardExample() {
                 }
                 
                 // 操作卡片
-                AddJetBrainsMellumCard(
+                AddCard(
                     onClick = { println("操作卡片被点击") },
                     modifier = Modifier.weight(1f),
                     backgroundType = MellumCardType.Blue
