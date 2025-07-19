@@ -72,8 +72,6 @@ fun AddJetBrainsMellumCard(
     val interactionSource = remember { MutableInteractionSource() }
     val isHovered by interactionSource.collectIsHoveredAsState()
 
-    // 移除缩放和阴影动画，只保留荧光边框效果
-
     // 荧光色边框动画
     val glowAlpha by animateFloatAsState(
         targetValue = if (isHovered) 0.8f else 0f,
@@ -81,77 +79,82 @@ fun AddJetBrainsMellumCard(
         label = "glow_animation"
     )
 
-    // 使用Surface而不是Box，确保正确的Material Design行为
-    Surface(
+    // 使用Box包装，确保荧光效果不影响卡片尺寸
+    Box(
         modifier = modifier
-            // 移除缩放动画，保持原始大小
-            // 添加荧光色外发光效果
-            .then(
-                if (isHovered) {
-                    Modifier
-                        .background(
-                            brush = Brush.radialGradient(
-                                colors = listOf(
-                                    backgroundType.hoverColor.copy(alpha = glowAlpha * 0.3f),
-                                    backgroundType.hoverColor.copy(alpha = glowAlpha * 0.1f),
-                                    Color.Transparent
-                                ),
-                                radius = 200f
-                            ),
-                            shape = RoundedCornerShape(cornerRadius + 8.dp)
-                        )
-                        .padding(8.dp)
-                } else Modifier
-            )
-            .then(
-                if (onClick != null) {
-                    Modifier.clickable(
-                        interactionSource = interactionSource,
-                        indication = null
-                    ) { onClick() }
-                } else Modifier
-            ),
-        shape = RoundedCornerShape(cornerRadius),
-        tonalElevation = elevation, // 使用固定阴影，不再动画
-        shadowElevation = elevation, // 使用固定阴影，不再动画
-        color = backgroundType.backgroundColor
     ) {
-        // 直接使用Column布局，避免Box嵌套
-        Column(
+        // 荧光背景层，不影响卡片本身尺寸
+        if (isHovered && glowAlpha > 0f) {
+            Box(
+                modifier = Modifier
+                    .matchParentSize()
+                    .background(
+                        brush = Brush.radialGradient(
+                            colors = listOf(
+                                backgroundType.hoverColor.copy(alpha = glowAlpha * 0.3f),
+                                backgroundType.hoverColor.copy(alpha = glowAlpha * 0.1f),
+                                Color.Transparent
+                            ),
+                            radius = 200f
+                        ),
+                        shape = RoundedCornerShape(cornerRadius + 8.dp)
+                    )
+            )
+        }
+
+        // 主卡片，尺寸保持不变
+        Surface(
             modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    brush = backgroundType.backgroundBrush,
-                    shape = RoundedCornerShape(cornerRadius)
-                )
-                // 荧光色边框效果
-                .border(
-                    width = if (isHovered) 2.dp else 1.dp,
-                    brush = if (isHovered) {
-                        Brush.linearGradient(
-                            colors = listOf(
-                                backgroundType.hoverColor.copy(alpha = glowAlpha),
-                                backgroundType.hoverColor.copy(alpha = glowAlpha * 0.6f),
-                                backgroundType.borderColor.copy(alpha = 0.3f)
-                            )
-                        )
-                    } else {
-                        Brush.linearGradient(
-                            colors = listOf(
-                                backgroundType.borderColor.copy(alpha = 0.2f),
-                                backgroundType.borderColor.copy(alpha = 0.1f)
-                            )
-                        )
-                    },
-                    shape = RoundedCornerShape(cornerRadius)
-                )
-                .padding(padding)
+                .then(
+                    if (onClick != null) {
+                        Modifier.clickable(
+                            interactionSource = interactionSource,
+                            indication = null
+                        ) { onClick() }
+                    } else Modifier
+                ),
+            shape = RoundedCornerShape(cornerRadius),
+            tonalElevation = elevation,
+            shadowElevation = elevation,
+            color = backgroundType.backgroundColor
         ) {
-            // 提供LocalContentColor，确保文字颜色正确
-            CompositionLocalProvider(
-                LocalContentColor provides backgroundType.contentColor
+            // 直接使用Column布局，避免Box嵌套
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        brush = backgroundType.backgroundBrush,
+                        shape = RoundedCornerShape(cornerRadius)
+                    )
+                    // 荧光色边框效果
+                    .border(
+                        width = if (isHovered) 2.dp else 1.dp,
+                        brush = if (isHovered) {
+                            Brush.linearGradient(
+                                colors = listOf(
+                                    backgroundType.hoverColor.copy(alpha = glowAlpha),
+                                    backgroundType.hoverColor.copy(alpha = glowAlpha * 0.6f),
+                                    backgroundType.borderColor.copy(alpha = 0.3f)
+                                )
+                            )
+                        } else {
+                            Brush.linearGradient(
+                                colors = listOf(
+                                    backgroundType.borderColor.copy(alpha = 0.2f),
+                                    backgroundType.borderColor.copy(alpha = 0.1f)
+                                )
+                            )
+                        },
+                        shape = RoundedCornerShape(cornerRadius)
+                    )
+                    .padding(padding)
             ) {
-                content()
+                // 提供LocalContentColor，确保文字颜色正确
+                CompositionLocalProvider(
+                    LocalContentColor provides backgroundType.contentColor
+                ) {
+                    content()
+                }
             }
         }
     }

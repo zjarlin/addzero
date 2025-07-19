@@ -17,8 +17,8 @@ import org.w3c.fetch.Response
 
 var fonts = listOf(
     "DouyinSansBold.ttf",
-    "LXGWWenKai-Medium.ttf",
-    "PingFang-Medium.ttf"
+//    "LXGWWenKai-Medium.ttf",
+//    "PingFang-Medium.ttf"
 ).map { "./$it" }
 
 
