@@ -111,7 +111,9 @@ listOf("backend", "composeApp", "shared", "lib").forEach { module ->
 // Compose 相关模块
 ("lib" to listOf(
     "addzero-compose-props-annotations",
-    "addzero-compose-props-processor"
+    "addzero-compose-props-processor",
+    "addzero-compose-model-component",
+    "addzero-compose-hook-component"
 )).useFile()
 
 // 组件模块
@@ -127,5 +129,5 @@ listOf("backend", "composeApp", "shared", "lib").forEach { module ->
     "addzero-tool-api-jvm",
     "addzero-tool-api"
 )).useFile()
-include("lib:addzero-compose-model-component")
-findProject(":lib:addzero-compose-model-component")?.name = "addzero-compose-model-component"
+
+
