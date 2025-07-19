@@ -62,7 +62,7 @@ fun AddCard(
     cornerRadius: Dp = 16.dp,
     elevation: Dp = 4.dp,
     padding: Dp = 20.dp,
-    backgroundType: MellumCardType = MellumCardType.Purple,
+    backgroundType: MellumCardType = MellumCardType.Light,
     animationDuration: Int = 300,
     content: @Composable () -> Unit
 ) {

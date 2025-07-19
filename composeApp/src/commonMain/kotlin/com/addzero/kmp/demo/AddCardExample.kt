@@ -188,13 +188,13 @@ fun ProductCardContent(
                 imageVector = icon,
                 contentDescription = title,
                 tint = LocalContentColor.current.copy(alpha = 0.9f),
-                modifier = Modifier.size(32.dp)
+                modifier = Modifier.size(24.dp)
             )
-            Spacer(modifier = Modifier.width(16.dp))
+            Spacer(modifier = Modifier.width(12.dp))
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = title,
-                    style = MaterialTheme.typography.titleLarge,
+                    style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     color = LocalContentColor.current,
                     maxLines = 1,
@@ -202,7 +202,7 @@ fun ProductCardContent(
                 )
                 Text(
                     text = subtitle,
-                    style = MaterialTheme.typography.titleMedium,
+                    style = MaterialTheme.typography.bodyLarge,
                     color = LocalContentColor.current.copy(alpha = 0.8f),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
@@ -210,13 +210,15 @@ fun ProductCardContent(
             }
         }
 
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         Text(
             text = description,
-            style = MaterialTheme.typography.bodyMedium,
+            style = MaterialTheme.typography.bodySmall,
             color = LocalContentColor.current.copy(alpha = 0.7f),
-            lineHeight = 20.sp
+            lineHeight = 18.sp,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis
         )
     }
 }

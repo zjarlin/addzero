@@ -21,7 +21,7 @@ import com.addzero.kmp.entity.low_table.SpecPageResult
 
 
 @Composable
-fun AddTable(data: List<TableRowType>, columns: List<AddColumn>) {
+fun AddTable(data: List<TableRowType>, columns: List<AddColumn>, buttonSloat: () -> Unit) {
 
     // 使用新API创建表格配置
     var apiConfig = TableApiConfig(
@@ -151,7 +151,7 @@ fun AddTable(data: List<TableRowType>, columns: List<AddColumn>) {
                 TableCardStyles.LightTheme(
                     modifier = Modifier.fillMaxWidth(),
                     config = tableConfig,
-                    buttonSlot = { SampleCustomButtons() }
+                    buttonSlot = buttonSloat
                 )
             }
 
@@ -159,7 +159,7 @@ fun AddTable(data: List<TableRowType>, columns: List<AddColumn>) {
                 TableCardStyles.DarkTheme(
                     modifier = Modifier.fillMaxWidth(),
                     config = tableConfig,
-                    buttonSlot = { SampleCustomButtons() }
+                    buttonSlot = buttonSloat
                 )
             }
 
@@ -168,25 +168,4 @@ fun AddTable(data: List<TableRowType>, columns: List<AddColumn>) {
     }
 }
 
-/**
- * 示例自定义按钮
- */
-@Composable
-private fun SampleCustomButtons() {
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        AddIconButton(
-            text = "刷新",
-            imageVector = Icons.Default.Refresh,
-            onClick = { println("刷新数据") }
-        )
-
-        AddIconButton(
-            text = "设置",
-            imageVector = Icons.Default.Settings,
-            onClick = { println("打开设置") }
-        )
-    }
-}
 
