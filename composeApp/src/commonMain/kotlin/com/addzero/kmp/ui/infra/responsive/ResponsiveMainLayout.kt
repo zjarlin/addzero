@@ -6,7 +6,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
 import com.addzero.kmp.screens.ai.AiChatScreen
@@ -19,7 +18,6 @@ import com.addzero.kmp.ui.infra.model.menu.SideMenu
 import com.addzero.kmp.ui.infra.model.navigation.RecentTabsManager
 import com.addzero.kmp.ui.infra.navigation.NavigationObserver
 import com.addzero.kmp.viewmodel.ChatViewModel
-import kotlinx.coroutines.delay
 import org.koin.compose.viewmodel.koinViewModel
 
 /**
@@ -35,7 +33,6 @@ fun ResponsiveMainLayout(
     val navController = rememberNavController()
     val vm = koinViewModel<RecentTabsManager>()
     val chatViewModel = koinViewModel<ChatViewModel>()
-    val focusManager = LocalFocusManager.current
 
     // 获取响应式配置
     val config = rememberResponsiveConfig(forceLayoutMode)
@@ -52,11 +49,6 @@ fun ResponsiveMainLayout(
     // 搜索框状态
     val isSearchOpen = remember { mutableStateOf(false) }
 
-    // 全局键盘事件处理
-    LaunchedEffect(Unit) {
-        delay(100)
-        // 在响应式布局中，焦点管理可能需要特殊处理
-    }
 
     // 根据布局模式渲染不同的布局
     when (config.layoutMode) {

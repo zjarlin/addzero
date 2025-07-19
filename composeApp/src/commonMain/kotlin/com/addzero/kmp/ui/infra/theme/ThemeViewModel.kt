@@ -18,7 +18,6 @@ class ThemeViewModel : ViewModel() {
     var currentTheme by mutableStateOf(AppThemeType.GRADIENT_OCEAN)
         private set
 
-    // 是否为暗色主题 - 保留此属性以保持兼容性
     val isDarkMode: Boolean
         get() = currentTheme.isDark()
 
