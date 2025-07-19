@@ -1,8 +1,9 @@
-package com.addzero.kmp.component.table.viewmodel
+package com.addzero.kmp.component.table.config
 
 import com.addzero.kmp.component.table.TableColumnType
 import com.addzero.kmp.component.table.TableRowType
 import com.addzero.kmp.entity.low_table.CommonTableDaTaInputDTO
+import com.addzero.kmp.entity.low_table.EnumSortDirection
 import com.addzero.kmp.entity.low_table.ExportParam
 import com.addzero.kmp.entity.low_table.SpecPageResult
 
@@ -127,7 +128,7 @@ data class TableSortConfig(
     // 默认排序列
     val defaultSortColumn: String? = null,
     // 默认排序方向
-    val defaultSortDirection: com.addzero.kmp.entity.low_table.EnumSortDirection = com.addzero.kmp.entity.low_table.EnumSortDirection.NONE
+    val defaultSortDirection: EnumSortDirection = EnumSortDirection.NONE
 )
 
 /**

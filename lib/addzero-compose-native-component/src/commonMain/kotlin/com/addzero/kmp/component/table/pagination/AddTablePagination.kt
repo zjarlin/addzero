@@ -1,4 +1,4 @@
-package com.addzero.kmp.component.table.card
+package com.addzero.kmp.component.table.pagination
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -44,7 +44,7 @@ import com.addzero.kmp.component.table.viewmodel.StatePagination
  * @param compactMode 是否使用紧凑模式
  */
 @Composable
-fun AddTablePaginationCard(
+fun AddTablePagination(
     modifier: Modifier = Modifier,
     statePagination: StatePagination,
     pageSizeOptions: List<Int> = listOf(10, 20, 50, 100),

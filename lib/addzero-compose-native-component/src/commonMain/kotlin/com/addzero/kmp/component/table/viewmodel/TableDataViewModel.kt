@@ -8,6 +8,7 @@ import androidx.compose.runtime.getValue
 import com.addzero.kmp.assist.api
 import com.addzero.kmp.component.table.TableColumnType
 import com.addzero.kmp.component.table.TableRowType
+import com.addzero.kmp.component.table.config.TableConfig
 import com.addzero.kmp.component.toast.ToastManager
 import com.addzero.kmp.entity.low_table.*
 import kotlinx.coroutines.launch

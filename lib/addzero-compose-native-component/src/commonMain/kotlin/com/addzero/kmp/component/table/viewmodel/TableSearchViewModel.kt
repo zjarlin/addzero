@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.addzero.kmp.component.table.TableColumnType
+import com.addzero.kmp.component.table.config.TableSearchConfig
 import com.addzero.kmp.entity.low_table.StateSearchForm
 import org.koin.android.annotation.KoinViewModel
 

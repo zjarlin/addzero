@@ -1,4 +1,4 @@
-package com.addzero.kmp.component.table.viewmodel
+package com.addzero.kmp.component.table.config
 
 import com.addzero.kmp.component.table.TableColumnType
 import com.addzero.kmp.component.table.TableRowType

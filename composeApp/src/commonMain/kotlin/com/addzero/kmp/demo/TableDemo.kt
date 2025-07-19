@@ -15,9 +15,13 @@ import com.addzero.kmp.component.button.AddIconButton
 import com.addzero.kmp.component.form.DynamicFormItem
 import com.addzero.kmp.component.table.TableCardStyles
 import com.addzero.kmp.component.table.TableRowType
+import com.addzero.kmp.component.table.config.TableApiConfig
+import com.addzero.kmp.component.table.config.TableConfig
+import com.addzero.kmp.component.table.config.TableDataConfig
+import com.addzero.kmp.component.table.config.TableImportConfig
+import com.addzero.kmp.component.table.config.TableUiConfig
 import com.addzero.kmp.component.table.model.AddColumn
 import com.addzero.kmp.component.table.model.SysColumnMetaConfig
-import com.addzero.kmp.component.table.viewmodel.*
 import com.addzero.kmp.entity.low_table.SpecPageResult
 
 
@@ -154,7 +158,7 @@ fun AddGenericTableExample() {
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 Text(
-                    text = "🎨 表格样式选择",
+                    text = "表格样式选择",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold
                 )

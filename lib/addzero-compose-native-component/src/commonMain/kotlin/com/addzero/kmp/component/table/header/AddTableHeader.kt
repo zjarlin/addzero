@@ -1,4 +1,4 @@
-package com.addzero.kmp.component.table.card
+package com.addzero.kmp.component.table.header
 
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
@@ -13,9 +13,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.addzero.kmp.component.card.AddCard
 import com.addzero.kmp.component.card.MellumCardType
-import com.addzero.kmp.component.table.base.header.column.RenderHeaderColumn
 import com.addzero.kmp.component.search_bar.AddSearchBar
 import com.addzero.kmp.component.table.TableColumnType
+import com.addzero.kmp.component.table.header.column.RenderHeaderColumn
 import com.addzero.kmp.component.table.getIsFiltered
 import com.addzero.kmp.component.table.getSortDirection
 import com.addzero.kmp.entity.low_table.StateSearchForm
@@ -23,10 +23,10 @@ import com.addzero.kmp.entity.low_table.StateSort
 
 /**
  * 🎨 表格头部卡片组件
- * 
+ *
  * 使用 JetBrains Mellum 风格的卡片来展示表格头部，
  * 提供更现代化的视觉效果和交互体验
- * 
+ *
  * @param modifier 修饰符
  * @param renderButtons 按钮渲染函数
  * @param keyword 搜索关键词
@@ -45,7 +45,7 @@ import com.addzero.kmp.entity.low_table.StateSort
  * @param enableHoverEffect 是否启用悬浮效果
  */
 @Composable
-fun AddTableHeaderCard(
+fun AddTableHeader(
     modifier: Modifier = Modifier,
     renderButtons: @Composable () -> Unit,
     keyword: String,
@@ -64,9 +64,11 @@ fun AddTableHeaderCard(
     enableHoverEffect: Boolean = true
 ) {
     val horizontalScrollState = rememberScrollState()
-    
+
     AddCard(
-        onClick = if (enableHoverEffect) { {} } else null,
+        onClick = if (enableHoverEffect) {
+            {}
+        } else null,
         modifier = modifier
             .fillMaxWidth()
             .zIndex(2f), // 确保表头在最上层
@@ -85,14 +87,6 @@ fun AddTableHeaderCard(
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                // 搜索栏
-                AddSearchBar(
-                    keyword = keyword,
-                    onKeyWordChanged = onKeyWordChanged,
-                    onSearch = onSearch,
-                    modifier = Modifier.weight(1f)
-                )
-                
                 // 按钮区域
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -100,8 +94,17 @@ fun AddTableHeaderCard(
                 ) {
                     renderButtons()
                 }
+
+                // 搜索栏
+                AddSearchBar(
+                    keyword = keyword,
+                    onKeyWordChanged = onKeyWordChanged,
+                    onSearch = onSearch,
+                    modifier = Modifier.weight(1f)
+                )
+
             }
-            
+
             // 第二行：表格列头（与表格内容对齐）
             if (columns.isNotEmpty()) {
                 Row(
@@ -196,7 +199,7 @@ fun AddTableHeaderCard(
 
 /**
  * 🎨 表格头部统计信息卡片
- * 
+ *
  * 用于展示表格的统计信息，如总数、选中数量等
  */
 @Composable
@@ -231,7 +234,7 @@ fun AddTableStatsCard(
                     color = LocalContentColor.current.copy(alpha = 0.7f)
                 )
             }
-            
+
             // 选中数量（如果有选中项）
             if (selectedCount > 0) {
                 Divider(
@@ -240,7 +243,7 @@ fun AddTableStatsCard(
                         .width(1.dp),
                     color = LocalContentColor.current.copy(alpha = 0.3f)
                 )
-                
+
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
                         text = selectedCount.toString(),
@@ -254,7 +257,7 @@ fun AddTableStatsCard(
                     )
                 }
             }
-            
+
             // 过滤后数量（如果有过滤）
             if (filteredCount != null && filteredCount != totalCount) {
                 Divider(
@@ -263,7 +266,7 @@ fun AddTableStatsCard(
                         .width(1.dp),
                     color = LocalContentColor.current.copy(alpha = 0.3f)
                 )
-                
+
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
                         text = filteredCount.toString(),

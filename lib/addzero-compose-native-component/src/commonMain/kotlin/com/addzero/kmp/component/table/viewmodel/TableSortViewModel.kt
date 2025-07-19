@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.addzero.kmp.component.table.config.TableSortConfig
 import com.addzero.kmp.entity.low_table.EnumSortDirection
 import com.addzero.kmp.entity.low_table.StateSort
 import com.addzero.kmp.kt_util.removeIf

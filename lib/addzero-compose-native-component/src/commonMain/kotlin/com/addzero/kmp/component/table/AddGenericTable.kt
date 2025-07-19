@@ -17,12 +17,12 @@ import androidx.compose.ui.unit.dp
 import com.addzero.kmp.component.button.AddIconButton
 import com.addzero.kmp.component.card.MellumCardType
 import com.addzero.kmp.component.table.base.TableContent
-import com.addzero.kmp.component.table.base.header.AddAdvSearchPopBar
-import com.addzero.kmp.component.table.card.AddTableHeaderCard
-import com.addzero.kmp.component.table.card.AddTablePaginationCard
-import com.addzero.kmp.component.table.card.AddTableStatsCard
+import com.addzero.kmp.component.table.header.AddAdvSearchPopBar
+import com.addzero.kmp.component.table.header.AddTableHeader
+import com.addzero.kmp.component.table.pagination.AddTablePagination
+import com.addzero.kmp.component.table.header.AddTableStatsCard
 import com.addzero.kmp.component.table.viewmodel.TableCompositeViewModel
-import com.addzero.kmp.component.table.viewmodel.TableConfig
+import com.addzero.kmp.component.table.config.TableConfig
 import org.koin.compose.viewmodel.koinViewModel
 
 /**
@@ -43,7 +43,7 @@ import org.koin.compose.viewmodel.koinViewModel
  * @param enableHeaderHover 是否启用表头悬浮效果
  */
 @Composable
-fun AddGenericTableWithCards(
+fun AddGenericTable(
     modifier: Modifier = Modifier,
     config: TableConfig,
     buttonSlot: @Composable (() -> Unit)? = null,
@@ -78,7 +78,7 @@ fun AddGenericTableWithCards(
         }
 
         // 表格头部卡片
-        AddTableHeaderCard(
+        AddTableHeader(
             renderButtons = renderButtons,
             keyword = tableViewModel.searchViewModel.keyword,
             onKeyWordChanged = { tableViewModel.searchViewModel.updateKeyword(it) },
@@ -130,7 +130,7 @@ fun AddGenericTableWithCards(
 
         // 分页控件卡片
         if (config.uiConfig.showPagination) {
-            AddTablePaginationCard(
+            AddTablePagination(
                 statePagination = tableViewModel.paginationViewModel.pageState,
                 enablePagination = true,
                 onPageSizeChange = {
@@ -188,7 +188,7 @@ object TableCardStyles {
         buttonSlot: @Composable (() -> Unit)? = null,
         actionSlot: @Composable () -> Unit = {}
     ) {
-        AddGenericTableWithCards(
+        AddGenericTable(
             modifier = modifier,
             config = config,
             buttonSlot = buttonSlot,
@@ -212,7 +212,7 @@ object TableCardStyles {
         buttonSlot: @Composable (() -> Unit)? = null,
         actionSlot: @Composable () -> Unit = {}
     ) {
-        AddGenericTableWithCards(
+        AddGenericTable(
             modifier = modifier,
             config = config,
             buttonSlot = buttonSlot,

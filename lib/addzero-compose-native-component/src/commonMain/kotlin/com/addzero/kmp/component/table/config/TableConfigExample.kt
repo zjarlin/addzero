@@ -1,14 +1,14 @@
-package com.addzero.kmp.component.table.example
+package com.addzero.kmp.component.table.config
 
-import com.addzero.kmp.component.table.viewmodel.*
 import com.addzero.kmp.entity.low_table.EnumSortDirection
+import com.addzero.kmp.entity.low_table.SpecPageResult
 
 /**
  * 表格配置使用示例
  * 展示如何使用新的配置系统来创建表格配置
  */
 object TableConfigExample {
-    
+
     /**
      * 基础配置示例
      * 使用默认配置创建一个简单的表格
@@ -21,18 +21,18 @@ object TableConfigExample {
                 getIdFun { it.hashCode() }
                 onRowClick { /* 处理行点击 */ }
             }
-            
+
             // API配置
             api {
-                onLoadData { /* 加载数据逻辑 */ 
-                    com.addzero.kmp.entity.low_table.SpecPageResult.Companion.empty()
+                onLoadData { /* 加载数据逻辑 */
+                    SpecPageResult.Companion.empty()
                 }
                 onSave { /* 保存数据逻辑 */ true }
                 onDelete { /* 删除数据逻辑 */ true }
             }
         }
     }
-    
+
     /**
      * 完整配置示例
      * 展示所有可配置的参数
@@ -44,17 +44,17 @@ object TableConfigExample {
                 initData(emptyList())
                 columns(emptyList())
                 getIdFun { it.hashCode() }
-                onRowClick { row -> 
+                onRowClick { row ->
                     println("点击了行: $row")
                 }
             }
-            
+
             // API配置
             api {
                 onLoadData { input ->
                     // 实际的数据加载逻辑
                     println("加载数据: $input")
-                    com.addzero.kmp.entity.low_table.SpecPageResult.Companion.empty()
+                    SpecPageResult.Companion.empty()
                 }
                 onSave { item ->
                     println("保存数据: $item")
@@ -77,7 +77,7 @@ object TableConfigExample {
                     true
                 }
             }
-            
+
             // UI配置
             ui {
                 rowHeight(48)
@@ -87,7 +87,7 @@ object TableConfigExample {
                 showBatchOperations(true)
                 showAdvancedSearch(true)
             }
-            
+
             // 导入配置
             import {
                 title("数据导入")
@@ -96,7 +96,7 @@ object TableConfigExample {
                 acceptedFileTypes(listOf("xlsx", "xls"))
                 maxFileSize(10) // 10MB
             }
-            
+
             // ViewModel配置
             viewModel {
                 // 分页配置
@@ -105,7 +105,7 @@ object TableConfigExample {
                     pageSizeOptions(listOf(10, 20, 50, 100))
                     enablePagination(true)
                 }
-                
+
                 // 搜索配置
                 search {
                     enableKeywordSearch(true)
@@ -114,14 +114,14 @@ object TableConfigExample {
                     autoSearch(false)
                     autoSearchDelay(300)
                 }
-                
+
                 // 选择配置
                 selection {
                     enableMultiSelect(true)
                     enableSingleSelect(true)
                     defaultEditMode(false)
                 }
-                
+
                 // 排序配置
                 sort {
                     enableSort(true)
@@ -132,7 +132,7 @@ object TableConfigExample {
             }
         }
     }
-    
+
     /**
      * 只读表格配置示例
      * 禁用编辑、删除等操作
@@ -143,18 +143,18 @@ object TableConfigExample {
                 columns(emptyList())
                 getIdFun { it.hashCode() }
             }
-            
+
             api {
-                onLoadData { 
-                    com.addzero.kmp.entity.low_table.SpecPageResult.Companion.empty()
+                onLoadData {
+                    SpecPageResult.Companion.empty()
                 }
             }
-            
+
             ui {
                 showActions(false) // 不显示操作列
                 showBatchOperations(false) // 不显示批量操作
             }
-            
+
             viewModel {
                 selection {
                     enableMultiSelect(false) // 禁用多选
@@ -163,7 +163,7 @@ object TableConfigExample {
             }
         }
     }
-    
+
     /**
      * 简化分页配置示例
      * 使用较小的页面大小和有限的选项
@@ -174,19 +174,19 @@ object TableConfigExample {
                 columns(emptyList())
                 getIdFun { it.hashCode() }
             }
-            
+
             api {
-                onLoadData { 
-                    com.addzero.kmp.entity.low_table.SpecPageResult.Companion.empty()
+                onLoadData {
+                    SpecPageResult.Companion.empty()
                 }
             }
-            
+
             viewModel {
                 pagination {
                     defaultPageSize(5)
                     pageSizeOptions(listOf(5, 10, 20))
                 }
-                
+
                 search {
                     enableAdvancedSearch(false) // 只启用关键词搜索
                     autoSearch(true) // 启用自动搜索
@@ -195,7 +195,7 @@ object TableConfigExample {
             }
         }
     }
-    
+
     /**
      * 高性能配置示例
      * 针对大数据量优化的配置
@@ -206,29 +206,29 @@ object TableConfigExample {
                 columns(emptyList())
                 getIdFun { it.hashCode() }
             }
-            
+
             api {
-                onLoadData { 
-                    com.addzero.kmp.entity.low_table.SpecPageResult.Companion.empty()
+                onLoadData {
+                    SpecPageResult.Companion.empty()
                 }
             }
-            
+
             ui {
                 rowHeight(40) // 较小的行高
                 showBatchOperations(false) // 禁用批量操作以提高性能
             }
-            
+
             viewModel {
                 pagination {
                     defaultPageSize(50) // 较大的页面大小
                     pageSizeOptions(listOf(50, 100, 200))
                 }
-                
+
                 search {
                     autoSearch(false) // 禁用自动搜索
                     enableAdvancedSearch(false) // 禁用高级搜索
                 }
-                
+
                 sort {
                     enableMultiSort(false) // 禁用多列排序
                 }

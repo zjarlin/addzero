@@ -1,4 +1,4 @@
-package com.addzero.kmp.component.table.base.header
+package com.addzero.kmp.component.table.header
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

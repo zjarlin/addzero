@@ -4,8 +4,6 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -14,12 +12,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import com.addzero.kmp.component.table.base.header.column.RenderCell
 import com.addzero.kmp.component.button.AddEditDeleteButton
 import com.addzero.kmp.component.table.TableColumnType
 import com.addzero.kmp.component.table.TableRowType
-import com.addzero.kmp.entity.low_table.EnumButtonColor
-import com.addzero.kmp.entity.low_table.StateActionButton
+import com.addzero.kmp.component.table.header.column.RenderCell
 import com.addzero.kmp.component.table.viewmodel.StatePagination
 
 /**
@@ -97,7 +93,7 @@ fun TableContent(
  * 表格行组件
  */
 @Composable
-private fun  TableRow(
+private fun TableRow(
     getidFun: (TableRowType) -> Any, item: TableRowType, rowNumber: Int, isSelected: Boolean, multiSelect: Boolean, showActions: Boolean = true, rowHeight: Int, backgroundColor: Color, onRowClick: ((TableRowType) -> Unit)?, onDeleteItem: ((Any) -> Unit)?, onCheckboxClick: () -> Unit, horizontalScrollState: ScrollState, columns: List<TableColumnType>, renderCustomActions: @Composable () -> Unit, onEditClick: (TableRowType) -> Unit
 ) {
     Row(
@@ -169,45 +165,3 @@ private fun  TableRow(
     }
 }
 
-@Composable
-private fun <T> RenderActionMenus(
-    visibleActions: List<StateActionButton<T>>, showMenu: Boolean, onClick: StateActionButton<T>, item: T, enabled: StateActionButton<T>
-) {
-    var showMenu1 = showMenu
-
-
-
-    if (visibleActions.isNotEmpty()) {
-        Box {
-            IconButton(
-                onClick = { showMenu1 = true }, modifier = Modifier.size(36.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.MoreVert, contentDescription = "更多操作", modifier = Modifier.size(28.dp)
-                )
-            }
-
-            DropdownMenu(
-                expanded = showMenu1, onDismissRequest = { showMenu1 = false }) {
-                visibleActions.forEach { action ->
-                    DropdownMenuItem(
-                        text = { Text(action.text) }, leadingIcon = {
-                            Icon(
-                                imageVector = Icons.Default.MoreVert, contentDescription = null, tint = when (action.color) {
-                                    EnumButtonColor.PRIMARY -> MaterialTheme.colorScheme.primary
-                                    EnumButtonColor.DANGER -> MaterialTheme.colorScheme.error
-                                    EnumButtonColor.WARNING -> MaterialTheme.colorScheme.tertiary
-                                    EnumButtonColor.SUCCESS -> MaterialTheme.colorScheme.secondary
-                                    EnumButtonColor.DEFAULT -> LocalContentColor.current
-                                }
-                            )
-                        }, onClick = {
-                            showMenu1 = false
-                            action.onClick(item)
-                        }, enabled = action.enabled(item)
-                    )
-                }
-            }
-        }
-    }
-}

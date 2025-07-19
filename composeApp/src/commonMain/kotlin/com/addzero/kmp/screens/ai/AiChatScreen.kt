@@ -429,7 +429,7 @@ fun LabubuPromptSuggestions(
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
-                text = "💡 常用提示词", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface
+                text = "常用提示词", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface
             )
         }
 

@@ -1,4 +1,4 @@
-package com.addzero.kmp.component.table.base.header.column
+package com.addzero.kmp.component.table.header.column
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
