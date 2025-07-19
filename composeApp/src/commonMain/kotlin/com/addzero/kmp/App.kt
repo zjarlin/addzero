@@ -8,7 +8,6 @@ import com.addzero.kmp.ui.auth.LoginScreen
 import com.addzero.kmp.ui.infra.MainLayout
 import com.addzero.kmp.ui.infra.theme.AppThemes
 import com.addzero.kmp.ui.infra.theme.FollowSystemTheme
-import com.addzero.kmp.ui.infra.theme.GradientThemeWrapper
 import com.addzero.kmp.ui.infra.theme.ThemeViewModel
 import com.addzero.kmp.viewmodel.LoginViewModel
 import org.koin.compose.viewmodel.koinViewModel

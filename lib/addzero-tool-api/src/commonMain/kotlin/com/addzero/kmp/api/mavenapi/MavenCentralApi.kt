@@ -1,6 +1,7 @@
 package com.addzero.kmp.api.mavenapi
 
 import com.addzero.kmp.api.mavenapi.MavenCentralApi.getLatestVersion
+import com.addzero.kmp.api.mavenapi.entity.Doc
 import com.addzero.kmp.api.mavenapi.entity.MavenRes
 import com.addzero.kmp.core.network.apiClient
 import io.ktor.client.call.*
@@ -8,10 +9,12 @@ import io.ktor.client.request.*
 
 object MavenCentralApi {
 
-     suspend fun getLatestVersion(groupId: String, artifactId: String): String {
+    suspend fun getLatestVersion(groupId: String, artifactId: String): String {
 
-         val response: MavenRes = apiClient.get("https://search.maven" +
-                ".org/solrsearch/select") {
+        val response = apiClient.get(
+            "https://search.maven" +
+                    ".org/solrsearch/select"
+        ) {
             url {
                 parameters.apply {
                     append("q", "g:$groupId AND a:$artifactId")
@@ -19,17 +22,25 @@ object MavenCentralApi {
                     append("wt", "json")
                 }
             }
-        }.body()
+        }.body<MavenRes>()
 
-        val doc = response.response.docs.first()
+        val doc = response.toDepStr()
+        return doc
+    }
 
+    fun MavenRes.toDepStr(): String = response.docs.map {
+        var toGradleStr = toGradleStr(it)
+        toGradleStr
+    }.joinToString("\n")
+
+    private fun toGradleStr(doc: Doc): String {
         val trimIndent = """
-    implementation("${doc.id}:${doc.latestVersion}")
-            
-        """.trimIndent()
+        implementation("${doc.id}:${doc.latestVersion}")
+            """.trimIndent()
         return trimIndent
     }
 }
+
 suspend fun main() {
 
     try {
