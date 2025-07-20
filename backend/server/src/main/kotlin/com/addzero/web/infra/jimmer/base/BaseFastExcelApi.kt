@@ -55,7 +55,7 @@ public class ExcelDataListener<ExcelDTO>() : ReadListener<ExcelDTO> {
 }
 
 interface BaseFastExcelApi<T : Any, Spec : KSpecification<T>, ExcelWriteDTO : Any> {
-    
+
 
     private val sql: KSqlClient get() = SpringUtil.getBean<KSqlClient>(KSqlClient::class.java)
 
@@ -68,14 +68,14 @@ interface BaseFastExcelApi<T : Any, Spec : KSpecification<T>, ExcelWriteDTO : An
             val excelDataListener = ExcelDataListener<ExcelWriteDTO>()
 
             val excelWriteDTOCLASS = ExcelWriteDTOCLASS()
-            FastExcel.read(it, excelWriteDTOCLASS,excelDataListener) .sheet() .doRead()
+            FastExcel.read(it, excelWriteDTOCLASS, excelDataListener).sheet().doRead()
             val caches = excelDataListener.caches
             caches
         }
         val map = use
             .filter { it.isNotEmpty() }
             .filter { it.isNotNew() }
-        .map { toEntity(it) }
+            .map { toEntity(it) }
         val totalAffectedRowCount = sql.saveEntities(map).totalAffectedRowCount
         return totalAffectedRowCount
     }

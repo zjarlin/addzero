@@ -179,7 +179,8 @@ object TomlUtils {
 
         val mergedVersions = allDtos.flatMap { it.versions ?: emptyList() }.distinctBy { it.versionRef }
 
-        val mergedLibraries = allDtos.flatMap { it.libraries ?: emptyList() }.distinctBy { it.key to it.group to it.name }
+        val mergedLibraries =
+            allDtos.flatMap { it.libraries ?: emptyList() }.distinctBy { it.key to it.group to it.name }
 
         val mergedPlugins = allDtos.flatMap { it.plugins ?: emptyList() }.distinctBy { it.id }
 

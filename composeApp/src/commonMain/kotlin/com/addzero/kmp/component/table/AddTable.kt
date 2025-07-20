@@ -1,27 +1,19 @@
 package com.addzero.kmp.component.table
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.addzero.kmp.component.button.AddIconButton
-import com.addzero.kmp.component.table.config.TableApiConfig
-import com.addzero.kmp.component.table.config.TableConfig
-import com.addzero.kmp.component.table.config.TableDataConfig
-import com.addzero.kmp.component.table.config.TableImportConfig
-import com.addzero.kmp.component.table.config.TableUiConfig
+import com.addzero.kmp.component.table.config.*
 import com.addzero.kmp.component.table.model.AddColumn
 import com.addzero.kmp.entity.low_table.SpecPageResult
 
 
 @Composable
-fun AddTable(data: List<TableRowType>, columns: List<AddColumn>, buttonSloat:@Composable (() -> Unit)? = null,) {
+fun AddTable(data: List<TableRowType>, columns: List<AddColumn>, buttonSloat: @Composable (() -> Unit)? = null) {
 
     // 使用新API创建表格配置
     var apiConfig = TableApiConfig(

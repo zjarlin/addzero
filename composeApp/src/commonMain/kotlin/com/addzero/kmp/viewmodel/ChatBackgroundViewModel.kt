@@ -15,19 +15,19 @@ import org.koin.android.annotation.KoinViewModel
  */
 @KoinViewModel
 class ChatBackgroundViewModel : ViewModel() {
-    
+
     /**
      * 当前背景配置
      */
     var currentBackground by mutableStateOf(ChatBackgroundPresets.LabubuDefault)
         private set
-    
+
     /**
      * 是否显示背景选择器
      */
     var showBackgroundSelector by mutableStateOf(false)
         private set
-    
+
     /**
      * 预设背景列表
      */
@@ -38,39 +38,39 @@ class ChatBackgroundViewModel : ViewModel() {
         "薄荷绿" to ChatBackgroundPresets.MintGreen,
         "纯白简约" to ChatBackgroundPresets.PureWhite
     )
-    
+
     /**
      * 自定义背景图片URL
      */
     var customImageUrl by mutableStateOf("")
         private set
-    
+
     /**
      * 背景透明度
      */
     var backgroundAlpha by mutableStateOf(1f)
         private set
-    
+
     /**
      * 是否启用覆盖层
      */
     var enableOverlay by mutableStateOf(false)
         private set
-    
+
     /**
      * 设置背景配置
      */
     fun setBackground(config: ChatBackgroundConfig) {
         currentBackground = config
     }
-    
+
     /**
      * 设置预设背景
      */
     fun setPresetBackground(preset: ChatBackgroundConfig) {
         currentBackground = preset
     }
-    
+
     /**
      * 设置自定义图片背景
      */
@@ -78,7 +78,7 @@ class ChatBackgroundViewModel : ViewModel() {
         customImageUrl = imageUrl
         currentBackground = ChatBackgroundPresets.customImage(imageUrl, alpha, overlay)
     }
-    
+
     /**
      * 更新背景透明度
      */
@@ -86,7 +86,7 @@ class ChatBackgroundViewModel : ViewModel() {
         backgroundAlpha = alpha
         currentBackground = currentBackground.copy(alpha = alpha)
     }
-    
+
     /**
      * 切换覆盖层
      */
@@ -94,21 +94,21 @@ class ChatBackgroundViewModel : ViewModel() {
         enableOverlay = !enableOverlay
         currentBackground = currentBackground.copy(overlay = enableOverlay)
     }
-    
+
     /**
      * 显示背景选择器
      */
     fun showSelector() {
         showBackgroundSelector = true
     }
-    
+
     /**
      * 隐藏背景选择器
      */
     fun hideSelector() {
         showBackgroundSelector = false
     }
-    
+
     /**
      * 重置为默认背景
      */
@@ -118,7 +118,7 @@ class ChatBackgroundViewModel : ViewModel() {
         backgroundAlpha = 1f
         enableOverlay = false
     }
-    
+
     /**
      * 获取当前背景类型的显示名称
      */
@@ -127,6 +127,7 @@ class ChatBackgroundViewModel : ViewModel() {
             ChatBackgroundType.GRADIENT -> {
                 presetBackgrounds.find { it.second == currentBackground }?.first ?: "自定义渐变"
             }
+
             ChatBackgroundType.IMAGE -> "自定义图片"
             ChatBackgroundType.SOLID_COLOR -> "纯色背景"
             ChatBackgroundType.PATTERN -> "图案背景"

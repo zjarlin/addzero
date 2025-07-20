@@ -1,7 +1,7 @@
 package com.addzero.common.util.database
 
-import com.addzero.kmp.anno.Shit
 import com.addzero.common.kt_util.makeSurroundWith
+import com.addzero.kmp.anno.Shit
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import java.nio.file.Path
@@ -13,6 +13,7 @@ import kotlin.io.path.pathString
 
 private val DEFAULT_DATA_DIR = Path("./data")
 private const val DATA_FILE_NAME = "bonus.d"
+
 @Shit
 fun main() {
     val string = "springcloud/openfegin/eureka/jakarta.validation/mapstruct/hutool/guava/Apache Commons Lang3 \n" +
@@ -26,6 +27,7 @@ fun main() {
 //    val property = System.getProperty("user.home")
 //    val property1 = System.getProperty("user.dir")
 }
+
 fun connectDatabaseOperator(dataDir: Path = DEFAULT_DATA_DIR, schemaName: String): DataSource {
     // val dialect = H2Dialect()
 

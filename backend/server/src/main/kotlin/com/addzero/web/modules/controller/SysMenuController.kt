@@ -11,12 +11,11 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/sysMenu")
 class SysMenuController {
 
-       @PostMapping("/getSysMenu")
+    @PostMapping("/getSysMenu")
     fun getAllMenu(@RequestBody params: Set<String>): Map<String, SysMenuVO> {
         val defaultSysMenuVO = mockkSysMunu()
         return defaultSysMenuVO
     }
-
 
 
 }

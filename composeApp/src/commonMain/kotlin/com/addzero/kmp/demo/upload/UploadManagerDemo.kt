@@ -46,15 +46,15 @@ fun UploadManagerDemo() {
                     text = "文件上传管理器演示",
                     style = MaterialTheme.typography.headlineSmall
                 )
-                
+
                 Text(
                     text = "这是一个类似浏览器下载管理器的文件上传系统。选择文件后，上传任务会自动添加到全局管理器中，您可以查看所有任务的进度、状态和管理操作。",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
-                
+
                 Divider()
-                
+
                 // 设置选项
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -74,7 +74,7 @@ fun UploadManagerDemo() {
                             }
                         )
                     }
-                    
+
                     Row(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -109,14 +109,14 @@ fun UploadManagerDemo() {
                         style = MaterialTheme.typography.titleMedium
                     )
                 }
-                
+
                 AddMultiFilePicker(
                     onFilesSelected = { files ->
                         selectedFiles = files
                     },
                     showUploadManager = false // 这里不显示，下面单独显示
                 )
-                
+
                 // 显示最近选择的文件
                 if (selectedFiles.isNotEmpty()) {
                     Divider()
@@ -173,7 +173,7 @@ fun UploadManagerDemo() {
                             style = MaterialTheme.typography.titleMedium
                         )
                     }
-                    
+
                     // 统计信息
                     val uploadManager = GlobalUploadManager.instance
                     Row(
@@ -196,9 +196,9 @@ fun UploadManagerDemo() {
                             color = MaterialTheme.colorScheme.error
                         )
                     }
-                    
+
                     Divider()
-                    
+
                     // 上传管理器UI
                     UploadManagerUI(
                         modifier = Modifier

@@ -35,7 +35,8 @@ object JlZipUtil {
         // 创建 zip 文件并发送给 HTTP 响应流
         val zipFile = createZipFile(handedFiles)
         val inputStream1: BufferedInputStream = FileUtil.getInputStream(zipFile)
-        DownloadUtil.downloadZip("output.zip",
+        DownloadUtil.downloadZip(
+            "output.zip",
             Consumer<OutputStream> { outputStream1: OutputStream -> IoUtil.copy(inputStream1, outputStream1) })
         //        删除临时资源
         FileUtil.del(zipFile)
@@ -53,7 +54,7 @@ object JlZipUtil {
         }
     }
 
-    private fun createZipFile(files: Array<File> ): File {
+    private fun createZipFile(files: Array<File>): File {
         val zipFile = File.createTempFile("output", ".zip")
         val fileOutputStream = FileOutputStream(zipFile)
         val zipOutputStream = ZipOutputStream(fileOutputStream)

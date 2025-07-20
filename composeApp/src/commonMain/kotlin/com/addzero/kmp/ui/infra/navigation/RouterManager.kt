@@ -6,9 +6,9 @@ import androidx.navigation.NavController
 
 /**
  * 路由管理器组件
- * 
+ *
  * 监听当前路由变化并进行相应的导航
- * 
+ *
  * @param navController 导航控制器
  * @param navHostInitialized 导航图是否已初始化
  * @param menuViewModel 菜单视图模型

@@ -18,7 +18,7 @@ fun <E : Any, V : View<E>> queryPage(
 ): Page<V> {
     val fetchPage = sql.createLowQuery(
         sortStats, andStateSearchConditions, orStateSearchConditions, entityClass, view
-    ).fetchPage(pageNo-1, pageSize)
+    ).fetchPage(pageNo - 1, pageSize)
     return fetchPage
 }
 
@@ -34,7 +34,7 @@ fun <E : Any, V : View<E>> queryPage(
 
     val fetchPage = sql.createLowQuery(
         sortStats, andStateSearchConditions, orStateSearchConditions, entityClass, stateVos
-    ).fetchPage(pageNo-1, pageSize)
+    ).fetchPage(pageNo - 1, pageSize)
     return fetchPage
 
 

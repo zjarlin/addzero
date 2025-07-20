@@ -27,10 +27,10 @@ import org.koin.compose.viewmodel.koinViewModel
 
 /**
  * 🎨 增强版通用表格组件
- * 
+ *
  * 使用 JetBrains Mellum 风格的卡片来展示表头和分页，
  * 提供更现代化的视觉效果和用户体验
- * 
+ *
  * @param modifier 修饰符
  * @param config 表格配置
  * @param buttonSlot 自定义按钮插槽
@@ -177,7 +177,7 @@ fun AddGenericTable(
  * 🎨 预设的表格卡片样式组合
  */
 object TableCardStyles {
-    
+
     /**
      * 深色主题样式
      */
@@ -201,7 +201,6 @@ object TableCardStyles {
     }
 
 
-    
     /**
      * 浅色主题样式
      */

@@ -48,6 +48,7 @@ fun <E : Any> KMutableRootQuery<E>.buildOrderByArray(
         buildOrderBys(it)
     }.toTypedArray()
 }
+
 // Main query functions
 fun <E : Any, V : View<E>> KSqlClient.createLowQuery(
     sortStats: Set<StateSort>,
@@ -149,12 +150,12 @@ private fun <E : Any> KMutableRootQuery<E>.buildConditions(
         val split = toStr.split(",")
 
         if (split.any { NumberUtil.isNumber(it) }) {
-            val pair = Convert.toDouble(split[0])  to Convert.toDouble(split[1])
+            val pair = Convert.toDouble(split[0]) to Convert.toDouble(split[1])
             actValue = pair
         }
 
         if (split.any { JlObjUtil.isDateValue(it) }) {
-            val pair = Convert.toDate(split[0])  to Convert.toDate(split[1])
+            val pair = Convert.toDate(split[0]) to Convert.toDate(split[1])
             actValue = pair
         }
     }

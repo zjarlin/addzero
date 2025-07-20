@@ -53,7 +53,8 @@ inline fun <reified A : Any, reified E : Any> A.toJimmerEntity(): E {
 }
 
 
-fun KSqlClient.sql(sql: String): List<Map<String?, Any?>?> = SpringUtil.getBean(JdbcTemplate::class.java).queryForList(sql)
+fun KSqlClient.sql(sql: String): List<Map<String?, Any?>?> =
+    SpringUtil.getBean(JdbcTemplate::class.java).queryForList(sql)
 
 
 infix fun <E : Enum<E>> KExpression<List<E>>.`enumValueIn?`(enums: Collection<E>): KNonNullExpression<Boolean>? {

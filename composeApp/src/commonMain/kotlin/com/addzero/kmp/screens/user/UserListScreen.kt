@@ -32,14 +32,14 @@ fun UserListScreen() {
             modifier = Modifier.padding(bottom = 16.dp)
         )
 
-        AddLazyList (users){
+        AddLazyList(users) {
             UserListItem(
                 user = it,
-                onDetail={},
+                onDetail = {},
                 onEdit = { selectedUser = it },
                 onDelete = { /* TODO: 实现删除功能 */ }
             )
-         }
+        }
 
     }
 

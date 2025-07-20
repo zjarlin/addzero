@@ -2,7 +2,6 @@ package org.babyfish
 
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
-import kotlin.collections.forEach
 
 fun KotlinMultiplatformExtension.doIos(nt: List<KotlinNativeTarget>): Unit {
     nt.forEach { iosTarget ->
@@ -13,7 +12,6 @@ fun KotlinMultiplatformExtension.doIos(nt: List<KotlinNativeTarget>): Unit {
     }
 
 }
-
 
 
 fun KotlinMultiplatformExtension.defIos(): List<KotlinNativeTarget> {

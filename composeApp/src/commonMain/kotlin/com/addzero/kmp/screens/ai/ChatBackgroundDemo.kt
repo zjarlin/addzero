@@ -4,7 +4,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Palette
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -13,11 +16,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.addzero.kmp.annotation.Route
 import com.addzero.kmp.component.background.ChatBackground
 import com.addzero.kmp.component.background.ChatBackgroundConfig
 import com.addzero.kmp.component.background.ChatBackgroundPresets
 import com.addzero.kmp.component.background.ChatBackgroundType
-import com.addzero.kmp.annotation.Route
 
 
 /**
@@ -28,7 +31,7 @@ import com.addzero.kmp.annotation.Route
 fun ChatBackgroundDemo() {
     val scrollState = rememberScrollState()
     var selectedPreset by remember { mutableStateOf(ChatBackgroundPresets.LabubuDefault) }
-    
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -44,30 +47,30 @@ fun ChatBackgroundDemo() {
             ),
             color = LabubuColors.PrimaryPink
         )
-        
+
         // 功能介绍
         BackgroundSystemIntro()
-        
+
         HorizontalDivider()
-        
+
         // 背景预览
         BackgroundPreview(selectedPreset)
-        
+
         HorizontalDivider()
-        
+
         // 预设背景展示
         PresetBackgroundsShowcase(
             selectedPreset = selectedPreset,
             onPresetSelected = { selectedPreset = it }
         )
-        
+
         HorizontalDivider()
-        
+
         // 技术特性
         TechnicalFeatures()
-        
+
         HorizontalDivider()
-        
+
         // 使用指南
         UsageGuide()
     }
@@ -103,7 +106,7 @@ private fun BackgroundSystemIntro() {
                     color = LabubuColors.DarkText
                 )
             }
-            
+
             Text(
                 text = """
                     🎨 参考Avatar组件设计模式的独立背景系统：
@@ -142,7 +145,7 @@ private fun BackgroundPreview(config: ChatBackgroundConfig) {
                 ),
                 color = LabubuColors.DarkText
             )
-            
+
             // 背景预览区域
             ChatBackground(
                 config = config,
@@ -174,7 +177,7 @@ private fun BackgroundPreview(config: ChatBackgroundConfig) {
                             )
                         }
                     }
-                    
+
                     // 模拟用户消息
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -211,7 +214,7 @@ private fun PresetBackgroundsShowcase(
         "薄荷绿" to ChatBackgroundPresets.MintGreen,
         "纯白简约" to ChatBackgroundPresets.PureWhite
     )
-    
+
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         Text(
             text = "🌈 预设背景",
@@ -220,7 +223,7 @@ private fun PresetBackgroundsShowcase(
             ),
             color = LabubuColors.DarkText
         )
-        
+
         presets.forEach { (name, config) ->
             PresetBackgroundCard(
                 name = name,
@@ -260,7 +263,7 @@ private fun PresetBackgroundCard(
                 config = config,
                 modifier = Modifier.size(60.dp)
             ) {}
-            
+
             // 背景信息
             Column(modifier = Modifier.weight(1f)) {
                 Text(
@@ -280,7 +283,7 @@ private fun PresetBackgroundCard(
                     color = LabubuColors.LightText
                 )
             }
-            
+
             // 选中指示器
             if (isSelected) {
                 Icon(
@@ -324,7 +327,7 @@ private fun TechnicalFeatures() {
                     color = LabubuColors.DarkText
                 )
             }
-            
+
             val features = listOf(
                 "🔧 组件化架构" to "参考Avatar设计，独立可复用",
                 "🎨 多种背景类型" to "渐变、图片、纯色、图案、动画",
@@ -335,7 +338,7 @@ private fun TechnicalFeatures() {
                 "💾 状态管理" to "ViewModel管理背景状态",
                 "🎯 性能优化" to "异步加载和缓存机制"
             )
-            
+
             features.forEach { (title, description) ->
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -392,7 +395,7 @@ private fun UsageGuide() {
                     color = LabubuColors.DarkText
                 )
             }
-            
+
             Text(
                 text = """
                     📖 如何使用背景系统：

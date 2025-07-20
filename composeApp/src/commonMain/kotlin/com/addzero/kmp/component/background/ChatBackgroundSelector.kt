@@ -8,17 +8,16 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.addzero.kmp.screens.ai.LabubuColors
 import com.addzero.kmp.viewmodel.ChatBackgroundViewModel
@@ -77,7 +76,7 @@ private fun ChatBackgroundSelectorContent(
                     ),
                     color = LabubuColors.PrimaryPink
                 )
-                
+
                 IconButton(onClick = onDismiss) {
                     Icon(
                         Icons.Default.Close,
@@ -86,27 +85,27 @@ private fun ChatBackgroundSelectorContent(
                     )
                 }
             }
-            
+
             // 当前背景信息
             CurrentBackgroundInfo(backgroundViewModel)
-            
+
             HorizontalDivider()
-            
+
             // 预设背景选择
             PresetBackgroundSection(backgroundViewModel)
-            
+
             HorizontalDivider()
-            
+
             // 自定义背景选项
             CustomBackgroundSection(backgroundViewModel)
-            
+
             HorizontalDivider()
-            
+
             // 背景设置
             BackgroundSettingsSection(backgroundViewModel)
-            
+
             Spacer(modifier = Modifier.weight(1f))
-            
+
             // 底部按钮
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -120,7 +119,7 @@ private fun ChatBackgroundSelectorContent(
                 ) {
                     Text("重置默认")
                 }
-                
+
                 Button(
                     onClick = onDismiss,
                     modifier = Modifier.weight(1f),
@@ -162,7 +161,7 @@ private fun CurrentBackgroundInfo(backgroundViewModel: ChatBackgroundViewModel) 
                     modifier = Modifier.fillMaxSize()
                 ) {}
             }
-            
+
             Column {
                 Text(
                     text = "当前背景",
@@ -194,7 +193,7 @@ private fun PresetBackgroundSection(backgroundViewModel: ChatBackgroundViewModel
             ),
             color = LabubuColors.DarkText
         )
-        
+
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
@@ -239,7 +238,7 @@ private fun PresetBackgroundItem(
                 config = config,
                 modifier = Modifier.fillMaxSize()
             ) {}
-            
+
             if (isSelected) {
                 Box(
                     modifier = Modifier
@@ -256,7 +255,7 @@ private fun PresetBackgroundItem(
                 }
             }
         }
-        
+
         Text(
             text = name,
             style = MaterialTheme.typography.bodySmall,
@@ -271,7 +270,7 @@ private fun PresetBackgroundItem(
 @Composable
 private fun CustomBackgroundSection(backgroundViewModel: ChatBackgroundViewModel) {
     var imageUrl by remember { mutableStateOf(backgroundViewModel.customImageUrl) }
-    
+
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         Text(
             text = "🖼️ 自定义背景",
@@ -280,7 +279,7 @@ private fun CustomBackgroundSection(backgroundViewModel: ChatBackgroundViewModel
             ),
             color = LabubuColors.DarkText
         )
-        
+
         OutlinedTextField(
             value = imageUrl,
             onValueChange = { imageUrl = it },
@@ -315,7 +314,7 @@ private fun BackgroundSettingsSection(backgroundViewModel: ChatBackgroundViewMod
             ),
             color = LabubuColors.DarkText
         )
-        
+
         // 透明度设置
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -327,14 +326,14 @@ private fun BackgroundSettingsSection(backgroundViewModel: ChatBackgroundViewMod
                 style = MaterialTheme.typography.bodyMedium,
                 color = LabubuColors.DarkText
             )
-            
+
             Text(
                 text = "${(backgroundViewModel.backgroundAlpha * 100).toInt()}%",
                 style = MaterialTheme.typography.bodySmall,
                 color = LabubuColors.LightText
             )
         }
-        
+
         Slider(
             value = backgroundViewModel.backgroundAlpha,
             onValueChange = { backgroundViewModel.updateBackgroundAlpha(it) },
@@ -344,7 +343,7 @@ private fun BackgroundSettingsSection(backgroundViewModel: ChatBackgroundViewMod
                 activeTrackColor = LabubuColors.PrimaryPink
             )
         )
-        
+
         // 覆盖层设置
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -356,7 +355,7 @@ private fun BackgroundSettingsSection(backgroundViewModel: ChatBackgroundViewMod
                 style = MaterialTheme.typography.bodyMedium,
                 color = LabubuColors.DarkText
             )
-            
+
             Switch(
                 checked = backgroundViewModel.enableOverlay,
                 onCheckedChange = { backgroundViewModel.toggleOverlay() },

@@ -1,6 +1,5 @@
 package org.babyfish.jimmer
 
-import org.babyfish.jimmer.Vars.Modules.COMPOSE_APP
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -39,13 +38,11 @@ object Vars {
     val gitRepoName = gitRepoPath.removeSuffix(".git")
 
 
-
     val commonMainKspBuildMetaDataDir = "build/generated/ksp/metadata/commonMain/kotlin"
     val jvmMainKspBuildMetaDataDir = "build/generated/ksp/main/kotlin"
 
     val commonMainSourceDir = "src/commonMain/kotlin"
     val jvmMainSourceDir = "src/main/kotlin"
-
 
 
     // 项目模块名称常量

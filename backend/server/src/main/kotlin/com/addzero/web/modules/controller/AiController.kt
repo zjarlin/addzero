@@ -5,8 +5,6 @@ import cn.hutool.ai.model.doubao.DoubaoCommon
 import cn.hutool.ai.model.doubao.DoubaoService
 import com.addzero.kmp.entity.VisionRequest
 import com.addzero.kmp.exp.BizException
-import com.addzero.model.entity.SysAiPrompt
-import org.springframework.ai.tool.ToolCallbackProvider
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -68,8 +66,6 @@ class AiController(
 //查询视频生成任务信息
         val videoTasksInfo: String? = doubaoService.getVideoTasksInfo(taskkId)
     }
-
-
 
 
 }

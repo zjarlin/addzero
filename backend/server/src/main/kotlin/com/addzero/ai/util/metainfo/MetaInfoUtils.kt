@@ -11,7 +11,7 @@ import java.lang.reflect.ParameterizedType
 object MetaInfoUtils {
 
     fun extractTableName(sql: String?): String? {
-        if (sql==null||sql.isBlank()) {
+        if (sql == null || sql.isBlank()) {
             return null
         }
         val regex = "(?i)from\\s+([a-zA-Z0-9_]+)".toRegex() // 定义正则表达式
@@ -40,29 +40,36 @@ object MetaInfoUtils {
             // 字段注释
             "io.swagger.annotations.ApiModelProperty" // Swagger 2
 
-            ,"com.fasterxml.jackson.annotation.JsonPropertyDescription"
+            , "com.fasterxml.jackson.annotation.JsonPropertyDescription"
         )
         val find = swaggerAnnotations.filter { findAnno(it) }
 
         // 查找最后一个匹配的注解并获取描述
         val lastOrNull = find.asSequence()
-        .mapNotNull { annotation ->
-            val loadedClass = ClassUtil.loadClass<Annotation>(annotation)
-            val swaggerAnnotation = AnnotationUtil.getAnnotation<Annotation?>(annotatedElement, loadedClass)
-            swaggerAnnotation?.let {
-                // 根据不同的注解类型提取描述
-                when (annotation) {
-                    "io.swagger.annotations.Api" -> it.javaClass.getMethod("description").invoke(it) as? String
-                    "io.swagger.v3.oas.annotations.Operation" -> it.javaClass.getMethod("summary") .invoke(it) as? String
-                    "io.swagger.annotations.ApiModel" -> it.javaClass.getMethod("description").invoke(it) as? String
-                    "io.swagger.v3.oas.annotations.media.Schema" -> it.javaClass.getMethod("description") .invoke(it) as? String
-                    "io.swagger.annotations.ApiModelProperty" -> it.javaClass.getMethod("value").invoke(it) as? String
-                    "com.fasterxml.jackson.annotation.JsonPropertyDescription" -> it.javaClass.getMethod("value").invoke(it) as? String
+            .mapNotNull { annotation ->
+                val loadedClass = ClassUtil.loadClass<Annotation>(annotation)
+                val swaggerAnnotation = AnnotationUtil.getAnnotation<Annotation?>(annotatedElement, loadedClass)
+                swaggerAnnotation?.let {
+                    // 根据不同的注解类型提取描述
+                    when (annotation) {
+                        "io.swagger.annotations.Api" -> it.javaClass.getMethod("description").invoke(it) as? String
+                        "io.swagger.v3.oas.annotations.Operation" -> it.javaClass.getMethod("summary")
+                            .invoke(it) as? String
 
-                    else -> null
+                        "io.swagger.annotations.ApiModel" -> it.javaClass.getMethod("description").invoke(it) as? String
+                        "io.swagger.v3.oas.annotations.media.Schema" -> it.javaClass.getMethod("description")
+                            .invoke(it) as? String
+
+                        "io.swagger.annotations.ApiModelProperty" -> it.javaClass.getMethod("value")
+                            .invoke(it) as? String
+
+                        "com.fasterxml.jackson.annotation.JsonPropertyDescription" -> it.javaClass.getMethod("value")
+                            .invoke(it) as? String
+
+                        else -> null
+                    }
                 }
-            }
-        }.lastOrNull()
+            }.lastOrNull()
         return lastOrNull // 取最后一个找到的描述
     }
 

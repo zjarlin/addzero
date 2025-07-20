@@ -15,11 +15,7 @@ import com.addzero.kmp.component.button.AddIconButton
 import com.addzero.kmp.component.form.DynamicFormItem
 import com.addzero.kmp.component.table.TableCardStyles
 import com.addzero.kmp.component.table.TableRowType
-import com.addzero.kmp.component.table.config.TableApiConfig
-import com.addzero.kmp.component.table.config.TableConfig
-import com.addzero.kmp.component.table.config.TableDataConfig
-import com.addzero.kmp.component.table.config.TableImportConfig
-import com.addzero.kmp.component.table.config.TableUiConfig
+import com.addzero.kmp.component.table.config.*
 import com.addzero.kmp.component.table.model.AddColumn
 import com.addzero.kmp.component.table.model.SysColumnMetaConfig
 import com.addzero.kmp.entity.low_table.SpecPageResult

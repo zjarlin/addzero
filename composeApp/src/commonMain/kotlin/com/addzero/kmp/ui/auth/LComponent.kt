@@ -29,7 +29,10 @@ fun LComponent(
 
     customLogo: @Composable (() -> Unit)? = null,
 
-    logo: ImageVector, firstTitle: String = "欢迎回来", secondTitle: String = "请登录您的账户", content: @Composable () -> Unit
+    logo: ImageVector,
+    firstTitle: String = "欢迎回来",
+    secondTitle: String = "请登录您的账户",
+    content: @Composable () -> Unit
 ) {
     // Animation state
     var cardVisible by remember { mutableStateOf(false) }

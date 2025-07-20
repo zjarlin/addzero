@@ -6,31 +6,27 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Deselect
-import androidx.compose.material.icons.filled.DownloadForOffline
-import androidx.compose.material.icons.filled.SelectAll
-import androidx.compose.material.icons.filled.UploadFile
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.addzero.kmp.component.button.AddIconButton
 import com.addzero.kmp.component.card.MellumCardType
 import com.addzero.kmp.component.table.body.TableContent
+import com.addzero.kmp.component.table.config.TableConfig
 import com.addzero.kmp.component.table.header.AddAdvSearchPopBar
 import com.addzero.kmp.component.table.header.AddTableHeader
-import com.addzero.kmp.component.table.pagination.AddTablePagination
 import com.addzero.kmp.component.table.header.AddTableStatsCard
+import com.addzero.kmp.component.table.pagination.AddTablePagination
 import com.addzero.kmp.component.table.viewmodel.TableCompositeViewModel
-import com.addzero.kmp.component.table.config.TableConfig
 import org.koin.compose.viewmodel.koinViewModel
 
 /**
  * 🎨 增强版通用表格组件
- * 
+ *
  * 使用 JetBrains Mellum 风格的卡片来展示表头和分页，
  * 提供更现代化的视觉效果和用户体验
- * 
+ *
  * @param modifier 修饰符
  * @param config 表格配置
  * @param buttonSlot 自定义按钮插槽
@@ -177,7 +173,7 @@ fun AddGenericTable(
  * 🎨 预设的表格卡片样式组合
  */
 object TableCardStyles {
-    
+
     /**
      * 深色主题样式
      */
@@ -201,7 +197,6 @@ object TableCardStyles {
     }
 
 
-    
     /**
      * 浅色主题样式
      */

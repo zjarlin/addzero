@@ -23,28 +23,46 @@ import com.addzero.kmp.component.table.viewmodel.StatePagination
  */
 @Composable
 fun TableContent(
-    getIdFun: (TableRowType) -> Any = { it.hashCode() }, data: List<TableRowType>, selectedItems:
-    Set<Any>, columns: List<TableColumnType>, pageState: StatePagination,
-    multiSelect:
-    Boolean, showActions: Boolean, rowHeight: Int, onRowClick: (TableRowType) -> Unit = {}, onDeleteItem: ((Any) -> Unit)? = null, onCheckboxClick: (TableRowType) -> Unit = {}, onBatchDelete: () -> Unit = {}, onBatchExport: () -> Unit = {}, scrollState: ScrollState? = null, modifier: Modifier = Modifier, renderCustomActions: @Composable (() -> Unit), onEditClick: (TableRowType) -> Unit
+    getIdFun: (TableRowType) -> Any = { it.hashCode() },
+    data: List<TableRowType>,
+    selectedItems: Set<Any>,
+    columns: List<TableColumnType>,
+    pageState: StatePagination,
+    multiSelect: Boolean,
+    showActions: Boolean,
+    rowHeight: Int,
+    onRowClick: (TableRowType) -> Unit = {},
+    onDeleteItem: ((Any) -> Unit)? = null,
+    onCheckboxClick: (TableRowType) -> Unit = {},
+    onBatchDelete: () -> Unit = {},
+    onBatchExport: () -> Unit = {},
+    scrollState: ScrollState? = null,
+    modifier: Modifier = Modifier,
+    renderCustomActions: @Composable (() -> Unit),
+    onEditClick: (TableRowType) -> Unit
 ) {
     val horizontalScrollState = scrollState ?: rememberScrollState()
 
     // 批量操作按钮
     if (multiSelect && selectedItems.isNotEmpty()) {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(8.dp), horizontalArrangement = Arrangement.End, verticalAlignment = Alignment.CenterVertically
+            modifier = Modifier.fillMaxWidth().padding(8.dp),
+            horizontalArrangement = Arrangement.End,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                "已选择 ${selectedItems.size} 项" + ",已选择的id$selectedItems", style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(end = 16.dp)
+                "已选择 ${selectedItems.size} 项" + ",已选择的id$selectedItems",
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(end = 16.dp)
             )
-
+            // @RBAC_PERMISSION: table.batch.delete - 批量删除权限
             Button(onClick = onBatchDelete) {
                 Text("批量删除")
             }
 
             Spacer(modifier = Modifier.width(8.dp))
 
+            // @RBAC_PERMISSION: table.batch.export - 批量导出权限
             Button(onClick = onBatchExport) {
                 Text("导出选中")
             }
@@ -58,10 +76,13 @@ fun TableContent(
             if (data.isEmpty()) {
                 item {
                     Box(
-                        modifier = Modifier.fillMaxWidth().height(200.dp).padding(16.dp), contentAlignment = Alignment.Center
+                        modifier = Modifier.fillMaxWidth().height(200.dp).padding(16.dp),
+                        contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = "没有数据", style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant
+                            text = "没有数据",
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }
@@ -75,12 +96,28 @@ fun TableContent(
                     val rowNumber = (pageState.currentPage - 1) * pageState.pageSize + index + 1
 
                     TableRow(
-                        getidFun = getIdFun, item = item, rowNumber = rowNumber, isSelected = isSelected, multiSelect = multiSelect, showActions = showActions, rowHeight = rowHeight, backgroundColor = backgroundColor, onRowClick = onRowClick, onDeleteItem = onDeleteItem, onCheckboxClick = { onCheckboxClick(item) }, horizontalScrollState = horizontalScrollState, columns = columns, renderCustomActions = renderCustomActions, onEditClick = onEditClick
+                        getidFun = getIdFun,
+                        item = item,
+                        rowNumber = rowNumber,
+                        isSelected = isSelected,
+                        multiSelect = multiSelect,
+                        showActions = showActions,
+                        rowHeight = rowHeight,
+                        backgroundColor = backgroundColor,
+                        onRowClick = onRowClick,
+                        onDeleteItem = onDeleteItem,
+                        onCheckboxClick = { onCheckboxClick(item) },
+                        horizontalScrollState = horizontalScrollState,
+                        columns = columns,
+                        renderCustomActions = renderCustomActions,
+                        onEditClick = onEditClick
                     )
 
                     if (index < data.size - 1) {
                         HorizontalDivider(
-                            Modifier, DividerDefaults.Thickness, color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
+                            Modifier,
+                            DividerDefaults.Thickness,
+                            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
                         )
                     }
                 }
@@ -94,10 +131,25 @@ fun TableContent(
  */
 @Composable
 private fun TableRow(
-    getidFun: (TableRowType) -> Any, item: TableRowType, rowNumber: Int, isSelected: Boolean, multiSelect: Boolean, showActions: Boolean = true, rowHeight: Int, backgroundColor: Color, onRowClick: ((TableRowType) -> Unit)?, onDeleteItem: ((Any) -> Unit)?, onCheckboxClick: () -> Unit, horizontalScrollState: ScrollState, columns: List<TableColumnType>, renderCustomActions: @Composable () -> Unit, onEditClick: (TableRowType) -> Unit
+    getidFun: (TableRowType) -> Any,
+    item: TableRowType,
+    rowNumber: Int,
+    isSelected: Boolean,
+    multiSelect: Boolean,
+    showActions: Boolean = true,
+    rowHeight: Int,
+    backgroundColor: Color,
+    onRowClick: ((TableRowType) -> Unit)?,
+    onDeleteItem: ((Any) -> Unit)?,
+    onCheckboxClick: () -> Unit,
+    horizontalScrollState: ScrollState,
+    columns: List<TableColumnType>,
+    renderCustomActions: @Composable () -> Unit,
+    onEditClick: (TableRowType) -> Unit
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth().height(rowHeight.dp).background(backgroundColor), verticalAlignment = Alignment.CenterVertically
+        modifier = Modifier.fillMaxWidth().height(rowHeight.dp).background(backgroundColor),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         // 固定列区域（复选框和行号）
         Row(
@@ -109,6 +161,7 @@ private fun TableRow(
                 Box(
                     modifier = Modifier.padding(horizontal = 4.dp).width(40.dp), contentAlignment = Alignment.Center
                 ) {
+                    // @RBAC_PERMISSION: table.row.select - 行选择权限
                     Checkbox(
                         checked = isSelected, onCheckedChange = { onCheckboxClick() })
                 }
@@ -128,7 +181,10 @@ private fun TableRow(
 
         // 可滚动的数据列区域
         Row(
-            modifier = Modifier.weight(1f).fillMaxHeight().horizontalScroll(horizontalScrollState).clickable(enabled = onRowClick != null) { onRowClick?.invoke(item) }.padding(start = 8.dp, end = 8.dp), verticalAlignment = Alignment.CenterVertically
+            // @RBAC_PERMISSION: table.row.click - 行点击权限
+            modifier = Modifier.weight(1f).fillMaxHeight().horizontalScroll(horizontalScrollState)
+                .clickable(enabled = onRowClick != null) { onRowClick?.invoke(item) }.padding(start = 8.dp, end = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             // 数据列
             val visibleColumns = columns.filter { it.metaconfig.showInList }
@@ -148,16 +204,16 @@ private fun TableRow(
             ) {
 
 
-                AddEditDeleteButton(
-                    onEditClick = {
-                        onEditClick(item)
-                    }, onDeleteClick = {
-                        onDeleteItem?.invoke(getidFun(item))
-                    },
-                    renderCustomActions = {
-                        renderCustomActions()
-                    }
-                )
+                // @RBAC_PERMISSION: table.row.edit - 行编辑权限
+                // @RBAC_PERMISSION: table.row.delete - 行删除权限
+                // @RBAC_PERMISSION: table.row.actions - 行自定义操作权限
+                AddEditDeleteButton(onEditClick = {
+                    onEditClick(item)
+                }, onDeleteClick = {
+                    onDeleteItem?.invoke(getidFun(item))
+                }, renderCustomActions = {
+                    renderCustomActions()
+                })
 
 
             }

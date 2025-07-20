@@ -3,7 +3,6 @@ package com.addzero.kmp.entity.low_table
 import kotlinx.serialization.Serializable
 
 
-
 /**
  * 列元数据
  *

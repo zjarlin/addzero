@@ -1,4 +1,3 @@
-
 plugins {
     id("spring-conventions")
 }

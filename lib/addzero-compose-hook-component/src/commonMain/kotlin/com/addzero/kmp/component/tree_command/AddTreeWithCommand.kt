@@ -16,6 +16,7 @@ import com.addzero.kmp.component.tree.AddTree
 import com.addzero.kmp.component.tree.TreeViewModel
 import com.addzero.kmp.component.tree.rememberTreeViewModel
 import com.addzero.kmp.component.tree.selection.CompleteSelectionResult
+
 /**
  * 🚀 完全重构的支持命令的树组件 - 基于 TreeViewModel 架构
  *
@@ -97,17 +98,21 @@ fun <T> AddTreeWithCommand(
             TreeCommand.SEARCH -> {
                 viewModel.toggleSearchBar()
             }
+
             TreeCommand.MULTI_SELECT -> {
                 viewModel.updateMultiSelectMode(!viewModel.multiSelectMode)
             }
+
             TreeCommand.EXPAND_ALL -> {
                 viewModel.expandAll()
                 onCommandInvoke(command, viewModel.expandedIds)
             }
+
             TreeCommand.COLLAPSE_ALL -> {
                 viewModel.collapseAll()
                 onCommandInvoke(command, null)
             }
+
             else -> onCommandInvoke(command, null)
         }
     }
@@ -231,7 +236,6 @@ private fun SearchBar(
         shape = MaterialTheme.shapes.small
     )
 }
-
 
 
 /**

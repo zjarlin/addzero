@@ -68,24 +68,24 @@ class TableSortViewModel : ViewModel() {
         // 更新排序状态 - 强制创建新实例
         sortState = newSortState.toMutableSet()
     }
-    
+
     /**
      * 设置指定列的排序方向
      */
     fun setSorting(columnKey: String, direction: EnumSortDirection) {
         val newSortState = sortState.toMutableList()
-        
+
         // 移除旧的排序状态
         newSortState.removeIf { it.columnKey == columnKey }
-        
+
         // 只有非NONE状态才添加
         if (direction != EnumSortDirection.NONE) {
             newSortState.add(StateSort(columnKey, direction))
         }
-        
+
         sortState = newSortState.toMutableSet()
     }
-    
+
     /**
      * 清除指定列的排序
      */
@@ -94,29 +94,29 @@ class TableSortViewModel : ViewModel() {
         newSortState.removeIf { it.columnKey == columnKey }
         sortState = newSortState.toMutableSet()
     }
-    
+
     /**
      * 清除所有排序
      */
     fun clearAllSorting() {
         sortState = mutableSetOf()
     }
-    
+
     /**
      * 判断某列是否有排序状态
      */
     fun isSorted(columnKey: String): Boolean {
         return sortState.any { it.columnKey == columnKey }
     }
-    
+
     /**
      * 获取某列的排序方向
      */
     fun getSortDirection(columnKey: String): EnumSortDirection {
         return sortState.find { it.columnKey == columnKey }?.direction ?: EnumSortDirection.NONE
     }
-    
-    
+
+
     /**
      * 添加排序条件
      */
@@ -128,13 +128,13 @@ class TableSortViewModel : ViewModel() {
             sortState = newSortState.toMutableSet()
         }
     }
-    
+
     /**
      * 是否有任何排序条件
      */
     val hasAnySorting: Boolean
         get() = sortState.isNotEmpty()
-    
+
     /**
      * 获取排序条件数量
      */

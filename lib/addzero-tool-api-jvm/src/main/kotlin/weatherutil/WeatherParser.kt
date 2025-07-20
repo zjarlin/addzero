@@ -22,8 +22,17 @@ object WeatherParser {
             val pmCondition = cells.get(3).text()
             val wind = cells.get(4).text()
             val span = cells.get(5).select("span").text()
-            val aqi = if (span == "-") 0 else span.split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[0].toInt()
-            val weatherData = WeatherData(date = date, highTemp = highTemp, lowTemp = lowTemp, amCondition = amCondition, pmCondition = pmCondition, wind = wind, aqi = aqi)
+            val aqi = if (span == "-") 0 else span.split(" ".toRegex()).dropLastWhile { it.isEmpty() }
+                .toTypedArray()[0].toInt()
+            val weatherData = WeatherData(
+                date = date,
+                highTemp = highTemp,
+                lowTemp = lowTemp,
+                amCondition = amCondition,
+                pmCondition = pmCondition,
+                wind = wind,
+                aqi = aqi
+            )
             weatherData
         }.collect(Collectors.toList())
     }

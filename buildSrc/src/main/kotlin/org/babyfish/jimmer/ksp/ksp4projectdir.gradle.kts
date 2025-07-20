@@ -1,4 +1,3 @@
-import gradle.kotlin.dsl.accessors._c4797de79829d8764cd1d19432473560.ksp
 import org.babyfish.jimmer.Vars.commonMainKspBuildMetaDataDir
 import org.babyfish.jimmer.Vars.commonMainSourceDir
 import org.babyfish.jimmer.Vars.jvmMainKspBuildMetaDataDir
@@ -7,14 +6,11 @@ import org.babyfish.jimmer.Vars.jvmMainSourceDir
 // 计算各模块目录（使用常量字符串）
 
 
-
 val serverProject = project(":backend:server")
 val composeProject = project(":composeApp")
 val sharedProject = project(":shared")
 val serverSourceDir = serverProject.projectDir.resolve(jvmMainSourceDir).absolutePath
 val serverBuildDir = serverProject.projectDir.resolve(jvmMainKspBuildMetaDataDir).absolutePath
-
-
 
 
 val composeSourceDir = composeProject.projectDir.resolve(commonMainSourceDir).absolutePath

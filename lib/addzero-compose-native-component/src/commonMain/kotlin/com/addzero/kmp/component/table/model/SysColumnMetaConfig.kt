@@ -15,12 +15,12 @@ data class SysColumnMetaConfig(
      *
      * Boolean
      */
-    val kmpType: String="String",
+    val kmpType: String = "String",
     //显示在列表
     val showInList: Boolean = true,
     //可搜索
     val searchable: Boolean = true,
     //可排序
-    val sortable: Boolean=true,
+    val sortable: Boolean = true,
 
     )

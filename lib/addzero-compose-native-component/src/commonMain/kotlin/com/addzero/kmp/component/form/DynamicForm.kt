@@ -2,9 +2,9 @@ package com.addzero.kmp.component.form
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.addzero.kmp.component.high_level.AddMultiColumnContainer
 import com.addzero.kmp.component.table.TableColumnType
 import com.addzero.kmp.component.table.TableRowType
-import com.addzero.kmp.component.high_level.AddMultiColumnContainer
 
 /**
  * 通用动态表单组件，根据字段元数据渲染不同类型的输入控件
@@ -14,7 +14,7 @@ import com.addzero.kmp.component.high_level.AddMultiColumnContainer
  * @param [howMuchColumn]
  */
 @Composable
-fun  DynamicForm(
+fun DynamicForm(
     columns: List<TableColumnType>,
     item: TableRowType?,
     modifier: Modifier = Modifier,

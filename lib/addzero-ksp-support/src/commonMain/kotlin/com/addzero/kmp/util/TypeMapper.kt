@@ -1,11 +1,23 @@
 package com.addzero.kmp.util
 
 // 定义Kotlin标准库类型，这些类型通常不需要导入
- val kotlinStdTypes = setOf(
-    "String", "Int", "Long", "Double", "Float", "Boolean", "Short", "Byte", "Char", "List", "Set", "Map", "MutableList", "MutableSet", "MutableMap"
+val kotlinStdTypes = setOf(
+    "String",
+    "Int",
+    "Long",
+    "Double",
+    "Float",
+    "Boolean",
+    "Short",
+    "Byte",
+    "Char",
+    "List",
+    "Set",
+    "Map",
+    "MutableList",
+    "MutableSet",
+    "MutableMap"
 )
-
-
 
 
 /**
@@ -27,7 +39,7 @@ object TypeMapper {
     /**
      * 将数据库类型映射到Kotlin类型
      */
-    fun mapToKotlinType(columnType: String,isKmp: Boolean=true): String {
+    fun mapToKotlinType(columnType: String, isKmp: Boolean = true): String {
         val localDateStr = if (isKmp) {
             "kotlinx.datetime.LocalDate"
         } else {
@@ -69,7 +81,7 @@ object TypeMapper {
     }
 
 
-    fun mapJdbcTypeToKotlinType4Form(columnType: String,nullable: Boolean): String {
+    fun mapJdbcTypeToKotlinType4Form(columnType: String, nullable: Boolean): String {
         // 可根据实际数据库类型扩展
         return when (columnType.lowercase()) {
             "varchar", "text", "char", "uuid" -> if (nullable) "String?" else "String"

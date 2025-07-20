@@ -73,14 +73,18 @@ object DateFormatter {
                 try {
                     val instant = Instant.fromEpochMilliseconds(value)
                     val localDate = instant.toLocalDateTime(TimeZone.currentSystemDefault()).date
-                    "${localDate.year}-${localDate.monthNumber.toString().padStart(2, '0')}-${localDate.dayOfMonth.toString().padStart(2, '0')}"
+                    "${localDate.year}-${
+                        localDate.monthNumber.toString().padStart(2, '0')
+                    }-${localDate.dayOfMonth.toString().padStart(2, '0')}"
                 } catch (e: Exception) {
                     ""
                 }
             }
+
             is String -> {
                 if (isValidDateString(value)) value else ""
             }
+
             null -> ""
             else -> ""
         }
@@ -140,6 +144,7 @@ object DateFormatter {
                     null
                 }
             }
+
             else -> null
         }
     }

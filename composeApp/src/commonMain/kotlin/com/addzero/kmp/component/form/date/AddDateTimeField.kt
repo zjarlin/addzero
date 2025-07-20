@@ -9,10 +9,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import kotlinx.datetime.*
-import kotlin.time.ExperimentalTime
 import com.addzero.kmp.component.form.text.AddTextField
 import com.addzero.kmp.core.validation.RegexEnum
+import kotlinx.datetime.*
+import kotlin.time.ExperimentalTime
 
 /**
  * 日期时间输入字段组件
@@ -148,7 +148,8 @@ fun AddDateTimeField(
                     ""
                 } else {
                     val date = newValue.date.toString()
-                    val time = "${newValue.hour.toString().padStart(2, '0')}:${newValue.minute.toString().padStart(2, '0')}"
+                    val time =
+                        "${newValue.hour.toString().padStart(2, '0')}:${newValue.minute.toString().padStart(2, '0')}"
                     "$date $time"
                 }
                 onValueChange(newValue)
@@ -281,21 +282,21 @@ private fun DateTimePickerDialog(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.End
                     ) {
-                    TextButton(onClick = onDismiss) {
-                        Text("取消")
-                    }
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Button(
-                        onClick = {
-                            val finalDateTime = LocalDateTime(
-                                selectedDate,
-                                LocalTime(timePickerState.hour, timePickerState.minute)
-                            )
-                            onValueChange(finalDateTime)
+                        TextButton(onClick = onDismiss) {
+                            Text("取消")
                         }
-                    ) {
-                        Text("确定")
-                    }
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Button(
+                            onClick = {
+                                val finalDateTime = LocalDateTime(
+                                    selectedDate,
+                                    LocalTime(timePickerState.hour, timePickerState.minute)
+                                )
+                                onValueChange(finalDateTime)
+                            }
+                        ) {
+                            Text("确定")
+                        }
                     }
                 }
             }

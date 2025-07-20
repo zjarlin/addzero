@@ -2,7 +2,6 @@ package com.addzero.kmp.strategy.impl
 
 import com.addzero.kmp.strategy.FormStrategy
 import com.addzero.kmp.util.*
-import com.addzero.kmp.util.plus
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSPropertyDeclaration
 
@@ -37,8 +36,8 @@ object GenericSingleStrategy : FormStrategy {
 
         // 使用布尔值 + 操作符累加计算权重
         return isJimmerEntityType +
-               (!isEnumType) +  // 排除枚举类型
-               (!isCollectionType)  // 排除集合类型
+                (!isEnumType) +  // 排除枚举类型
+                (!isCollectionType)  // 排除集合类型
     }
 
     private fun isBasicType(typeName: String): Boolean {

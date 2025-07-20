@@ -35,7 +35,7 @@ fun AddPasswordField(
     modifier: Modifier = Modifier,
     errorMessages: List<String> = emptyList<String>(),
     remoteValidationConfig: RemoteValidationConfig? = null,
-    isRequired: Boolean=true,
+    isRequired: Boolean = true,
 
     ) {
     var passwordVisible by remember { mutableStateOf(false) }

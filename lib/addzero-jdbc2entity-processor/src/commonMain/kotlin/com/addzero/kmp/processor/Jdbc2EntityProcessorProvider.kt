@@ -6,7 +6,7 @@ import com.google.devtools.ksp.processing.SymbolProcessorProvider
 
 /**
  * JDBC 转 Jimmer 实体处理器提供者
- * 
+ *
  * 用于创建 Jdbc2EntityProcessor 实例
  */
 class Jdbc2EntityProcessorProvider : SymbolProcessorProvider {

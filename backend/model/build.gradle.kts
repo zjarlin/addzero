@@ -26,7 +26,7 @@ dependencies {
     //实体表单核心注解
     implementation(projects.lib.addzeroEntity2formCore)
     implementation(projects.shared)
-    implementation (libs.hutool.all)
+    implementation(libs.hutool.all)
 }
 val modelProject = project(":backend:model")
 val modelSourceDir = modelProject.projectDir.resolve(jvmMainSourceDir).absolutePath

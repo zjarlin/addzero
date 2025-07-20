@@ -2,12 +2,12 @@
 
 package com.addzero.kmp.component.upload_manager
 
-import androidx.compose.runtime.*
-import com.addzero.kmp.generated.api.ApiProvider.fileApi
+import androidx.compose.runtime.mutableStateMapOf
 import com.addzero.kmp.component.form.file.USE_MOCK_FILE_UPLOAD
 import com.addzero.kmp.component.form.file.mockQueryProgress
 import com.addzero.kmp.core.ext.now
 import com.addzero.kmp.core.ext.nowLong
+import com.addzero.kmp.generated.api.ApiProvider.fileApi
 import io.ktor.client.request.forms.*
 import kotlinx.coroutines.*
 import kotlinx.datetime.LocalDateTime
@@ -42,7 +42,12 @@ data class UploadTask(
     val completeTime: LocalDateTime? = null
 ) {
     // 计算上传速度等辅助属性可以在这里添加
-    val isActive: Boolean get() = status in listOf(UploadTaskStatus.PENDING, UploadTaskStatus.UPLOADING, UploadTaskStatus.QUERYING)
+    val isActive: Boolean
+        get() = status in listOf(
+            UploadTaskStatus.PENDING,
+            UploadTaskStatus.UPLOADING,
+            UploadTaskStatus.QUERYING
+        )
     val isCompleted: Boolean get() = status == UploadTaskStatus.COMPLETED
     val isFailed: Boolean get() = status == UploadTaskStatus.FAILED
 }

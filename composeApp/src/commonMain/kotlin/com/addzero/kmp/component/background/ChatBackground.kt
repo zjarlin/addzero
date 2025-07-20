@@ -68,6 +68,7 @@ fun ChatBackground(
                     modifier = Modifier.fillMaxSize()
                 )
             }
+
             ChatBackgroundType.IMAGE -> {
                 ImageBackground(
                     imageUrl = config.imageUrl,
@@ -76,6 +77,7 @@ fun ChatBackground(
                     modifier = Modifier.fillMaxSize()
                 )
             }
+
             ChatBackgroundType.SOLID_COLOR -> {
                 SolidColorBackground(
                     color = config.colors.firstOrNull() ?: LabubuColors.LightPink,
@@ -83,6 +85,7 @@ fun ChatBackground(
                     modifier = Modifier.fillMaxSize()
                 )
             }
+
             ChatBackgroundType.PATTERN -> {
                 PatternBackground(
                     colors = config.colors,
@@ -90,6 +93,7 @@ fun ChatBackground(
                     modifier = Modifier.fillMaxSize()
                 )
             }
+
             ChatBackgroundType.ANIMATED_GRADIENT -> {
                 AnimatedGradientBackground(
                     colors = config.colors,
@@ -97,11 +101,12 @@ fun ChatBackground(
                     modifier = Modifier.fillMaxSize()
                 )
             }
+
             ChatBackgroundType.CUSTOM -> {
                 // 自定义背景由外部提供
             }
         }
-        
+
         // 覆盖层
         if (config.overlay) {
             Box(
@@ -110,7 +115,7 @@ fun ChatBackground(
                     .background(config.overlayColor)
             )
         }
-        
+
         // 内容
         content()
     }
@@ -203,11 +208,11 @@ private fun AnimatedGradientBackground(
 ) {
     // 简化版动画渐变，可以后续扩展
     var currentColors by remember { mutableStateOf(colors) }
-    
+
     LaunchedEffect(Unit) {
         // 这里可以添加颜色动画逻辑
     }
-    
+
     Box(
         modifier = modifier
             .background(
@@ -221,7 +226,7 @@ private fun AnimatedGradientBackground(
  * 预设背景配置
  */
 object ChatBackgroundPresets {
-    
+
     /**
      * Labubu默认渐变背景
      */
@@ -233,7 +238,7 @@ object ChatBackgroundPresets {
             Color.White
         )
     )
-    
+
     /**
      * 粉色梦幻背景
      */
@@ -245,7 +250,7 @@ object ChatBackgroundPresets {
             Color.White
         )
     )
-    
+
     /**
      * 蓝色清新背景
      */
@@ -257,7 +262,7 @@ object ChatBackgroundPresets {
             Color.White
         )
     )
-    
+
     /**
      * 薄荷绿背景
      */
@@ -269,7 +274,7 @@ object ChatBackgroundPresets {
             Color.White
         )
     )
-    
+
     /**
      * 纯白背景
      */
@@ -277,11 +282,11 @@ object ChatBackgroundPresets {
         type = ChatBackgroundType.SOLID_COLOR,
         colors = listOf(Color.White)
     )
-    
+
     /**
      * 自定义图片背景
      */
-    fun customImage(imageUrl: String, alpha: Float = 0.8f, overlay: Boolean = true) = 
+    fun customImage(imageUrl: String, alpha: Float = 0.8f, overlay: Boolean = true) =
         ChatBackgroundConfig(
             type = ChatBackgroundType.IMAGE,
             imageUrl = imageUrl,

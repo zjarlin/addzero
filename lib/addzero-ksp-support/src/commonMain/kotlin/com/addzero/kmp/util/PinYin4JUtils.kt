@@ -1,14 +1,10 @@
 package com.addzero.kmp.util
 
-import com.addzero.kmp.util.PinYin4JUtils.getHeadByString
-import com.addzero.kmp.util.PinYin4JUtils.stringToPinyin
 import net.sourceforge.pinyin4j.PinyinHelper
 import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType
 import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat
 import net.sourceforge.pinyin4j.format.HanyuPinyinToneType
 import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination
-import kotlin.collections.get
-import kotlin.text.get
 
 /**
  * PinYin4j工具类

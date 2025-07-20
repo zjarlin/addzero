@@ -57,16 +57,19 @@ fun AddMessageToast(
             Color(0xFF4CAF50), // 绿色
             Color(0xFF81C784)  // 浅绿色
         )
+
         MessageType.ERROR -> Triple(
             Icons.Default.Error,
             Color(0xFFF44336), // 红色
             Color(0xFFE57373)  // 浅红色
         )
+
         MessageType.WARNING -> Triple(
             Icons.Default.Warning,
             Color(0xFFFF9800), // 橙色
             Color(0xFFFFB74D)  // 浅橙色
         )
+
         MessageType.INFO -> Triple(
             Icons.Default.Info,
             Color(0xFF2196F3), // 蓝色

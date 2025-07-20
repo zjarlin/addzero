@@ -1,5 +1,3 @@
-
-
 plugins {
     id("kmp-ksp")
 }

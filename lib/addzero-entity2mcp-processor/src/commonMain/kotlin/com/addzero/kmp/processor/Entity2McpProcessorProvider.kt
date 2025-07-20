@@ -6,7 +6,7 @@ import com.google.devtools.ksp.processing.SymbolProcessorProvider
 
 /**
  * 实体转MCP服务处理器提供者
- * 
+ *
  * 用于创建Entity2McpProcessor实例
  */
 class Entity2McpProcessorProvider : SymbolProcessorProvider {

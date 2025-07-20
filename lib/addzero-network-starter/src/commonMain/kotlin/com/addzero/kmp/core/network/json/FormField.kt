@@ -25,6 +25,7 @@ sealed class FormField<out T> {  // 注意添加 `out` 协变
         }
     }
 }
+
 // 扩展方法
 val <T> FormField<T>.value: T?
     get() = when (this) {
@@ -42,6 +43,7 @@ fun <T> FormField<T>.valueOrNull(): T? = when (this) {
     is FormField.Value -> this.data
     else -> null
 }
+
 // 自定义序列化器（控制 JSON 输出）
 class FormFieldSerializer<T>(private val dataSerializer: KSerializer<T>) : KSerializer<FormField<T>> {
     override val descriptor = dataSerializer.descriptor

@@ -102,6 +102,7 @@ object BeanUtil {
         dictItemNameColumn = map["dictItemNameColumn"] ?: "item_text"
     )
 }
+
 fun String.toSharedBuildDir(): String {
     val sharedBuildDir = SettingContext.settings.sharedBuildDir
     val replace = this.replace(".", "/")
@@ -113,21 +114,25 @@ fun String.toSharedSourceDir(): String {
     val replace = this.replace(".", "/")
     return "$sharedSourceDir/$replace"
 }
+
 fun String.toServerBuildDir(): String {
     val serverBuildDir = SettingContext.settings.serverBuildDir
     val replace = this.replace(".", "/")
     return "$serverBuildDir/$replace"
 }
+
 fun String.toServerSourceDir(): String {
     val serverSourceDir = SettingContext.settings.serverSourceDir
     val replace = this.replace(".", "/")
     return "$serverSourceDir/$replace"
 }
+
 fun String.toComposeBuildDir(): String {
     val composeBuildDir = SettingContext.settings.composeBuildDir
     val replace = this.replace(".", "/")
     return "$composeBuildDir/$replace"
 }
+
 fun String.toComposeSourceDir(): String {
     val composeSourceDir = SettingContext.settings.composeSourceDir
     val replace = this.replace(".", "/")

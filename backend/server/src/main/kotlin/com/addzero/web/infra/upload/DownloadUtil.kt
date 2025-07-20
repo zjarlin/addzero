@@ -23,7 +23,7 @@ object DownloadUtil {
         }
     val httpServletResponse: HttpServletResponse
         get() {
-           return SprCtxUtil.httpServletResponse
+            return SprCtxUtil.httpServletResponse
         }
 
 

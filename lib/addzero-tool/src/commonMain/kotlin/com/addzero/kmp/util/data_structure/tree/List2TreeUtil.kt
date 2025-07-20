@@ -65,10 +65,10 @@ object List2TreeUtil {
         source.forEach { node ->
             val nodeId = idFun(node)
             val parentId = pidFun(node)
-            
+
             // 将节点添加到映射中
             nodeMap[nodeId] = node
-            
+
             // 判断是否为根节点
             if (isRoot(node) || parentId == null) {
                 result.add(node)
@@ -79,7 +79,7 @@ object List2TreeUtil {
         source.forEach { node ->
             val parentId = pidFun(node)
             val parent = parentId?.let { nodeMap[it] }
-            
+
             parent?.let { p ->
                 val children = getChildFun(p)?.toMutableList() ?: mutableListOf()
                 children.add(node)
@@ -104,7 +104,7 @@ object List2TreeUtil {
         setChildFun: (T, List<T>) -> Unit
     ): List<T> {
         val result = mutableListOf<T>()
-        
+
         fun traverse(node: T) {
             result.add(node)
             val children = getChildFun(node)
@@ -113,11 +113,11 @@ object List2TreeUtil {
             }
             setChildFun(node, emptyList())
         }
-        
+
         treeData.forEach { node ->
             traverse(node)
         }
-        
+
         return result
     }
 
@@ -131,7 +131,7 @@ object List2TreeUtil {
      * @param getParentId 获取父节点ID的属性
      * @return 从目标节点到根节点的路径列表
      */
-    fun <T>getBreadcrumbList(
+    fun <T> getBreadcrumbList(
         list: List<T>,
         targetId: Any,
         getId: KProperty1<T, Any>,
@@ -139,17 +139,17 @@ object List2TreeUtil {
     ): List<T> {
         val nodeMap = list.associateBy { getId.get(it) }
         val result = mutableListOf<T>()
-        
+
         var currentId: Any? = targetId
         while (currentId != null) {
             val node = nodeMap[currentId] ?: break
             result.add(0, node) // 插入到列表开头，保持从根到目标的顺序
             currentId = getParentId.get(node)
         }
-        
+
         return result
     }
-    
+
     /**
      * 获取节点到根的路径（面包屑），并构建树形结构
      * 返回从根节点到目标节点的树形路径
@@ -162,7 +162,7 @@ object List2TreeUtil {
      * @param setChildren 设置子节点列表的方法
      * @return 从根节点到目标节点的树形路径
      */
-    fun <T>getBreadcrumbList(
+    fun <T> getBreadcrumbList(
         list: List<T>,
         targetId: Any,
         getId: KProperty1<T, Any>,
@@ -173,27 +173,27 @@ object List2TreeUtil {
         // 首先获取从目标节点到根节点的完整路径
         val pathNodes = getBreadcrumbList(list, targetId, getId, getParentId)
         if (pathNodes.isEmpty()) return emptyList()
-        
+
         // 从路径中获取根节点
         val rootNode = pathNodes.first()
         val result = mutableListOf<T>()
         result.add(rootNode)
-        
+
         // 清空所有节点的子节点列表，准备重新构建
-        pathNodes.forEach { 
+        pathNodes.forEach {
             setChildren(it, mutableListOf())
         }
-        
+
         // 构建从根到目标的树形路径
         for (i in 0 until pathNodes.size - 1) {
             val parent = pathNodes[i]
             val child = pathNodes[i + 1]
-            
+
             // 将子节点添加到父节点的子节点列表中
             val children = getChildren.get(parent)
             children.add(child)
         }
-        
+
         return result
     }
 }

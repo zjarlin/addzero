@@ -4,7 +4,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.ContentCopy
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -14,7 +17,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.addzero.kmp.annotation.Route
-
 import com.addzero.kmp.viewmodel.ExcelTemplateDesignerViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -26,13 +28,13 @@ import org.koin.compose.viewmodel.koinViewModel
 @Route("测试", "Excel简单测试")
 fun ExcelTemplateSimpleTest() {
     val viewModel = koinViewModel<ExcelTemplateDesignerViewModel>()
-    
+
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
         // 顶部工具栏
         TestTopBar(viewModel)
-        
+
         // 主要内容
         Row(
             modifier = Modifier
@@ -44,7 +46,7 @@ fun ExcelTemplateSimpleTest() {
                 viewModel = viewModel,
                 modifier = Modifier.weight(0.5f)
             )
-            
+
             // 右侧JSON预览和模板管理
             TestJsonArea(
                 viewModel = viewModel,
@@ -79,7 +81,7 @@ private fun TestTopBar(viewModel: ExcelTemplateDesignerViewModel) {
                 ),
                 color = Color.White
             )
-            
+
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
@@ -91,7 +93,7 @@ private fun TestTopBar(viewModel: ExcelTemplateDesignerViewModel) {
                 ) {
                     Text("添加一维", color = Color.White, fontSize = 12.sp)
                 }
-                
+
                 Button(
                     onClick = { viewModel.addTwoDimensionField("温度", "25") },
                     colors = ButtonDefaults.buttonColors(
@@ -136,14 +138,14 @@ private fun TestFieldEditor(
                 ),
                 color = MaterialTheme.colorScheme.primary
             )
-            
+
             // 一维字段
             Text(
                 text = "🔹 一维字段 (${viewModel.oneDimensionFields.size})",
                 style = MaterialTheme.typography.titleSmall,
                 color = Color(0xFF059669)
             )
-            
+
             viewModel.oneDimensionFields.forEach { field ->
                 TestFieldCard(
                     field = field,
@@ -153,16 +155,16 @@ private fun TestFieldEditor(
                     onDelete = { viewModel.deleteOneDimensionField(field) }
                 )
             }
-            
+
             HorizontalDivider()
-            
+
             // 二维字段
             Text(
                 text = "🔸 二维字段 (${viewModel.twoDimensionFields.size})",
                 style = MaterialTheme.typography.titleSmall,
                 color = Color(0xFF7C3AED)
             )
-            
+
             viewModel.twoDimensionFields.forEach { field ->
                 TestFieldCard(
                     field = field,
@@ -209,7 +211,7 @@ private fun TestFieldCard(
                     textStyle = MaterialTheme.typography.bodySmall,
                     singleLine = true
                 )
-                
+
                 OutlinedTextField(
                     value = field.value,
                     onValueChange = onValueChange,
@@ -218,7 +220,7 @@ private fun TestFieldCard(
                     textStyle = MaterialTheme.typography.bodySmall,
                     singleLine = true
                 )
-                
+
                 IconButton(
                     onClick = onDelete,
                     modifier = Modifier.size(32.dp)
@@ -231,14 +233,14 @@ private fun TestFieldCard(
                     )
                 }
             }
-            
+
             // 类型选择
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text("类型:", fontSize = 12.sp)
-                
+
                 ExcelTemplateDesignerViewModel.FieldType.values().forEach { type ->
                     FilterChip(
                         selected = field.type == type,
@@ -270,7 +272,7 @@ private fun TestJsonArea(
 ) {
     var showSaveDialog by remember { mutableStateOf(false) }
     var showCopySuccess by remember { mutableStateOf(false) }
-    
+
     Card(
         modifier = modifier
             .fillMaxHeight()
@@ -297,12 +299,12 @@ private fun TestJsonArea(
                     ),
                     color = Color.White
                 )
-                
+
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     Button(
-                        onClick = { 
+                        onClick = {
                             viewModel.copyJsonToClipboard()
                             showCopySuccess = true
                         },
@@ -314,7 +316,7 @@ private fun TestJsonArea(
                         Spacer(modifier = Modifier.width(4.dp))
                         Text("复制", fontSize = 12.sp)
                     }
-                    
+
                     Button(
                         onClick = { showSaveDialog = true },
                         colors = ButtonDefaults.buttonColors(
@@ -327,16 +329,16 @@ private fun TestJsonArea(
                     }
                 }
             }
-            
+
             Spacer(modifier = Modifier.height(12.dp))
-            
+
             // 复制成功提示
             if (showCopySuccess) {
                 LaunchedEffect(Unit) {
                     kotlinx.coroutines.delay(2000)
                     showCopySuccess = false
                 }
-                
+
                 Card(
                     colors = CardDefaults.cardColors(
                         containerColor = Color(0xFF10B981)
@@ -351,7 +353,7 @@ private fun TestJsonArea(
                 }
                 Spacer(modifier = Modifier.height(8.dp))
             }
-            
+
             // JSON内容
             Card(
                 modifier = Modifier.weight(1f),
@@ -377,22 +379,22 @@ private fun TestJsonArea(
                     )
                 }
             }
-            
+
             Spacer(modifier = Modifier.height(8.dp))
-            
+
             // JSON模板列表
             Text(
                 text = "📋 JSON模板 (${viewModel.jsonTemplates.size})",
                 color = Color.White,
                 style = MaterialTheme.typography.titleSmall
             )
-            
+
             if (viewModel.jsonTemplates.isNotEmpty()) {
                 viewModel.jsonTemplates.forEach { template ->
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         colors = CardDefaults.cardColors(
-                            containerColor = if (viewModel.selectedJsonTemplate == template) 
+                            containerColor = if (viewModel.selectedJsonTemplate == template)
                                 Color(0xFF374151) else Color(0xFF1F2937)
                         )
                     ) {
@@ -409,7 +411,7 @@ private fun TestJsonArea(
                                 fontSize = 12.sp,
                                 modifier = Modifier.weight(1f)
                             )
-                            
+
                             Row {
                                 IconButton(
                                     onClick = { viewModel.loadJsonTemplate(template) },
@@ -422,7 +424,7 @@ private fun TestJsonArea(
                                         modifier = Modifier.size(16.dp)
                                     )
                                 }
-                                
+
                                 IconButton(
                                     onClick = { viewModel.deleteJsonTemplate(template) },
                                     modifier = Modifier.size(24.dp)
@@ -447,11 +449,11 @@ private fun TestJsonArea(
             }
         }
     }
-    
+
     // 保存模板对话框
     if (showSaveDialog) {
         var templateName by remember { mutableStateOf("") }
-        
+
         AlertDialog(
             onDismissRequest = { showSaveDialog = false },
             title = { Text("保存JSON模板") },

@@ -16,8 +16,8 @@ fun filterBaseEntity(colName: String): Boolean {
     val arrayOf = arrayOf(id, createBy, updateBy, createTime, updateTime)
     val arrayOf1 = arrayOf.map { it.toLowCamelCase() }.toTypedArray()
     arrayOf(id, createBy, updateBy, createTime, updateTime)
-    val containsAny = colName.containsAny( *arrayOf)
-    val containsAny1 = colName.containsAny( *arrayOf1)
-    val b = !(containsAny|| containsAny1)
+    val containsAny = colName.containsAny(*arrayOf)
+    val containsAny1 = colName.containsAny(*arrayOf1)
+    val b = !(containsAny || containsAny1)
     return b
 }

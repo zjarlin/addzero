@@ -1,5 +1,5 @@
 export com.addzero.model.entity.BizDotfiles
- -> package com.addzero.model.entity.dto
+    -> package com.addzero.model.entity.dto
 
 BizDotfilesVO {
     id

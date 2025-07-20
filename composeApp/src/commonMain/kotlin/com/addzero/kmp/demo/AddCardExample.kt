@@ -5,8 +5,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,7 +25,7 @@ import com.addzero.kmp.component.card.MellumCardType
 
 /**
  * 🎨 JetBrains Mellum卡片使用示例
- * 
+ *
  * 展示不同类型的卡片效果和使用方法
  */
 @Composable
@@ -48,7 +51,7 @@ fun AddCardExample() {
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
-        
+
         // 预设卡片示例
         item {
             Text(
@@ -57,7 +60,7 @@ fun AddCardExample() {
                 fontWeight = FontWeight.Medium,
                 modifier = Modifier.padding(vertical = 8.dp)
             )
-            
+
             Column(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
@@ -73,7 +76,7 @@ fun AddCardExample() {
                         description = "探索最新的AI Agent构建技术和最佳实践"
                     )
                 }
-                
+
                 // Hackathon风格
                 AddCards.HackathonCard(
                     onClick = { println("Hackathon卡片被点击") },
@@ -86,7 +89,7 @@ fun AddCardExample() {
                         description = "参与全球开发者盛会，展示你的创新项目"
                     )
                 }
-                
+
                 // Deploy Mellum风格
                 AddCards.DeployMellumCard(
                     onClick = { println("Deploy Mellum卡片被点击") },
@@ -101,7 +104,7 @@ fun AddCardExample() {
                 }
             }
         }
-        
+
         // 所有类型展示
         item {
             Text(
@@ -111,7 +114,7 @@ fun AddCardExample() {
                 modifier = Modifier.padding(vertical = 8.dp)
             )
         }
-        
+
         items(MellumCardType.allTypes) { cardType ->
             AddCard(
                 onClick = { println("${cardType.name}卡片被点击") },
@@ -124,7 +127,7 @@ fun AddCardExample() {
                 )
             }
         }
-        
+
         // 功能展示卡片
         item {
             Text(
@@ -133,7 +136,7 @@ fun AddCardExample() {
                 fontWeight = FontWeight.Medium,
                 modifier = Modifier.padding(vertical = 8.dp)
             )
-            
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -151,7 +154,7 @@ fun AddCardExample() {
                         trend = "+12%"
                     )
                 }
-                
+
                 // 操作卡片
                 AddCard(
                     onClick = { println("操作卡片被点击") },

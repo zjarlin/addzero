@@ -2,9 +2,9 @@ package com.addzero.kmp.component.form.text
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.runtime.*
-import com.addzero.kmp.component.form.text.AddTextField
+import androidx.compose.runtime.Composable
 import com.addzero.kmp.core.validation.RegexEnum
+
 /**
  * 用户名输入字段组件
  * 基于 AddTextField 实现，提供用户名格式验证

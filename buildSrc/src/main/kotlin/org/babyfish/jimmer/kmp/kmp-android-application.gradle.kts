@@ -1,13 +1,6 @@
-import org.babyfish.defIos
-import org.babyfish.doIos
 import org.babyfish.jimmer.Vars
-import org.babyfish.jimmer.Vars.Modules.COMPOSE_APP
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
-import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 val libs = the<org.gradle.accessors.dm.LibrariesForLibs>()
 plugins {
@@ -19,7 +12,7 @@ plugins {
 //    kotlin("plugin.serialization")
 }
 
-kotlin{
+kotlin {
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {

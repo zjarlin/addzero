@@ -33,7 +33,7 @@ fun AddSwitchField(
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.weight(1f)
         )
-        
+
         // 状态文本和开关
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -49,7 +49,7 @@ fun AddSwitchField(
                     MaterialTheme.colorScheme.onSurfaceVariant
                 }
             )
-            
+
             // 开关
             Switch(
                 checked = value,

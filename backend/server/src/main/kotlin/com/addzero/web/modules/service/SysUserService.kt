@@ -1,7 +1,6 @@
 package com.addzero.web.modules.service
 
 import cn.dev33.satoken.stp.StpUtil
-import cn.hutool.http.HttpUtil
 import com.addzero.common.consts.sql
 import com.addzero.kmp.entity.CheckSignInput
 import com.addzero.kmp.entity.SecondLoginDTO
@@ -10,10 +9,10 @@ import com.addzero.model.entity.SysUser
 import com.addzero.model.entity.email
 import com.addzero.model.entity.phone
 import com.addzero.model.entity.username
-import cn.dev33.satoken.config.SaTokenConfig
 import jakarta.servlet.http.HttpServletRequest
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.springframework.stereotype.Service
+
 @Service
 class SysUserService(
     private val request: HttpServletRequest,

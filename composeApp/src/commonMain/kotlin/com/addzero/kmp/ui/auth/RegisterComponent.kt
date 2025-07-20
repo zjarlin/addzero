@@ -14,19 +14,24 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.addzero.kmp.entity.CheckSignInput
-import com.addzero.kmp.entity.CheckSignInput.USERNAME
 import com.addzero.kmp.component.form.text.AddEmailField
 import com.addzero.kmp.component.form.text.AddPasswordField
 import com.addzero.kmp.component.form.text.AddTextField
 import com.addzero.kmp.component.form.text.RemoteValidationConfig
 import com.addzero.kmp.core.validation.RegexEnum
+import com.addzero.kmp.entity.CheckSignInput
+import com.addzero.kmp.entity.CheckSignInput.USERNAME
 import com.addzero.kmp.kt_util.add
 import com.addzero.kmp.viewmodel.LoginViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun RegisterComponent(logo: ImageVector = Icons.Default.EmojiPeople, onReg: () -> Unit, onBackToLogin: () -> Unit, onSendCode: (String) -> Unit) {
+fun RegisterComponent(
+    logo: ImageVector = Icons.Default.EmojiPeople,
+    onReg: () -> Unit,
+    onBackToLogin: () -> Unit,
+    onSendCode: (String) -> Unit
+) {
 //    viewModel
     val viewModel = koinViewModel<LoginViewModel>()
 

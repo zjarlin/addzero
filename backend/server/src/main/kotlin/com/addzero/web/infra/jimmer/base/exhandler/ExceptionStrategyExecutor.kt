@@ -6,7 +6,6 @@ import com.addzero.kmp.kt_util.isBlank
 import com.addzero.web.infra.jimmer.base.exhandler.autoaddcol.AutoAddColStrategy
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Component
-import kotlin.math.log
 
 fun fixCol(extractTableName: String?, extractColumnNames: String?): String {
     if (StrUtil.isAllNotBlank(extractColumnNames, extractTableName)) {
@@ -25,6 +24,7 @@ fun fixCol(extractTableName: String?, extractColumnNames: String?): String {
     val s1 = "${extractTableName}添加列失败$extractColumnNames"
     return s1
 }
+
 fun extractColumnNames(sql: String?): String {
     if (sql.isBlank()) {
         return ""
@@ -32,7 +32,6 @@ fun extractColumnNames(sql: String?): String {
     val subBetween = StrUtil.subBetween(sql, "ERROR: column tb_1_.", " does not exist")
     return subBetween!!
 }
-
 
 
 @Component

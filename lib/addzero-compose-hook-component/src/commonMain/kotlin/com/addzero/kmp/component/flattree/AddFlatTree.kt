@@ -43,7 +43,7 @@ fun <T> AddFlatTree(
     items: List<T>,
     getId: (T) -> Any,
     getParentId: (T) -> Any?,
-    isRoot: (T) -> Boolean={getParentId(it)==null},
+    isRoot: (T) -> Boolean = { getParentId(it) == null },
     getName: (T) -> String,
     getNodeType: (T) -> String = { NodeType.DEFAULT.toString() },
     modifier: Modifier = Modifier,
@@ -57,7 +57,7 @@ fun <T> AddFlatTree(
         TreeNode(
             id = getId(item),
             name = getName(item),
-            nodeType = getNodeType (item),
+            nodeType = getNodeType(item),
             data = item,
             parentId = getParentId(item)
         )

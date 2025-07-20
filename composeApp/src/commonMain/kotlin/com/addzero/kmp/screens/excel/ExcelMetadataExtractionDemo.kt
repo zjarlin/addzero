@@ -6,7 +6,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,7 +23,7 @@ import com.addzero.kmp.annotation.Route
 @Route("界面演示", "元数据提取演示")
 fun ExcelMetadataExtractionDemo() {
     val scrollState = rememberScrollState()
-    
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -39,27 +39,27 @@ fun ExcelMetadataExtractionDemo() {
             ),
             color = MaterialTheme.colorScheme.primary
         )
-        
+
         // 功能概述
         FeatureOverview()
-        
+
         HorizontalDivider()
-        
+
         // 界面布局说明
         LayoutExplanation()
-        
+
         HorizontalDivider()
-        
+
         // 购物车功能
         ShoppingCartFeature()
-        
+
         HorizontalDivider()
-        
+
         // 使用流程
         UsageWorkflow()
-        
+
         HorizontalDivider()
-        
+
         // 技术实现
         TechnicalImplementation()
     }
@@ -95,7 +95,7 @@ private fun FeatureOverview() {
                     color = Color(0xFF0C4A6E)
                 )
             }
-            
+
             Text(
                 text = """
                     🎯 Excel元数据提取功能：
@@ -145,7 +145,7 @@ private fun LayoutExplanation() {
                     color = Color(0xFF14532D)
                 )
             }
-            
+
             // 布局示意图
             Card(
                 colors = CardDefaults.cardColors(
@@ -163,7 +163,7 @@ private fun LayoutExplanation() {
                         ),
                         color = Color(0xFF14532D)
                     )
-                    
+
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(4.dp)
@@ -185,7 +185,7 @@ private fun LayoutExplanation() {
                                 )
                             }
                         }
-                        
+
                         Card(
                             modifier = Modifier.weight(0.35f).height(60.dp),
                             colors = CardDefaults.cardColors(
@@ -203,7 +203,7 @@ private fun LayoutExplanation() {
                                 )
                             }
                         }
-                        
+
                         Card(
                             modifier = Modifier.weight(0.3f).height(60.dp),
                             colors = CardDefaults.cardColors(
@@ -222,7 +222,7 @@ private fun LayoutExplanation() {
                             }
                         }
                     }
-                    
+
                     Text(
                         text = """
                             ✨ 布局优化说明：
@@ -270,7 +270,7 @@ private fun ShoppingCartFeature() {
                     color = Color(0xFF92400E)
                 )
             }
-            
+
             val features = listOf(
                 "📁 文件选择" to "从可选择的Excel文件列表中选择",
                 "🛒 添加到购物车" to "点击购物车图标添加文件",
@@ -279,7 +279,7 @@ private fun ShoppingCartFeature() {
                 "🗑️ 移除功能" to "可以从购物车中移除不需要的文件",
                 "✅ 完成标识" to "处理完成的文件有特殊标识"
             )
-            
+
             features.forEach { (title, description) ->
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -336,7 +336,7 @@ private fun UsageWorkflow() {
                     color = Color(0xFF581C87)
                 )
             }
-            
+
             val steps = listOf(
                 "1️⃣ 设计JSON结构" to "在左侧设计区域定义字段",
                 "2️⃣ 预览JSON格式" to "中间区域实时查看JSON结构",
@@ -346,7 +346,7 @@ private fun UsageWorkflow() {
                 "6️⃣ 查看处理状态" to "实时查看每个文件的处理进度",
                 "7️⃣ 获取提取结果" to "处理完成后获取元数据结果"
             )
-            
+
             steps.forEach { (step, description) ->
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -403,7 +403,7 @@ private fun TechnicalImplementation() {
                     color = Color(0xFF064E3B)
                 )
             }
-            
+
             val implementations = listOf(
                 "🎨 类型高亮修复" to "FilterChip添加正确的颜色配置",
                 "📊 状态管理" to "使用mutableStateListOf管理购物车状态",
@@ -414,7 +414,7 @@ private fun TechnicalImplementation() {
                 "📱 响应式UI" to "根据状态变化自动更新界面",
                 "🔧 错误处理" to "完善的错误捕获和用户提示"
             )
-            
+
             implementations.forEach { (title, description) ->
                 Row(
                     modifier = Modifier.fillMaxWidth(),

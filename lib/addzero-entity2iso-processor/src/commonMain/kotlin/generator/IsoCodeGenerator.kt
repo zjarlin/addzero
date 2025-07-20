@@ -9,7 +9,7 @@ import com.google.devtools.ksp.processing.KSPLogger
  * 负责将 Jimmer 实体元数据转换为同构体 Kotlin 代码
  */
 class IsoCodeGenerator(private val logger: KSPLogger) {
-    
+
     /**
      * 生成同构体代码
      */
@@ -18,10 +18,10 @@ class IsoCodeGenerator(private val logger: KSPLogger) {
         val props = metadata.properties.joinToString(",\n") { prop ->
             generatePropertyCode(prop)
         }
-        
+
         // 生成优化的导入语句
         val optimizedImports = generateOptimizedImports(metadata)
-        
+
         // 生成同构体代码
         return """
             |@file:OptIn(kotlin.time.ExperimentalTime::class)
@@ -37,7 +37,7 @@ class IsoCodeGenerator(private val logger: KSPLogger) {
             |)
         """.trimMargin()
     }
-    
+
     /**
      * 生成属性代码
      */
@@ -48,7 +48,7 @@ class IsoCodeGenerator(private val logger: KSPLogger) {
         } else ""
         return "    ${contextualAnnotation}val ${prop.name}: ${prop.isoTypeName}$nullableSuffix = ${prop.defaultValue}"
     }
-    
+
     /**
      * 生成优化的导入语句
      * 1. 修复 java.time.LocalDateTime -> kotlinx.datetime.LocalDateTime
@@ -56,7 +56,7 @@ class IsoCodeGenerator(private val logger: KSPLogger) {
      */
     private fun generateOptimizedImports(metadata: EntityMetadata): String {
         val optimizedImports = mutableSetOf<String>()
-        
+
         metadata.properties.forEach { prop ->
             when {
                 // 日期时间类型：使用 kotlinx.datetime
@@ -68,7 +68,7 @@ class IsoCodeGenerator(private val logger: KSPLogger) {
 //                    optimizedImports.add("import kotlinx.datetime.Clock")
                     optimizedImports.add("import kotlinx.datetime.TimeZone")
                 }
-                
+
                 // Jimmer 实体类型：绝对不导入原实体，同构体在同一包下
                 prop.isJimmerEntity -> {
                     logger.info("跳过 Jimmer 实体导入: ${prop.qualifiedTypeName}")
@@ -86,7 +86,7 @@ class IsoCodeGenerator(private val logger: KSPLogger) {
                         logger.info("跳过集合中的 Jimmer 实体导入: $genericQualified")
                     }
                 }
-                
+
                 // 枚举类型：导入原枚举（枚举不需要转换为同构体）
                 prop.isEnum -> {
                     prop.qualifiedTypeName?.let { qualifiedType ->
@@ -95,13 +95,14 @@ class IsoCodeGenerator(private val logger: KSPLogger) {
                         }
                     }
                 }
-                
+
                 // 其他非基础类型：严格检查是否为 Jimmer 实体
                 !prop.isBasicType && prop.qualifiedTypeName != null -> {
                     val qualifiedType = prop.qualifiedTypeName!!
-                    if (!isKotlinBuiltinType(qualifiedType) && 
-                        !isJavaTimeType(qualifiedType) && 
-                        !isJimmerEntityByPackage(qualifiedType)) {
+                    if (!isKotlinBuiltinType(qualifiedType) &&
+                        !isJavaTimeType(qualifiedType) &&
+                        !isJimmerEntityByPackage(qualifiedType)
+                    ) {
                         optimizedImports.add("import $qualifiedType")
                     } else if (isJimmerEntityByPackage(qualifiedType)) {
                         logger.info("跳过 Jimmer 实体导入: $qualifiedType")
@@ -109,32 +110,32 @@ class IsoCodeGenerator(private val logger: KSPLogger) {
                 }
             }
         }
-        
+
         return optimizedImports.sorted().joinToString("\n")
     }
-    
+
     /**
      * 判断是否为 Kotlin 内置类型
      */
     private fun isKotlinBuiltinType(qualifiedType: String): Boolean {
-        return qualifiedType.startsWith("kotlin.") || 
-               qualifiedType in setOf("String", "Int", "Long", "Boolean", "Double", "Float", "List", "Set", "Map")
+        return qualifiedType.startsWith("kotlin.") ||
+                qualifiedType in setOf("String", "Int", "Long", "Boolean", "Double", "Float", "List", "Set", "Map")
     }
-    
+
     /**
      * 判断是否为 Java 时间类型（需要替换为 kotlinx.datetime）
      */
     private fun isJavaTimeType(qualifiedType: String): Boolean {
         return qualifiedType.startsWith("java.time.")
     }
-    
+
     /**
      * 通过包名判断是否为 Jimmer 实体
      * 这是一个额外的安全检查，防止遗漏的 Jimmer 实体导入
      */
     private fun isJimmerEntityByPackage(qualifiedType: String): Boolean {
-        return qualifiedType.contains(".entity.") || 
-               qualifiedType.contains(".modules.") ||
-               qualifiedType.startsWith("com.addzero.web.modules.")
+        return qualifiedType.contains(".entity.") ||
+                qualifiedType.contains(".modules.") ||
+                qualifiedType.startsWith("com.addzero.web.modules.")
     }
 }

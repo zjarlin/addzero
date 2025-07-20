@@ -1,7 +1,7 @@
 package com.addzero.kmp.processor
 
-import com.addzero.kmp.consts.GEN_PKG
 import com.addzero.kmp.annotation.Route
+import com.addzero.kmp.consts.GEN_PKG
 import com.addzero.kmp.context.SettingContext
 import com.addzero.kmp.context.toSharedSourceDir
 import com.addzero.kmp.util.genCode
@@ -96,7 +96,8 @@ class RouteMetadataProcessor(
             val annotation = declaration.annotations.first {
                 it.annotationType.resolve().declaration.qualifiedName?.asString() == Route::class.qualifiedName
             }
-            val title = annotation.arguments.firstOrNull { it.name?.asString () == "title" }?.value as? String ?: simpleName
+            val title =
+                annotation.arguments.firstOrNull { it.name?.asString() == "title" }?.value as? String ?: simpleName
 
             val icon = annotation.arguments.firstOrNull { it.name?.asString() == "icon" }?.value as? String ?: ""
             val routePath = annotation.arguments.firstOrNull { it.name?.asString() == "routePath" }?.value as? String
@@ -111,13 +112,14 @@ class RouteMetadataProcessor(
                 icon = icon,
                 order = order,
                 qualifiedName = qualifiedName,
-                simpleName=simpleName
+                simpleName = simpleName
             )
         } catch (e: Exception) {
             logger.error("Error processing Route annotation: ${e.message}", declaration)
             null
         }
     }
+
     private fun generateRouteTable(routeItems: Set<Route>) {
         logger.warn("解析到 ${routeItems.size} 个路由项")
 
@@ -208,7 +210,6 @@ class RouteMetadataProcessor(
 //            }
 
 
-
             logger.warn("开始生成路由表")
             // 生成路由表文件
             codeGenerator.createNewFile(
@@ -261,7 +262,7 @@ class RouteMetadataProcessorProvider : SymbolProcessorProvider {
         return RouteMetadataProcessor(
             codeGenerator = environment.codeGenerator,
             logger = environment.logger,
-            options =environment.options
+            options = environment.options
         )
     }
 }

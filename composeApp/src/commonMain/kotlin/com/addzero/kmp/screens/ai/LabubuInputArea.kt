@@ -44,20 +44,25 @@ fun LabubuInputArea(
         // 可爱的分割线
         Box(
             modifier = Modifier.Companion.fillMaxWidth().height(1.dp).background(
-                    Brush.Companion.horizontalGradient(
-                        colors = listOf(
-                            Color.Companion.Transparent, LabubuColors.PrimaryPink.copy(alpha = 0.3f), Color.Companion.Transparent
-                        )
+                Brush.Companion.horizontalGradient(
+                    colors = listOf(
+                        Color.Companion.Transparent,
+                        LabubuColors.PrimaryPink.copy(alpha = 0.3f),
+                        Color.Companion.Transparent
                     )
                 )
+            )
         )
 
         Row(
-            modifier = Modifier.Companion.fillMaxWidth().background(Color.Companion.White).padding(16.dp), verticalAlignment = Alignment.Companion.Bottom
+            modifier = Modifier.Companion.fillMaxWidth().background(Color.Companion.White).padding(16.dp),
+            verticalAlignment = Alignment.Companion.Bottom
         ) {
             // 输入框 - 支持回车发送
             OutlinedTextField(
-                value = input, onValueChange = onInputChange, modifier = Modifier.weight(1f).focusRequester(focusRequester).onPreviewKeyEvent { keyEvent ->
+                value = input,
+                onValueChange = onInputChange,
+                modifier = Modifier.weight(1f).focusRequester(focusRequester).onPreviewKeyEvent { keyEvent ->
                     // 使用onPreviewKeyEvent来优先处理键盘事件
                     if (keyEvent.type == KeyEventType.KeyDown && keyEvent.key == Key.Enter) {
                         val hasShift = keyEvent.isShiftPressed
@@ -78,20 +83,30 @@ fun LabubuInputArea(
                     } else {
                         false // Not an Enter key event, or not KeyDown, let it propagate
                     }
-                }, placeholder = {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
-                    Icon(
-                        Icons.Default.ChatBubbleOutline, contentDescription = null, tint = LabubuColors.LightText, modifier = Modifier.size(16.dp)
-                    )
-                    Text(
-                        "说点什么吧...", color = LabubuColors.LightText
-                    )
-                }
-            }, shape = RoundedCornerShape(24.dp), colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = LabubuColors.PrimaryPink, unfocusedBorderColor = LabubuColors.PrimaryPink.copy(alpha = 0.3f), focusedLabelColor = LabubuColors.PrimaryPink, cursorColor = LabubuColors.PrimaryPink
-            ),
+                },
+                placeholder = {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        Icon(
+                            Icons.Default.ChatBubbleOutline,
+                            contentDescription = null,
+                            tint = LabubuColors.LightText,
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Text(
+                            "说点什么吧...", color = LabubuColors.LightText
+                        )
+                    }
+                },
+                shape = RoundedCornerShape(24.dp),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = LabubuColors.PrimaryPink,
+                    unfocusedBorderColor = LabubuColors.PrimaryPink.copy(alpha = 0.3f),
+                    focusedLabelColor = LabubuColors.PrimaryPink,
+                    cursorColor = LabubuColors.PrimaryPink
+                ),
 
                 maxLines = 999
             )
@@ -100,7 +115,11 @@ fun LabubuInputArea(
 
             // 可爱的发送按钮
             FloatingActionButton(
-                onClick = onSend, modifier = Modifier.Companion.size(56.dp).scale(pulseAnimation), containerColor = if (enabled) LabubuColors.PrimaryPink else Color.Transparent, contentColor = if (enabled) Color.White else LabubuColors.LightText, elevation = FloatingActionButtonDefaults.elevation(
+                onClick = onSend,
+                modifier = Modifier.Companion.size(56.dp).scale(pulseAnimation),
+                containerColor = if (enabled) LabubuColors.PrimaryPink else Color.Transparent,
+                contentColor = if (enabled) Color.White else LabubuColors.LightText,
+                elevation = FloatingActionButtonDefaults.elevation(
                     defaultElevation = if (enabled) 6.dp else 2.dp
                 )
             ) {
@@ -111,7 +130,9 @@ fun LabubuInputArea(
                 ) { isEnabled ->
                     if (isEnabled) {
                         Icon(
-                            Icons.AutoMirrored.Filled.Send, contentDescription = "发送", modifier = Modifier.Companion.size(24.dp)
+                            Icons.AutoMirrored.Filled.Send,
+                            contentDescription = "发送",
+                            modifier = Modifier.Companion.size(24.dp)
                         )
                     } else {
 
@@ -131,15 +152,16 @@ fun LabubuInputArea(
 
         // 底部可爱装饰
         Row(
-            modifier = Modifier.Companion.fillMaxWidth().background(Color.Companion.White).padding(horizontal = 16.dp, vertical = 8.dp), horizontalArrangement = Arrangement.Center
+            modifier = Modifier.Companion.fillMaxWidth().background(Color.Companion.White)
+                .padding(horizontal = 16.dp, vertical = 8.dp), horizontalArrangement = Arrangement.Center
         ) {
             repeat(5) { index ->
                 Box(
                     modifier = Modifier.Companion.size(4.dp).background(
-                            LabubuColors.PrimaryPink.copy(
-                                alpha = if (index == 2) 0.8f else 0.3f
-                            ), CircleShape
-                        )
+                        LabubuColors.PrimaryPink.copy(
+                            alpha = if (index == 2) 0.8f else 0.3f
+                        ), CircleShape
+                    )
                 )
                 if (index < 4) {
                     Spacer(modifier = Modifier.Companion.width(4.dp))

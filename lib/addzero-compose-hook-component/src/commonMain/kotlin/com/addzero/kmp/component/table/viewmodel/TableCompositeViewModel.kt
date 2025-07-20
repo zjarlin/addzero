@@ -12,13 +12,13 @@ import org.koin.android.annotation.KoinViewModel
  */
 @KoinViewModel
 class TableCompositeViewModel(
-    val searchViewModel: TableSearchViewModel ,
-    val selectionViewModel: TableSelectionViewModel ,
+    val searchViewModel: TableSearchViewModel,
+    val selectionViewModel: TableSelectionViewModel,
     val paginationViewModel: TablePaginationViewModel,
-    val sortViewModel: TableSortViewModel ,
+    val sortViewModel: TableSortViewModel,
     val uiStateViewModel: TableUIStateViewModel,
-    val dataViewModel: TableDataViewModel ,
-    ) : ViewModel() {
+    val dataViewModel: TableDataViewModel,
+) : ViewModel() {
 
     private lateinit var config: TableConfig
 
@@ -121,7 +121,7 @@ class TableCompositeViewModel(
     fun saveData(item: TableRowType?) {
         dataViewModel.saveData(item) {
             uiStateViewModel.hideFormDialog()
-            selectionViewModel.currentSelectItem=null
+            selectionViewModel.currentSelectItem = null
             queryPage()
         }
     }
@@ -183,7 +183,7 @@ class TableCompositeViewModel(
      * 显示新增表单
      */
     fun showAddForm() {
-        selectionViewModel.currentSelectItem=null
+        selectionViewModel.currentSelectItem = null
         uiStateViewModel.showFormDialog()
     }
 
@@ -191,7 +191,7 @@ class TableCompositeViewModel(
      * 显示编辑表单
      */
     fun showEditForm(item: TableRowType) {
-        selectionViewModel.currentSelectItem=null
+        selectionViewModel.currentSelectItem = null
         uiStateViewModel.showFormDialog()
     }
 

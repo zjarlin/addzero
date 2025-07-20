@@ -18,6 +18,6 @@ class CauseDoesNotExistStrategy : AutoAddColStrategy {
             StrUtil.subBetween(causeMessage, "was aborted: ERROR: column \"", " of relation ")?.removeBlankOrQuotation()
         val tableName = StrUtil.subBetween(causeMessage, "of relation \"", " does not exist")?.removeBlankOrQuotation()
         val fixCol = fixCol(tableName, columnName)
-       return  Res.success(fixCol)
+        return Res.success(fixCol)
     }
 }

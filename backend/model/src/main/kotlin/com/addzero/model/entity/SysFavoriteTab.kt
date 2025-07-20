@@ -1,8 +1,9 @@
 package com.addzero.model.entity
 
 import com.addzero.model.common.BaseEntity
-import com.addzero.model.common.SnowflakeIdGenerator
-import org.babyfish.jimmer.sql.*
+import org.babyfish.jimmer.sql.Column
+import org.babyfish.jimmer.sql.Entity
+import org.babyfish.jimmer.sql.Table
 
 /**
  * SysFavoriteTab

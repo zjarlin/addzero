@@ -11,7 +11,7 @@ kotlin {
             // 基础工具
             implementation(projects.lib.addzeroKspSupport)
         }
-        
+
         jvmMain.dependencies {
             // JVM 特定依赖
         }

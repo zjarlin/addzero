@@ -14,22 +14,24 @@ import org.koin.android.annotation.KoinViewModel
  * 用于管理用户最近访问的页面，以标签页形式展示
  */
 @KoinViewModel
-class RecentTabsManager: ViewModel() {
-    private  val MAX_TABS = 10 // 最大保存的标签页数量
-    private  val MAX_CLOSED_TABS = 20 // 最大保存的已关闭标签页数量
-    
+class RecentTabsManager : ViewModel() {
+    private val MAX_TABS = 10 // 最大保存的标签页数量
+    private val MAX_CLOSED_TABS = 20 // 最大保存的已关闭标签页数量
+
     // 保存所有标签页
     private val _tabs = mutableStateListOf<TabInfo>()
+
     // 当前激活的标签页索引
     private var _currentTabIndex by mutableStateOf(-1)
+
     // 保存最近关闭的标签页，用于恢复功能
     private val _closedTabs = mutableStateListOf<TabInfo>()
-    
+
     // 供外部访问的视图
     val tabs: List<TabInfo> get() = _tabs
     val currentTabIndex: Int get() = _currentTabIndex
     val currentTab: TabInfo? get() = if (_currentTabIndex >= 0 && _currentTabIndex < _tabs.size) _tabs[_currentTabIndex] else null
-    
+
     /**
      * 添加或激活一个标签页
      *
@@ -39,24 +41,24 @@ class RecentTabsManager: ViewModel() {
     fun addOrActivateTab(route: String, title: String) {
         // 查找是否已存在此路由的标签
         val existingIndex = _tabs.indexOfFirst { it.route == route }
-        
+
         if (existingIndex >= 0) {
             // 如果已存在，将其激活
             _currentTabIndex = existingIndex
             return
         }
-        
+
         // 如果达到最大标签数，移除最早添加的一个
         if (_tabs.size >= MAX_TABS) {
             _tabs.removeAt(0)
         }
-        
+
         // 添加新标签
         val newTab = TabInfo(route, title)
         _tabs.add(newTab)
         _currentTabIndex = _tabs.size - 1
     }
-    
+
     /**
      * 激活指定索引的标签页
      *
@@ -74,7 +76,7 @@ class RecentTabsManager: ViewModel() {
             }
         }
     }
-    
+
     /**
      * 关闭指定索引的标签页
      *
@@ -86,13 +88,13 @@ class RecentTabsManager: ViewModel() {
             // 保存要关闭的标签页到关闭历史
             val closedTab = _tabs[index]
             addToClosedTabs(closedTab)
-            
+
             // 记录当前激活的标签
             val currentTab = currentTab
-            
+
             // 移除标签
             _tabs.removeAt(index)
-            
+
             // 更新当前标签索引
             when {
                 _tabs.isEmpty() -> _currentTabIndex = -1
@@ -110,10 +112,10 @@ class RecentTabsManager: ViewModel() {
             }
         }
     }
-    
+
     /**
      * 将标签页添加到已关闭标签页列表
-     * 
+     *
      * @param tab 要添加的标签页
      */
     private fun addToClosedTabs(tab: TabInfo) {
@@ -121,19 +123,19 @@ class RecentTabsManager: ViewModel() {
         if (_closedTabs.contains(tab)) {
             _closedTabs.remove(tab)
         }
-        
+
         // 添加到最近关闭的标签列表
         _closedTabs.add(0, tab)
-        
+
         // 如果超出最大保存数量，移除最早关闭的
         if (_closedTabs.size > MAX_CLOSED_TABS) {
             _closedTabs.removeAt(_closedTabs.size - 1)
         }
     }
-    
+
     /**
      * 重新打开最近关闭的标签页
-     * 
+     *
      * @param navController 导航控制器
      * @return 是否成功重新打开标签页
      */
@@ -141,10 +143,10 @@ class RecentTabsManager: ViewModel() {
         if (_closedTabs.isEmpty()) {
             return false
         }
-        
+
         // 获取最近关闭的标签页
         val tabToReopen = _closedTabs.removeAt(0)
-        
+
         // 检查此路由是否已在打开的标签中
         val existingIndex = _tabs.indexOfFirst { it.route == tabToReopen.route }
         if (existingIndex >= 0) {
@@ -152,7 +154,7 @@ class RecentTabsManager: ViewModel() {
             activateTab(existingIndex, navController)
             return true
         }
-        
+
         // 添加标签并导航
         _tabs.add(tabToReopen)
         _currentTabIndex = _tabs.size - 1
@@ -160,17 +162,17 @@ class RecentTabsManager: ViewModel() {
             launchSingleTop = true
             restoreState = true
         }
-        
+
         return true
     }
-    
+
     /**
      * 关闭所有标签页
      */
     fun closeAllTabs() {
         // 将所有标签添加到关闭历史
         _tabs.forEach { addToClosedTabs(it) }
-        
+
         _tabs.clear()
         _currentTabIndex = -1
     }

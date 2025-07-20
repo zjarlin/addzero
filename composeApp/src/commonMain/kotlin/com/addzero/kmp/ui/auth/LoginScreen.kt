@@ -48,7 +48,9 @@ fun LoginScreen() {
             val model = viewModel.userRegFormState.avatar
 
             SecondLoginComponent(
-                onSecondLogin = viewModel::onSecondLogin, onFrogetPassword = { viewModel.onForgetPassword() }, customLogo = (if (model == null) null else {
+                onSecondLogin = viewModel::onSecondLogin,
+                onFrogetPassword = { viewModel.onForgetPassword() },
+                customLogo = (if (model == null) null else {
                     {
                         AsyncImage(
                             model = model,

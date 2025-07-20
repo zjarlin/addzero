@@ -1,7 +1,7 @@
 package com.addzero.kmp.jdbc.meta.public.table.impl
 
 import com.addzero.kmp.jdbc.meta.public.table.IBizTag
-             import kotlinx.serialization.Serializable
+import kotlinx.serialization.Serializable
 
 /**
  * IBizTagImpl 实现类
@@ -11,6 +11,6 @@ import com.addzero.kmp.jdbc.meta.public.table.IBizTag
 @Serializable
 data class IBizTagImpl(
     override val id: Long,
-        override val name: String?,
-        override val description: String?
+    override val name: String?,
+    override val description: String?
 ) : IBizTag

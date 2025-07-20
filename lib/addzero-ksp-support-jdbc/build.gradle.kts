@@ -3,8 +3,8 @@ plugins {
 }
 
 
-kotlin{
-    sourceSets{
+kotlin {
+    sourceSets {
         jvmMain.dependencies {
             // JDBC相关依赖
             implementation(libs.postgresql.driver) // PostgreSQL驱动

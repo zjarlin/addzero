@@ -49,9 +49,9 @@ fun AiThinkingAnimation(
         ) {
             // AI头像
             AiThinkingAvatar()
-            
+
             Spacer(modifier = Modifier.width(8.dp))
-            
+
             // 思考气泡
             AiThinkingBubble()
         }
@@ -72,7 +72,7 @@ private fun AiThinkingAvatar() {
             repeatMode = RepeatMode.Reverse
         ), label = "avatarScale"
     )
-    
+
     Box(
         modifier = Modifier
             .size(32.dp)
@@ -142,7 +142,7 @@ private fun AiThinkingBubble() {
                 ),
                 modifier = Modifier.padding(end = 8.dp)
             )
-            
+
             // 跳动的点点
             ThinkingDots()
         }
@@ -155,7 +155,7 @@ private fun AiThinkingBubble() {
 @Composable
 private fun ThinkingDots() {
     val dots = listOf(0, 1, 2)
-    
+
     Row(
         horizontalArrangement = Arrangement.spacedBy(4.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -182,13 +182,13 @@ private fun ThinkingDot(
     color: Color = LabubuColors.PrimaryPink
 ) {
     var isAnimating by remember { mutableStateOf(false) }
-    
+
     // 启动动画
     LaunchedEffect(Unit) {
         delay(delay)
         isAnimating = true
     }
-    
+
     // 缩放动画
     val scale by animateFloatAsState(
         targetValue = if (isAnimating) 1.2f else 0.8f,
@@ -197,7 +197,7 @@ private fun ThinkingDot(
             repeatMode = RepeatMode.Reverse
         ), label = "dotScale"
     )
-    
+
     // 透明度动画
     val alpha by animateFloatAsState(
         targetValue = if (isAnimating) 1f else 0.5f,
@@ -206,7 +206,7 @@ private fun ThinkingDot(
             repeatMode = RepeatMode.Reverse
         ), label = "dotAlpha"
     )
-    
+
     Box(
         modifier = Modifier
             .size(6.dp)
@@ -245,9 +245,9 @@ fun AdvancedAiThinkingAnimation(
         ) {
             // 增强版AI头像
             EnhancedAiAvatar()
-            
+
             Spacer(modifier = Modifier.width(8.dp))
-            
+
             // 增强版思考气泡
             EnhancedThinkingBubble(thinkingText)
         }
@@ -267,7 +267,7 @@ private fun EnhancedAiAvatar() {
             repeatMode = RepeatMode.Restart
         ), label = "rotation"
     )
-    
+
     Box(
         modifier = Modifier.size(40.dp),
         contentAlignment = Alignment.Center
@@ -288,7 +288,7 @@ private fun EnhancedAiAvatar() {
                     CircleShape
                 )
         )
-        
+
         // 主头像
         Box(
             modifier = Modifier
@@ -358,7 +358,7 @@ private fun EnhancedThinkingBubble(text: String) {
                 ),
                 lineHeight = 18.sp
             )
-            
+
             // 进度指示器
             LinearProgressIndicator(
                 modifier = Modifier

@@ -2,13 +2,13 @@ package com.addzero.kmp.generator
 
 import com.addzero.kmp.strategy.FormStrategyManager
 import com.google.devtools.ksp.processing.KSPLogger
-import com.google.devtools.ksp.symbol.KSPropertyDeclaration
 import com.google.devtools.ksp.symbol.KSClassDeclaration
+import com.google.devtools.ksp.symbol.KSPropertyDeclaration
 import java.io.File
 
 /**
  * 表单代码生成器
- * 
+ *
  * 负责生成表单组件的代码
  */
 class FormCodeGenerator(
@@ -250,7 +250,10 @@ class FormCodeGenerator(
     /**
      * 使用策略模式生成 FormProps 对象
      */
-    private fun generateFormPropsWithStrategy(entityClassName: String, properties: List<KSPropertyDeclaration>): String {
+    private fun generateFormPropsWithStrategy(
+        entityClassName: String,
+        properties: List<KSPropertyDeclaration>
+    ): String {
         val propConstants = properties.joinToString("\n") { prop ->
             "    const val ${prop.simpleName.asString()} = \"${prop.simpleName.asString()}\""
         }
@@ -280,7 +283,10 @@ class FormCodeGenerator(
      * 使用策略模式生成 DSL 方法
      * 支持 hidden 和 order 参数
      */
-    private fun generateDslMethodsWithStrategy(entityClassName: String, properties: List<KSPropertyDeclaration>): String {
+    private fun generateDslMethodsWithStrategy(
+        entityClassName: String,
+        properties: List<KSPropertyDeclaration>
+    ): String {
         return properties.joinToString("\n\n") { prop ->
             val propName = prop.simpleName.asString()
             """

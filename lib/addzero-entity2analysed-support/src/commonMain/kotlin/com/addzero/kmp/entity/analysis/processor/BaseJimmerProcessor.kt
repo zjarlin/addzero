@@ -3,8 +3,12 @@ package com.addzero.kmp.entity.analysis.processor
 import com.addzero.kmp.context.SettingContext
 import com.addzero.kmp.entity.analysis.JimmerEntityAnalyzer
 import com.addzero.kmp.entity.analysis.model.EntityMetadata
-import com.google.devtools.ksp.processing.*
-import com.google.devtools.ksp.symbol.*
+import com.google.devtools.ksp.processing.CodeGenerator
+import com.google.devtools.ksp.processing.KSPLogger
+import com.google.devtools.ksp.processing.Resolver
+import com.google.devtools.ksp.processing.SymbolProcessor
+import com.google.devtools.ksp.symbol.KSAnnotated
+import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.validate
 
 /**
@@ -25,7 +29,7 @@ abstract class BaseJimmerProcessor(
 
     // Jimmer 实体分析器
     protected val entityAnalyzer = JimmerEntityAnalyzer(logger)
-    
+
     // 存储收集到的实体元数据
     protected val collectedEntities = mutableListOf<EntityMetadata>()
 
@@ -34,13 +38,13 @@ abstract class BaseJimmerProcessor(
 
     override fun process(resolver: Resolver): List<KSAnnotated> {
         SettingContext.initialize(options)
-        
+
         // 检查是否应该执行此处理器
         if (!shouldProcess()) {
             logger.warn("${this::class.simpleName} 跳过执行")
             return emptyList()
         }
-        
+
         logger.warn("🚀 ${this::class.simpleName} 开始执行！")
         logger.warn("BaseJimmer元数据处理器初始化配置: ${SettingContext.settings}")
 

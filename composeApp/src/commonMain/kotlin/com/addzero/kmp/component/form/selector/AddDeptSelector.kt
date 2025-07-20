@@ -39,7 +39,7 @@ fun AddDeptSelector(
         dataProvider = { sysDeptApi.tree("") },
         getId = { it.id!! },
         getLabel = { it.name },
-        getChildren = {it.children}
+        getChildren = { it.children }
     )
 
 

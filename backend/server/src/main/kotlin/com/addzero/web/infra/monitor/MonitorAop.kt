@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration
 
 @Aspect
 @Configuration
-open class MonitorAop ( private val objectMapper: ObjectMapper ){
+open class MonitorAop(private val objectMapper: ObjectMapper) {
 
     //标记切入点，为指定包下的所有类的所有public方法
     @Around(value = "@annotation(Monitor)")

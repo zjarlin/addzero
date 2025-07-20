@@ -20,21 +20,21 @@ import com.addzero.kmp.component.table.TableColumnType
  */
 @Composable
 fun RenderTableHeaderColumnFilterIcon(
-    isFiltered: Boolean, 
+    isFiltered: Boolean,
     column: TableColumnType,
     onColumnAdvSearchClick: () -> Unit
 ) {
     if (!column.metaconfig.searchable) return
-    
+
     IconButton(
         onClick = onColumnAdvSearchClick,
         modifier = Modifier.size(24.dp)
     ) {
         Icon(
             imageVector = Icons.Default.FilterAlt,
-            contentDescription = "字段高级搜索", 
+            contentDescription = "字段高级搜索",
             tint = if (isFiltered) MaterialTheme.colorScheme.primary
-                  else LocalContentColor.current.copy(alpha = 0.5f), 
+            else LocalContentColor.current.copy(alpha = 0.5f),
             modifier = Modifier.size(16.dp)
         )
     }

@@ -54,7 +54,7 @@ fun AddEmailField(
     oncheckEmailSuccess: (() -> Unit)? = null,
     onErrMsgChange: ((String, String) -> Unit)? = null,
     errorMessages: List<String> = emptyList<String>(),
-    remoteValidationConfig: RemoteValidationConfig?=null,
+    remoteValidationConfig: RemoteValidationConfig? = null,
 
     ) {
     var errorMessages by remember { mutableStateOf(errorMessages) }
@@ -128,7 +128,7 @@ fun AddEmailField(
 
     fun reSend() {
         if (localValue.isBlank()) {
-            errorMessages+= "邮箱前缀不能为空"
+            errorMessages += "邮箱前缀不能为空"
             return
         }
         if (!checkEmail) {
@@ -147,7 +147,7 @@ fun AddEmailField(
 
     // 邮箱前缀输入框
     AddTextField(
-        remoteValidationConfig=remoteValidationConfig,
+        remoteValidationConfig = remoteValidationConfig,
         value = localValue, onValueChange = {
             if (!disable) {
                 localValue = it

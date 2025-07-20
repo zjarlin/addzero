@@ -6,7 +6,7 @@ import kotlin.random.Random
 /**
  * Data class representing a particle in the animated background
  */
- data class Particle(
+data class Particle(
     val x: Float,
     val y: Float,
     val radius: Float,

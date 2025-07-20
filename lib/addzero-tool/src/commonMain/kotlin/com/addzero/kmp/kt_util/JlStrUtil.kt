@@ -25,21 +25,21 @@ fun String.containsAnyIgnoreCase(vararg substrings: String): Boolean {
     val lowerThis = this.lowercase()
     return substrings.any { it.lowercase() in lowerThis }
 }
-    fun String.toBigCamelCase(): String {
-        return this.split("_").joinToString("") {
-            it.replaceFirstChar { char -> char.uppercase() }
-        }
-    }
 
-    /**
-     * 将列名转换为驼峰命名
-     */
-    fun String.toLowCamelCase(): String {
-        return this.split("_").joinToString("") {
-            it.replaceFirstChar { char -> char.uppercase() }
-        }.replaceFirstChar { it.lowercase() }
+fun String.toBigCamelCase(): String {
+    return this.split("_").joinToString("") {
+        it.replaceFirstChar { char -> char.uppercase() }
     }
+}
 
+/**
+ * 将列名转换为驼峰命名
+ */
+fun String.toLowCamelCase(): String {
+    return this.split("_").joinToString("") {
+        it.replaceFirstChar { char -> char.uppercase() }
+    }.replaceFirstChar { it.lowercase() }
+}
 
 
 object JlStrUtil {
@@ -111,7 +111,7 @@ object JlStrUtil {
 }
 
 fun String?.isBlank(): Boolean {
-    if (this == null || this=="") {
+    if (this == null || this == "") {
         return true
     }
     return false

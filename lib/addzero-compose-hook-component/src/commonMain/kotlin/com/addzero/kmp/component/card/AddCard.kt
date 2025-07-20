@@ -348,11 +348,11 @@ fun adaptiveMellumCardType(): MellumCardType {
 
 /**
  * 🎨 预设的JetBrains风格卡片组件
- * 
+ *
  * 提供一些常用的预设样式，方便快速使用
  */
 object AddCards {
-    
+
     /**
      * Koog Agent风格卡片
      */
@@ -369,7 +369,7 @@ object AddCards {
             content = content
         )
     }
-    
+
     /**
      * Hackathon风格卡片
      */
@@ -386,7 +386,7 @@ object AddCards {
             content = content
         )
     }
-    
+
     /**
      * Deploy Mellum风格卡片
      */

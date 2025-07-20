@@ -1,9 +1,7 @@
 package com.addzero.ai.config
 
 import org.slf4j.LoggerFactory
-import org.springframework.ai.tool.method.MethodToolCallback
 import org.springframework.ai.tool.method.MethodToolCallbackProvider
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Configuration
 
@@ -13,7 +11,7 @@ import org.springframework.context.annotation.Configuration
  */
 @Configuration
 class McpToolsConfiguration(
-   private val methodToolCallbackProvider: MethodToolCallbackProvider,
+    private val methodToolCallbackProvider: MethodToolCallbackProvider,
 ) : CommandLineRunner {
 
     private val logger = LoggerFactory.getLogger(McpToolsConfiguration::class.java)

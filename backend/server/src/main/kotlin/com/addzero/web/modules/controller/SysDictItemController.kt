@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/sysDictItem")
-class SysDictItemController: BaseTreeApi<SysDictItem> {
+class SysDictItemController : BaseTreeApi<SysDictItem> {
 
     @GetMapping("/page")
     fun page(): Unit {

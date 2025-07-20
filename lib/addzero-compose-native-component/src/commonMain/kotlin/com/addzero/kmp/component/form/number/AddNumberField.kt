@@ -1,14 +1,17 @@
 package com.addzero.kmp.component.form.number
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Numbers
-import androidx.compose.material3.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.dp
 
 /**
  * 通用数字输入字段组件
@@ -32,7 +35,7 @@ fun AddNumberField(
 ) {
     var isError by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf("") }
-    
+
     // 验证输入
     LaunchedEffect(value) {
         val isValid = validateNumber(
@@ -43,26 +46,26 @@ fun AddNumberField(
             maxValue = maxValue,
             minValue = minValue
         )
-        
+
         isError = !isValid.first
         errorMessage = isValid.second
         onValidate?.invoke(isValid.first)
     }
-    
+
     Column(modifier = modifier) {
         OutlinedTextField(
             value = value,
             onValueChange = { newValue ->
                 // 只允许数字、小数点和负号
                 val filteredValue = newValue.filter { char ->
-                    char.isDigit() || 
-                    char == '.' || 
-                    (char == '-' && allowNegative && newValue.indexOf('-') == 0)
+                    char.isDigit() ||
+                            char == '.' ||
+                            (char == '-' && allowNegative && newValue.indexOf('-') == 0)
                 }
                 onValueChange(filteredValue)
             },
-            label = { 
-                Text(if (isRequired) "$label *" else label) 
+            label = {
+                Text(if (isRequired) "$label *" else label)
             },
             placeholder = { Text(placeholder) },
             leadingIcon = {
@@ -106,38 +109,38 @@ private fun validateNumber(
             true to ""
         }
     }
-    
+
     // 数字格式检查
     val doubleValue = value.toDoubleOrNull()
     if (doubleValue == null) {
         return false to "请输入有效的数字"
     }
-    
+
     // 负数检查
     if (!allowNegative && doubleValue < 0) {
         return false to "不允许输入负数"
     }
-    
+
     // 小数位数检查
     if (decimalPlaces == 0 && value.contains('.')) {
         return false to "不允许输入小数"
     }
-    
+
     if (decimalPlaces > 0 && value.contains('.')) {
         val decimalPart = value.substringAfter('.')
         if (decimalPart.length > decimalPlaces) {
             return false to "小数位数不能超过 $decimalPlaces 位"
         }
     }
-    
+
     // 范围检查
     if (minValue != null && doubleValue < minValue) {
         return false to "值不能小于 $minValue"
     }
-    
+
     if (maxValue != null && doubleValue > maxValue) {
         return false to "值不能大于 $maxValue"
     }
-    
+
     return true to ""
 }

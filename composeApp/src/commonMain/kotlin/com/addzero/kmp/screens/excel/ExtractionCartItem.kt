@@ -38,7 +38,9 @@ fun ExtractionCartItem(
         )
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(8.dp), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically
+            modifier = Modifier.fillMaxWidth().padding(8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)
@@ -80,7 +82,10 @@ fun ExtractionCartItem(
                     onClick = onRemove, modifier = Modifier.size(20.dp)
                 ) {
                     Icon(
-                        Icons.Default.RemoveShoppingCart, contentDescription = "移除", modifier = Modifier.size(12.dp), tint = Color(0xFFEF4444)
+                        Icons.Default.RemoveShoppingCart,
+                        contentDescription = "移除",
+                        modifier = Modifier.size(12.dp),
+                        tint = Color(0xFFEF4444)
                     )
                 }
             }

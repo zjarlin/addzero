@@ -24,10 +24,10 @@ import com.addzero.kmp.component.table.viewmodel.StatePagination
 
 /**
  * 🎨 表格分页卡片组件
- * 
+ *
  * 使用 JetBrains Mellum 风格的卡片来展示分页控件，
  * 提供更现代化的视觉效果和交互体验
- * 
+ *
  * @param modifier 修饰符
  * @param statePagination 分页状态
  * @param pageSizeOptions 页面大小选项
@@ -61,7 +61,7 @@ fun AddTablePagination(
     compactMode: Boolean = false
 ) {
     if (!enablePagination) return
-    
+
     AddCard(
         modifier = modifier.fillMaxWidth(),
         backgroundType = cardType,
@@ -84,7 +84,7 @@ fun AddTablePagination(
                         compact = true
                     )
                 }
-                
+
                 // 分页控制按钮
                 PaginationControls(
                     statePagination = statePagination,
@@ -150,7 +150,7 @@ private fun PaginationInfo(
     val startItem = (statePagination.currentPage - 1) * statePagination.pageSize + 1
 
     val endItem = minOf(statePagination.currentPage * statePagination.pageSize, statePagination.totalItems)
-    
+
     if (compact) {
         Text(
             text = "${statePagination.currentPage}/${statePagination.totalPages}",
@@ -183,7 +183,7 @@ private fun PageSizeSelector(
     onPageSizeChange: (Int) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
-    
+
     Box {
         OutlinedButton(
             onClick = { expanded = true },
@@ -202,7 +202,7 @@ private fun PageSizeSelector(
                 style = MaterialTheme.typography.bodySmall
             )
         }
-        
+
         DropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false }
@@ -249,7 +249,7 @@ private fun PaginationControls(
                 modifier = Modifier.size(if (compact) 16.dp else 20.dp)
             )
         }
-        
+
         // 上一页按钮
         PaginationButton(
             onClick = onPreviousPage,
@@ -262,7 +262,7 @@ private fun PaginationControls(
                 modifier = Modifier.size(if (compact) 16.dp else 20.dp)
             )
         }
-        
+
         // 页码按钮
         if (!compact) {
             PageNumberButtons(
@@ -271,7 +271,7 @@ private fun PaginationControls(
                 onGoToPage = onGoToPage
             )
         }
-        
+
         // 下一页按钮
         PaginationButton(
             onClick = onNextPage,
@@ -284,7 +284,7 @@ private fun PaginationControls(
                 modifier = Modifier.size(if (compact) 16.dp else 20.dp)
             )
         }
-        
+
         // 末页按钮
         PaginationButton(
             onClick = onGoLastPage,
@@ -311,7 +311,7 @@ private fun PaginationButton(
     content: @Composable () -> Unit
 ) {
     val size = if (compact) 32.dp else 40.dp
-    
+
     Box(
         modifier = Modifier
             .size(size)
@@ -353,10 +353,10 @@ private fun PageNumberButtons(
     // 计算显示的页码范围
     val visiblePages = 5
     val halfVisible = visiblePages / 2
-    
+
     val startPage = maxOf(1, currentPage - halfVisible)
     val endPage = minOf(totalPages, startPage + visiblePages - 1)
-    
+
     Row(
         horizontalArrangement = Arrangement.spacedBy(4.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -364,7 +364,7 @@ private fun PageNumberButtons(
         // 显示页码按钮
         for (page in startPage..endPage) {
             val isCurrentPage = page == currentPage
-            
+
             Box(
                 modifier = Modifier
                     .size(32.dp)
@@ -396,7 +396,7 @@ private fun PageNumberButtons(
                 )
             }
         }
-        
+
         // 如果有更多页面，显示省略号
         if (endPage < totalPages) {
             Text(

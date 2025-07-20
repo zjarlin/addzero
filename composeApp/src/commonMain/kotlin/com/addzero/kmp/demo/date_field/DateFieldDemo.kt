@@ -3,14 +3,15 @@ package com.addzero.kmp.demo.date_field
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.addzero.kmp.component.form.date.AddDateField
-import com.addzero.kmp.component.form.date.DateType
 import kotlinx.datetime.LocalDate
 
 /**
@@ -28,7 +29,7 @@ fun DateFieldDemo() {
     var selectedDate1 by remember { mutableStateOf<LocalDate?>(null) }
     var selectedDate2 by remember { mutableStateOf<LocalDate?>(LocalDate(2024, 1, 15)) }
     var selectedDate3 by remember { mutableStateOf<LocalDate?>(null) }
-    
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -42,7 +43,7 @@ fun DateFieldDemo() {
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold
         )
-        
+
         // 功能说明
         Card(
             modifier = Modifier.fillMaxWidth(),
@@ -59,7 +60,7 @@ fun DateFieldDemo() {
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold
                 )
-                
+
                 val features = listOf(
                     "📝 支持手动输入日期（格式：yyyy-MM-dd）",
                     "📅 支持点击日历图标选择日期",
@@ -67,7 +68,7 @@ fun DateFieldDemo() {
                     "✅ 自动格式校验",
                     "🔄 最终输出 LocalDate 类型"
                 )
-                
+
                 features.forEach { feature ->
                     Text(
                         text = feature,
@@ -77,7 +78,7 @@ fun DateFieldDemo() {
                 }
             }
         }
-        
+
         // 示例1：基础日期选择
         Card(
             modifier = Modifier.fillMaxWidth()
@@ -91,7 +92,7 @@ fun DateFieldDemo() {
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold
                 )
-                
+
                 AddDateField(
                     value = selectedDate1,
                     onValueChange = { selectedDate1 = it },
@@ -99,7 +100,7 @@ fun DateFieldDemo() {
                     placeholder = "请输入或选择日期",
                     modifier = Modifier.fillMaxWidth()
                 )
-                
+
                 // 显示当前值
                 Text(
                     text = "当前值：${selectedDate1?.toString() ?: "未选择"}",
@@ -108,7 +109,7 @@ fun DateFieldDemo() {
                 )
             }
         }
-        
+
         // 示例2：带默认值的日期选择
         Card(
             modifier = Modifier.fillMaxWidth()
@@ -122,7 +123,7 @@ fun DateFieldDemo() {
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold
                 )
-                
+
                 AddDateField(
                     value = selectedDate2,
                     onValueChange = { selectedDate2 = it },
@@ -131,7 +132,7 @@ fun DateFieldDemo() {
                     placeholder = "请输入或选择出生日期",
                     modifier = Modifier.fillMaxWidth()
                 )
-                
+
                 // 显示当前值
                 Text(
                     text = "当前值：${selectedDate2?.toString() ?: "未选择"}",
@@ -140,7 +141,7 @@ fun DateFieldDemo() {
                 )
             }
         }
-        
+
         // 示例3：禁用状态
         Card(
             modifier = Modifier.fillMaxWidth()
@@ -154,7 +155,7 @@ fun DateFieldDemo() {
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold
                 )
-                
+
                 AddDateField(
                     value = selectedDate3,
                     onValueChange = { selectedDate3 = it },
@@ -163,7 +164,7 @@ fun DateFieldDemo() {
                     placeholder = "此字段已禁用",
                     modifier = Modifier.fillMaxWidth()
                 )
-                
+
                 // 显示当前值
                 Text(
                     text = "当前值：${selectedDate3?.toString() ?: "未选择"}",
@@ -172,7 +173,7 @@ fun DateFieldDemo() {
                 )
             }
         }
-        
+
         // 使用说明
         Card(
             modifier = Modifier.fillMaxWidth(),
@@ -189,7 +190,7 @@ fun DateFieldDemo() {
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold
                 )
-                
+
                 val instructions = listOf(
                     "1. 直接在输入框中输入日期，格式为 yyyy-MM-dd（如：2024-01-15）",
                     "2. 点击右侧的日历图标打开日期选择器",
@@ -197,7 +198,7 @@ fun DateFieldDemo() {
                     "4. 只有格式正确的日期才会更新到外部状态",
                     "5. 最终传递给后台的是 LocalDate 类型"
                 )
-                
+
                 instructions.forEach { instruction ->
                     Text(
                         text = instruction,
@@ -207,7 +208,7 @@ fun DateFieldDemo() {
                 }
             }
         }
-        
+
         // 底部间距
         Spacer(modifier = Modifier.height(32.dp))
     }

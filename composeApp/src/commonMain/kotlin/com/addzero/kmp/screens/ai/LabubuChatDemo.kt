@@ -21,7 +21,7 @@ import com.addzero.kmp.annotation.Route
 @Route("界面演示", "Labubu聊天风格")
 fun LabubuChatDemo() {
     val scrollState = rememberScrollState()
-    
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -37,22 +37,22 @@ fun LabubuChatDemo() {
             ),
             color = LabubuColors.PrimaryPink
         )
-        
+
         // 设计说明
         DesignDescription()
-        
+
         HorizontalDivider()
-        
+
         // 颜色主题展示
         ColorThemeShowcase()
-        
+
         HorizontalDivider()
-        
+
         // 功能特性
         FeaturesList()
-        
+
         HorizontalDivider()
-        
+
         // 使用说明
         UsageInstructions()
     }
@@ -77,7 +77,7 @@ private fun DesignDescription() {
                 ),
                 color = LabubuColors.DarkText
             )
-            
+
             Text(
                 text = """
                     Labubu风格的AI聊天界面采用了可爱、温馨的设计语言：
@@ -108,7 +108,7 @@ private fun ColorThemeShowcase() {
             ),
             color = LabubuColors.DarkText
         )
-        
+
         // 主要颜色
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -118,7 +118,7 @@ private fun ColorThemeShowcase() {
             ColorCard("紫色", LabubuColors.SecondaryPurple, Modifier.weight(1f))
             ColorCard("黄色", LabubuColors.AccentYellow, Modifier.weight(1f))
         }
-        
+
         // 辅助颜色
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -182,7 +182,7 @@ private fun FeaturesList() {
             ),
             color = LabubuColors.DarkText
         )
-        
+
         val features = listOf(
             "🎭 可爱的头像系统" to "AI和用户都有独特的emoji头像，支持心跳动画",
             "💬 渐变聊天气泡" to "消息气泡采用渐变色彩，区分用户和AI消息",
@@ -192,7 +192,7 @@ private fun FeaturesList() {
             "🎨 圆润设计语言" to "所有元素都采用圆角设计，营造温馨感",
             "🎯 响应式布局" to "适配不同屏幕尺寸，保持最佳显示效果"
         )
-        
+
         features.forEach { (title, description) ->
             Card(
                 modifier = Modifier.fillMaxWidth(),
@@ -249,7 +249,7 @@ private fun UsageInstructions() {
                 ),
                 color = LabubuColors.DarkText
             )
-            
+
             Text(
                 text = """
                     1. 点击右上角的机器人按钮打开AI聊天界面

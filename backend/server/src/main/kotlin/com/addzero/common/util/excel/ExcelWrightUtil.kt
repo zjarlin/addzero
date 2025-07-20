@@ -40,7 +40,9 @@ object ExcelWrightUtil {
             }
             .collect(Collectors.toList())
 
-        val tempFile = PathUtil.createTempFile(IdUtil.getSnowflakeNextIdStr(), ".xlsx", if (dir != null) dir.toPath() else null).toFile().getCanonicalFile()
+        val tempFile =
+            PathUtil.createTempFile(IdUtil.getSnowflakeNextIdStr(), ".xlsx", if (dir != null) dir.toPath() else null)
+                .toFile().getCanonicalFile()
 
         EasyExcel.write(tempFile)
             .head(excelHeader)

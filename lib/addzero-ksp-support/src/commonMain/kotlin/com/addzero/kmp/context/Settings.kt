@@ -47,7 +47,7 @@ data class Settings(
     val dictItemForeignKeyColumn: String = "dict_id",
     val dictItemCodeColumn: String = "item_value",
     val dictItemNameColumn: String = "item_text"
-){
+) {
     /**
      * 同构体输出目录（shared 源码目录）
      */
@@ -64,7 +64,6 @@ data class Settings(
      * 枚举输出目录（shared 编译目录）
      */
     val enumOutputDir: String
-
         get() {
             val sharedBuildDir1 = sharedBuildDir
             sharedBuildDir1.ifBlank { throw IllegalStateException("sharedBuildDir 不能为空") }
@@ -83,7 +82,6 @@ data class Settings(
      */
     val modelOutputDir: String
         get() = "${modelSourceDir}/${modelPackageName.replace(".", "/")}"
-
 
 
 }

@@ -1,4 +1,3 @@
-
 package com.addzero.kmp.compose.icons
 
 /**
@@ -2080,7 +2079,7 @@ object IconKeys {
     const val ZOOMINMAP = "ZoomInMap"
     const val ZOOMOUT = "ZoomOut"
     const val ZOOMOUTMAP = "ZoomOutMap"
-    
+
     // 图标类型常量
     const val TYPE_DEFAULT = "Default"
     const val TYPE_FILLED = "Filled"

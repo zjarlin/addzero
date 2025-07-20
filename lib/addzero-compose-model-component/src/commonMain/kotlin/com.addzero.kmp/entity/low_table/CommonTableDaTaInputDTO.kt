@@ -4,8 +4,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CommonTableDaTaInputDTO(
-    val pageNo: Int=1,
-    val pageSize: Int=10,
+    val pageNo: Int = 1,
+    val pageSize: Int = 10,
     val tableName: String,
     //关键词
     val keyword: String,

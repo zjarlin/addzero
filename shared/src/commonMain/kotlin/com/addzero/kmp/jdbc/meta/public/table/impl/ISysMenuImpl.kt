@@ -1,7 +1,7 @@
 package com.addzero.kmp.jdbc.meta.public.table.impl
 
 import com.addzero.kmp.jdbc.meta.public.table.ISysMenu
-             import kotlinx.serialization.Serializable
+import kotlinx.serialization.Serializable
 
 /**
  * ISysMenuImpl 实现类
@@ -11,9 +11,9 @@ import com.addzero.kmp.jdbc.meta.public.table.ISysMenu
 @Serializable
 data class ISysMenuImpl(
     override val id: Long,
-        override val parentId: Long?,
-        override val title: String?,
-        override val routePath: String?,
-        override val icon: String?,
-        override val order: Float?
+    override val parentId: Long?,
+    override val title: String?,
+    override val routePath: String?,
+    override val icon: String?,
+    override val order: Float?
 ) : ISysMenu

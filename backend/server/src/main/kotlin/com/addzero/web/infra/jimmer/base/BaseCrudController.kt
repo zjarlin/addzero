@@ -2,8 +2,8 @@ package com.addzero.web.infra.jimmer.base
 
 import cn.hutool.core.util.TypeUtil
 import cn.hutool.extra.spring.SpringUtil
-import com.addzero.web.infra.constant.RestConsts
 import com.addzero.kmp.entity.PageResult
+import com.addzero.web.infra.constant.RestConsts
 import com.addzero.web.infra.jimmer.base.pagefactory.createPageFactory
 import org.babyfish.jimmer.Input
 import org.babyfish.jimmer.View
@@ -73,7 +73,7 @@ interface BaseCrudController<T : Any, Spec : KSpecification<T>, SaveInputDTO : I
     }
 
     @DeleteMapping(RestConsts.deleteUrl)
-    fun deleteByIds(@RequestParam  ids:List<Long>): Int {
+    fun deleteByIds(@RequestParam ids: List<Long>): Int {
         val affectedRowCountMap = sql.deleteByIds(CLASS(), ids).totalAffectedRowCount
         return affectedRowCountMap
     }

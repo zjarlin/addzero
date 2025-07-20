@@ -12,6 +12,7 @@ fun main() {
     val appDataDir = getAppDataDir("second_brain")
     println(appDataDir)
 }
+
 object OsUtil {
 
     fun getAppDataDir(appName: String): String {
@@ -33,9 +34,9 @@ object OsUtil {
     fun getPlatformType(): PlatformType {
         val osInfo = SystemUtil.getOsInfo()
         return when {
-            osInfo.isWindows  -> PlatformType.WINDOWS
+            osInfo.isWindows -> PlatformType.WINDOWS
             osInfo.isMac -> PlatformType.MAC
-            osInfo.name.containsAnyIgnoreCase("nix","nux","aix") -> PlatformType.LINUX
+            osInfo.name.containsAnyIgnoreCase("nix", "nux", "aix") -> PlatformType.LINUX
             else -> PlatformType.UNKNOWN
         }
     }

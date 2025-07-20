@@ -1,12 +1,6 @@
 package com.addzero.kmp.util
 
-import com.google.devtools.ksp.symbol.KSAnnotation
-import com.google.devtools.ksp.symbol.KSClassDeclaration
-import com.google.devtools.ksp.symbol.KSDeclaration
-import com.google.devtools.ksp.symbol.KSFunctionDeclaration
-import com.google.devtools.ksp.symbol.KSPropertyDeclaration
-import com.google.devtools.ksp.symbol.KSType
-import kotlin.sequences.forEach
+import com.google.devtools.ksp.symbol.*
 
 
 /**
@@ -241,8 +235,8 @@ val KSDeclaration.externalImports: Set<String>
     get() = this.allImports.filter { import ->
         val packageName = import.substringBeforeLast(".", "")
         !packageName.startsWith("kotlin") &&
-        !packageName.startsWith("java") &&
-        packageName.isNotEmpty()
+                !packageName.startsWith("java") &&
+                packageName.isNotEmpty()
     }.toSet()
 
 /**

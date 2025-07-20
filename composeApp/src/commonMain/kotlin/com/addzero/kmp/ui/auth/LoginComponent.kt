@@ -31,11 +31,11 @@ fun LoginComponent(logo: ImageVector = Icons.Default.Email, onWeChatLogin: () ->
             onValueChange = { viewModel.loginContext = it },
             label = "用户名/邮箱/手机号",
             leadingIcon = Icons.Default.PeopleAlt,
-            trailingIcon ={
-                AddIconButton(text = "继续", imageVector = Icons.AutoMirrored.Filled .Login, onClick = onLogin)
+            trailingIcon = {
+                AddIconButton(text = "继续", imageVector = Icons.AutoMirrored.Filled.Login, onClick = onLogin)
             },
 //            errorMessages = errorMessages
-        
+
         )
         Spacer(modifier = Modifier.height(16.dp))
 

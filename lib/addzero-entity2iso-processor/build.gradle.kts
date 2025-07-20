@@ -14,7 +14,7 @@ kotlin {
             // 实体分析支持
             implementation(projects.lib.addzeroEntity2analysedSupport)
         }
-        
+
         jvmMain.dependencies {
             // JVM 特定依赖
         }

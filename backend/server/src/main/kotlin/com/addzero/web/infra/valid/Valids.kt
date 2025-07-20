@@ -1,12 +1,11 @@
 package com.addzero.web.infra.valid
 
-import com.addzero.kmp.entity.Res
 import cn.hutool.core.collection.CollUtil
 import cn.hutool.core.text.CharSequenceUtil
 import cn.hutool.core.util.ReflectUtil
 import cn.hutool.core.util.StrUtil
 import com.addzero.common.util.metainfo.MetaInfoUtils
-import com.addzero.kmp.entity.fail
+import com.addzero.kmp.entity.Res
 import com.addzero.kmp.kt_util.addAll
 import com.addzero.web.infra.valid.entity.Des
 import com.addzero.web.infra.valid.entity.ValidVO

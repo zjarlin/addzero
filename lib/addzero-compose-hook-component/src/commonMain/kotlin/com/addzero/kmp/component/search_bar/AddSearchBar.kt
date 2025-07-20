@@ -58,7 +58,7 @@ fun AddSearchBar(
             trailingIcon = {
                 if (keyword.isNotEmpty()) {
                     IconButton(
-                        onClick = {onKeyWordChanged("")},
+                        onClick = { onKeyWordChanged("") },
                         modifier = Modifier.padding(4.dp)
                     ) {
                         Icon(

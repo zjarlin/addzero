@@ -3,11 +3,11 @@ package com.addzero.addzero_common
 import com.addzero.kmp.mock.createMockDictItems
 import com.addzero.kmp.mock.createMockDictTypes
 import com.addzero.model.entity.SysDict
+import com.addzero.model.entity.SysDictItem
 import com.addzero.web.modules.sys_dict.entity.by
 import com.addzero.web.modules.sys_dict.entity.dictName
 import com.addzero.web.modules.sys_dict.entity.fetchBy
 import com.addzero.web.modules.sys_dict.entity.sysDictItems
-import com.addzero.model.entity.SysDictItem
 import com.addzero.web.modules.sys_dict_item.entity.itemText
 import org.babyfish.jimmer.sql.ast.mutation.SaveMode
 import org.babyfish.jimmer.sql.kt.KSqlClient
@@ -48,7 +48,7 @@ class 测试字典插入(
         val executeQuery = sql
             .filters {
                 setBehavior(LogicalDeletedBehavior.IGNORED)
-            }.findAll(newFetcher(SysDict ::class).by{} )
+            }.findAll(newFetcher(SysDict::class).by {})
         println(executeQuery)
 
 
@@ -64,16 +64,13 @@ class 测试字典插入(
             .filters {
                 setBehavior(LogicalDeletedBehavior.IGNORED)
             }
-            .executeQuery(SysDict ::class){
-               select(table)
+            .executeQuery(SysDict::class) {
+                select(table)
             }
         println(executeQuery)
 
 
     }
-
-
-
 
 
     @Test

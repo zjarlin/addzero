@@ -33,7 +33,7 @@ import java.util.stream.Collectors
  * @param [content]
  * @return [GraphPO]
  */
-fun String?.toGraphQuestion(modelName: String ): GraphPO {
+fun String?.toGraphQuestion(modelName: String): GraphPO {
     val document = this?.let { Document(it) }
     val documents = listOf(document)
     val mergedGraphPO = GraphPO()
@@ -60,7 +60,7 @@ fun String?.toGraphQuestion(modelName: String ): GraphPO {
 }
 
 class AiUtil(
-    private val modelName: String ,
+    private val modelName: String,
     private val question: String,
     private val promptTemplate: String = "",
 ) {

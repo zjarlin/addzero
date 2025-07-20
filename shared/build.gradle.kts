@@ -1,18 +1,12 @@
 import de.jensklingenberg.ktorfit.gradle.KtorfitPluginExtension
 import org.babyfish.jimmer.Vars.commonMainKspBuildMetaDataDir
 import org.babyfish.jimmer.Vars.commonMainSourceDir
-import org.babyfish.jimmer.Vars.jvmMainKspBuildMetaDataDir
-import org.babyfish.jimmer.Vars.jvmMainSourceDir
-import org.gradle.kotlin.dsl.withType
-
-import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 plugins {
     id("kmp-shared")
     // 暂时完全移除 KSP 插件，避免依赖顺序问题
     id("ksp4jdbc")
-     id("ksp4shared-convention")
+    id("ksp4shared-convention")
     id("de.jensklingenberg.ktorfit") version "+"
 }
 configure<KtorfitPluginExtension> {
@@ -23,9 +17,9 @@ configure<KtorfitPluginExtension> {
 
 dependencies {
 
-     kspCommonMainMetadata(projects.lib.addzeroJdbc2enumProcessor)
+    kspCommonMainMetadata(projects.lib.addzeroJdbc2enumProcessor)
 
-     kspCommonMainMetadata(projects.lib.addzeroApiproviderProcessor)
+    kspCommonMainMetadata(projects.lib.addzeroApiproviderProcessor)
 
 }
 

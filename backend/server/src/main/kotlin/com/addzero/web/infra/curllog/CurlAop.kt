@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired
 
 @Aspect
 @org.springframework.stereotype.Component
-class CurlAop (
-   private val httpServletRequest: HttpServletRequest,
-){
+class CurlAop(
+    private val httpServletRequest: HttpServletRequest,
+) {
     @Autowired
 
     @Pointcut("execution(* com.addzero..BaseController.*(..))")
@@ -27,6 +27,7 @@ class CurlAop (
     @Pointcut("execution(* com.addzero..*Controller*+.*(..))")
     fun p3() {
     }
+
     @Pointcut("@annotation(CurlLog)")
     fun logCurlAnnotation() {
     }

@@ -1,7 +1,7 @@
 package com.addzero.kmp.jdbc.meta.public.table.impl
 
 import com.addzero.kmp.jdbc.meta.public.table.ISysRole
-             import kotlinx.serialization.Serializable
+import kotlinx.serialization.Serializable
 
 /**
  * ISysRoleImpl 实现类
@@ -11,8 +11,8 @@ import com.addzero.kmp.jdbc.meta.public.table.ISysRole
 @Serializable
 data class ISysRoleImpl(
     override val id: Long,
-        override val roleCode: String?,
-        override val roleName: String?,
-        override val systemFlag: Boolean?,
-        override val status: String?
+    override val roleCode: String?,
+    override val roleName: String?,
+    override val systemFlag: Boolean?,
+    override val status: String?
 ) : ISysRole

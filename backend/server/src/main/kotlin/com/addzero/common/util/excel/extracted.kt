@@ -25,16 +25,18 @@ private fun extracted() {
 //        EasyExcel.write(res("施工日志.xlsx")).withTemplate(file).build()
 
 
-    val map = FileUtil.loopFiles("/Users/zjarlin/Downloads/AddzeroKmp/backend/src/test/kotlin/com/addzero/addzero_common/excel/json").map {
+    val map =
+        FileUtil.loopFiles("/Users/zjarlin/Downloads/AddzeroKmp/backend/src/test/kotlin/com/addzero/addzero_common/excel/json")
+            .map {
 
-        val gen = gen(it.absolutePath)
+                val gen = gen(it.absolutePath)
 
-        gen
+                gen
 
-    }
+            }
 
 
-    val alldata  = map.map { it.first }
+    val alldata = map.map { it.first }
 
         .map {
             it.remove("气象数据")
@@ -45,7 +47,7 @@ private fun extracted() {
             removeNullValue
         }
 
-    .toMutableList()
+        .toMutableList()
 
     val exportMap = ExcelWrightUtil.exportMap(alldata)
     val absolutePath = exportMap.absolutePath
@@ -161,11 +163,21 @@ private fun getSheet1Data(): Map<String, String> {
 
 private fun getSheet2Data(): List<Map<String, String>>? {
     return listOf(
-        mapOf("deptName" to "研发一部", "groupName" to "一部小组1", "userName" to "自来也", "sex" to "男"), mapOf("deptName" to "研发二部", "groupName" to "二部小组1", "userName" to "雏田", "sex" to "女"), mapOf("deptName" to "研发二部", "groupName" to "二部小组1", "userName" to "小樱", "sex" to "女"), mapOf("deptName" to "研发一部", "groupName" to "一部小组2", "userName" to "鸣人", "sex" to "男"), mapOf("deptName" to "研发一部", "groupName" to "一部小组2", "userName" to "佐助", "sex" to "男"), mapOf("deptName" to "研发三部", "groupName" to "三部小组", "userName" to "拓海", "sex" to "男")
+        mapOf("deptName" to "研发一部", "groupName" to "一部小组1", "userName" to "自来也", "sex" to "男"),
+        mapOf("deptName" to "研发二部", "groupName" to "二部小组1", "userName" to "雏田", "sex" to "女"),
+        mapOf("deptName" to "研发二部", "groupName" to "二部小组1", "userName" to "小樱", "sex" to "女"),
+        mapOf("deptName" to "研发一部", "groupName" to "一部小组2", "userName" to "鸣人", "sex" to "男"),
+        mapOf("deptName" to "研发一部", "groupName" to "一部小组2", "userName" to "佐助", "sex" to "男"),
+        mapOf("deptName" to "研发三部", "groupName" to "三部小组", "userName" to "拓海", "sex" to "男")
     )
 }
 
-fun templateFill(vo: Map<String, Any>, dtos: List<Map<String, Any>>?, templateStream: InputStream, outputStream: OutputStream) {
+fun templateFill(
+    vo: Map<String, Any>,
+    dtos: List<Map<String, Any>>?,
+    templateStream: InputStream,
+    outputStream: OutputStream
+) {
     val writer = EasyExcel.write(outputStream).withTemplate(templateStream).build()
     val workbook = writer.writeContext().writeWorkbookHolder().workbook
     workbook.forceFormulaRecalculation = true

@@ -22,14 +22,14 @@ spring:
   jackson:
     time-zone: GMT+8
     #    date-format: com.fasterxml.jackson.databind.util.ISO8601DateFormat
-#    deserialization:
-#      fail-on-unknown-properties: false
-#      fail-on-null-for-primitives: false
-#    kotlin:
-#      null-to-empty-collection: false
-#      null-to-empty-map: false
-#      null-is-same-as-default: true
-#      strict-null-checks: false
+  #    deserialization:
+  #      fail-on-unknown-properties: false
+  #      fail-on-null-for-primitives: false
+  #    kotlin:
+  #      null-to-empty-collection: false
+  #      null-to-empty-map: false
+  #      null-is-same-as-default: true
+  #      strict-null-checks: false
   servlet:
     multipart:
       max-file-size: 500MB

@@ -9,7 +9,7 @@ open class BizException(
 
     val description: String,
 
-    val value: Int=400,
+    val value: Int = 400,
 
     ) : RuntimeException(description) {
 

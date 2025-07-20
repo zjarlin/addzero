@@ -1,13 +1,8 @@
-import org.gradle.accessors.dm.LibrariesForLibs
-import org.gradle.kotlin.dsl.libs
-
-
-
 plugins {
     id("kmp-core")
 }
 
-kotlin{
+kotlin {
     sourceSets {
         commonMain.dependencies {
             // put your Multiplatform dependencies here

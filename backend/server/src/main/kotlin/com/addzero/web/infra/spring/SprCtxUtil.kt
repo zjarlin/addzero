@@ -26,7 +26,7 @@ object SprCtxUtil {
     val applicationContext: ApplicationContext
         get() = SpringUtil.getApplicationContext()
 
-     val httpServletRequest: HttpServletRequest
+    val httpServletRequest: HttpServletRequest
         /**
          * 获取HttpServletRequest
          */
@@ -46,11 +46,12 @@ object SprCtxUtil {
         }
 
 
-     fun <T, S> getBean(clazz: Class<T>, vararg generics: Class<*>): S {
+    fun <T, S> getBean(clazz: Class<T>, vararg generics: Class<*>): S {
         val applicationContext = SpringUtil.getApplicationContext()
-        val beanProvider = applicationContext.getBeanProvider<Any>(ResolvableType.forClassWithGenerics(clazz, *generics))
-         val ifAvailable = beanProvider.getIfAvailable()
-         return ifAvailable as S
+        val beanProvider =
+            applicationContext.getBeanProvider<Any>(ResolvableType.forClassWithGenerics(clazz, *generics))
+        val ifAvailable = beanProvider.getIfAvailable()
+        return ifAvailable as S
     }
 
 

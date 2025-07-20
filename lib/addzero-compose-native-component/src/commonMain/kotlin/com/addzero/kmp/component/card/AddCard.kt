@@ -1,17 +1,25 @@
 package com.addzero.kmp.component.card
 
-import androidx.compose.animation.core.*
+import androidx.compose.animation.core.EaseOutCubic
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -348,11 +356,11 @@ fun adaptiveMellumCardType(): MellumCardType {
 
 /**
  * 🎨 预设的JetBrains风格卡片组件
- * 
+ *
  * 提供一些常用的预设样式，方便快速使用
  */
 object AddCards {
-    
+
     /**
      * Koog Agent风格卡片
      */
@@ -369,7 +377,7 @@ object AddCards {
             content = content
         )
     }
-    
+
     /**
      * Hackathon风格卡片
      */
@@ -386,7 +394,7 @@ object AddCards {
             content = content
         )
     }
-    
+
     /**
      * Deploy Mellum风格卡片
      */

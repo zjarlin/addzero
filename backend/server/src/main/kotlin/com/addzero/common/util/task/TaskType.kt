@@ -28,7 +28,7 @@ data class TaskConfig(
     // 以下字段仅用于固定间隔重复执行
     val intervalSeconds: Long = 0,   // 间隔时间（秒）
 
-   // 以下字段仅用于每日定时执行
+    // 以下字段仅用于每日定时执行
     val hour: Int = 0,              // 每天执行的小时（24小时制）
     val minute: Int = 0,            // 每天执行的分钟
     val enabled: Boolean = true     // 是否启用
@@ -120,6 +120,7 @@ class TaskScheduler {
                     // 执行HTTP请求
                     println("Executing HTTP request: ${config.command}")
                 }
+
                 else -> {
                     // 执行本地命令
                     println("Executing command: ${config.command}")

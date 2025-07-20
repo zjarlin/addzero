@@ -36,6 +36,7 @@ enum class AppThemeType {
     DARK_GREEN,
     LIGHT_PURPLE,
     DARK_PURPLE,
+
     // 新增炫彩主题
     GRADIENT_RAINBOW,
     GRADIENT_SUNSET,
@@ -78,7 +79,7 @@ enum class AppThemeType {
      */
     fun isGradient(): Boolean {
         return this == GRADIENT_RAINBOW || this == GRADIENT_SUNSET || this == GRADIENT_OCEAN ||
-               this == GRADIENT_FOREST || this == GRADIENT_AURORA || this == GRADIENT_NEON
+                this == GRADIENT_FOREST || this == GRADIENT_AURORA || this == GRADIENT_NEON
     }
 }
 
@@ -274,6 +275,7 @@ object AppThemes {
                     Colors.RainbowRed
                 )
             )
+
             AppThemeType.GRADIENT_SUNSET -> GradientConfig(
                 colors = listOf(
                     Colors.SunsetOrangeRed,
@@ -282,6 +284,7 @@ object AppThemes {
                     Colors.SunsetYellow
                 )
             )
+
             AppThemeType.GRADIENT_OCEAN -> GradientConfig(
                 colors = listOf(
                     Colors.OceanDeepBlue,
@@ -290,6 +293,7 @@ object AppThemes {
                     Colors.OceanVeryLightCyan
                 )
             )
+
             AppThemeType.GRADIENT_FOREST -> GradientConfig(
                 colors = listOf(
                     Colors.ForestDarkGreen,
@@ -298,6 +302,7 @@ object AppThemes {
                     Colors.ForestVeryLightGreen
                 )
             )
+
             AppThemeType.GRADIENT_AURORA -> GradientConfig(
                 colors = listOf(
                     Colors.AuroraPurple,
@@ -306,6 +311,7 @@ object AppThemes {
                     Colors.AuroraPink
                 )
             )
+
             AppThemeType.GRADIENT_NEON -> GradientConfig(
                 colors = listOf(
                     Colors.NeonRed,
@@ -314,6 +320,7 @@ object AppThemes {
                     Colors.NeonGreen
                 )
             )
+
             else -> null
         }
     }

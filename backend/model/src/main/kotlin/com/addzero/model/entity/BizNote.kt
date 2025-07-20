@@ -2,7 +2,6 @@ package com.addzero.model.entity
 
 import com.addzero.kmp.entity2form.annotation.LabelProp
 import com.addzero.model.common.BaseEntity
-import org.babyfish.jimmer.Formula
 import org.babyfish.jimmer.sql.*
 
 /**

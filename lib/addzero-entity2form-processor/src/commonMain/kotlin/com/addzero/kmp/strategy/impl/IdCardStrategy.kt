@@ -1,29 +1,25 @@
 package com.addzero.kmp.strategy.impl
 
 import com.addzero.kmp.strategy.FormStrategy
-import com.addzero.kmp.util.defaultValue
-import com.addzero.kmp.util.isRequired
-import com.addzero.kmp.util.label
-import com.addzero.kmp.util.name
-import com.google.devtools.ksp.symbol.KSPropertyDeclaration
+import com.addzero.kmp.util.*
 import com.google.devtools.ksp.symbol.KSClassDeclaration
-import com.addzero.kmp.util.plus
+import com.google.devtools.ksp.symbol.KSPropertyDeclaration
 
 /**
  * 身份证策略
  */
 object IdCardStrategy : FormStrategy {
-    
+
     override val name: String = "IdCardStrategy"
 
     override fun calculateWeight(prop: KSPropertyDeclaration): Int {
         val ktName = prop.name
 
         return ktName.contains("idcard", ignoreCase = true) +
-               ktName.contains("identity", ignoreCase = true) +
-               ktName.contains("身份证", ignoreCase = true) +
-               ktName.contains("idCard", ignoreCase = true) +
-               ktName.equals("idCard", ignoreCase = true)
+                ktName.contains("identity", ignoreCase = true) +
+                ktName.contains("身份证", ignoreCase = true) +
+                ktName.contains("idCard", ignoreCase = true) +
+                ktName.equals("idCard", ignoreCase = true)
     }
 
     override fun genCode(prop: KSPropertyDeclaration): String {

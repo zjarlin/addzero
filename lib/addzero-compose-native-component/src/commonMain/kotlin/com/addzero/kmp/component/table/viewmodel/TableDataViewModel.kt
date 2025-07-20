@@ -1,10 +1,10 @@
 package com.addzero.kmp.component.table.viewmodel
 
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.compose.runtime.getValue
 import com.addzero.kmp.assist.api
 import com.addzero.kmp.component.table.TableColumnType
 import com.addzero.kmp.component.table.TableRowType
@@ -209,7 +209,6 @@ class TableDataViewModel : ViewModel() {
 
         }
     }
-
 
 
 }

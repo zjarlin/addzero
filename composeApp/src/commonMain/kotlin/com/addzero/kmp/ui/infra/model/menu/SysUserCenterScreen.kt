@@ -30,9 +30,10 @@ fun SysUserCenterScreen() {
 
     Box {
         IconButton(
-            onClick = { expanded = true
+            onClick = {
+                expanded = true
                 viewModel.loadUserData()
-             },
+            },
             modifier = Modifier.size(40.dp)
         ) {
             // 使用图标代替网络图像
@@ -98,7 +99,8 @@ fun SysUserCenterScreen() {
                         )
                         Column {
                             Text(
-                                text = loginViewModel.currentToken?.nickname?:"${loginViewModel.currentToken?.username}暂未设置昵称",
+                                text = loginViewModel.currentToken?.nickname
+                                    ?: "${loginViewModel.currentToken?.username}暂未设置昵称",
                                 style = MaterialTheme.typography.titleMedium
                             )
 //                            Text(

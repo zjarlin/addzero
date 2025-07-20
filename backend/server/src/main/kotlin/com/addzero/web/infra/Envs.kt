@@ -19,9 +19,9 @@ class Envs(
     fun isActive(envseq: String?): Boolean {
         val activeProfiles: Array<String> = environment.activeProfiles
         return Arrays.stream(activeProfiles).anyMatch { env: String? ->
-                StrUtil.containsIgnoreCase(envseq, env) || StrUtil.containsIgnoreCase(
-                    env, envseq
-                )
-            }
+            StrUtil.containsIgnoreCase(envseq, env) || StrUtil.containsIgnoreCase(
+                env, envseq
+            )
+        }
     }
 }

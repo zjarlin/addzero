@@ -1,31 +1,27 @@
 package com.addzero.kmp.strategy.impl
 
 import com.addzero.kmp.strategy.FormStrategy
-import com.addzero.kmp.util.defaultValue
-import com.addzero.kmp.util.isRequired
-import com.addzero.kmp.util.label
-import com.addzero.kmp.util.name
-import com.google.devtools.ksp.symbol.KSPropertyDeclaration
+import com.addzero.kmp.util.*
 import com.google.devtools.ksp.symbol.KSClassDeclaration
-import com.addzero.kmp.util.plus
+import com.google.devtools.ksp.symbol.KSPropertyDeclaration
 
 /**
  * 百分比策略
  */
 object PercentageStrategy : FormStrategy {
-    
+
     override val name: String = "PercentageStrategy"
 
     override fun calculateWeight(prop: KSPropertyDeclaration): Int {
         val ktName = prop.name
 
         return ktName.contains("percentage", ignoreCase = true) +
-               ktName.contains("percent", ignoreCase = true) +
-               ktName.contains("rate", ignoreCase = true) +
-               ktName.contains("百分比", ignoreCase = true) +
-               ktName.contains("比率", ignoreCase = true) +
-               ktName.equals("percentage", ignoreCase = true) +
-               ktName.equals("rate", ignoreCase = true)
+                ktName.contains("percent", ignoreCase = true) +
+                ktName.contains("rate", ignoreCase = true) +
+                ktName.contains("百分比", ignoreCase = true) +
+                ktName.contains("比率", ignoreCase = true) +
+                ktName.equals("percentage", ignoreCase = true) +
+                ktName.equals("rate", ignoreCase = true)
     }
 
     override fun genCode(prop: KSPropertyDeclaration): String {

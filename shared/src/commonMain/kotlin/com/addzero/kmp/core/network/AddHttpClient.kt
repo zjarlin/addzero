@@ -2,9 +2,8 @@ package com.addzero.kmp.core.network
 
 import com.addzero.kmp.settings.SettingContext4Compose
 import de.jensklingenberg.ktorfit.Ktorfit
-import io.ktor.client.HttpClient
-import io.ktor.client.plugins.defaultRequest
-import io.ktor.client.request.headers
+import io.ktor.client.plugins.*
+import io.ktor.client.request.*
 
 object AddHttpClient {
     private var mytoken: String? = null

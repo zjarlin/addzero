@@ -15,7 +15,7 @@ import org.koin.android.annotation.KoinViewModel
  */
 @KoinViewModel
 class JsonDesignerViewModel : ViewModel() {
-    
+
     /**
      * JSON元素类型
      */
@@ -27,7 +27,7 @@ class JsonDesignerViewModel : ViewModel() {
         BOOLEAN,    // 布尔值
         NULL        // 空值
     }
-    
+
     /**
      * JSON元素数据类
      */
@@ -45,7 +45,7 @@ class JsonDesignerViewModel : ViewModel() {
             fun generateId(): String = "element_${++idCounter}"
         }
     }
-    
+
     /**
      * Excel模板数据类
      */
@@ -61,44 +61,44 @@ class JsonDesignerViewModel : ViewModel() {
             fun generateTemplateId(): String = "template_${++templateIdCounter}"
         }
     }
-    
+
     // 根JSON元素
     var rootElement by mutableStateOf(JsonElement(type = JsonElementType.OBJECT))
         private set
-    
+
     // 当前选中的元素
     var selectedElement by mutableStateOf<JsonElement?>(null)
         private set
-    
+
     // JSON预览文本
     var jsonPreview by mutableStateOf("{}")
         private set
-    
+
     // 用户编辑的JSON文本
     var editableJsonText by mutableStateOf("{}")
         private set
-    
+
     // 是否正在从编辑器同步到树
     private var isSyncingFromEditor = false
-    
+
     // 上传的Excel文件列表
     val uploadedExcelFiles = mutableStateListOf<ExcelTemplate>()
-    
+
     // 常用模板列表
     val commonTemplates = mutableStateListOf<ExcelTemplate>()
-    
+
     // 是否显示JSON预览
     var showJsonPreview by mutableStateOf(true)
         private set
-    
+
     // 错误信息
     var errorMessage by mutableStateOf<String?>(null)
         private set
-    
+
     init {
         updateJsonPreview()
     }
-    
+
     /**
      * 添加对象元素
      */
@@ -112,7 +112,7 @@ class JsonDesignerViewModel : ViewModel() {
         targetParent.children.add(newElement)
         updateJsonPreview()
     }
-    
+
     /**
      * 添加数组元素
      */
@@ -126,7 +126,7 @@ class JsonDesignerViewModel : ViewModel() {
         targetParent.children.add(newElement)
         updateJsonPreview()
     }
-    
+
     /**
      * 添加字符串元素
      */
@@ -141,7 +141,7 @@ class JsonDesignerViewModel : ViewModel() {
         targetParent.children.add(newElement)
         updateJsonPreview()
     }
-    
+
     /**
      * 添加数字元素
      */
@@ -156,7 +156,7 @@ class JsonDesignerViewModel : ViewModel() {
         targetParent.children.add(newElement)
         updateJsonPreview()
     }
-    
+
     /**
      * 删除元素
      */
@@ -167,14 +167,14 @@ class JsonDesignerViewModel : ViewModel() {
         }
         updateJsonPreview()
     }
-    
+
     /**
      * 选择元素
      */
     fun selectElement(element: JsonElement) {
         selectedElement = element
     }
-    
+
     /**
      * 更新元素
      */
@@ -184,20 +184,20 @@ class JsonDesignerViewModel : ViewModel() {
         type?.let { element.type = it }
         updateJsonPreview()
     }
-    
+
     /**
      * 切换元素展开状态
      */
     fun toggleElementExpansion(element: JsonElement) {
         element.isExpanded = !element.isExpanded
     }
-    
+
     /**
      * 更新JSON预览
      */
     private fun updateJsonPreview() {
         if (isSyncingFromEditor) return
-        
+
         try {
             val jsonObject = buildJsonElement(rootElement)
             val prettyJson = json.encodeToString(jsonObject)
@@ -209,7 +209,7 @@ class JsonDesignerViewModel : ViewModel() {
             errorMessage = "JSON构建错误: ${e.message}"
         }
     }
-    
+
     /**
      * 从编辑器更新JSON
      */
@@ -228,7 +228,7 @@ class JsonDesignerViewModel : ViewModel() {
             isSyncingFromEditor = false
         }
     }
-    
+
     /**
      * 上传Excel文件
      */
@@ -241,7 +241,7 @@ class JsonDesignerViewModel : ViewModel() {
         uploadedExcelFiles.add(template)
         onUpload(fileName)
     }
-    
+
     /**
      * 保存为常用模板
      */
@@ -250,7 +250,7 @@ class JsonDesignerViewModel : ViewModel() {
         commonTemplates.add(commonTemplate)
         uploadedExcelFiles.remove(template)
     }
-    
+
     /**
      * 删除模板
      */
@@ -258,7 +258,7 @@ class JsonDesignerViewModel : ViewModel() {
         uploadedExcelFiles.remove(template)
         commonTemplates.remove(template)
     }
-    
+
     /**
      * 清空所有数据
      */
@@ -267,7 +267,7 @@ class JsonDesignerViewModel : ViewModel() {
         selectedElement = null
         updateJsonPreview()
     }
-    
+
     /**
      * 切换JSON预览显示
      */
@@ -289,10 +289,12 @@ class JsonDesignerViewModel : ViewModel() {
                 }
                 JsonObject(map)
             }
+
             JsonElementType.ARRAY -> {
                 val list = element.children.map { buildJsonElement(it) }
                 JsonArray(list)
             }
+
             JsonElementType.STRING -> JsonPrimitive(element.value)
             JsonElementType.NUMBER -> {
                 try {
@@ -305,6 +307,7 @@ class JsonDesignerViewModel : ViewModel() {
                     JsonPrimitive(element.value)
                 }
             }
+
             JsonElementType.BOOLEAN -> JsonPrimitive(element.value.toBooleanStrictOrNull() ?: false)
             JsonElementType.NULL -> JsonNull
         }
@@ -324,6 +327,7 @@ class JsonDesignerViewModel : ViewModel() {
                 }
                 element
             }
+
             is JsonArray -> {
                 val element = JsonElement(type = JsonElementType.ARRAY, key = key)
                 jsonElement.forEachIndexed { index, v ->
@@ -333,6 +337,7 @@ class JsonDesignerViewModel : ViewModel() {
                 }
                 element
             }
+
             is JsonPrimitive -> {
                 when {
                     jsonElement.isString -> JsonElement(
@@ -340,11 +345,13 @@ class JsonDesignerViewModel : ViewModel() {
                         key = key,
                         value = jsonElement.content
                     )
+
                     jsonElement.content.toBooleanStrictOrNull() != null -> JsonElement(
                         type = JsonElementType.BOOLEAN,
                         key = key,
                         value = jsonElement.content
                     )
+
                     else -> JsonElement(
                         type = JsonElementType.NUMBER,
                         key = key,
@@ -352,6 +359,7 @@ class JsonDesignerViewModel : ViewModel() {
                     )
                 }
             }
+
             JsonNull -> JsonElement(type = JsonElementType.NULL, key = key, value = "null")
         }
     }

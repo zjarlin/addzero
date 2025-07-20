@@ -5,9 +5,7 @@ import com.addzero.kmp.entity.analysis.model.EntityMetadata
 import com.addzero.kmp.entity.analysis.processor.BaseJimmerProcessor
 import com.addzero.kmp.util.genCode
 import com.google.devtools.ksp.processing.CodeGenerator
-import com.google.devtools.ksp.processing.Dependencies
 import com.google.devtools.ksp.processing.KSPLogger
-import java.io.OutputStreamWriter
 
 /**
  * 实体转MCP服务处理器
@@ -109,10 +107,14 @@ class McpServiceCodeGenerator(
             isoFullName = isoFullName,
             entityDescription = entityDescription
         )
-        val mcpdir = "${settings.serverSourceDir}/${packageName.replace(".", 
-            "/")}/$fileName"
+        val mcpdir = "${settings.serverSourceDir}/${
+            packageName.replace(
+                ".",
+                "/"
+            )
+        }/$fileName"
 
-        genCode(mcpdir,fileContent,false)
+        genCode(mcpdir, fileContent, false)
     }
 
 

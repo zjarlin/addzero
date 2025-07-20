@@ -3,10 +3,10 @@ package com.addzero.kmp.strategy.impl
 import com.addzero.kmp.strategy.FormStrategy
 import com.addzero.kmp.util.label
 import com.addzero.kmp.util.name
-import com.addzero.kmp.util.typeName
 import com.addzero.kmp.util.plus
-import com.google.devtools.ksp.symbol.KSPropertyDeclaration
+import com.addzero.kmp.util.typeName
 import com.google.devtools.ksp.symbol.KSClassDeclaration
+import com.google.devtools.ksp.symbol.KSPropertyDeclaration
 
 /**
  * 布尔策略
@@ -21,10 +21,10 @@ object BooleanStrategy : FormStrategy {
 
         // 使用布尔值 + 操作符累加计算权重
         return (typeName == "Boolean") +
-               ktName.contains("enable", ignoreCase = true) +
-               ktName.contains("active", ignoreCase = true) +
-               ktName.contains("valid", ignoreCase = true) +
-               ktName.startsWith("is", ignoreCase = true)
+                ktName.contains("enable", ignoreCase = true) +
+                ktName.contains("active", ignoreCase = true) +
+                ktName.contains("valid", ignoreCase = true) +
+                ktName.startsWith("is", ignoreCase = true)
     }
 
     override fun genCode(prop: KSPropertyDeclaration): String {

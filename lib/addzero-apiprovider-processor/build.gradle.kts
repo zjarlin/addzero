@@ -1,8 +1,8 @@
 plugins {
     id("kmp-ksp")
 }
-kotlin{
-    sourceSets{
+kotlin {
+    sourceSets {
         commonMain.dependencies {
             implementation(projects.lib.addzeroKspSupport)
         }

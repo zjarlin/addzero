@@ -1,6 +1,7 @@
 @file:OptIn(ExperimentalWasmDsl::class)
 
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
+
 val libs = the<org.gradle.accessors.dm.LibrariesForLibs>()
 
 plugins {
@@ -30,11 +31,11 @@ kotlin {
     linuxX64()
     linuxArm64()
 
-    sourceSets{
-       commonMain.dependencies {
-           implementation(libs.kotlinx.serialization.json)
+    sourceSets {
+        commonMain.dependencies {
+            implementation(libs.kotlinx.serialization.json)
 
-       }
+        }
     }
 }
 

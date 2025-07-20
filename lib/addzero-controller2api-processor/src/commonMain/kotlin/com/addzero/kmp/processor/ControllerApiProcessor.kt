@@ -2,8 +2,8 @@ package com.addzero.kmp.processor
 
 import com.addzero.kmp.context.SettingContext
 import com.addzero.kmp.context.SettingContext.settings
-import com.addzero.kmp.util.isJimmerEntity
 import com.addzero.kmp.processor.type.TypeMappingManager
+import com.addzero.kmp.util.isJimmerEntity
 import com.google.devtools.ksp.processing.*
 import com.google.devtools.ksp.symbol.*
 import com.google.devtools.ksp.validate
@@ -104,7 +104,6 @@ class ControllerApiProcessor(
             logger.error("生成 Ktorfit 接口时发生错误 ${metadata.originalClassName}: ${e.message}")
         }
     }
-
 
 
     /**
@@ -356,10 +355,12 @@ class ControllerApiProcessor(
                         val entityName = simpleName.removeSuffix("DTO")
                         "com.addzero.kmp.generated.isomorphic.${entityName}Iso"
                     }
+
                     simpleName.endsWith("Response") -> {
                         val entityName = simpleName.removeSuffix("Response")
                         "com.addzero.kmp.generated.isomorphic.${entityName}Iso"
                     }
+
                     else -> rawTypeString // 保持原样
                 }
             }
@@ -388,6 +389,7 @@ class ControllerApiProcessor(
                     "kotlin.Any"
                 }
             }
+
             "org.springframework.data.domain.Page" -> {
                 // Page<T> -> List<T>
                 if (type.arguments.isNotEmpty()) {
@@ -399,6 +401,7 @@ class ControllerApiProcessor(
                     "kotlin.collections.List<kotlin.Any>"
                 }
             }
+
             else -> extractTypeString(type)
         }
     }
@@ -608,9 +611,9 @@ class ControllerApiProcessor(
      */
     private fun isValidTypeForImport(typeName: String): Boolean {
         return !typeName.startsWith("kotlin.") &&
-               !typeName.contains("<ERROR") &&
-               !typeName.any { !it.isLetterOrDigit() && it != '.' && it != '_' && it != '$' } &&
-               typeName.isNotBlank()
+                !typeName.contains("<ERROR") &&
+                !typeName.any { !it.isLetterOrDigit() && it != '.' && it != '_' && it != '$' } &&
+                typeName.isNotBlank()
     }
 
     /**
@@ -676,6 +679,7 @@ $httpAnnotation$methodSignature
             method.httpMethod in listOf("POST", "PUT", "PATCH") -> {
                 "    @Headers(\"Content-Type: application/json\")\n"
             }
+
             else -> ""
         }
     }
@@ -745,7 +749,6 @@ $httpAnnotation$methodSignature
     }
 
 
-
     // 数据类定义
     data class ControllerInfo(
         val originalClassName: String,
@@ -782,7 +785,7 @@ $httpAnnotation$methodSignature
  */
 class ControllerApiProcessorProvider : SymbolProcessorProvider {
     override fun create(environment: SymbolProcessorEnvironment): SymbolProcessor {
-        return ControllerApiProcessor(environment.codeGenerator, environment.logger,environment.options)
+        return ControllerApiProcessor(environment.codeGenerator, environment.logger, environment.options)
     }
 }
 

@@ -1,9 +1,3 @@
-import gradle.kotlin.dsl.accessors._c4797de79829d8764cd1d19432473560.ksp
-import org.babyfish.jimmer.Vars.commonMainKspBuildMetaDataDir
-import org.babyfish.jimmer.Vars.commonMainSourceDir
-import org.babyfish.jimmer.Vars.jvmMainKspBuildMetaDataDir
-import org.babyfish.jimmer.Vars.jvmMainSourceDir
-
 plugins {
     id("com.google.devtools.ksp")
     id("ksp4jdbc")
@@ -22,7 +16,6 @@ ksp {
 
     arg("metaJsonSavePath", "db/autoddl/meta")
     arg("metaJsonSaveName", "jimmer_ddlcontext.json")
-
 
 
 }

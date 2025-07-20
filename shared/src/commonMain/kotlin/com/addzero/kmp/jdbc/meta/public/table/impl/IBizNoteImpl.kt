@@ -1,7 +1,7 @@
 package com.addzero.kmp.jdbc.meta.public.table.impl
 
 import com.addzero.kmp.jdbc.meta.public.table.IBizNote
-             import kotlinx.serialization.Serializable
+import kotlinx.serialization.Serializable
 
 /**
  * IBizNoteImpl 实现类
@@ -11,8 +11,8 @@ import com.addzero.kmp.jdbc.meta.public.table.IBizNote
 @Serializable
 data class IBizNoteImpl(
     override val id: Long,
-        override val title: String?,
-        override val content: String?,
-        override val type: String?,
-        override val parentId: Long?
+    override val title: String?,
+    override val content: String?,
+    override val type: String?,
+    override val parentId: Long?
 ) : IBizNote

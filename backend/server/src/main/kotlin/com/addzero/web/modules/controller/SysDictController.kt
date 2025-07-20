@@ -1,27 +1,16 @@
 package com.addzero.web.modules.controller
 
 import com.addzero.common.consts.sql
-import com.addzero.model.entity.SysDict
-import com.addzero.model.entity.SysDictItem
-import com.addzero.model.entity.dictName
-import com.addzero.model.entity.fetchBy
-import com.addzero.model.entity.itemText
-import com.addzero.model.entity.sortOrder
-import com.addzero.model.entity.sysDictItems
+import com.addzero.model.entity.*
 import com.addzero.web.infra.jimmer.base.BaseTreeApi
 import org.babyfish.jimmer.sql.kt.ast.expression.asc
 import org.babyfish.jimmer.sql.kt.ast.expression.`ilike?`
 import org.babyfish.jimmer.sql.kt.ast.expression.or
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/sysDict")
-class SysDictController: BaseTreeApi<SysDict> {
+class SysDictController : BaseTreeApi<SysDict> {
 
 
     @GetMapping("/querydict")
@@ -56,7 +45,6 @@ class SysDictController: BaseTreeApi<SysDict> {
         }
         return createQuery
     }
-
 
 
     @PostMapping("/saveDict")

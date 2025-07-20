@@ -46,6 +46,7 @@ fun String.toLowCamelCase(): String {
         it.replaceFirstChar { char -> char.uppercase() }
     }.replaceFirstChar { it.lowercase() }
 }
+
 /**
  * 字符串首字母小写
  */

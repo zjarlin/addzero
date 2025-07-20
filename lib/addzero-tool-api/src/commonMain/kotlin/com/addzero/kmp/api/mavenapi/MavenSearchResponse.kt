@@ -4,7 +4,6 @@ import com.addzero.kmp.api.mavenapi.entity.MavenRes
 import com.addzero.kmp.core.network.apiClient
 import io.ktor.client.call.*
 import io.ktor.client.request.*
-import io.ktor.client.statement.bodyAsText
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -44,6 +43,7 @@ suspend fun main() {
 
     println(likeDependy)
 }
+
 // 使用示例
 suspend fun likeDependy(keyword: String): MavenRes {
     val client = apiClient

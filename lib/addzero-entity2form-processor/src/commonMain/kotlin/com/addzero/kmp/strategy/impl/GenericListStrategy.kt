@@ -2,7 +2,6 @@ package com.addzero.kmp.strategy.impl
 
 import com.addzero.kmp.strategy.FormStrategy
 import com.addzero.kmp.util.*
-import com.addzero.kmp.util.plus
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSPropertyDeclaration
 
@@ -53,8 +52,8 @@ object GenericListStrategy : FormStrategy {
 
         // 使用布尔值 + 操作符累加计算权重
         val weight = isCollectionType +
-                     isJimmerEntityType +
-                     (!isEnumType)
+                isJimmerEntityType +
+                (!isEnumType)
 
         println("  - 最终权重: $weight")
         return weight

@@ -1,8 +1,8 @@
 package com.addzero.addzero_common
 
+import com.addzero.model.entity.BizNote
 import com.addzero.web.jdbc.metadata.ColumnMetadata
 import com.addzero.web.jdbc.metadata.DatabaseMetadataService
-import com.addzero.model.entity.BizNote
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -56,8 +56,6 @@ class SpringBootAppTests(
 
 
     }
-
-
 
 
 }

@@ -37,7 +37,9 @@ fun MetadataExtractionPanel(
         ) {
             // 标题
             Row(
-                modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
                     text = "🔍 元数据提取", style = MaterialTheme.typography.titleMedium.copy(
@@ -48,10 +50,16 @@ fun MetadataExtractionPanel(
                 IconButton(
                     onClick = {
                         // 添加示例Excel文件
-                        viewModel.addAvailableExcelFile("示例数据${Clock.System.now().toEpochMilliseconds()}.xlsx", "2.5MB")
+                        viewModel.addAvailableExcelFile(
+                            "示例数据${Clock.System.now().toEpochMilliseconds()}.xlsx",
+                            "2.5MB"
+                        )
                     }) {
                     Icon(
-                        Icons.Default.Add, contentDescription = "添加Excel", tint = Color(0xFF1E40AF), modifier = Modifier.size(16.dp)
+                        Icons.Default.Add,
+                        contentDescription = "添加Excel",
+                        tint = Color(0xFF1E40AF),
+                        modifier = Modifier.size(16.dp)
                     )
                 }
             }
@@ -70,10 +78,15 @@ fun MetadataExtractionPanel(
             if (viewModel.availableExcelFiles.isNotEmpty()) {
                 val scrollState = rememberScrollState()
                 Column(
-                    modifier = Modifier.weight(0.4f).verticalScroll(scrollState), verticalArrangement = Arrangement.spacedBy(4.dp)
+                    modifier = Modifier.weight(0.4f).verticalScroll(scrollState),
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     viewModel.availableExcelFiles.forEach { excelFile ->
-                        AvailableExcelFileCard(excelFile = excelFile, isInCart = viewModel.isInExtractionCart(excelFile), onAddToCart = { viewModel.addToExtractionCart(excelFile) }, onRemove = { viewModel.removeAvailableExcelFile(excelFile) })
+                        AvailableExcelFileCard(
+                            excelFile = excelFile,
+                            isInCart = viewModel.isInExtractionCart(excelFile),
+                            onAddToCart = { viewModel.addToExtractionCart(excelFile) },
+                            onRemove = { viewModel.removeAvailableExcelFile(excelFile) })
                     }
                 }
             } else {
@@ -86,7 +99,9 @@ fun MetadataExtractionPanel(
                         modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = "点击+添加Excel文件", style = MaterialTheme.typography.bodySmall, color = Color(0xFF9CA3AF)
+                            text = "点击+添加Excel文件",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = Color(0xFF9CA3AF)
                         )
                     }
                 }
@@ -96,12 +111,16 @@ fun MetadataExtractionPanel(
 
             // 提取购物车
             Row(
-                modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "🛒 提取购物车 (${viewModel.metadataExtractionCart.size})", style = MaterialTheme.typography.titleSmall.copy(
+                    text = "🛒 提取购物车 (${viewModel.metadataExtractionCart.size})",
+                    style = MaterialTheme.typography.titleSmall.copy(
                         fontWeight = FontWeight.Medium
-                    ), color = Color(0xFF374151)
+                    ),
+                    color = Color(0xFF374151)
                 )
 
                 if (viewModel.metadataExtractionCart.isNotEmpty()) {
@@ -112,7 +131,10 @@ fun MetadataExtractionPanel(
                             onClick = { viewModel.clearExtractionCart() }, modifier = Modifier.size(24.dp)
                         ) {
                             Icon(
-                                Icons.Default.Clear, contentDescription = "清空", tint = Color(0xFFEF4444), modifier = Modifier.size(16.dp)
+                                Icons.Default.Clear,
+                                contentDescription = "清空",
+                                tint = Color(0xFFEF4444),
+                                modifier = Modifier.size(16.dp)
                             )
                         }
 
@@ -120,7 +142,10 @@ fun MetadataExtractionPanel(
                             onClick = { viewModel.startMetadataExtraction() }, modifier = Modifier.size(24.dp)
                         ) {
                             Icon(
-                                Icons.Default.PlayArrow, contentDescription = "开始提取", tint = Color(0xFF10B981), modifier = Modifier.size(16.dp)
+                                Icons.Default.PlayArrow,
+                                contentDescription = "开始提取",
+                                tint = Color(0xFF10B981),
+                                modifier = Modifier.size(16.dp)
                             )
                         }
                     }
@@ -133,7 +158,8 @@ fun MetadataExtractionPanel(
             if (viewModel.metadataExtractionCart.isNotEmpty()) {
                 val cartScrollState = rememberScrollState()
                 Column(
-                    modifier = Modifier.weight(0.6f).verticalScroll(cartScrollState), verticalArrangement = Arrangement.spacedBy(4.dp)
+                    modifier = Modifier.weight(0.6f).verticalScroll(cartScrollState),
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     viewModel.metadataExtractionCart.forEach { item ->
                         ExtractionCartItem(
@@ -153,10 +179,15 @@ fun MetadataExtractionPanel(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Icon(
-                                Icons.Default.ShoppingCart, contentDescription = "购物车", tint = Color(0xFF9CA3AF), modifier = Modifier.size(24.dp)
+                                Icons.Default.ShoppingCart,
+                                contentDescription = "购物车",
+                                tint = Color(0xFF9CA3AF),
+                                modifier = Modifier.size(24.dp)
                             )
                             Text(
-                                text = "购物车为空", style = MaterialTheme.typography.bodySmall, color = Color(0xFF9CA3AF)
+                                text = "购物车为空",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = Color(0xFF9CA3AF)
                             )
                         }
                     }

@@ -1,12 +1,13 @@
 package com.addzero.kmp.screens.ai
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.ErrorOutline
+import androidx.compose.material.icons.filled.Lightbulb
+import androidx.compose.material.icons.filled.Psychology
+import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -26,7 +27,7 @@ import com.addzero.kmp.annotation.Route
 @Route("界面演示", "AI超时和思考动画")
 fun AiTimeoutAndAnimationDemo() {
     val scrollState = rememberScrollState()
-    
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -42,22 +43,22 @@ fun AiTimeoutAndAnimationDemo() {
             ),
             color = LabubuColors.PrimaryPink
         )
-        
+
         // 超时配置说明
         TimeoutConfigurationCard()
-        
+
         HorizontalDivider()
-        
+
         // 思考动画展示
         ThinkingAnimationShowcase()
-        
+
         HorizontalDivider()
-        
+
         // 错误处理说明
         ErrorHandlingCard()
-        
+
         HorizontalDivider()
-        
+
         // 使用建议
         UsageRecommendations()
     }
@@ -93,7 +94,7 @@ private fun TimeoutConfigurationCard() {
                     color = LabubuColors.DarkText
                 )
             }
-            
+
             Text(
                 text = """
                     🚀 针对AI接口的超时优化：
@@ -108,7 +109,7 @@ private fun TimeoutConfigurationCard() {
                 color = LabubuColors.DarkText,
                 lineHeight = 20.sp
             )
-            
+
             // 配置代码展示
             Card(
                 modifier = Modifier.fillMaxWidth(),
@@ -150,7 +151,7 @@ install(HttpTimeout) {
 private fun ThinkingAnimationShowcase() {
     var showBasicAnimation by remember { mutableStateOf(false) }
     var showAdvancedAnimation by remember { mutableStateOf(false) }
-    
+
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
@@ -179,7 +180,7 @@ private fun ThinkingAnimationShowcase() {
                     color = LabubuColors.DarkText
                 )
             }
-            
+
             Text(
                 text = """
                     🎪 动画特性：
@@ -194,7 +195,7 @@ private fun ThinkingAnimationShowcase() {
                 color = LabubuColors.DarkText,
                 lineHeight = 20.sp
             )
-            
+
             // 基础动画演示
             Text(
                 text = "基础思考动画：",
@@ -203,12 +204,12 @@ private fun ThinkingAnimationShowcase() {
                 ),
                 color = LabubuColors.DarkText
             )
-            
+
             AiThinkingAnimation(
                 isVisible = showBasicAnimation,
                 modifier = Modifier.padding(8.dp)
             )
-            
+
             Button(
                 onClick = { showBasicAnimation = !showBasicAnimation },
                 colors = ButtonDefaults.buttonColors(
@@ -217,9 +218,9 @@ private fun ThinkingAnimationShowcase() {
             ) {
                 Text(if (showBasicAnimation) "隐藏基础动画" else "显示基础动画")
             }
-            
+
             Spacer(modifier = Modifier.height(8.dp))
-            
+
             // 高级动画演示
             Text(
                 text = "高级思考动画：",
@@ -228,13 +229,13 @@ private fun ThinkingAnimationShowcase() {
                 ),
                 color = LabubuColors.DarkText
             )
-            
+
             AdvancedAiThinkingAnimation(
                 isVisible = showAdvancedAnimation,
                 thinkingText = "正在分析您的问题并生成最佳回答...",
                 modifier = Modifier.padding(8.dp)
             )
-            
+
             Button(
                 onClick = { showAdvancedAnimation = !showAdvancedAnimation },
                 colors = ButtonDefaults.buttonColors(
@@ -277,7 +278,7 @@ private fun ErrorHandlingCard() {
                     color = LabubuColors.DarkText
                 )
             }
-            
+
             Text(
                 text = """
                     🛡️ 错误处理机制：
@@ -330,7 +331,7 @@ private fun UsageRecommendations() {
                     color = LabubuColors.DarkText
                 )
             }
-            
+
             Text(
                 text = """
                     💡 最佳实践建议：

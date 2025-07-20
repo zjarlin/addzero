@@ -15,8 +15,8 @@ import javax.sql.DataSource
 
 @Configuration
 open class DynamicDataSourceConfig(
-     private val dynamicDatasourceProperties: DynamicDatasourceProperties,
-)  {
+    private val dynamicDatasourceProperties: DynamicDatasourceProperties,
+) {
 
 //    @Bean
 //    open fun dynamicTm(

@@ -1,13 +1,9 @@
 package com.addzero.kmp.strategy.impl
 
 import com.addzero.kmp.strategy.FormStrategy
-import com.addzero.kmp.util.defaultValue
-import com.addzero.kmp.util.isRequired
-import com.addzero.kmp.util.label
-import com.addzero.kmp.util.name
-import com.google.devtools.ksp.symbol.KSPropertyDeclaration
+import com.addzero.kmp.util.*
 import com.google.devtools.ksp.symbol.KSClassDeclaration
-import com.addzero.kmp.util.plus
+import com.google.devtools.ksp.symbol.KSPropertyDeclaration
 
 /**
  * 手机号策略
@@ -20,12 +16,12 @@ object PhoneStrategy : FormStrategy {
         val ktName = prop.name
 
         return ktName.contains("phone", ignoreCase = true) +
-               ktName.contains("mobile", ignoreCase = true) +
-               ktName.contains("tel", ignoreCase = true) +
-               ktName.contains("手机", ignoreCase = true) +
-               ktName.contains("电话", ignoreCase = true) +
-               ktName.equals("phone", ignoreCase = true) +
-               ktName.equals("mobile", ignoreCase = true)
+                ktName.contains("mobile", ignoreCase = true) +
+                ktName.contains("tel", ignoreCase = true) +
+                ktName.contains("手机", ignoreCase = true) +
+                ktName.contains("电话", ignoreCase = true) +
+                ktName.equals("phone", ignoreCase = true) +
+                ktName.equals("mobile", ignoreCase = true)
     }
 
     override fun genCode(prop: KSPropertyDeclaration): String {

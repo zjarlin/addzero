@@ -1,7 +1,7 @@
 package com.addzero.kmp.jdbc.meta.public.table.impl
 
 import com.addzero.kmp.jdbc.meta.public.table.ISysDeptSysUserMapping
-             import kotlinx.serialization.Serializable
+import kotlinx.serialization.Serializable
 
 /**
  * ISysDeptSysUserMappingImpl 实现类
@@ -10,6 +10,6 @@ import com.addzero.kmp.jdbc.meta.public.table.ISysDeptSysUserMapping
 @Serializable
 data class ISysDeptSysUserMappingImpl(
     override val id: Long,
-        override val sysDeptId: Long?,
-        override val sysUserId: Long?
+    override val sysDeptId: Long?,
+    override val sysUserId: Long?
 ) : ISysDeptSysUserMapping

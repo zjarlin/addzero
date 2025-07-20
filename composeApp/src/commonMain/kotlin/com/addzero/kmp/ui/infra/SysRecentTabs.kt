@@ -1,20 +1,18 @@
 package com.addzero.kmp.ui.infra
 
+// 移除已弃用的 rememberRipple 导入
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.ripple.rememberRipple
-// 移除已弃用的 rememberRipple 导入
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.input.key.*
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -24,12 +22,12 @@ import com.addzero.kmp.ui.infra.model.navigation.TabInfo
 
 /**
  * 最近访问标签页组件
- * 
+ *
  * 显示用户最近访问的页面，以标签页形式展示，支持切换和关闭
  * 支持键盘快捷键:
  * - Cmd+W: 关闭当前标签页
  * - Cmd+Shift+T: 恢复最近关闭的标签页
- * 
+ *
  * @param navController 导航控制器
  * @param modifier 修饰符
  * @param listenShortcuts 是否监听快捷键事件，默认为true
@@ -59,7 +57,7 @@ fun AddRecentTabs(
         boxModifier = boxModifier.onPreviewKeyEvent { keyEvent ->
             when {
                 // Cmd+W: 关闭当前标签页
-                (keyEvent.key == Key.W && keyEvent.isMetaPressed && 
+                (keyEvent.key == Key.W && keyEvent.isMetaPressed &&
                         keyEvent.type == KeyEventType.KeyDown) -> {
                     if (currentTabIndex >= 0 && currentTabIndex < tabs.size) {
                         recentViewModel.closeTab(currentTabIndex, navController)
@@ -69,11 +67,12 @@ fun AddRecentTabs(
                     }
                 }
                 // Cmd+Shift+T: 恢复最近关闭的标签页
-                (keyEvent.key == Key.T && keyEvent.isMetaPressed && 
+                (keyEvent.key == Key.T && keyEvent.isMetaPressed &&
                         keyEvent.isShiftPressed && keyEvent.type == KeyEventType.KeyDown) -> {
                     recentViewModel.reopenLastClosedTab(navController)
                     true
                 }
+
                 else -> false
             }
         }
@@ -102,7 +101,7 @@ fun AddRecentTabs(
 
 /**
  * 单个标签页项目
- * 
+ *
  * @param tab 标签页信息
  * @param isActive 是否是当前激活的标签页
  * @param onActivate 激活标签页的回调
@@ -125,7 +124,8 @@ private fun TabItem(
     else
         MaterialTheme.colorScheme.onSurfaceVariant // 未激活标签文本颜色，更柔和
 
-    val shape = RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp, bottomStart = 0.dp, bottomEnd = 0.dp) // 调整圆角，使其更像标签
+    val shape =
+        RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp, bottomStart = 0.dp, bottomEnd = 0.dp) // 调整圆角，使其更像标签
     val interactionSource = remember { MutableInteractionSource() }
 
     Surface(
@@ -139,7 +139,10 @@ private fun TabItem(
         color = backgroundColor,
         tonalElevation = if (isActive) 2.dp else 1.dp, // 调整阴影效果，使其更细腻
         shape = shape,
-        border = if (isActive) BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)) else null // 激活状态添加细边框
+        border = if (isActive) BorderStroke(
+            1.dp,
+            MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
+        ) else null // 激活状态添加细边框
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp), // 调整内部元素间距

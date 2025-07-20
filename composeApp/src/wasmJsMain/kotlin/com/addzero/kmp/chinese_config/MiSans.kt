@@ -10,7 +10,6 @@ import androidx.compose.ui.text.platform.Font
 import com.addzero.kmp.App
 import kotlinx.browser.window
 import kotlinx.coroutines.await
-import org.jetbrains.skia.FontFamilyName
 import org.khronos.webgl.ArrayBuffer
 import org.khronos.webgl.Int8Array
 import org.w3c.fetch.Response

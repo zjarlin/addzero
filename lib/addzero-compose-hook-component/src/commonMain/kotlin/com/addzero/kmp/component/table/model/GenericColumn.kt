@@ -14,14 +14,14 @@ data class AddColumn(
     override val metaconfig: SysColumnMetaConfig = SysColumnMetaConfig(),
     override val key: String,
     override val title: String,
-    ) : TableColumnType {
+) : TableColumnType {
 
     override val get: (TableRowType) -> Any?
         get() = { it[key] }
     override val getFun: (TableRowType?, String) -> Any?
-        get() = {rowe,mykey->rowe?.get(mykey)}
+        get() = { rowe, mykey -> rowe?.get(mykey) }
     override val set: (TableRowType?, Any?) -> Unit
-        get() ={ row, value -> row?.put(key, value) }
+        get() = { row, value -> row?.put(key, value) }
     override val setFun: (TableRowType?, String, Any?) -> Unit
         get() = { row, mykey, value -> row?.put(mykey, value) }
 

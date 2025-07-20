@@ -25,11 +25,17 @@ object ExcelUtil {
         else -> throw IllegalArgumentException("Unsupported jdbcType: ${this.javaClass}")
     }
 
-    fun <VO, DTO> templateFill(vo: VO?, dtos: MutableList<DTO?>?, templateStream: InputStream, outputStream: OutputStream) {
+    fun <VO, DTO> templateFill(
+        vo: VO?,
+        dtos: MutableList<DTO?>?,
+        templateStream: InputStream,
+        outputStream: OutputStream
+    ) {
         //文件模板输入流
-        val writer: ExcelWriter = EasyExcel.write(outputStream).withTemplate(templateStream) //.registerConverter(new LocalDateConverter())
-            //.registerConverter(new LocalDateTimeConverter())
-            .build()
+        val writer: ExcelWriter =
+            EasyExcel.write(outputStream).withTemplate(templateStream) //.registerConverter(new LocalDateConverter())
+                //.registerConverter(new LocalDateTimeConverter())
+                .build()
         //3.4 设置强制计算公式：不然公式会以字符串的形式显示在excel中
         val workbook: Workbook = writer.writeContext().writeWorkbookHolder().workbook
         workbook.forceFormulaRecalculation = true
@@ -93,8 +99,10 @@ object ExcelUtil {
             val sheet: Sheet = workbook.getSheetAt(1) // 合并第二个sheet
             // 合并
             for (deptNameCellRange in deptNameCellRangeList) {
-                val firstRow = deptNameCellRange.split("-".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[0].toInt()
-                val lastRow = deptNameCellRange.split("-".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[1].toInt()
+                val firstRow =
+                    deptNameCellRange.split("-".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[0].toInt()
+                val lastRow =
+                    deptNameCellRange.split("-".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[1].toInt()
                 if (firstRow != lastRow) {
                     // 入参： firstRow 合并开始行； lastRow 合并结尾行； firstCol 合并开始列； lastCol 合并结束列。
                     val cellAddresses = CellRangeAddress(firstRow, lastRow, 0, 0)
@@ -102,8 +110,10 @@ object ExcelUtil {
                 }
             }
             groupNameCellRangeList.forEach(Consumer { groupNameCellRange: String? ->  // forEach 写法
-                val firstRow = groupNameCellRange!!.split("-".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[0].toInt()
-                val lastRow = groupNameCellRange.split("-".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[1].toInt()
+                val firstRow =
+                    groupNameCellRange!!.split("-".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[0].toInt()
+                val lastRow =
+                    groupNameCellRange.split("-".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[1].toInt()
                 if (firstRow != lastRow) {
                     // 入参： firstRow 合并开始行； lastRow 合并结尾行； firstCol 合并开始列； lastCol 合并结束列。
                     val cellAddresses = CellRangeAddress(firstRow, lastRow, 1, 1)

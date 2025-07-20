@@ -3,10 +3,7 @@ package com.addzero.kmp
 import com.addzero.kmp.context.SettingContext.settings
 import com.addzero.kmp.util.PinYin4JUtils
 import com.google.devtools.ksp.processing.CodeGenerator
-import com.google.devtools.ksp.processing.Dependencies
 import com.google.devtools.ksp.processing.KSPLogger
-import kotlin.math.absoluteValue
-import kotlin.math.log
 
 /**
  * 字典枚举代码生成器
@@ -111,8 +108,8 @@ class DictEnumCodeGenerator(
         """.trimIndent()
 
         // 创建枚举类文件
-            // 使用手动 File IO 生成到指定目录
-            writeEnumToFile(fullEnumName, enumContent, enumOutputDir)
+        // 使用手动 File IO 生成到指定目录
+        writeEnumToFile(fullEnumName, enumContent, enumOutputDir)
     }
 
     /**

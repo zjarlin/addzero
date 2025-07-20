@@ -1,7 +1,7 @@
 package com.addzero.kmp.jdbc.meta.public.table.impl
 
 import com.addzero.kmp.jdbc.meta.public.table.IBizDotfiles
-             import kotlinx.serialization.Serializable
+import kotlinx.serialization.Serializable
 
 /**
  * IBizDotfilesImpl 实现类
@@ -11,13 +11,13 @@ import com.addzero.kmp.jdbc.meta.public.table.IBizDotfiles
 @Serializable
 data class IBizDotfilesImpl(
     override val id: Long,
-        override val osType: Long,
-        override val osStructure: String,
-        override val defType: String,
-        override val name: String,
-        override val value: String,
-        override val describtion: String?,
-        override val status: Long,
-        override val fileUrl: String?,
-        override val location: String?
+    override val osType: Long,
+    override val osStructure: String,
+    override val defType: String,
+    override val name: String,
+    override val value: String,
+    override val describtion: String?,
+    override val status: Long,
+    override val fileUrl: String?,
+    override val location: String?
 ) : IBizDotfiles

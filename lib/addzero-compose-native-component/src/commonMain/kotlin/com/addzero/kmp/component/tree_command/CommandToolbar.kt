@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
  * 命令工具栏
  */
 @Composable
- fun CommandToolbar(
+fun CommandToolbar(
     commands: Set<TreeCommand>,
     multiSelectMode: Boolean,
     onCommandClick: (TreeCommand) -> Unit

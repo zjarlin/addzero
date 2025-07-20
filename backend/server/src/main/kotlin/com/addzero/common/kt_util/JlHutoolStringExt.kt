@@ -21,12 +21,12 @@ fun String?.makeSurroundWith(fix: String?): String? {
 }
 
 
-fun String?.join(conjun: String?= System.lineSeparator(), other: String?): String {
+fun String?.join(conjun: String? = System.lineSeparator(), other: String?): String {
     if (CharSequenceUtil.isBlank(this)) {
         return ""
     }
     if (other.isBlank()) {
-        return this?:""
+        return this ?: ""
     }
     val join = StrUtil.join(conjun, this, other)
     return join

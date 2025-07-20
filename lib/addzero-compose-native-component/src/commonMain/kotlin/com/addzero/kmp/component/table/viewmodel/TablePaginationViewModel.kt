@@ -23,7 +23,6 @@ data class StatePagination(
 }
 
 
-
 /**
  * 表格分页功能 ViewModel
  * 负责分页状态管理和分页操作
@@ -45,35 +44,35 @@ class TablePaginationViewModel : ViewModel() {
         pageState = pageState.copy(pageSize = config.defaultPageSize)
     }
 
-    
+
     /**
      * 更新当前页
      */
     fun setCurrentPage(page: Int) {
         pageState = pageState.copy(currentPage = page)
     }
-    
+
     /**
      * 更新页面大小
      */
     fun setPageSize(size: Int) {
         pageState = pageState.copy(pageSize = size, currentPage = 1) // 重置到第一页
     }
-    
+
     /**
      * 更新总条目数
      */
     fun setTotalItems(total: Int) {
         pageState = pageState.copy(totalItems = total)
     }
-    
+
     /**
      * 跳转到第一页
      */
     fun goToFirstPage() {
         pageState = pageState.copy(currentPage = 1)
     }
-    
+
     /**
      * 跳转到上一页
      */
@@ -82,7 +81,7 @@ class TablePaginationViewModel : ViewModel() {
             pageState = pageState.copy(currentPage = pageState.currentPage - 1)
         }
     }
-    
+
     /**
      * 跳转到下一页
      */
@@ -91,14 +90,14 @@ class TablePaginationViewModel : ViewModel() {
             pageState = pageState.copy(currentPage = pageState.currentPage + 1)
         }
     }
-    
+
     /**
      * 跳转到最后一页
      */
     fun goToLastPage() {
         pageState = pageState.copy(currentPage = pageState.totalPages)
     }
-    
+
     /**
      * 跳转到指定页
      */
@@ -107,26 +106,26 @@ class TablePaginationViewModel : ViewModel() {
             pageState = pageState.copy(currentPage = page)
         }
     }
-    
+
     /**
      * 重置分页状态
      */
     fun resetPagination() {
         pageState = StatePagination()
     }
-    
+
     /**
      * 获取当前页的起始条目索引（从0开始）
      */
     val startIndex: Int
         get() = (pageState.currentPage - 1) * pageState.pageSize
-    
+
     /**
      * 获取当前页的结束条目索引（从0开始，不包含）
      */
     val endIndex: Int
         get() = minOf(startIndex + pageState.pageSize, pageState.totalItems)
-    
+
     /**
      * 是否显示分页控件
      */

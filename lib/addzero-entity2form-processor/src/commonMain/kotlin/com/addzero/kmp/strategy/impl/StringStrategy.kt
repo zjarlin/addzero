@@ -31,8 +31,9 @@ object StringStrategy : FormStrategy {
         val defaultValue = prop.defaultValue
 
         // 从 parentDeclaration 获取实体类名
-        val entityClassName = (prop.parentDeclaration as? com.google.devtools.ksp.symbol.KSClassDeclaration)?.simpleName?.asString()
-            ?: throw IllegalStateException("无法获取实体类名")
+        val entityClassName =
+            (prop.parentDeclaration as? com.google.devtools.ksp.symbol.KSClassDeclaration)?.simpleName?.asString()
+                ?: throw IllegalStateException("无法获取实体类名")
 
         return """
             |        ${entityClassName}FormProps.$name to {

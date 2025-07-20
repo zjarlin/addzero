@@ -2,7 +2,6 @@ package com.addzero.ai.config
 
 //import org.springframework.ai.ollama.OllamaChatModel
 //import org.springframework.ai.ollama.api.OllamaOptions
-import cn.hutool.core.lang.TypeReference
 import cn.hutool.core.util.ReflectUtil
 import cn.hutool.core.util.StrUtil
 import cn.hutool.extra.spring.SpringUtil
@@ -17,7 +16,6 @@ import org.springframework.ai.chat.client.ChatClient
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor
 import org.springframework.ai.chat.model.ChatModel
 import org.springframework.ai.tool.ToolCallbackProvider
-import org.springframework.ai.tool.method.MethodToolCallback
 
 object AiCtx {
 

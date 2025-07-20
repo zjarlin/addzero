@@ -99,14 +99,12 @@ private fun KSType.isJimmerEntity(): Boolean {
         val declaration = this.declaration as? KSClassDeclaration
         declaration?.annotations?.any {
             it.shortName.asString() == "Entity" &&
-            it.annotationType.resolve().declaration.qualifiedName?.asString()?.contains("jimmer") == true
+                    it.annotationType.resolve().declaration.qualifiedName?.asString()?.contains("jimmer") == true
         } ?: false
     } catch (e: Exception) {
         false
     }
 }
-
-
 
 
 fun genCode(pathname: String, code: String, skipExistFile: Boolean = false) {
@@ -145,14 +143,14 @@ fun KSPropertyDeclaration.getQualifiedTypeString(): String {
         // 如果类型解析失败，尝试使用原始类型字符串
         val rawTypeString = this.type.toString()
         if (rawTypeString.contains("<ERROR") ||
-            rawTypeString.any { !it.isLetterOrDigit() && it != '.' && it != '_' && it != '$' && it != '<' && it != '>' && it != '?' && it != ',' && it != ' ' }) {
+            rawTypeString.any { !it.isLetterOrDigit() && it != '.' && it != '_' && it != '$' && it != '<' && it != '>' && it != '?' && it != ',' && it != ' ' }
+        ) {
             "kotlin.Any"
         } else {
             rawTypeString
         }
     }
 }
-
 
 
 /**
@@ -233,7 +231,17 @@ fun KSPropertyDeclaration.isCustomClassType(): Boolean {
 
         // 排除Kotlin/Java的基本类型
         return qualifiedName !in setOf(
-            "kotlin.String", "kotlin.Int", "kotlin.Long", "kotlin.Boolean", "kotlin.Float", "kotlin.Double", "kotlin.Byte", "kotlin.Short", "kotlin.Char", "java.lang.String", "java.lang.Integer" // 其他基本类型...
+            "kotlin.String",
+            "kotlin.Int",
+            "kotlin.Long",
+            "kotlin.Boolean",
+            "kotlin.Float",
+            "kotlin.Double",
+            "kotlin.Byte",
+            "kotlin.Short",
+            "kotlin.Char",
+            "java.lang.String",
+            "java.lang.Integer" // 其他基本类型...
         )
     }
 
@@ -290,7 +298,18 @@ fun KSPropertyDeclaration.isCollectionType(): Boolean {
 
     // 检查是否是常见集合类型
     return typeName in setOf(
-        "kotlin.collections.List", "kotlin.collections.MutableList", "kotlin.collections.Set", "kotlin.collections.MutableSet", "kotlin.collections.Map", "kotlin.collections.MutableMap", "java.util.List", "java.util.ArrayList", "java.util.Set", "java.util.HashSet", "java.util.Map", "java.util.HashMap"
+        "kotlin.collections.List",
+        "kotlin.collections.MutableList",
+        "kotlin.collections.Set",
+        "kotlin.collections.MutableSet",
+        "kotlin.collections.Map",
+        "kotlin.collections.MutableMap",
+        "java.util.List",
+        "java.util.ArrayList",
+        "java.util.Set",
+        "java.util.HashSet",
+        "java.util.Map",
+        "java.util.HashMap"
     )
 }
 

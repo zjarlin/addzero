@@ -48,7 +48,8 @@ fun filterIntegerInput(input: String, allowNegative: Boolean = true): String {
                 }
 
                 // 其他字符都过滤掉
-                else -> { /* 忽略非法字符 */ }
+                else -> { /* 忽略非法字符 */
+                }
             }
         }
     }
@@ -86,7 +87,8 @@ fun filterDecimalInput(input: String, allowNegative: Boolean = true): String {
                 }
 
                 // 其他字符都过滤掉
-                else -> { /* 忽略非法字符 */ }
+                else -> { /* 忽略非法字符 */
+                }
             }
         }
     }

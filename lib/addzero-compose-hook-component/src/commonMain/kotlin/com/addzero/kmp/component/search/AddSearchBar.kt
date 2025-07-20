@@ -18,14 +18,14 @@ import androidx.compose.ui.unit.dp
 
 /**
  * 🔍 搜索栏组件
- * 
+ *
  * 基于 Material3 OutlinedTextField 的搜索组件，提供：
  * - 搜索图标和清除按钮
  * - 键盘搜索支持
  * - 自动焦点管理
  * - 搜索建议支持
  * - 搜索历史支持
- * 
+ *
  * @param keyword 搜索关键词
  * @param onKeyWordChanged 关键词变化回调
  * @param onSearch 搜索回调
@@ -56,14 +56,14 @@ fun AddSearchBar(
     val focusRequester = remember { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current
     var showSuggestions by remember { mutableStateOf(false) }
-    
+
     // 自动获取焦点
     LaunchedEffect(autoFocus) {
         if (autoFocus) {
             focusRequester.requestFocus()
         }
     }
-    
+
     Column(modifier = modifier) {
         // 搜索输入框
         OutlinedTextField(
@@ -123,7 +123,7 @@ fun AddSearchBar(
                 }
             )
         )
-        
+
         // 搜索建议
         if (showSuggestions && suggestions.isNotEmpty()) {
             SearchSuggestions(
@@ -177,7 +177,7 @@ private fun SearchSuggestions(
                             modifier = Modifier.size(16.dp),
                             tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
-                        
+
                         Text(
                             text = suggestion,
                             style = MaterialTheme.typography.bodyMedium,
@@ -204,7 +204,7 @@ fun AddCompactSearchBar(
     enabled: Boolean = true
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
-    
+
     OutlinedTextField(
         value = keyword,
         onValueChange = onKeyWordChanged,
@@ -273,7 +273,7 @@ fun AddSearchButton(
             contentDescription = null,
             modifier = Modifier.size(18.dp)
         )
-        
+
         if (text.isNotEmpty()) {
             Spacer(modifier = Modifier.width(8.dp))
             Text(text = text)

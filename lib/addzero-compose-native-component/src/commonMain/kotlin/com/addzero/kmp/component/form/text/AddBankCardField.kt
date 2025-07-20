@@ -2,8 +2,7 @@ package com.addzero.kmp.component.form.text
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CreditCard
-import androidx.compose.runtime.*
-import com.addzero.kmp.component.form.text.AddTextField
+import androidx.compose.runtime.Composable
 import com.addzero.kmp.core.validation.RegexEnum
 
 /**

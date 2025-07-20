@@ -1,35 +1,29 @@
 package com.addzero.kmp.ui.infra
 
 import androidx.compose.animation.core.*
-import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.filled.StarBorder
-import androidx.compose.material3.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.addzero.kmp.component.button.AddIconButton
-import com.addzero.kmp.component.form.text.AddIconText
-import com.addzero.kmp.ui.infra.model.favorite.FavoriteTab
-import com.addzero.kmp.ui.infra.model.favorite.FavoriteTabsViewModel
-import com.addzero.kmp.ui.infra.model.menu.MenuViewModel
-import com.addzero.kmp.compose.icons.IconMap
 import com.addzero.kmp.generated.isomorphic.SysFavoriteTabIso
 import com.addzero.kmp.settings.SettingContext4Compose
+import com.addzero.kmp.ui.infra.model.favorite.FavoriteTabsViewModel
+import com.addzero.kmp.ui.infra.model.menu.MenuViewModel
 import com.addzero.kmp.ui.infra.theme.ThemeViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -160,7 +154,7 @@ fun FavoriteTabsBar(
                 .scale(starScale)
         )
     }
-    
+
 }
 
 /**
@@ -185,9 +179,9 @@ private fun FavoriteTabItem(
     } else {
         MaterialTheme.colorScheme.onSurface
     }
-    
+
     var showRemoveButton by remember { mutableStateOf(false) }
-    
+
     Surface(
         onClick = onClick,
         modifier = modifier
@@ -215,7 +209,7 @@ private fun FavoriteTabItem(
 //                    modifier = Modifier.size(16.dp)
 //                )
 //            }
-            
+
             // 标题
 //            Text(
 //                text = tab.title,
@@ -226,7 +220,7 @@ private fun FavoriteTabItem(
 //                maxLines = 1,
 //                overflow = TextOverflow.Ellipsis
 //            )
-            
+
             // 移除按钮（仅在激活状态或鼠标悬停时显示）
             if (isActive) {
                 IconButton(

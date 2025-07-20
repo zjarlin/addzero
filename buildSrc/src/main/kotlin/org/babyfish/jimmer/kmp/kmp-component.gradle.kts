@@ -5,12 +5,12 @@ plugins {
 }
 
 val libs = the<org.gradle.accessors.dm.LibrariesForLibs>()
-dependencies{
+dependencies {
     kspCommonMainMetadata(libs.koin.ksp.compiler)
 }
 
-kotlin{
-    sourceSets{
+kotlin {
+    sourceSets {
         commonMain.dependencies {
             implementation(project.dependencies.platform(libs.koin.bom))
             implementation(libs.koin.annotations)

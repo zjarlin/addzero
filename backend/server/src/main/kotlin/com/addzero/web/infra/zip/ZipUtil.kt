@@ -11,7 +11,7 @@ import java.util.zip.ZipInputStream
 object ZipUtil {
     fun unzipInputStream(zipInputStream: InputStream): List<File> {
         val fileList: List
-<File> = ArrayList()
+        <File> = ArrayList()
         try {
             ZipInputStream(zipInputStream).use { zip ->
                 var zipEntry: ZipEntry? = null

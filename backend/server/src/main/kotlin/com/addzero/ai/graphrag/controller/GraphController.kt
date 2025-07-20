@@ -48,7 +48,7 @@ class GraphController {
     @PostMapping("extractGraphFile")
     @Operation(summary = "附件graph抽取")
     fun createGraph(
-        @RequestParam modelName: String , @RequestParam file: MultipartFile
+        @RequestParam modelName: String, @RequestParam file: MultipartFile
     ): List<GraphPO> {
 // 读取文件内容
         val readContent = AiUtil.readContent(file)

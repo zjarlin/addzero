@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import org.koin.android.annotation.KoinViewModel
-import org.koin.core.annotation.Single
 
 /**
  * 主题视图模型
@@ -37,6 +36,7 @@ class ThemeViewModel : ViewModel() {
                 AppThemeType.GRADIENT_FOREST,
                 AppThemeType.GRADIENT_AURORA,
                 AppThemeType.GRADIENT_NEON -> currentTheme
+
                 else -> AppThemeType.LIGHT_BLUE
             }
         } else {
@@ -53,6 +53,7 @@ class ThemeViewModel : ViewModel() {
                 AppThemeType.GRADIENT_FOREST,
                 AppThemeType.GRADIENT_AURORA,
                 AppThemeType.GRADIENT_NEON -> currentTheme
+
                 else -> AppThemeType.DARK_BLUE
             }
         }

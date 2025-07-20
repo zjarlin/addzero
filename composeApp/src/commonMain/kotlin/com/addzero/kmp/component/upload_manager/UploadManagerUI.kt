@@ -207,12 +207,14 @@ private fun UploadTaskItem(
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
+
                         UploadTaskStatus.UPLOADING, UploadTaskStatus.QUERYING -> {
                             CircularProgressIndicator(
                                 modifier = Modifier.size(20.dp),
                                 strokeWidth = 2.dp
                             )
                         }
+
                         UploadTaskStatus.COMPLETED -> {
                             Icon(
                                 Icons.Default.CheckCircle,
@@ -220,6 +222,7 @@ private fun UploadTaskItem(
                                 tint = MaterialTheme.colorScheme.primary
                             )
                         }
+
                         UploadTaskStatus.FAILED -> {
                             IconButton(onClick = onRetry) {
                                 Icon(

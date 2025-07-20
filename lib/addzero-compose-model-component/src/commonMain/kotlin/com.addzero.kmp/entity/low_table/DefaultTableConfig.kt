@@ -6,7 +6,7 @@ package com.addzero.kmp.entity.low_table
  */
 data class DefaultTableConfig<T>(
     // 表格标题
-    val title: String="默认表格",
+    val title: String = "默认表格",
     // 是否支持多选
     val multiSelect: Boolean = true,
     // 是否支持分页

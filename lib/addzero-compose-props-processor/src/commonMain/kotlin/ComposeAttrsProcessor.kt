@@ -1,10 +1,13 @@
 package com.addzero.kmp.processor
 
-import com.google.devtools.ksp.processing.*
-import com.google.devtools.ksp.symbol.*
-import com.google.devtools.ksp.validate
 import com.addzero.kmp.util.getCompleteTypeString
 import com.addzero.kmp.util.getSimplifiedTypeString
+import com.google.devtools.ksp.processing.*
+import com.google.devtools.ksp.symbol.KSAnnotated
+import com.google.devtools.ksp.symbol.KSFunctionDeclaration
+import com.google.devtools.ksp.symbol.KSType
+import com.google.devtools.ksp.symbol.Nullability
+import com.google.devtools.ksp.validate
 
 private const val propsXd = "var"
 
@@ -90,7 +93,7 @@ class ComposeAttrsProcessor(
                 val packageName = function.packageName.asString()
 
                 functionName in targetComponents &&
-                targetPackages.any { packageName.startsWith(it) }
+                        targetPackages.any { packageName.startsWith(it) }
             }
             .toList()
             .also { functions ->
@@ -189,13 +192,16 @@ class ComposeAttrsProcessor(
                 if (paramName.contains("container", ignoreCase = true)) "Color.Transparent"
                 else "Color.Unspecified"
             }
+
             paramName.contains("elevation", ignoreCase = true) -> "null"
             paramName.contains("border", ignoreCase = true) -> "null"
             paramName.contains("padding", ignoreCase = true) -> "PaddingValues(0.dp)"
             paramName == "enabled" -> "true"
             paramName == "text" -> "\"\""
             paramName == "${propsXd}ue" -> "\"\""
-            paramName.contains("size", ignoreCase = true) && type.toString().contains("TextUnit") -> "TextUnit.Unspecified"
+            paramName.contains("size", ignoreCase = true) && type.toString()
+                .contains("TextUnit") -> "TextUnit.Unspecified"
+
             type.declaration.simpleName.asString() == "String" -> "\"\""
             type.declaration.simpleName.asString() == "Boolean" -> "true"
             type.declaration.simpleName.asString() == "Int" -> "Int.MAX_VALUE"
@@ -250,7 +256,10 @@ class ComposeAttrsProcessor(
     /**
      * 分析函数参数
      */
-    private fun analyzeParameters(function: KSFunctionDeclaration, isNativeFunction: Boolean = false): List<ParameterInfo> {
+    private fun analyzeParameters(
+        function: KSFunctionDeclaration,
+        isNativeFunction: Boolean = false
+    ): List<ParameterInfo> {
         return function.parameters.mapNotNull { param ->
             val paramName = param.name?.asString() ?: ""
 
@@ -328,7 +337,8 @@ class ComposeAttrsProcessor(
         val rememberFunctionCode = generateRememberFunction(functionName, className, parameters, genericParameters)
 
         // 生成Widget辅助函数
-        val widgetFunctionCode = generateWidgetFunction(functionName, className, parameters, genericParameters, packageName)
+        val widgetFunctionCode =
+            generateWidgetFunction(functionName, className, parameters, genericParameters, packageName)
 
         return """
 package $packageName
@@ -355,7 +365,11 @@ $widgetFunctionCode
     /**
      * 生成Assist数据类
      */
-    private fun generateAssistDataClass(className: String, parameters: List<ParameterInfo>, genericParameters: List<GenericParameterInfo> = emptyList()): String {
+    private fun generateAssistDataClass(
+        className: String,
+        parameters: List<ParameterInfo>,
+        genericParameters: List<GenericParameterInfo> = emptyList()
+    ): String {
         // 创建泛型参数名映射，用于简化类型引用
         val genericParamNames = genericParameters.map { it.name }.toSet()
 
@@ -545,7 +559,6 @@ class $className$genericDeclaration(
     }
 
 
-
     /**
      * 生成辅助函数
      */
@@ -721,7 +734,8 @@ fun ${genericDeclaration}${functionName}Widget(
             "<$genericParams> "
         } else ""
 
-        val returnClass = """$className${if (genericParameters.isNotEmpty()) "<${genericParameters.joinToString(", ") { it.name }}>" else ""}"""
+        val returnClass =
+            """$className${if (genericParameters.isNotEmpty()) "<${genericParameters.joinToString(", ") { it.name }}>" else ""}"""
         return """
 /**
  * 记住 $className 状态的便捷函数
@@ -771,7 +785,11 @@ fun ${adjustedGenericDeclaration}remember${functionName}State(
     /**
      * 生成原生组件的代码（使用data class + @get:Composable方式）
      */
-    private fun generateNativeDataClassCode(componentName: String, parameters: List<NativeParameterInfo>, suffix: String): String {
+    private fun generateNativeDataClassCode(
+        componentName: String,
+        parameters: List<NativeParameterInfo>,
+        suffix: String
+    ): String {
         val className = "${componentName}${suffix}"
         val packageName = COM_ADDZERO_KMP_GENERATED_ATTRS
 
@@ -844,7 +862,11 @@ data class $className(
     /**
      * 生成旧的lambda闭包类（保留作为备用）
      */
-    private fun generateNativeLambdaClass(className: String, componentName: String, parameters: List<NativeParameterInfo>): String {
+    private fun generateNativeLambdaClass(
+        className: String,
+        componentName: String,
+        parameters: List<NativeParameterInfo>
+    ): String {
         val applyFunction = generateApplyFunction(componentName, parameters)
 
         return """
@@ -961,11 +983,15 @@ $applyFunction
     }
 
 
-
     /**
      * 生成原生组件的构建器函数
      */
-    private fun generateNativeBuilderFunction(componentName: String, className: String, parameters: List<NativeParameterInfo>, suffix: String): String {
+    private fun generateNativeBuilderFunction(
+        componentName: String,
+        className: String,
+        parameters: List<NativeParameterInfo>,
+        suffix: String
+    ): String {
         val lowerComponentName = componentName.lowercase()
         val paramList = parameters.joinToString(",\n    ") { param ->
             val defaultPart = if (param.hasDefaultValue) " = ${param.defaultValue}" else ""
@@ -993,7 +1019,12 @@ fun ${lowerComponentName}${suffix}(
     /**
      * 生成原生组件的旧构建器函数（保留作为备用）
      */
-    private fun generateNativeLambdaBuilderFunction(componentName: String, className: String, parameters: List<NativeParameterInfo>, suffix: String): String {
+    private fun generateNativeLambdaBuilderFunction(
+        componentName: String,
+        className: String,
+        parameters: List<NativeParameterInfo>,
+        suffix: String
+    ): String {
         val lowerComponentName = componentName.lowercase()
 
         return """
@@ -1044,7 +1075,11 @@ ${generateBuilderAssignments(parameters)}
     /**
      * 生成原生组件的remember函数
      */
-    private fun generateNativeRememberFunction(componentName: String, className: String, parameters: List<NativeParameterInfo>): String {
+    private fun generateNativeRememberFunction(
+        componentName: String,
+        className: String,
+        parameters: List<NativeParameterInfo>
+    ): String {
         val paramList = parameters.joinToString(",\n    ") { param ->
             val defaultPart = if (param.hasDefaultValue) " = ${param.defaultValue}" else ""
             "${param.name}: ${param.type}$defaultPart"

@@ -393,9 +393,6 @@ class TreeViewModel<T> {
     }
 
 
-
-
-
     /**
      * 🛠️ 辅助方法
      */
@@ -412,7 +409,6 @@ class TreeViewModel<T> {
         collectIds(items)
         return result
     }
-
 
 
     fun isExpanded(nodeId: Any): Boolean {

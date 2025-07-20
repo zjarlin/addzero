@@ -6,8 +6,10 @@ package com.addzero.kmp.component.tree.selection
 enum class SelectionState {
     /** 未选中 */
     UNSELECTED,
+
     /** 半选中（部分子节点选中） */
     INDETERMINATE,
+
     /** 全选中 */
     SELECTED
 }

@@ -4,14 +4,10 @@ import cn.dev33.satoken.config.SaTokenConfig
 import cn.dev33.satoken.context.SaHolder
 import cn.dev33.satoken.stp.StpUtil
 import com.addzero.common.consts.sql
-import com.addzero.web.infra.jimmer.updateById
 import com.addzero.model.entity.SysUser
+import com.addzero.web.infra.jimmer.updateById
 import com.addzero.web.modules.service.SysUserService
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 
 @RestController

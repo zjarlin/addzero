@@ -1,4 +1,5 @@
 package com.addzero.kmp.entity.low_table
+
 enum class KmpType(val code: String) {
     LONG("Long"),
     INTEGER("Integer"),

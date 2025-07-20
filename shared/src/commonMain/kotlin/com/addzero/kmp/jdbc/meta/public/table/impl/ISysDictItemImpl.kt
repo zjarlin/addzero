@@ -1,7 +1,7 @@
 package com.addzero.kmp.jdbc.meta.public.table.impl
 
 import com.addzero.kmp.jdbc.meta.public.table.ISysDictItem
-             import kotlinx.serialization.Serializable
+import kotlinx.serialization.Serializable
 
 /**
  * ISysDictItemImpl 实现类
@@ -11,10 +11,10 @@ import com.addzero.kmp.jdbc.meta.public.table.ISysDictItem
 @Serializable
 data class ISysDictItemImpl(
     override val id: Long,
-        override val dictId: Long?,
-        override val itemText: String,
-        override val itemValue: String,
-        override val description: String?,
-        override val sortOrder: Long?,
-        override val status: Long?
+    override val dictId: Long?,
+    override val itemText: String,
+    override val itemValue: String,
+    override val description: String?,
+    override val sortOrder: Long?,
+    override val status: Long?
 ) : ISysDictItem

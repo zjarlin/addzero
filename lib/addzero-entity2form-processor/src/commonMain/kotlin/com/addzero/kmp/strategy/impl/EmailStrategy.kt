@@ -1,13 +1,9 @@
 package com.addzero.kmp.strategy.impl
 
 import com.addzero.kmp.strategy.FormStrategy
-import com.addzero.kmp.util.defaultValue
-import com.addzero.kmp.util.isRequired
-import com.addzero.kmp.util.label
-import com.addzero.kmp.util.name
-import com.addzero.kmp.util.plus
-import com.google.devtools.ksp.symbol.KSPropertyDeclaration
+import com.addzero.kmp.util.*
 import com.google.devtools.ksp.symbol.KSClassDeclaration
+import com.google.devtools.ksp.symbol.KSPropertyDeclaration
 
 /**
  * 邮箱策略
@@ -21,12 +17,12 @@ object EmailStrategy : FormStrategy {
 
         // 使用布尔值 + 操作符累加计算权重，每个条件都是平等的 0 或 1
         return ktName.contains("email", ignoreCase = true) +
-               ktName.contains("mail", ignoreCase = true) +
-               ktName.contains("邮箱", ignoreCase = true) +
-               ktName.contains("邮件", ignoreCase = true) +
-               ktName.equals("email", ignoreCase = true) +
-               ktName.equals("userEmail", ignoreCase = true) +
-               ktName.equals("contactEmail", ignoreCase = true)
+                ktName.contains("mail", ignoreCase = true) +
+                ktName.contains("邮箱", ignoreCase = true) +
+                ktName.contains("邮件", ignoreCase = true) +
+                ktName.equals("email", ignoreCase = true) +
+                ktName.equals("userEmail", ignoreCase = true) +
+                ktName.equals("contactEmail", ignoreCase = true)
     }
 
     override fun genCode(prop: KSPropertyDeclaration): String {

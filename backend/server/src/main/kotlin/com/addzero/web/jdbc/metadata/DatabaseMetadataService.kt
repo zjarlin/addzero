@@ -89,7 +89,11 @@ class DatabaseMetadataService(private val dataSource: DataSource) {
             }
 
             // 按表名和列的位置排序
-            result.sortedWith(compareBy({ it.tableName }, { getColumnPosition(connection, schema, it.tableName, it.columnName) }))
+            result.sortedWith(
+                compareBy(
+                    { it.tableName },
+                    { getColumnPosition(connection, schema, it.tableName, it.columnName) })
+            )
         }
     }
 

@@ -6,7 +6,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,7 +23,7 @@ import com.addzero.kmp.annotation.Route
 @Route("界面演示", "JSON设计器演示")
 fun JsonDesignerDemo() {
     val scrollState = rememberScrollState()
-    
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -39,27 +39,27 @@ fun JsonDesignerDemo() {
             ),
             color = MaterialTheme.colorScheme.primary
         )
-        
+
         // 功能介绍
         FeatureIntroduction()
-        
+
         HorizontalDivider()
-        
+
         // 使用示例
         UsageExamples()
-        
+
         HorizontalDivider()
-        
+
         // 双向编辑说明
         BidirectionalEditingInfo()
-        
+
         HorizontalDivider()
-        
+
         // Excel模板管理
         ExcelTemplateManagement()
-        
+
         HorizontalDivider()
-        
+
         // 技术特性
         TechnicalFeatures()
     }
@@ -95,7 +95,7 @@ private fun FeatureIntroduction() {
                     color = Color(0xFF0C4A6E)
                 )
             }
-            
+
             Text(
                 text = """
                     🎯 JSON设计器是一个可视化的JSON构建工具：
@@ -145,7 +145,7 @@ private fun UsageExamples() {
                     color = Color(0xFF14532D)
                 )
             }
-            
+
             // 对象示例
             ExampleCard(
                 title = "创建对象",
@@ -164,9 +164,9 @@ private fun UsageExamples() {
                     "添加布尔字段：isActive = true"
                 )
             )
-            
+
             Spacer(modifier = Modifier.height(8.dp))
-            
+
             // 数组示例
             ExampleCard(
                 title = "创建数组",
@@ -213,13 +213,13 @@ private fun ExampleCard(
                 ),
                 color = Color(0xFF14532D)
             )
-            
+
             Text(
                 text = description,
                 style = MaterialTheme.typography.bodySmall,
                 color = Color(0xFF16A34A)
             )
-            
+
             // JSON示例
             Card(
                 colors = CardDefaults.cardColors(
@@ -235,7 +235,7 @@ private fun ExampleCard(
                     color = Color(0xFF10B981)
                 )
             }
-            
+
             // 操作步骤
             Column {
                 Text(
@@ -288,7 +288,7 @@ private fun BidirectionalEditingInfo() {
                     color = Color(0xFF92400E)
                 )
             }
-            
+
             Text(
                 text = """
                     🔄 左右两侧实时同步：
@@ -345,7 +345,7 @@ private fun ExcelTemplateManagement() {
                     color = Color(0xFF581C87)
                 )
             }
-            
+
             Text(
                 text = """
                     📊 Excel文件管理功能：
@@ -400,7 +400,7 @@ private fun TechnicalFeatures() {
                     color = Color(0xFF064E3B)
                 )
             }
-            
+
             val features = listOf(
                 "🏗️ MVVM架构" to "使用ViewModel管理状态，清晰的数据流",
                 "🔄 响应式UI" to "Compose响应式编程，状态变化自动更新UI",
@@ -411,7 +411,7 @@ private fun TechnicalFeatures() {
                 "🎨 Material Design" to "遵循Material Design设计规范",
                 "⚡ 性能优化" to "LazyColumn等优化组件，流畅的用户体验"
             )
-            
+
             features.forEach { (title, description) ->
                 Row(
                     modifier = Modifier.fillMaxWidth(),

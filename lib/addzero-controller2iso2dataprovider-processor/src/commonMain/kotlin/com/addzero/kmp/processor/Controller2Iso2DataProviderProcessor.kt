@@ -2,7 +2,8 @@ package com.addzero.kmp.processor
 
 import com.addzero.kmp.context.SettingContext
 import com.google.devtools.ksp.processing.*
-import com.google.devtools.ksp.symbol.*
+import com.google.devtools.ksp.symbol.KSAnnotated
+import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.validate
 import java.io.File
 
@@ -35,7 +36,7 @@ class Controller2Iso2DataProviderProcessor(
         // 初始化设置上下文
         SettingContext.initialize(options)
 //        println("tttttttttttttttttt")
-        
+
         // 查找所有带有 @RestController 注解的类
         val controllers = resolver.getSymbolsWithAnnotation("org.springframework.web.bind.annotation.RestController")
             .filterIsInstance<KSClassDeclaration>()
@@ -143,7 +144,8 @@ class Controller2Iso2DataProviderProcessor(
      */
     private fun generateIso2DataProvider(controllerInfos: List<ControllerInfo>) {
         // 从 KSP 配置中获取包名，默认为 com.addzero.kmp.form_mapping
-        val packageName = options["iso2DataProviderPackage"] ?: throw  IllegalArgumentException("iso2DataProviderPackage 不能为空")
+        val packageName =
+            options["iso2DataProviderPackage"] ?: throw IllegalArgumentException("iso2DataProviderPackage 不能为空")
 
         val packagePath = packageName.replace(".", "/")
 

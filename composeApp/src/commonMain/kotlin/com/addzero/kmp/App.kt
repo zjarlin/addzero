@@ -10,7 +10,6 @@ import com.addzero.kmp.ui.infra.theme.AppThemes
 import com.addzero.kmp.ui.infra.theme.FollowSystemTheme
 import com.addzero.kmp.ui.infra.theme.ThemeViewModel
 import com.addzero.kmp.viewmodel.LoginViewModel
-import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.ComponentScan
 import org.koin.core.annotation.Module
@@ -35,8 +34,8 @@ fun App() {
     FollowSystemTheme(colorScheme = colorScheme) {
 //        GradientThemeWrapper(themeType = currentTheme) {
 //            MainLayoutWithLogin()
-            MainLayout()
-            ToastListener()
+        MainLayout()
+        ToastListener()
 //        }
     }
 }

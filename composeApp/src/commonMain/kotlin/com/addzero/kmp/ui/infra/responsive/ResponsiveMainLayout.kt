@@ -2,8 +2,12 @@ package com.addzero.kmp.ui.infra.responsive
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -63,6 +67,7 @@ fun ResponsiveMainLayout(
                 config = config
             )
         }
+
         LayoutMode.TOPBAR -> {
             // 移动端：顶部导航栏布局
             TopbarLayout(
@@ -107,7 +112,7 @@ private fun SidebarLayout(
 
             // 主内容区
             Column(
-                modifier = Modifier.weight( 1f )
+                modifier = Modifier.weight(1f)
             ) {
                 // 面包屑导航
                 Breadcrumb(

@@ -1,13 +1,9 @@
 package com.addzero.kmp.strategy.impl
 
 import com.addzero.kmp.strategy.FormStrategy
-import com.addzero.kmp.util.defaultValue
-import com.addzero.kmp.util.isRequired
-import com.addzero.kmp.util.label
-import com.addzero.kmp.util.name
-import com.google.devtools.ksp.symbol.KSPropertyDeclaration
+import com.addzero.kmp.util.*
 import com.google.devtools.ksp.symbol.KSClassDeclaration
-import com.addzero.kmp.util.plus
+import com.google.devtools.ksp.symbol.KSPropertyDeclaration
 
 /**
  * 用户名策略
@@ -20,10 +16,10 @@ object UsernameStrategy : FormStrategy {
         val ktName = prop.name
 
         return ktName.contains("username", ignoreCase = true) +
-               ktName.contains("user", ignoreCase = true) +
-               ktName.contains("用户名", ignoreCase = true) +
-               ktName.equals("username", ignoreCase = true) +
-               ktName.equals("userName", ignoreCase = true)
+                ktName.contains("user", ignoreCase = true) +
+                ktName.contains("用户名", ignoreCase = true) +
+                ktName.equals("username", ignoreCase = true) +
+                ktName.equals("userName", ignoreCase = true)
     }
 
     override fun genCode(prop: KSPropertyDeclaration): String {

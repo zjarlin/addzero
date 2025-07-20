@@ -6,7 +6,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,7 +23,7 @@ import com.addzero.kmp.annotation.Route
 @Route("界面演示", "Excel模板设计器")
 fun ExcelTemplateDesignerDemo() {
     val scrollState = rememberScrollState()
-    
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -39,27 +39,27 @@ fun ExcelTemplateDesignerDemo() {
             ),
             color = MaterialTheme.colorScheme.primary
         )
-        
+
         // 设计理念
         DesignPhilosophy()
-        
+
         HorizontalDivider()
-        
+
         // 使用场景
         UsageScenarios()
-        
+
         HorizontalDivider()
-        
+
         // 数据格式说明
         DataFormatExplanation()
-        
+
         HorizontalDivider()
-        
+
         // 操作流程
         OperationFlow()
-        
+
         HorizontalDivider()
-        
+
         // 技术优势
         TechnicalAdvantages()
     }
@@ -95,7 +95,7 @@ private fun DesignPhilosophy() {
                     color = Color(0xFF0C4A6E)
                 )
             }
-            
+
             Text(
                 text = """
                     🎯 简单易用的Excel模板数据设计器：
@@ -145,7 +145,7 @@ private fun UsageScenarios() {
                     color = Color(0xFF14532D)
                 )
             }
-            
+
             val scenarios = listOf(
                 "📈 财务报表" to "月度/季度财务数据填充",
                 "👥 员工信息" to "员工基本信息和考勤数据",
@@ -154,7 +154,7 @@ private fun UsageScenarios() {
                 "🏥 医疗记录" to "患者信息和检查结果",
                 "🏭 生产报告" to "生产计划和实际产量数据"
             )
-            
+
             scenarios.forEach { (title, description) ->
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -211,7 +211,7 @@ private fun DataFormatExplanation() {
                     color = Color(0xFF92400E)
                 )
             }
-            
+
             // 一维区域说明
             Card(
                 colors = CardDefaults.cardColors(
@@ -229,13 +229,13 @@ private fun DataFormatExplanation() {
                         ),
                         color = Color(0xFF059669)
                     )
-                    
+
                     Text(
                         text = "用于填充单个值的字段，如报表标题、生成日期、总计等",
                         style = MaterialTheme.typography.bodySmall,
                         color = Color(0xFF6B7280)
                     )
-                    
+
                     Card(
                         colors = CardDefaults.cardColors(
                             containerColor = Color(0xFF1F2937)
@@ -261,9 +261,9 @@ private fun DataFormatExplanation() {
                     }
                 }
             }
-            
+
             Spacer(modifier = Modifier.height(8.dp))
-            
+
             // 二维区域说明
             Card(
                 colors = CardDefaults.cardColors(
@@ -281,13 +281,13 @@ private fun DataFormatExplanation() {
                         ),
                         color = Color(0xFF7C3AED)
                     )
-                    
+
                     Text(
                         text = "用于填充表格数据，如商品列表、员工信息等",
                         style = MaterialTheme.typography.bodySmall,
                         color = Color(0xFF6B7280)
                     )
-                    
+
                     Card(
                         colors = CardDefaults.cardColors(
                             containerColor = Color(0xFF1F2937)
@@ -346,7 +346,7 @@ private fun OperationFlow() {
                     color = Color(0xFF581C87)
                 )
             }
-            
+
             val steps = listOf(
                 "1️⃣ 定义一维字段" to "添加报表标题、日期等单值字段",
                 "2️⃣ 定义二维字段" to "添加表格列字段，如商品名称、数量等",
@@ -355,7 +355,7 @@ private fun OperationFlow() {
                 "5️⃣ 上传Excel模板" to "上传要填充的Excel模板文件",
                 "6️⃣ 调用填充方法" to "使用生成的vo和dtos调用templateFill"
             )
-            
+
             steps.forEach { (step, description) ->
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -412,7 +412,7 @@ private fun TechnicalAdvantages() {
                     color = Color(0xFF064E3B)
                 )
             }
-            
+
             val advantages = listOf(
                 "🎯 专注性" to "专门为Excel模板填充设计，功能精准",
                 "🚀 简单性" to "界面简洁，操作直观，学习成本低",
@@ -423,7 +423,7 @@ private fun TechnicalAdvantages() {
                 "📱 响应式" to "适配不同屏幕尺寸",
                 "🔄 数据同步" to "字段修改实时同步到JSON预览"
             )
-            
+
             advantages.forEach { (title, description) ->
                 Row(
                     modifier = Modifier.fillMaxWidth(),

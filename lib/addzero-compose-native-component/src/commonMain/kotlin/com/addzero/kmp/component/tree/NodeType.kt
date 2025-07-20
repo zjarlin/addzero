@@ -22,49 +22,49 @@ enum class NodeType(
         getColor = { Color(0xFF1976D2) }, // 蓝色
         getIcon = { isExpanded -> if (isExpanded) Icons.Default.FolderOpen else Icons.Default.Folder }
     ),
-    
+
     FILE(
         keywords = listOf("文件", "file"),
         getColor = { Color(0xFF607D8B).copy(alpha = 0.8f) }, // 蓝灰色
         getIcon = { Icons.AutoMirrored.Filled.InsertDriveFile }
     ),
-    
+
     DOCUMENT(
         keywords = listOf("文档", "doc", "docx", "document"),
         getColor = { Color(0xFF1976D2).copy(alpha = 0.8f) }, // 蓝色
         getIcon = { Icons.AutoMirrored.Filled.Article }
     ),
-    
+
     IMAGE(
         keywords = listOf("图片", "image", "png", "jpg", "jpeg", "gif"),
         getColor = { Color(0xFF4CAF50) }, // 绿色
         getIcon = { Icons.Default.Image }
     ),
-    
+
     AUDIO(
         keywords = listOf("音频", "audio", "mp3", "wav", "ogg"),
         getColor = { Color(0xFF2196F3) }, // 蓝色
         getIcon = { Icons.Default.AudioFile }
     ),
-    
+
     VIDEO(
         keywords = listOf("视频", "video", "mp4", "avi", "mov"),
         getColor = { Color(0xFFE91E63) }, // 粉色
         getIcon = { Icons.Default.VideoFile }
     ),
-    
+
     CODE(
         keywords = listOf("代码", "code", "java", "kotlin", "js", "ts", "py", "cpp", "php"),
         getColor = { Color(0xFF607D8B) }, // 蓝灰色
         getIcon = { Icons.Default.Code }
     ),
-    
+
     PDF(
         keywords = listOf("pdf"),
         getColor = { Color(0xFFF44336) }, // 红色
         getIcon = { Icons.Default.PictureAsPdf }
     ),
-    
+
     ARCHIVE(
         keywords = listOf("压缩", "zip", "rar", "7z", "archive"),
         getColor = { Color(0xFF795548) }, // 棕色
@@ -77,43 +77,43 @@ enum class NodeType(
         getColor = { Color(0xFF9C27B0) }, // 紫色
         getIcon = { Icons.Default.Person }
     ),
-    
+
     DEPARTMENT(
         keywords = listOf("部门", "department"),
         getColor = { Color(0xFF1976D2).copy(alpha = 0.8f) }, // 蓝色
         getIcon = { Icons.Default.Business }
     ),
-    
+
     TEAM(
         keywords = listOf("团队", "team", "测试"),
         getColor = { Color(0xFF9C27B0).copy(alpha = 0.9f) }, // 紫色
         getIcon = { Icons.Default.Group }
     ),
-    
+
     POSITION(
         keywords = listOf("岗位", "职位", "position"),
         getColor = { Color(0xFFFF5722).copy(alpha = 0.8f) }, // 橙色
         getIcon = { Icons.AutoMirrored.Filled.Assignment }
     ),
-    
+
     COMPANY(
         keywords = listOf("公司", "总公司", "company"),
         getColor = { Color(0xFF1976D2) }, // 蓝色
         getIcon = { Icons.Default.Domain }
     ),
-    
+
     ORGANIZATION(
         keywords = listOf("组织", "中心", "organization"),
         getColor = { Color(0xFF1976D2).copy(alpha = 0.9f) }, // 蓝色
         getIcon = { Icons.Default.AccountTree }
     ),
-    
+
     USER(
         keywords = listOf("用户", "user", "account"),
         getColor = { Color(0xFF9C27B0) }, // 紫色
         getIcon = { Icons.Default.AccountCircle }
     ),
-    
+
     USER_GROUP(
         keywords = listOf("用户组", "用户群组", "人力", "group"),
         getColor = { Color(0xFF9C27B0).copy(alpha = 0.9f) }, // 紫色
@@ -126,25 +126,25 @@ enum class NodeType(
         getColor = { Color(0xFF1976D2) }, // 蓝色
         getIcon = { Icons.Default.Menu }
     ),
-    
+
     MENU_GROUP(
         keywords = listOf("菜单组", "menu group"),
         getColor = { Color(0xFF1976D2).copy(alpha = 0.8f) }, // 蓝色
         getIcon = { Icons.AutoMirrored.Filled.ViewList }
     ),
-    
+
     NAVIGATION(
         keywords = listOf("导航", "nav", "navigation"),
         getColor = { Color(0xFFFF5722) }, // 橙色
         getIcon = { Icons.Default.Navigation }
     ),
-    
+
     LINK(
         keywords = listOf("链接", "link", "url", "href"),
         getColor = { Color(0xFF2196F3) }, // 蓝色
         getIcon = { Icons.Default.Link }
     ),
-    
+
     BUTTON(
         keywords = listOf("按钮", "button"),
         getColor = { Color(0xFFFF5722) }, // 橙色
@@ -157,31 +157,31 @@ enum class NodeType(
         getColor = { Color(0xFF673AB7) }, // 深紫色
         getIcon = { Icons.Default.Storage }
     ),
-    
+
     CHART(
         keywords = listOf("图表", "销售", "chart"),
         getColor = { Color(0xFF2196F3) }, // 蓝色
         getIcon = { Icons.Default.BarChart }
     ),
-    
+
     REPORT(
         keywords = listOf("报表", "report"),
         getColor = { Color(0xFF009688) }, // 青色
         getIcon = { Icons.AutoMirrored.Filled.MenuBook }
     ),
-    
+
     TABLE(
         keywords = listOf("表格", "table"),
         getColor = { Color(0xFF3F51B5) }, // 靛蓝色
         getIcon = { Icons.Default.TableChart }
     ),
-    
+
     LIST(
         keywords = listOf("列表", "list"),
         getColor = { Color(0xFF607D8B) }, // 蓝灰色
         getIcon = { Icons.AutoMirrored.Filled.FormatListBulleted }
     ),
-    
+
     DASHBOARD(
         keywords = listOf("仪表盘", "dashboard", "产品"),
         getColor = { Color(0xFF00BCD4) }, // 青色
@@ -194,37 +194,37 @@ enum class NodeType(
         getColor = { Color(0xFFFFEB3B) }, // 黄色
         getIcon = { Icons.Default.Star }
     ),
-    
+
     SETTING(
         keywords = listOf("设置", "setting", "config", "configuration"),
         getColor = { Color(0xFF607D8B) }, // 蓝灰色
         getIcon = { Icons.Default.Settings }
     ),
-    
+
     NOTIFICATION(
         keywords = listOf("通知", "notification", "alert", "message"),
         getColor = { Color(0xFFFF9800) }, // 橙色
         getIcon = { Icons.Default.Notifications }
     ),
-    
+
     WARNING(
         keywords = listOf("警告", "warning", "warn"),
         getColor = { Color(0xFFFF9800) }, // 橙色
         getIcon = { Icons.Default.Warning }
     ),
-    
+
     ERROR(
         keywords = listOf("错误", "error"),
         getColor = { Color(0xFFF44336) }, // 红色
         getIcon = { Icons.Default.Error }
     ),
-    
+
     SUCCESS(
         keywords = listOf("成功", "success"),
         getColor = { Color(0xFF4CAF50) }, // 绿色
         getIcon = { Icons.Default.CheckCircle }
     ),
-    
+
     INFO(
         keywords = listOf("信息", "info", "information"),
         getColor = { Color(0xFF2196F3) }, // 蓝色
@@ -246,24 +246,24 @@ enum class NodeType(
          */
         fun findByKeyword(text: String): NodeType {
             val lowerText = text.lowercase()
-            
+
             // 精确匹配
             for (type in entries) {
                 if (type.keywords.any { it.equals(lowerText, ignoreCase = true) }) {
                     return type
                 }
             }
-            
+
             // 包含匹配
             for (type in entries) {
                 if (type.keywords.any { lowerText.contains(it, ignoreCase = true) }) {
                     return type
                 }
             }
-            
+
             return DEFAULT
         }
-        
+
         /**
          * 猜测节点类型
          * @param label 节点标签
@@ -282,7 +282,7 @@ enum class NodeType(
                     else -> return FOLDER
                 }
             }
-            
+
             // 根据关键字匹配
             return findByKeyword(label)
         }
@@ -299,8 +299,9 @@ enum class NodeType(
             val guess = guess(label, hasChildren)
             return guess.getIcon(hasChildren)
         }
+
         @Composable
-         fun <T> guessIcon(
+        fun <T> guessIcon(
             getChildren: (T) -> List<T>,
             t: T,
             getLabel: (T) -> String
@@ -311,8 +312,6 @@ enum class NodeType(
             val icon = guess.getIcon(explanFlag)
             return icon
         }
-
-
 
 
     }

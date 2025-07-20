@@ -1,4 +1,5 @@
 package com.addzero.web.modules.controller.sys_weather.controller
+
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping

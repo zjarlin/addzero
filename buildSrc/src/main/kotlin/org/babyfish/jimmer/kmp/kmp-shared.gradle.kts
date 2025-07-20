@@ -5,7 +5,7 @@ import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
+
 val libs = the<org.gradle.accessors.dm.LibrariesForLibs>()
 
 plugins {
@@ -18,7 +18,7 @@ plugins {
 kotlin {
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class) compilerOptions {
-            jvmTarget.set(JvmTarget.fromTarget( libs.versions.jdk.get()))
+            jvmTarget.set(JvmTarget.fromTarget(libs.versions.jdk.get()))
         }
     }
 
@@ -65,12 +65,12 @@ kotlin {
 android {
 
     namespace = Vars.sharedNamespace
-    compileSdk =   libs.versions.android.compileSdk.get().toInt()
+    compileSdk = libs.versions.android.compileSdk.get().toInt()
 
 
 
     compileOptions {
-        val toVersion = JavaVersion.toVersion( libs.versions.jdk.get())
+        val toVersion = JavaVersion.toVersion(libs.versions.jdk.get())
         sourceCompatibility = toVersion
         targetCompatibility = toVersion
     }

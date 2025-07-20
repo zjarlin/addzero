@@ -1,13 +1,9 @@
 package com.addzero.kmp.strategy.impl
 
 import com.addzero.kmp.strategy.FormStrategy
-import com.addzero.kmp.util.defaultValue
-import com.addzero.kmp.util.isRequired
-import com.addzero.kmp.util.label
-import com.addzero.kmp.util.name
-import com.addzero.kmp.util.plus
-import com.google.devtools.ksp.symbol.KSPropertyDeclaration
+import com.addzero.kmp.util.*
 import com.google.devtools.ksp.symbol.KSClassDeclaration
+import com.google.devtools.ksp.symbol.KSPropertyDeclaration
 
 /**
  * 密码策略
@@ -21,10 +17,10 @@ object PasswordStrategy : FormStrategy {
 
         // 使用布尔值 + 操作符累加计算权重，每个条件都是平等的 0 或 1
         return ktName.contains("password", ignoreCase = true) +
-               ktName.contains("pwd", ignoreCase = true) +
-               ktName.contains("密码", ignoreCase = true) +
-               ktName.equals("password", ignoreCase = true) +
-               ktName.equals("userPassword", ignoreCase = true)
+                ktName.contains("pwd", ignoreCase = true) +
+                ktName.contains("密码", ignoreCase = true) +
+                ktName.equals("password", ignoreCase = true) +
+                ktName.equals("userPassword", ignoreCase = true)
     }
 
     override fun genCode(prop: KSPropertyDeclaration): String {

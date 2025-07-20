@@ -15,11 +15,11 @@ class HttpAiController {
     fun ask(
         @RequestParam question: String,
         @RequestParam promptTemplate: String = "",
-        @RequestParam chatModel: String ,
+        @RequestParam chatModel: String,
         @RequestParam formatJson: String = "",
         @RequestParam formatJsonComment: String = "",
     ): String {
-        val ask = AiUtil(chatModel, question, promptTemplate).ask( formatJson,formatJsonComment)
+        val ask = AiUtil(chatModel, question, promptTemplate).ask(formatJson, formatJsonComment)
         return ask
     }
 }

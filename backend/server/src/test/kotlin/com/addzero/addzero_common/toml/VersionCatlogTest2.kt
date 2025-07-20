@@ -36,7 +36,7 @@ class JvmToolTest {
 
         val path1 = "/Users/zjarlin/Downloads/addzero_common/gradle/libs.versions.toml"
 
-        val toTomlDTO = TomlUtils. toTomlDTO(path1)
+        val toTomlDTO = TomlUtils.toTomlDTO(path1)
         val merge = TomlUtils.merge(toTomlDTO)
         println()
     }
@@ -56,11 +56,6 @@ class JvmToolTest {
 
 
     }
-
-
-
-
-
 
 
 }

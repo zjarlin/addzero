@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component
 @ConfigurationProperties(prefix = "spring.datasource.dynamic")
 class DynamicDatasourceProperties {
 
-    var primary: String= DbEnum.POSTGRESQL.key
+    var primary: String = DbEnum.POSTGRESQL.key
     var datasource: Map<String, DataSourceConfig> = HashMap()
 
     class DataSourceConfig {

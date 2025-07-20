@@ -11,7 +11,7 @@ import java.util.*
 class BaiduTranslator : ITranslator {
 
     /**注意: 百度翻译apiKey格式为 appId:secretKey  */
-    override val apiKey: String=System.getenv("BAIDUTRANS_KEY")
+    override val apiKey: String = System.getenv("BAIDUTRANS_KEY")
 
 
     companion object {

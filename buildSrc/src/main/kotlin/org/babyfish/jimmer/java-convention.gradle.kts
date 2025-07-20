@@ -1,4 +1,3 @@
-
 plugins {
     `java-library`
     // 暂时移除发布相关插件

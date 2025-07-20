@@ -11,14 +11,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.addzero.kmp.annotation.Route
 import com.addzero.kmp.component.button.AddIconButton
 import com.addzero.kmp.component.high_level.AddDualCardLayout
 import com.addzero.kmp.component.high_level.AddLazyList
 import com.addzero.kmp.component.search_bar.AddSearchBar
 import com.addzero.kmp.compose.icons.IconKeys
-import com.addzero.kmp.generated.forms.*
-import com.addzero.kmp.annotation.Route
-
+import com.addzero.kmp.generated.forms.SysDictForm
+import com.addzero.kmp.generated.forms.SysDictItemForm
+import com.addzero.kmp.generated.forms.rememberSysDictFormState
+import com.addzero.kmp.generated.forms.rememberSysDictItemFormState
 import com.addzero.kmp.viewmodel.SysDictViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -124,7 +126,7 @@ fun DictManagerScreen() {
     SysDictForm(
         state = rememberSysDictFormState,
         visible = vm.showDictForm,
-        title = if (vm.selectedDict== null) "新增字典类型" else "编辑字典类型",
+        title = if (vm.selectedDict == null) "新增字典类型" else "编辑字典类型",
         onClose = { vm.showDictForm = false },
         onSubmit = {
             vm.onSaveDict(rememberSysDictFormState.value)
@@ -143,7 +145,7 @@ fun DictManagerScreen() {
 
             state = rememberSysDictItemFormState,
             visible = vm.showItemForm,
-            title = if (vm.selectedDictItem== null) "新增字典项" else "编辑字典项",
+            title = if (vm.selectedDictItem == null) "新增字典项" else "编辑字典项",
             onClose = { vm.showItemForm = false },
             onSubmit = {
                 vm.onSaveDictItem(rememberSysDictItemFormState.value)

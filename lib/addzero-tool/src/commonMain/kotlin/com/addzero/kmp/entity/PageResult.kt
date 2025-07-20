@@ -16,16 +16,16 @@ data class PageResult<T>(
     val isLast: Boolean = true
 ) {
     companion object {
-      fun <T> empty(pageSize: Int = 20) =
+        fun <T> empty(pageSize: Int = 20) =
 
-      PageResult<T>(
-            rows = emptyList(),
-            totalRowCount = 0,
-            totalPageCount = 0,
-            pageIndex = 0,
-            pageSize = pageSize,
-            isFirst = true,
-            isLast = true
-        )
+            PageResult<T>(
+                rows = emptyList(),
+                totalRowCount = 0,
+                totalPageCount = 0,
+                pageIndex = 0,
+                pageSize = pageSize,
+                isFirst = true,
+                isLast = true
+            )
     }
 }

@@ -6,8 +6,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.addzero.kmp.generated.api.ApiProvider
 import com.addzero.kmp.assist.api
+import com.addzero.kmp.generated.api.ApiProvider
 import com.addzero.kmp.generated.isomorphic.SysDictIso
 import com.addzero.kmp.generated.isomorphic.SysDictItemIso
 import kotlinx.coroutines.launch
@@ -22,6 +22,7 @@ class SysDictViewModel : ViewModel() {
 
     // 搜索关键字
     var keyword by mutableStateOf("")
+
     // 字典列表
     var dicts by mutableStateOf(listOf<SysDictIso>())
 

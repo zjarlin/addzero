@@ -10,12 +10,7 @@ fun main() {
     }
 
 
-
 }
-
-
-
-
 
 
 //object EnumBitmaskConverter {

@@ -17,7 +17,6 @@ import com.addzero.kmp.component.button.AddIconButton
 import com.addzero.kmp.component.theme.QuickThemeToggle
 import com.addzero.kmp.component.upload_manager.GlobalUploadManager
 import com.addzero.kmp.component.upload_manager.UploadManagerUI
-import com.addzero.kmp.settings.SettingContext4Compose.APP_NAME
 import com.addzero.kmp.ui.infra.model.menu.MenuLayoutToggleButton
 import com.addzero.kmp.ui.infra.model.menu.MenuViewModel
 import com.addzero.kmp.ui.infra.model.menu.SysUserCenterScreen

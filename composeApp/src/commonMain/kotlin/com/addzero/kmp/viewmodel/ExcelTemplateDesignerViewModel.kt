@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.addzero.kmp.core.ext.now
 import com.addzero.kmp.assist.api
+import com.addzero.kmp.core.ext.now
 import kotlinx.coroutines.delay
 import kotlinx.datetime.LocalDateTime
 import org.koin.android.annotation.KoinViewModel
@@ -301,6 +301,7 @@ class ExcelTemplateDesignerViewModel : ViewModel() {
                     }
                     sb.append("  }")
                 }
+
                 is List<*> -> {
                     sb.append("[\n")
                     value.forEachIndexed { listIndex, item ->
@@ -322,6 +323,7 @@ class ExcelTemplateDesignerViewModel : ViewModel() {
                     }
                     sb.append("  ]")
                 }
+
                 else -> sb.append(formatValue(value))
             }
             if (index < data.size - 1) sb.append(",")

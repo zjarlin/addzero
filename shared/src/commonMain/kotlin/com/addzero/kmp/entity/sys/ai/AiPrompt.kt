@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 
 /**
  * 🤖 AI 提示词数据类
- * 
+ *
  * @property id 提示词ID
  * @property title 提示词标题
  * @property content 提示词内容

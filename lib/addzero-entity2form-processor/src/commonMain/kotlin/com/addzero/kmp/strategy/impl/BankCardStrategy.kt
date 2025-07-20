@@ -1,13 +1,9 @@
 package com.addzero.kmp.strategy.impl
 
 import com.addzero.kmp.strategy.FormStrategy
-import com.addzero.kmp.util.defaultValue
-import com.addzero.kmp.util.isRequired
-import com.addzero.kmp.util.label
-import com.addzero.kmp.util.name
-import com.google.devtools.ksp.symbol.KSPropertyDeclaration
+import com.addzero.kmp.util.*
 import com.google.devtools.ksp.symbol.KSClassDeclaration
-import com.addzero.kmp.util.plus
+import com.google.devtools.ksp.symbol.KSPropertyDeclaration
 
 /**
  * 银行卡策略
@@ -20,11 +16,11 @@ object BankCardStrategy : FormStrategy {
         val ktName = prop.name
 
         return ktName.contains("bankcard", ignoreCase = true) +
-               ktName.contains("cardno", ignoreCase = true) +
-               ktName.contains("银行卡", ignoreCase = true) +
-               ktName.contains("卡号", ignoreCase = true) +
-               ktName.contains("card", ignoreCase = true) +
-               ktName.equals("bankCard", ignoreCase = true)
+                ktName.contains("cardno", ignoreCase = true) +
+                ktName.contains("银行卡", ignoreCase = true) +
+                ktName.contains("卡号", ignoreCase = true) +
+                ktName.contains("card", ignoreCase = true) +
+                ktName.equals("bankCard", ignoreCase = true)
     }
 
     override fun genCode(prop: KSPropertyDeclaration): String {

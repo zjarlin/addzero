@@ -26,6 +26,7 @@ data class DeepSeekChatResponse(
             val content: String?
         )
     }
+
     @Serializable
     data class Usage(
         val prompt_tokens: Int?,

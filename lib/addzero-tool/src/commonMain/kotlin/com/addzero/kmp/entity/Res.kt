@@ -1,4 +1,5 @@
 package com.addzero.kmp.entity
+
 import com.addzero.kmp.enums.ErrorEnum
 import kotlinx.serialization.Serializable
 
@@ -15,7 +16,7 @@ data class Res<T>(
         fun success(message: String) = Res<String>(message = message)
 
         // 错误响应
-        fun fail(message: String?) = Res<String>(400, message?:"error")
+        fun fail(message: String?) = Res<String>(400, message ?: "error")
         fun fail(code: Int, message: String) = Res<Nothing>(code, message)
         fun fail(errorEnum: ErrorEnum) = Res<Nothing>(errorEnum.code, errorEnum.msg)
         fun unauthorized(message: String) = Res<Nothing>(401, message)

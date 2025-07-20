@@ -1,5 +1,6 @@
 package com.addzero.web.infra.constant
-object  RestConsts{
+
+object RestConsts {
     const val pageRestUtl = "/page"
 
     const val saveUrl = "/save"

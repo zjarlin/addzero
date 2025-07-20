@@ -3,16 +3,15 @@ package com.addzero.web.modules.controller
 import com.addzero.model.entity.SysAiPrompt
 import org.springframework.ai.tool.ToolCallbackProvider
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/sysAiPrompt")
-class SysAiPromptController (
+class SysAiPromptController(
     private val toolCallbackProvider: ToolCallbackProvider,
 
-    ){
+    ) {
 
     /**
      * 🔧 获取所有MCP工具描述

@@ -39,7 +39,7 @@ fun PromptUserSpec.useStructuredOutput(
 
 
 class AbsChatBuilder<V : VectorStore>(
-    modelName: String ,
+    modelName: String,
     promptUserSpecConsumer: Consumer<PromptUserSpec>,
 ) {
     private val spec: ChatClientRequestSpec
@@ -102,7 +102,9 @@ class AbsChatBuilder<V : VectorStore>(
                     """.trimIndent()
             val TOP_K = 5
             val SIMILARITY_THRESHOLD = 0.85
-            val request = SearchRequest.builder().query(promptWithContext).topK(TOP_K) .similarityThreshold(SIMILARITY_THRESHOLD).build()
+            val request =
+                SearchRequest.builder().query(promptWithContext).topK(TOP_K).similarityThreshold(SIMILARITY_THRESHOLD)
+                    .build()
 
 //            val questionAnswerAdvisor = QuestionAnswerAdvisor(vectorStore, request)
 //            spec.advisors(questionAnswerAdvisor)
@@ -154,7 +156,9 @@ class AbsChatBuilder<V : VectorStore>(
                 // 处理文件输入
                 it.useMedia(file)
             }
-            val useFunctionCalling = builder.useChatHistory(StrUtil.isNotBlank(sessionId), sessionId).usePromptTemplate(StrUtil.isNotBlank(promptTemplate), promptTemplate).useVectorStore(enableVectorStore!!, vectorStore)
+            val useFunctionCalling = builder.useChatHistory(StrUtil.isNotBlank(sessionId), sessionId)
+                .usePromptTemplate(StrUtil.isNotBlank(promptTemplate), promptTemplate)
+                .useVectorStore(enableVectorStore!!, vectorStore)
 //            .useFunctionCalling(enableFunctionCalling!!)
             return useFunctionCalling
         }

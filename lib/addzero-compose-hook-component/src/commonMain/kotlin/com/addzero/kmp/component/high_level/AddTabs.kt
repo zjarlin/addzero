@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.sp
 
 /**
  * 标签页数据类
- * 
+ *
  * @param title 标签标题
  * @param content 标签内容
  */
@@ -36,7 +36,7 @@ data class TabItem(
 
 /**
  * 多标签页组件
- * 
+ *
  * @param tabs 标签页列表
  * @param initialTabIndex 初始选中的标签索引
  * @param modifier 修饰符
@@ -60,16 +60,16 @@ fun AddTabs(
     tabRowBackground: Color = MaterialTheme.colorScheme.surface
 ) {
     if (tabs.isEmpty()) return
-    
+
     var selectedTabIndex by remember { mutableIntStateOf(initialTabIndex) }
-    
+
     // 添加动画效果
     val indicatorOffset by animateFloatAsState(
         targetValue = selectedTabIndex.toFloat(),
         animationSpec = tween(300),
         label = "indicatorOffset"
     )
-    
+
     Column(modifier = modifier) {
         // 标签行
         Surface(
@@ -91,7 +91,7 @@ fun AddTabs(
                             targetValue = if (isSelected) 1f else 0.6f,
                             label = "tabTextAlpha"
                         )
-                        
+
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -109,7 +109,7 @@ fun AddTabs(
                         }
                     }
                 )
-                
+
                 // 分隔线
                 Spacer(
                     modifier = Modifier
@@ -119,7 +119,7 @@ fun AddTabs(
                 )
             }
         }
-        
+
         // 内容区域
         AnimatedContent(
             targetState = selectedTabIndex,
@@ -167,9 +167,9 @@ private fun TabRowWithIndicator(
                 }
             }.map { it.measure(Constraints.fixedWidth(constraints.maxWidth / count)) }
         }
-        
+
         val tabConstraints = constraints.copy(minWidth = constraints.maxWidth / count)
-        
+
         // 计算指示器放置位置
         val tabWidth = constraints.maxWidth / count
         val indicatorPlaceable = subcompose("indicator") {
@@ -183,14 +183,14 @@ private fun TabRowWithIndicator(
                     )
             )
         }.first().measure(Constraints.fixed(tabWidth, 3.dp.roundToPx()))
-        
+
         val tabHeight = tabPlaceables.maxOfOrNull { it.first().height } ?: 0
         val totalHeight = tabHeight + indicatorPlaceable.height
-        
+
         layout(constraints.maxWidth, totalHeight) {
             val indicatorX = (selectedIndex * tabWidth).toInt()
             val indicatorY = tabHeight - indicatorPlaceable.height
-            
+
             // 放置所有标签
             tabPlaceables.forEachIndexed { index, placeables ->
                 val tabX = index * tabWidth
@@ -198,7 +198,7 @@ private fun TabRowWithIndicator(
                     placeable.placeRelative(tabX, 0)
                 }
             }
-            
+
             // 放置指示器
             indicatorPlaceable.placeRelative(indicatorX, indicatorY)
         }
@@ -217,7 +217,9 @@ fun CustomTabRow(
     tabContent: @Composable (String, Int, Boolean) -> Unit = { title, _, isSelected ->
         Text(
             text = title,
-            color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+            color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(
+                alpha = 0.6f
+            ),
             fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
             modifier = Modifier.padding(16.dp)
         )
@@ -229,7 +231,7 @@ fun CustomTabRow(
         animationSpec = tween(300),
         label = "indicatorOffset"
     )
-    
+
     Column(modifier = modifier) {
         // 使用SubcomposeLayout确保指示器精确对齐标签
         TabRowWithIndicator(
@@ -248,7 +250,7 @@ fun CustomTabRow(
                 }
             }
         )
-        
+
         // 分隔线
         Spacer(
             modifier = Modifier

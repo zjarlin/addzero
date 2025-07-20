@@ -6,7 +6,7 @@ interface SelectOption<V> {
     val value: V
 }
 
-data class SelectOptionImpl<V >(
+data class SelectOptionImpl<V>(
     override val label: String,
     override val value: V,
 ) : SelectOption<V>

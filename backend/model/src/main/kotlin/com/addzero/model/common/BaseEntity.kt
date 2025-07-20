@@ -1,14 +1,7 @@
 package com.addzero.model.common
 
 import com.addzero.model.entity.SysUser
-import org.babyfish.jimmer.sql.DissociateAction
-import org.babyfish.jimmer.sql.ForeignKeyType
-import org.babyfish.jimmer.sql.GeneratedValue
-import org.babyfish.jimmer.sql.Id
-import org.babyfish.jimmer.sql.JoinColumn
-import org.babyfish.jimmer.sql.ManyToOne
-import org.babyfish.jimmer.sql.MappedSuperclass
-import org.babyfish.jimmer.sql.OnDissociate
+import org.babyfish.jimmer.sql.*
 
 @MappedSuperclass
 interface BaseEntity : BaseDateTime {

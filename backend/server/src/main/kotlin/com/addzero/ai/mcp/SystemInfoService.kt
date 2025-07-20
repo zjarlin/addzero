@@ -17,7 +17,7 @@ class SystemInfoService {
     fun getSystemInfo(): String {
         val runtime = Runtime.getRuntime()
         val osBean = ManagementFactory.getOperatingSystemMXBean()
-        
+
         return """
             系统信息:
             - 操作系统: ${System.getProperty("os.name")} ${System.getProperty("os.version")}
@@ -54,12 +54,12 @@ class SystemInfoService {
         val units = arrayOf("B", "KB", "MB", "GB", "TB")
         var size = bytes.toDouble()
         var unitIndex = 0
-        
+
         while (size >= 1024 && unitIndex < units.size - 1) {
             size /= 1024
             unitIndex++
         }
-        
+
         return String.format("%.2f %s", size, units[unitIndex])
     }
 }

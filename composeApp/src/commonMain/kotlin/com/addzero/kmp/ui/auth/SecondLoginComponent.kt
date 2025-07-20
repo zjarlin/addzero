@@ -17,18 +17,21 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.addzero.kmp.entity.SignInStatus
 import com.addzero.kmp.component.button.AddIconButton
 import com.addzero.kmp.component.form.text.AddPasswordField
 import com.addzero.kmp.component.form.text.AddTextField
 import com.addzero.kmp.core.validation.RegexEnum
+import com.addzero.kmp.entity.SignInStatus
 import com.addzero.kmp.viewmodel.LoginViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
 
 @Composable
 fun SecondLoginComponent(
-    logo: ImageVector = Icons.Default.EmojiPeople, onSecondLogin: () -> Unit, onFrogetPassword: () -> Unit, customLogo: @Composable (() -> Unit)?
+    logo: ImageVector = Icons.Default.EmojiPeople,
+    onSecondLogin: () -> Unit,
+    onFrogetPassword: () -> Unit,
+    customLogo: @Composable (() -> Unit)?
 ) {
     val viewModel = koinViewModel<LoginViewModel>()
 
@@ -45,7 +48,13 @@ fun SecondLoginComponent(
 
         // 用户名输入框
         AddTextField(
-            value = userRegFormState.username, onValueChange = { viewModel.userRegFormState = userRegFormState.copy(username = it) }, label = "用户名", isRequired = false, regexEnum = RegexEnum.USERNAME, leadingIcon = Icons.Default.PeopleAlt, disable = true
+            value = userRegFormState.username,
+            onValueChange = { viewModel.userRegFormState = userRegFormState.copy(username = it) },
+            label = "用户名",
+            isRequired = false,
+            regexEnum = RegexEnum.USERNAME,
+            leadingIcon = Icons.Default.PeopleAlt,
+            disable = true
 //            , errorMessages = errorMessages
         )
 
@@ -65,15 +74,18 @@ fun SecondLoginComponent(
 
         // 密码输入框
         AddPasswordField(
-            value = userRegFormState.password, onValueChange = { viewModel.userRegFormState = userRegFormState.copy(password = it) },
+            value = userRegFormState.password,
+            onValueChange = { viewModel.userRegFormState = userRegFormState.copy(password = it) },
             otherIcon = {
 
                 AddIconButton(
                     text = "登录", imageVector = Icons.AutoMirrored.Filled.Login, onClick = onSecondLogin
                 )
 
-                AddIconButton(text = "切换账号", imageVector = Icons.Default
-                    .SwitchAccount) { viewModel.singinStatus = SignInStatus.None }
+                AddIconButton(
+                    text = "切换账号", imageVector = Icons.Default
+                        .SwitchAccount
+                ) { viewModel.singinStatus = SignInStatus.None }
 
             },
 //        , errorMessages = errorMessages
@@ -96,7 +108,10 @@ fun SecondLoginComponent(
             onClick = onFrogetPassword, modifier = Modifier.padding(end = 0.dp, top = 4.dp)
         ) {
             Text(
-                text = "忘记密码?", color = MaterialTheme.colorScheme.primary, fontSize = 14.sp, fontWeight = FontWeight.Medium
+                text = "忘记密码?",
+                color = MaterialTheme.colorScheme.primary,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Medium
             )
         }
 

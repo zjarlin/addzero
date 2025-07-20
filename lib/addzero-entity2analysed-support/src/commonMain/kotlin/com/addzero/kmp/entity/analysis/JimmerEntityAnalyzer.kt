@@ -1,6 +1,9 @@
 package com.addzero.kmp.entity.analysis
 
-import com.addzero.kmp.entity.analysis.model.*
+import com.addzero.kmp.entity.analysis.model.EntityMetadata
+import com.addzero.kmp.entity.analysis.model.EnumMetadata
+import com.addzero.kmp.entity.analysis.model.PropertyMetadata
+import com.addzero.kmp.entity.analysis.model.TypeAnalysisResult
 import com.addzero.kmp.util.isJimmerEntity
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.symbol.*
@@ -67,32 +70,38 @@ class JimmerEntityAnalyzer(
                     val description = getAnnotationStringValue(annotation, "description")
                     if (description.isNotBlank()) return description
                 }
+
                 "ApiModel" -> {
                     // Swagger @ApiModel(description = "...")
                     val description = getAnnotationStringValue(annotation, "description")
                         ?: getAnnotationStringValue(annotation, "value")
                     if (description.isNotBlank()) return description
                 }
+
                 "Entity" -> {
                     // JPA @Entity(description = "...")
                     val description = getAnnotationStringValue(annotation, "description")
                     if (description.isNotBlank()) return description
                 }
+
                 "Table" -> {
                     // JPA @Table(comment = "...")
                     val description = getAnnotationStringValue(annotation, "comment")
                     if (description.isNotBlank()) return description
                 }
+
                 "Comment" -> {
                     // 自定义 @Comment("...")
                     val description = getAnnotationStringValue(annotation, "value")
                     if (description.isNotBlank()) return description
                 }
+
                 "Description" -> {
                     // 自定义 @Description("...")
                     val description = getAnnotationStringValue(annotation, "value")
                     if (description.isNotBlank()) return description
                 }
+
                 "JsonPropertyDescription" -> {
                     // Jackson @JsonPropertyDescription("...")
                     val description = getAnnotationStringValue(annotation, "value")

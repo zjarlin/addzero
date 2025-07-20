@@ -2,8 +2,11 @@ package com.addzero.kmp.component.tree
 
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.addzero.kmp.component.tree.selection.CascadingSelectionStrategy
+import com.addzero.kmp.component.tree.selection.CompleteSelectionResult
+import com.addzero.kmp.component.tree.selection.SelectionState
+import com.addzero.kmp.component.tree.selection.TreeSelectionManager
 import com.addzero.kmp.util.data_structure.tree.TreeSearch
-import com.addzero.kmp.component.tree.selection.*
 
 /**
  * 🎯 树组件的 ViewModel - 管理所有响应式状态
@@ -393,9 +396,6 @@ class TreeViewModel<T> {
     }
 
 
-
-
-
     /**
      * 🛠️ 辅助方法
      */
@@ -412,7 +412,6 @@ class TreeViewModel<T> {
         collectIds(items)
         return result
     }
-
 
 
     fun isExpanded(nodeId: Any): Boolean {

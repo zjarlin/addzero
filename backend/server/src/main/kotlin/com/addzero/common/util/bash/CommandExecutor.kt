@@ -50,13 +50,13 @@ object CommandExecutor {
                 throw java.lang.RuntimeException("不支持的操作系统类型")
             }
         } catch (e: java.lang.Exception) {
-            println( "执行失败$e")
+            println("执行失败$e")
         } finally {
             if (br != null) {
                 try {
                     br.close()
                 } catch (e: IOException) {
-                    println( "io异常$e")
+                    println("io异常$e")
                 }
             }
             FileUtil.del(tempFileName)

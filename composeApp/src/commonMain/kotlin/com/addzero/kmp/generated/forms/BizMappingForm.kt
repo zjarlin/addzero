@@ -1,12 +1,15 @@
 package com.addzero.kmp.generated.forms
 
-import androidx.compose.runtime.*
-import com.addzero.kmp.component.high_level.AddMultiColumnContainer
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import com.addzero.kmp.component.drawer.AddDrawer
 import com.addzero.kmp.component.form.number.AddIntegerField
 import com.addzero.kmp.component.form.text.AddTextField
+import com.addzero.kmp.component.high_level.AddMultiColumnContainer
 import com.addzero.kmp.core.ext.parseObjectByKtx
-import com.addzero.kmp.generated.isomorphic.*
+import com.addzero.kmp.generated.isomorphic.BizMappingIso
 
 
 /**
@@ -147,10 +150,12 @@ class BizMappingFormDsl(
                 hiddenFields.add("fromId")
                 renderMap.remove("fromId")
             }
+
             render != null -> {
                 hiddenFields.remove("fromId")
                 renderMap["fromId"] = { render(state) }
             }
+
             else -> {
                 hiddenFields.remove("fromId")
                 renderMap.remove("fromId")
@@ -179,10 +184,12 @@ class BizMappingFormDsl(
                 hiddenFields.add("toId")
                 renderMap.remove("toId")
             }
+
             render != null -> {
                 hiddenFields.remove("toId")
                 renderMap["toId"] = { render(state) }
             }
+
             else -> {
                 hiddenFields.remove("toId")
                 renderMap.remove("toId")
@@ -211,10 +218,12 @@ class BizMappingFormDsl(
                 hiddenFields.add("mappingType")
                 renderMap.remove("mappingType")
             }
+
             render != null -> {
                 hiddenFields.remove("mappingType")
                 renderMap["mappingType"] = { render(state) }
             }
+
             else -> {
                 hiddenFields.remove("mappingType")
                 renderMap.remove("mappingType")

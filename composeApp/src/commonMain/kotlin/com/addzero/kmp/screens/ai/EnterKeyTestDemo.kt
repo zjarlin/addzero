@@ -28,7 +28,7 @@ fun EnterKeyTestDemo() {
     var testInput by remember { mutableStateOf("") }
     var testMessages by remember { mutableStateOf(listOf<String>()) }
     var debugInfo by remember { mutableStateOf("等待输入...") }
-    
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -44,21 +44,21 @@ fun EnterKeyTestDemo() {
             ),
             color = LabubuColors.PrimaryPink
         )
-        
+
         // 问题说明
         ProblemDescription()
-        
+
         HorizontalDivider()
-        
+
         // 解决方案说明
         SolutionDescription()
-        
+
         HorizontalDivider()
-        
+
         // 测试区域
         TestArea(
             testInput = testInput,
-            onInputChange = { 
+            onInputChange = {
                 testInput = it
                 debugInfo = "输入内容: '$it' (长度: ${it.length})"
             },
@@ -75,9 +75,9 @@ fun EnterKeyTestDemo() {
             debugInfo = debugInfo,
             testMessages = testMessages
         )
-        
+
         HorizontalDivider()
-        
+
         // 键盘快捷键说明
         KeyboardShortcuts()
     }
@@ -113,7 +113,7 @@ private fun ProblemDescription() {
                     color = LabubuColors.DarkText
                 )
             }
-            
+
             Text(
                 text = """
                     🐛 遇到的问题：
@@ -161,7 +161,7 @@ private fun SolutionDescription() {
                     color = LabubuColors.DarkText
                 )
             }
-            
+
             Text(
                 text = """
                     🔧 修复措施：
@@ -206,7 +206,7 @@ private fun TestArea(
                 ),
                 color = LabubuColors.DarkText
             )
-            
+
             // 调试信息
             Card(
                 colors = CardDefaults.cardColors(
@@ -220,7 +220,7 @@ private fun TestArea(
                     color = LabubuColors.DarkText
                 )
             }
-            
+
             // 测试消息列表
             if (testMessages.isNotEmpty()) {
                 Card(
@@ -249,7 +249,7 @@ private fun TestArea(
                     }
                 }
             }
-            
+
             // 测试输入区域
             LabubuInputArea(
                 input = testInput,
@@ -257,11 +257,11 @@ private fun TestArea(
                 onSend = onSend,
                 enabled = enabled
             )
-            
+
             // 清空按钮
             if (testMessages.isNotEmpty()) {
                 OutlinedButton(
-                    onClick = { 
+                    onClick = {
                         testMessages.toMutableList().clear()
                     },
                     modifier = Modifier.align(Alignment.CenterHorizontally)
@@ -303,13 +303,13 @@ private fun KeyboardShortcuts() {
                     color = LabubuColors.DarkText
                 )
             }
-            
+
             val shortcuts = listOf(
                 "Enter" to "发送消息 (应该触发onSend)",
                 "Shift + Enter" to "换行 (应该在输入框中换行)",
                 "Ctrl + Enter" to "换行 (备选换行方式)"
             )
-            
+
             shortcuts.forEach { (key, description) ->
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -330,7 +330,7 @@ private fun KeyboardShortcuts() {
                     )
                 }
             }
-            
+
             Text(
                 text = """
                     💡 测试说明：

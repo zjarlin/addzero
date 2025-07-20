@@ -1,7 +1,7 @@
 package com.addzero.kmp.jdbc.meta.public.table.impl
 
 import com.addzero.kmp.jdbc.meta.public.table.ISysRoleSysUserMapping
-             import kotlinx.serialization.Serializable
+import kotlinx.serialization.Serializable
 
 /**
  * ISysRoleSysUserMappingImpl 实现类
@@ -10,6 +10,6 @@ import com.addzero.kmp.jdbc.meta.public.table.ISysRoleSysUserMapping
 @Serializable
 data class ISysRoleSysUserMappingImpl(
     override val id: Long,
-        override val sysRoleId: Long?,
-        override val sysUserId: Long?
+    override val sysRoleId: Long?,
+    override val sysUserId: Long?
 ) : ISysRoleSysUserMapping

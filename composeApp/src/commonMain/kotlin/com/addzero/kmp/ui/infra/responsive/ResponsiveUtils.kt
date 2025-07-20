@@ -7,7 +7,7 @@ import androidx.compose.ui.unit.dp
 
 /**
  * 🚀 响应式布局工具类
- * 
+ *
  * 提供屏幕尺寸检测和响应式布局支持
  */
 
@@ -48,7 +48,7 @@ data class ResponsiveConfig(
 fun rememberScreenSize(): ScreenSize {
     val density = LocalDensity.current
     var screenSize by remember { mutableStateOf(ScreenSize.DESKTOP) }
-    
+
     // 这里需要根据实际的窗口尺寸来判断
     // 由于 Compose Multiplatform 的限制，我们使用一个简化的检测方法
     LaunchedEffect(density) {
@@ -56,7 +56,7 @@ fun rememberScreenSize(): ScreenSize {
         // 目前先使用默认值，后续可以通过平台特定的实现来获取真实的屏幕尺寸
         screenSize = ScreenSize.DESKTOP
     }
-    
+
     return screenSize
 }
 
@@ -68,14 +68,14 @@ fun rememberResponsiveConfig(
     forceLayoutMode: LayoutMode? = null
 ): ResponsiveConfig {
     val screenSize = rememberScreenSize()
-    
+
     return remember(screenSize, forceLayoutMode) {
         val layoutMode = forceLayoutMode ?: when (screenSize) {
             ScreenSize.MOBILE -> LayoutMode.TOPBAR
             ScreenSize.TABLET -> LayoutMode.TOPBAR
             ScreenSize.DESKTOP -> LayoutMode.SIDEBAR
         }
-        
+
         ResponsiveConfig(
             screenSize = screenSize,
             layoutMode = layoutMode,

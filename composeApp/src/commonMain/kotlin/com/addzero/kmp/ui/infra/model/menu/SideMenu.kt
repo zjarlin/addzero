@@ -1,10 +1,13 @@
 package com.addzero.kmp.ui.infra.model.menu
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.*
 import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -19,7 +22,9 @@ import com.addzero.kmp.entity.sys.menu.SysMenuVO
 import com.addzero.kmp.generated.RouteKeys
 import com.addzero.kmp.kt_util.isNotBlank
 import com.addzero.kmp.ui.infra.model.menu.MenuViewModel.isExpand
-import com.addzero.kmp.ui.infra.theme.*
+import com.addzero.kmp.ui.infra.theme.AppThemeType
+import com.addzero.kmp.ui.infra.theme.SidebarGradientBackground
+import com.addzero.kmp.ui.infra.theme.ThemeViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
 /**
@@ -30,7 +35,7 @@ import org.koin.compose.viewmodel.koinViewModel
  */
 @Composable
 fun SideMenu() {
-      val themeViewModel = koinViewModel<ThemeViewModel>()
+    val themeViewModel = koinViewModel<ThemeViewModel>()
 
     val currentTheme = themeViewModel.currentTheme
 
@@ -46,6 +51,7 @@ fun SideMenu() {
             AppThemeType.GRADIENT_FOREST,
             AppThemeType.GRADIENT_AURORA,
             AppThemeType.GRADIENT_NEON -> Color.Transparent
+
             else -> MaterialTheme.colorScheme.surface
         },
         tonalElevation = if (currentTheme.isGradient()) 0.dp else 2.dp

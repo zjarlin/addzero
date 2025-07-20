@@ -95,7 +95,9 @@ private fun AiChatScreenContent() {
         ) {
             // Labubu风格的可爱顶部栏
             LabubuTopBar(
-                onClose = { chatViewModel.showChatBot = false }, onNewChat = { chatViewModel.startNewChat() }, heartBeat = heartBeat
+                onClose = { chatViewModel.showChatBot = false },
+                onNewChat = { chatViewModel.startNewChat() },
+                heartBeat = heartBeat
             )
             // Labubu风格的聊天消息区 - 使用SafeSelectionContainer包装
             SelectionContainer(
@@ -106,7 +108,7 @@ private fun AiChatScreenContent() {
                     // 常用提示词区域（仅在没有消息时显示）
                     if (chatViewModel.chatMessages.isEmpty()) {
                         LabubuPromptSuggestions(
-                            prompts = aiPromptViewModel.prompts, 
+                            prompts = aiPromptViewModel.prompts,
                             onPromptSelected = { prompt ->
                                 chatViewModel.chatInput = prompt.content
                             },
@@ -116,7 +118,13 @@ private fun AiChatScreenContent() {
                     }
                     // 聊天消息
                     LabubuChatMessages(
-                        messages = chatViewModel.chatMessages, scrollState = scrollState, isAiThinking = chatViewModel.isAiThinking, onRetryMessage = { messageId -> chatViewModel.retryMessage(messageId) }, onRetryUserMessage = { message -> chatViewModel.sendMessage(message) }, retryingMessageId = chatViewModel.retryingMessageId, modifier = Modifier.weight(1f)
+                        messages = chatViewModel.chatMessages,
+                        scrollState = scrollState,
+                        isAiThinking = chatViewModel.isAiThinking,
+                        onRetryMessage = { messageId -> chatViewModel.retryMessage(messageId) },
+                        onRetryUserMessage = { message -> chatViewModel.sendMessage(message) },
+                        retryingMessageId = chatViewModel.retryingMessageId,
+                        modifier = Modifier.weight(1f)
                     )
                 }
             }
@@ -131,11 +139,11 @@ private fun AiChatScreenContent() {
             // Labubu风格的输入区
             LabubuInputArea(
                 input = chatViewModel.chatInput, onInputChange = { chatViewModel.chatInput = it }, onSend = {
-                if (chatViewModel.chatInput.isNotBlank()) {
-                    chatViewModel.sendMessage()
-                    chatViewModel.chatInput = ""
-                }
-            }, enabled = chatViewModel.chatInput.isNotBlank()
+                    if (chatViewModel.chatInput.isNotBlank()) {
+                        chatViewModel.sendMessage()
+                        chatViewModel.chatInput = ""
+                    }
+                }, enabled = chatViewModel.chatInput.isNotBlank()
             )
         }
     }
@@ -149,7 +157,8 @@ private fun LabubuTopBar(
     onClose: () -> Unit, onNewChat: () -> Unit, heartBeat: Float
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth().height(72.dp).background(MaterialTheme.colorScheme.primary).padding(horizontal = 20.dp), verticalAlignment = Alignment.CenterVertically
+        modifier = Modifier.fillMaxWidth().height(72.dp).background(MaterialTheme.colorScheme.primary)
+            .padding(horizontal = 20.dp), verticalAlignment = Alignment.CenterVertically
     ) {
 
         // 可爱的AI头像
@@ -170,7 +179,9 @@ private fun LabubuTopBar(
                 ), color = MaterialTheme.colorScheme.onPrimary
             )
             Text(
-                text = AI_DESCRIPTION, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
+                text = AI_DESCRIPTION,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
             )
         }
 
@@ -185,16 +196,28 @@ private fun LabubuTopBar(
 // Labubu风格的聊天消息区
 @Composable
 private fun LabubuChatMessages(
-    messages: List<ChatMessage>, scrollState: ScrollState, isAiThinking: Boolean = false, onRetryMessage: (String) -> Unit = {}, onRetryUserMessage: (String) -> Unit = {}, retryingMessageId: String? = null, modifier: Modifier = Modifier
+    messages: List<ChatMessage>,
+    scrollState: ScrollState,
+    isAiThinking: Boolean = false,
+    onRetryMessage: (String) -> Unit = {},
+    onRetryUserMessage: (String) -> Unit = {},
+    retryingMessageId: String? = null,
+    modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp).verticalScroll(scrollState, enabled = true), verticalArrangement = Arrangement.Bottom
+        modifier = modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)
+            .verticalScroll(scrollState, enabled = true), verticalArrangement = Arrangement.Bottom
     ) {
 
         // 聊天消息
         messages.forEachIndexed { index, chatMessage ->
             LabubuChatBubble(
-                chatMessage = chatMessage, animationDelay = index * 100, onRetryMessage = onRetryMessage, onRetryUserMessage = onRetryUserMessage, isRetrying = retryingMessageId == chatMessage.id, isAiThinking = isAiThinking
+                chatMessage = chatMessage,
+                animationDelay = index * 100,
+                onRetryMessage = onRetryMessage,
+                onRetryUserMessage = onRetryUserMessage,
+                isRetrying = retryingMessageId == chatMessage.id,
+                isAiThinking = isAiThinking
             )
             Spacer(modifier = Modifier.height(12.dp))
         }
@@ -212,7 +235,12 @@ private fun LabubuChatMessages(
 // Labubu风格的聊天气泡
 @Composable
 private fun LabubuChatBubble(
-    chatMessage: ChatMessage, animationDelay: Int = 0, onRetryMessage: (String) -> Unit = {}, onRetryUserMessage: (String) -> Unit = {}, isRetrying: Boolean = false, isAiThinking: Boolean = false
+    chatMessage: ChatMessage,
+    animationDelay: Int = 0,
+    onRetryMessage: (String) -> Unit = {},
+    onRetryUserMessage: (String) -> Unit = {},
+    isRetrying: Boolean = false,
+    isAiThinking: Boolean = false
 ) {
     // 入场动画
     var visible by remember { mutableStateOf(false) }
@@ -228,7 +256,8 @@ private fun LabubuChatBubble(
         ) + fadeIn(animationSpec = tween(300))
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(), horizontalArrangement = if (chatMessage.isUser) Arrangement.End else Arrangement.Start
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = if (chatMessage.isUser) Arrangement.End else Arrangement.Start
         ) {
             if (!chatMessage.isUser) {
                 // AI头像
@@ -276,13 +305,19 @@ private fun LabubuChatBubble(
                                 )
                             )
                         }, shape = RoundedCornerShape(
-                            topStart = 20.dp, topEnd = 20.dp, bottomStart = if (chatMessage.isUser) 20.dp else 4.dp, bottomEnd = if (chatMessage.isUser) 4.dp else 20.dp
+                            topStart = 20.dp,
+                            topEnd = 20.dp,
+                            bottomStart = if (chatMessage.isUser) 20.dp else 4.dp,
+                            bottomEnd = if (chatMessage.isUser) 4.dp else 20.dp
                         )
                     ).border(
                         1.dp, if (chatMessage.isUser) Color.Transparent
                         else if (chatMessage.isError) Color(0xFFE57373)
                         else LabubuColors.PrimaryPink.copy(alpha = 0.3f), RoundedCornerShape(
-                            topStart = 20.dp, topEnd = 20.dp, bottomStart = if (chatMessage.isUser) 20.dp else 4.dp, bottomEnd = if (chatMessage.isUser) 4.dp else 20.dp
+                            topStart = 20.dp,
+                            topEnd = 20.dp,
+                            bottomStart = if (chatMessage.isUser) 20.dp else 4.dp,
+                            bottomEnd = if (chatMessage.isUser) 4.dp else 20.dp
                         )
                     ).widthIn(max = 280.dp)
                 ) {
@@ -299,16 +334,21 @@ private fun LabubuChatBubble(
                     var showCopyFeedback by remember { mutableStateOf(false) }
 
                     Row(
-                        modifier = Modifier.align(Alignment.TopEnd).padding(4.dp), horizontalArrangement = Arrangement.spacedBy(4.dp)
+                        modifier = Modifier.align(Alignment.TopEnd).padding(4.dp),
+                        horizontalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
                         // 重新发送按钮（仅用户消息显示）
                         if (chatMessage.isUser) {
                             IconButton(
-                                onClick = { onRetryUserMessage(chatMessage.content) }, enabled = !isAiThinking, // AI思考时禁用
+                                onClick = { onRetryUserMessage(chatMessage.content) },
+                                enabled = !isAiThinking, // AI思考时禁用
                                 modifier = Modifier.size(28.dp)
                             ) {
                                 Icon(
-                                    Icons.Default.Refresh, contentDescription = "重新发送", modifier = Modifier.size(14.dp), tint = if (isAiThinking) {
+                                    Icons.Default.Refresh,
+                                    contentDescription = "重新发送",
+                                    modifier = Modifier.size(14.dp),
+                                    tint = if (isAiThinking) {
                                         Color.Gray.copy(alpha = 0.5f)
                                     } else {
                                         Color.White.copy(alpha = 0.7f)
@@ -325,7 +365,10 @@ private fun LabubuChatBubble(
                             }, modifier = Modifier.size(28.dp)
                         ) {
                             Icon(
-                                Icons.Default.ContentCopy, contentDescription = "复制消息", modifier = Modifier.size(14.dp), tint = if (chatMessage.isUser) {
+                                Icons.Default.ContentCopy,
+                                contentDescription = "复制消息",
+                                modifier = Modifier.size(14.dp),
+                                tint = if (chatMessage.isUser) {
                                     Color.White.copy(alpha = 0.7f)
                                 } else {
                                     LabubuColors.PrimaryPink.copy(alpha = 0.7f)
@@ -364,14 +407,19 @@ private fun LabubuChatBubble(
 
                         // AI重试按钮
                         OutlinedButton(
-                            onClick = { onRetryMessage(chatMessage.id) }, enabled = !isRetrying, modifier = Modifier.height(32.dp), colors = ButtonDefaults.outlinedButtonColors(
+                            onClick = { onRetryMessage(chatMessage.id) },
+                            enabled = !isRetrying,
+                            modifier = Modifier.height(32.dp),
+                            colors = ButtonDefaults.outlinedButtonColors(
                                 contentColor = if (isRetrying) Color.Gray else LabubuColors.PrimaryPink
                             )
                         ) {
                             if (isRetrying) {
                                 // 显示加载动画
                                 CircularProgressIndicator(
-                                    modifier = Modifier.size(16.dp), strokeWidth = 2.dp, color = LabubuColors.PrimaryPink
+                                    modifier = Modifier.size(16.dp),
+                                    strokeWidth = 2.dp,
+                                    color = LabubuColors.PrimaryPink
                                 )
                                 Spacer(modifier = Modifier.width(4.dp))
                                 Text("重试中...", fontSize = 12.sp)
@@ -419,7 +467,7 @@ private fun Avatar() {
 // 🤖 美化的AI提示词建议组件
 @Composable
 fun LabubuPromptSuggestions(
-    prompts: List<SysAiPromptIso>, 
+    prompts: List<SysAiPromptIso>,
     onPromptSelected: (SysAiPromptIso) -> Unit,
     onRefresh: () -> Unit = {}
 ) {
@@ -431,11 +479,17 @@ fun LabubuPromptSuggestions(
             verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()
         ) {
             Icon(
-                Icons.Default.Psychology, contentDescription = "AI提示词", tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(24.dp)
+                Icons.Default.Psychology,
+                contentDescription = "AI提示词",
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(24.dp)
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
-                text = "常用提示词", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface
+                text = "常用提示词",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSurface
             )
         }
 
@@ -464,7 +518,10 @@ private fun EmptyPromptState(onRefresh: () -> Unit) {
             horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()
         ) {
             Icon(
-                Icons.Default.OutdoorGrill, contentDescription = "暂无提示词", modifier = Modifier.size(32.dp), tint = LocalContentColor.current.copy(alpha = 0.6f)
+                Icons.Default.OutdoorGrill,
+                contentDescription = "暂无提示词",
+                modifier = Modifier.size(32.dp),
+                tint = LocalContentColor.current.copy(alpha = 0.6f)
             )
             Spacer(modifier = Modifier.height(8.dp))
             Row(
@@ -472,7 +529,9 @@ private fun EmptyPromptState(onRefresh: () -> Unit) {
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text(
-                    text = "暂无可用的提示词", style = MaterialTheme.typography.bodyMedium, color = LocalContentColor.current.copy(alpha = 0.7f)
+                    text = "暂无可用的提示词",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = LocalContentColor.current.copy(alpha = 0.7f)
                 )
                 IconButton(
                     onClick = onRefresh,
@@ -536,31 +595,45 @@ private fun PromptCard(
 
     // 提示框透明度动画
     val tooltipAlpha by animateFloatAsState(
-        targetValue = if (showTooltip && prompt.content.length > 50) 1f else 0f, animationSpec = tween(durationMillis = 200), label = "tooltip_alpha"
+        targetValue = if (showTooltip && prompt.content.length > 50) 1f else 0f,
+        animationSpec = tween(durationMillis = 200),
+        label = "tooltip_alpha"
     )
 
     Box {
         AddCard(
-            onClick = onSelected, 
-            backgroundType = cardType, 
+            onClick = onSelected,
+            backgroundType = cardType,
             padding = 16.dp,
             modifier = Modifier.fillMaxWidth().hoverable(interactionSource)
         ) {
             ProductCardContent(
-                title = prompt.title ?: "AI提示词", subtitle = getPromptSubtitle(prompt.content), icon = getPromptIcon(prompt.content), description = prompt.content
+                title = prompt.title ?: "AI提示词",
+                subtitle = getPromptSubtitle(prompt.content),
+                icon = getPromptIcon(prompt.content),
+                description = prompt.content
             )
         }
 
         // 悬浮提示框 - 显示完整内容
         if (tooltipAlpha > 0f) {
             Box(
-                modifier = Modifier.fillMaxWidth().offset(y = (-12).dp).alpha(tooltipAlpha), contentAlignment = Alignment.TopCenter
+                modifier = Modifier.fillMaxWidth().offset(y = (-12).dp).alpha(tooltipAlpha),
+                contentAlignment = Alignment.TopCenter
             ) {
                 Surface(
-                    modifier = Modifier.widthIn(max = 350.dp).padding(horizontal = 16.dp), shape = RoundedCornerShape(12.dp), color = MaterialTheme.colorScheme.inverseSurface, shadowElevation = 12.dp, tonalElevation = 8.dp
+                    modifier = Modifier.widthIn(max = 350.dp).padding(horizontal = 16.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    color = MaterialTheme.colorScheme.inverseSurface,
+                    shadowElevation = 12.dp,
+                    tonalElevation = 8.dp
                 ) {
                     Text(
-                        text = prompt.content.trim(), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.inverseOnSurface, modifier = Modifier.padding(16.dp), lineHeight = 20.sp
+                        text = prompt.content.trim(),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.inverseOnSurface,
+                        modifier = Modifier.padding(16.dp),
+                        lineHeight = 20.sp
                     )
                 }
             }
@@ -573,17 +646,35 @@ private fun PromptCard(
  */
 private fun getPromptIcon(content: String): ImageVector {
     return when {
-        content.contains("代码", ignoreCase = true) || content.contains("编程", ignoreCase = true) || content.contains("code", ignoreCase = true) -> Icons.Default.Code
+        content.contains("代码", ignoreCase = true) || content.contains(
+            "编程",
+            ignoreCase = true
+        ) || content.contains("code", ignoreCase = true) -> Icons.Default.Code
 
-        content.contains("写作", ignoreCase = true) || content.contains("文章", ignoreCase = true) || content.contains("write", ignoreCase = true) -> Icons.Default.Edit
+        content.contains("写作", ignoreCase = true) || content.contains(
+            "文章",
+            ignoreCase = true
+        ) || content.contains("write", ignoreCase = true) -> Icons.Default.Edit
 
-        content.contains("翻译", ignoreCase = true) || content.contains("translate", ignoreCase = true) -> Icons.Default.Translate
+        content.contains("翻译", ignoreCase = true) || content.contains(
+            "translate",
+            ignoreCase = true
+        ) -> Icons.Default.Translate
 
-        content.contains("分析", ignoreCase = true) || content.contains("analyze", ignoreCase = true) -> Icons.Default.Analytics
+        content.contains("分析", ignoreCase = true) || content.contains(
+            "analyze",
+            ignoreCase = true
+        ) -> Icons.Default.Analytics
 
-        content.contains("创意", ignoreCase = true) || content.contains("创作", ignoreCase = true) || content.contains("creative", ignoreCase = true) -> Icons.Default.Lightbulb
+        content.contains("创意", ignoreCase = true) || content.contains(
+            "创作",
+            ignoreCase = true
+        ) || content.contains("creative", ignoreCase = true) -> Icons.Default.Lightbulb
 
-        content.contains("学习", ignoreCase = true) || content.contains("教学", ignoreCase = true) || content.contains("learn", ignoreCase = true) -> Icons.Default.School
+        content.contains("学习", ignoreCase = true) || content.contains(
+            "教学",
+            ignoreCase = true
+        ) || content.contains("learn", ignoreCase = true) -> Icons.Default.School
 
         else -> Icons.Default.ChatBubbleOutline
     }
@@ -594,17 +685,29 @@ private fun getPromptIcon(content: String): ImageVector {
  */
 private fun getPromptSubtitle(content: String): String {
     return when {
-        content.contains("代码", ignoreCase = true) || content.contains("编程", ignoreCase = true) || content.contains("code", ignoreCase = true) -> "代码助手"
+        content.contains("代码", ignoreCase = true) || content.contains(
+            "编程",
+            ignoreCase = true
+        ) || content.contains("code", ignoreCase = true) -> "代码助手"
 
-        content.contains("写作", ignoreCase = true) || content.contains("文章", ignoreCase = true) || content.contains("write", ignoreCase = true) -> "写作助手"
+        content.contains("写作", ignoreCase = true) || content.contains(
+            "文章",
+            ignoreCase = true
+        ) || content.contains("write", ignoreCase = true) -> "写作助手"
 
         content.contains("翻译", ignoreCase = true) || content.contains("translate", ignoreCase = true) -> "翻译助手"
 
         content.contains("分析", ignoreCase = true) || content.contains("analyze", ignoreCase = true) -> "分析助手"
 
-        content.contains("创意", ignoreCase = true) || content.contains("创作", ignoreCase = true) || content.contains("creative", ignoreCase = true) -> "创意助手"
+        content.contains("创意", ignoreCase = true) || content.contains(
+            "创作",
+            ignoreCase = true
+        ) || content.contains("creative", ignoreCase = true) -> "创意助手"
 
-        content.contains("学习", ignoreCase = true) || content.contains("教学", ignoreCase = true) || content.contains("learn", ignoreCase = true) -> "学习助手"
+        content.contains("学习", ignoreCase = true) || content.contains(
+            "教学",
+            ignoreCase = true
+        ) || content.contains("learn", ignoreCase = true) -> "学习助手"
 
         content.contains("优化", ignoreCase = true) || content.contains("improve", ignoreCase = true) -> "优化助手"
 

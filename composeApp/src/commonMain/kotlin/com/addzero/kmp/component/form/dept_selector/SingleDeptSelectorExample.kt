@@ -47,7 +47,7 @@ fun SingleDeptSelectorExample() {
         ) {
             AddSingleDeptSelector(
                 value = selectedSingleDept,
-                onValueChange = {selectedSingleDept = it },
+                onValueChange = { selectedSingleDept = it },
                 placeholder = "请选择所属部门"
             )
 

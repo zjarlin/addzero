@@ -41,7 +41,7 @@ class FavoriteTabsViewModel : ViewModel() {
     init {
         loadFavoriteTabs()
     }
-    
+
     /**
      * 从后台加载常用标签页
      */
@@ -50,7 +50,7 @@ class FavoriteTabsViewModel : ViewModel() {
             try {
                 isLoading = true
                 errorMessage = null
-                
+
                 // 调用后台API获取常用路由键
                 var favoriteRouteKeys = sysFavoriteTabApi.topFavoriteRoutes(5)
 
@@ -65,9 +65,9 @@ class FavoriteTabsViewModel : ViewModel() {
                         )
                     }
                 }
-                
+
                 favoriteTabs = tabs
-                
+
             } catch (e: Exception) {
                 errorMessage = "加载常用标签页失败: ${e.message}"
                 // 使用默认的常用标签页
@@ -77,7 +77,7 @@ class FavoriteTabsViewModel : ViewModel() {
             }
         }
     }
-    
+
     /**
      * 添加到常用标签页
      */
@@ -101,7 +101,7 @@ class FavoriteTabsViewModel : ViewModel() {
             }
         }
     }
-    
+
     /**
      * 从常用标签页移除
      */
@@ -109,13 +109,13 @@ class FavoriteTabsViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 favoriteTabs = favoriteTabs.filter { it.routeKey != routeKey }
-                
+
                 // 同步到后台
                 httpClient.delete("/sysMenu/removeFavoriteRoute") {
                     contentType(ContentType.Application.Json)
                     setBody(mapOf("routeKey" to routeKey))
                 }
-                
+
             } catch (e: Exception) {
                 errorMessage = "移除常用标签页失败: ${e.message}"
             }
@@ -128,7 +128,7 @@ class FavoriteTabsViewModel : ViewModel() {
     fun isFavorite(routeKey: String): Boolean {
         return favoriteTabs.any { it.routeKey == routeKey }
     }
-    
+
     /**
      * 加载默认的常用标签页（当API调用失败时使用）
      */
@@ -137,7 +137,7 @@ class FavoriteTabsViewModel : ViewModel() {
             RouteKeys.DICT_MANAGER_SCREEN,
             RouteKeys.SYS_DEPT_SCREEN,
         )
-        
+
         val tabs = defaultRouteKeys.mapIndexedNotNull { index, routeKey ->
             val menu = MenuViewModel.getRouteByKey(routeKey)
             menu?.let {
@@ -146,10 +146,10 @@ class FavoriteTabsViewModel : ViewModel() {
                 )
             }
         }
-        
+
         favoriteTabs = tabs
     }
-    
+
     /**
      * 清除错误信息
      */

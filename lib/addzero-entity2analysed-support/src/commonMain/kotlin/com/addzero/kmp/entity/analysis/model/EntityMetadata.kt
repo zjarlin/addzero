@@ -22,7 +22,7 @@ data class EntityMetadata(
 
 /**
  * 属性元数据
- * 
+ *
  * 包含生成代码所需的完整属性信息
  */
 data class PropertyMetadata(
@@ -31,23 +31,23 @@ data class PropertyMetadata(
     val qualifiedTypeName: String?,
     val isNullable: Boolean,
     val annotations: List<String>,
-    
+
     // 类型分析结果
     val isJimmerEntity: Boolean,
     val isEnum: Boolean,
     val isCollection: Boolean,
     val isBasicType: Boolean,
-    
+
     // 集合泛型信息
     val genericType: String?,
     val genericQualifiedType: String?,
-    
+
     // 生成相关
     val isoTypeName: String,
     val defaultValue: String,
     val label: String,
     val isRequired: Boolean,
-    
+
     // @LabelProp 相关
     val labelPropField: String? = null
 )

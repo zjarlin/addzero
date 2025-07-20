@@ -1,12 +1,9 @@
 package com.addzero.kmp.screens.json
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -47,9 +44,9 @@ fun ExcelUploadArea(
                 ),
                 color = MaterialTheme.colorScheme.primary
             )
-            
+
             Spacer(modifier = Modifier.height(12.dp))
-            
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -59,7 +56,7 @@ fun ExcelUploadArea(
                     viewModel = viewModel,
                     modifier = Modifier.weight(1f)
                 )
-                
+
                 // 常用模板区域
                 CommonTemplatesSection(
                     viewModel = viewModel,
@@ -79,7 +76,7 @@ private fun ExcelUploadSection(
     modifier: Modifier = Modifier
 ) {
     var showUploadDialog by remember { mutableStateOf(false) }
-    
+
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -97,7 +94,7 @@ private fun ExcelUploadSection(
                 ),
                 color = MaterialTheme.colorScheme.onSurface
             )
-            
+
             Button(
                 onClick = { showUploadDialog = true },
                 modifier = Modifier.height(32.dp),
@@ -112,7 +109,7 @@ private fun ExcelUploadSection(
                 Text("上传", fontSize = 12.sp)
             }
         }
-        
+
         // 上传的文件列表
         if (viewModel.uploadedExcelFiles.isNotEmpty()) {
             LazyRow(
@@ -138,7 +135,7 @@ private fun ExcelUploadSection(
                     containerColor = Color.White
                 ),
                 border = androidx.compose.foundation.BorderStroke(
-                    1.dp, 
+                    1.dp,
                     MaterialTheme.colorScheme.outline.copy(alpha = 0.5f)
                 )
             ) {
@@ -162,13 +159,13 @@ private fun ExcelUploadSection(
             }
         }
     }
-    
+
     // 上传对话框
     if (showUploadDialog) {
         ExcelUploadDialog(
             onDismiss = { showUploadDialog = false },
             onUpload = { fileName ->
-                viewModel.uploadExcelFile(fileName) { 
+                viewModel.uploadExcelFile(fileName) {
                     // TODO: 实际上传逻辑
                     println("上传文件: $fileName")
                 }
@@ -198,7 +195,7 @@ private fun CommonTemplatesSection(
             ),
             color = MaterialTheme.colorScheme.onSurface
         )
-        
+
         // 常用模板列表
         if (viewModel.commonTemplates.isNotEmpty()) {
             LazyRow(
@@ -223,7 +220,7 @@ private fun CommonTemplatesSection(
                     containerColor = Color.White
                 ),
                 border = androidx.compose.foundation.BorderStroke(
-                    1.dp, 
+                    1.dp,
                     MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
                 )
             ) {
@@ -290,7 +287,7 @@ private fun ExcelFileCard(
                         tint = Color(0xFF10B981),
                         modifier = Modifier.size(16.dp)
                     )
-                    
+
                     if (isCommon) {
                         Icon(
                             Icons.Default.Star,
@@ -300,7 +297,7 @@ private fun ExcelFileCard(
                         )
                     }
                 }
-                
+
                 Text(
                     text = template.name,
                     style = MaterialTheme.typography.bodySmall.copy(
@@ -310,7 +307,7 @@ private fun ExcelFileCard(
                     overflow = TextOverflow.Ellipsis,
                     fontSize = 11.sp
                 )
-                
+
                 Text(
                     text = template.fileName,
                     style = MaterialTheme.typography.bodySmall,
@@ -320,7 +317,7 @@ private fun ExcelFileCard(
                     fontSize = 10.sp
                 )
             }
-            
+
             // 操作按钮
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -339,7 +336,7 @@ private fun ExcelFileCard(
                         )
                     }
                 }
-                
+
                 IconButton(
                     onClick = onDelete,
                     modifier = Modifier.size(20.dp)
@@ -365,7 +362,7 @@ private fun ExcelUploadDialog(
     onUpload: (String) -> Unit
 ) {
     var fileName by remember { mutableStateOf("") }
-    
+
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {

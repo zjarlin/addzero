@@ -19,11 +19,11 @@ import com.addzero.kmp.ext.toMultipartFile
 import io.github.vinceglb.filekit.compose.rememberFilePickerLauncher
 import io.github.vinceglb.filekit.core.PickerMode
 import io.ktor.client.request.forms.*
-import kotlin.math.absoluteValue
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
+import kotlin.math.absoluteValue
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
@@ -46,7 +46,7 @@ data class PickedFile(
     val path: String?,
     val size: Long?,
     @Transient
-    val multiPartFormDataContent: MultiPartFormDataContent?=null,
+    val multiPartFormDataContent: MultiPartFormDataContent? = null,
 ) {
 }
 

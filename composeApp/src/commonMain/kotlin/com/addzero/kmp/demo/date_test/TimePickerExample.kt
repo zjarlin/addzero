@@ -7,18 +7,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.addzero.kmp.annotation.Route
 import com.addzero.kmp.component.form.date.AddTimeField
-import kotlinx.datetime.LocalTime
 import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
 @Route("时间选择器示例")
 @Composable
 fun TimePickerExample() {
-    var selectedTime by remember { 
+    var selectedTime by remember {
         mutableStateOf<LocalTime?>(
             Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).time
-        ) 
+        )
     }
 
     Column(
@@ -77,7 +77,9 @@ fun TimePickerExample() {
                                 color = MaterialTheme.colorScheme.onPrimaryContainer
                             )
                             Text(
-                                text = "格式化: ${selectedTime!!.hour.toString().padStart(2, '0')}:${selectedTime!!.minute.toString().padStart(2, '0')}",
+                                text = "格式化: ${
+                                    selectedTime!!.hour.toString().padStart(2, '0')
+                                }:${selectedTime!!.minute.toString().padStart(2, '0')}",
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onPrimaryContainer
                             )
@@ -134,12 +136,16 @@ fun TimePickerExample() {
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             Text(
-                                text = "开始: ${startTime!!.hour.toString().padStart(2, '0')}:${startTime!!.minute.toString().padStart(2, '0')}",
+                                text = "开始: ${
+                                    startTime!!.hour.toString().padStart(2, '0')
+                                }:${startTime!!.minute.toString().padStart(2, '0')}",
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSecondaryContainer
                             )
                             Text(
-                                text = "结束: ${endTime!!.hour.toString().padStart(2, '0')}:${endTime!!.minute.toString().padStart(2, '0')}",
+                                text = "结束: ${
+                                    endTime!!.hour.toString().padStart(2, '0')
+                                }:${endTime!!.minute.toString().padStart(2, '0')}",
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSecondaryContainer
                             )

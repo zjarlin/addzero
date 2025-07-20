@@ -6,9 +6,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 fun emitEventBus() {
-   GlobalEventDispatcher.handler = {
-       CoroutineScope(Dispatchers.Main).launch {
-           EventBus.emit(it)
-       }
-   }
+    GlobalEventDispatcher.handler = {
+        CoroutineScope(Dispatchers.Main).launch {
+            EventBus.emit(it)
+        }
+    }
 }

@@ -1,14 +1,9 @@
 package com.addzero.kmp.strategy.impl
 
 import com.addzero.kmp.strategy.FormStrategy
-import com.addzero.kmp.util.defaultValue
-import com.addzero.kmp.util.isRequired
-import com.addzero.kmp.util.label
-import com.addzero.kmp.util.name
-import com.addzero.kmp.util.typeName
-import com.addzero.kmp.util.plus
-import com.google.devtools.ksp.symbol.KSPropertyDeclaration
+import com.addzero.kmp.util.*
 import com.google.devtools.ksp.symbol.KSClassDeclaration
+import com.google.devtools.ksp.symbol.KSPropertyDeclaration
 
 /**
  * 小数策略
@@ -22,8 +17,8 @@ object DecimalStrategy : FormStrategy {
 
         // 使用布尔值 + 操作符累加计算权重，每个条件都是平等的 0 或 1
         return (typeName == "BigDecimal") +
-               (typeName == "Double") +
-               (typeName == "Float")
+                (typeName == "Double") +
+                (typeName == "Float")
     }
 
     override fun genCode(prop: KSPropertyDeclaration): String {

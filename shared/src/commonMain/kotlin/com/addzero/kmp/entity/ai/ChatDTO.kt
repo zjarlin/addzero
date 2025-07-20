@@ -6,14 +6,14 @@ import com.addzero.kmp.constant.Promts.DEFAULT_SYSTEM
 
 data class ChatDTO(
     val modelName: String = "ollamaChatModel",
-    val prompt: String="",
-    val sessionId: String="",
+    val prompt: String = "",
+    val sessionId: String = "",
     val enableVectorStore: Boolean = false,
     val enableFunctionCalling: Boolean = false,
     val cosplay: String = DEFAULT_SYSTEM,
 
-    val fomatJson: String?="",
-    val jsonComment: String?="",
+    val fomatJson: String? = "",
+    val jsonComment: String? = "",
 ) {
 
     val jsonPromt: String = """

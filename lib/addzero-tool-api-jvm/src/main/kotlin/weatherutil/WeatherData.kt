@@ -10,19 +10,19 @@ data class WeatherData(
     var date: String,
 
     /** 最高温度  */
-     val highTemp: Int,
+    val highTemp: Int,
     /** 最低温度  */
-     val lowTemp: Int,
+    val lowTemp: Int,
     /** 上午  */
-     val amCondition: String,
+    val amCondition: String,
     /** 下午  */
-     val pmCondition: String,
+    val pmCondition: String,
     /** 风力风向  */
-     val wind: String,
+    val wind: String,
     /** 空气质量指数  */
-     val aqi: Int
+    val aqi: Int
 ) {
-     var areaId: String? = null
+    var areaId: String? = null
 
     var areaType: String? = null
     var week: String? = null

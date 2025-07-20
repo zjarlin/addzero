@@ -1,9 +1,8 @@
 package com.addzero.kmp.processor
 
+
 import com.addzero.kmp.context.SettingContext
-import com.addzero.kmp.entity.*
-
-
+import com.addzero.kmp.entity.JdbcTableMetadata
 import com.addzero.kmp.util.JdbcMetadataExtractor
 import com.addzero.kmp.util.toBigCamelCase
 import com.addzero.kmp.util.toLowCamelCase
@@ -18,7 +17,7 @@ class ControllerProcessor(
     private val environment: SymbolProcessorEnvironment
 ) : SymbolProcessor {
     override fun process(resolver: Resolver): List<KSAnnotated> {
-         SettingContext.initialize(environment.options)
+        SettingContext.initialize(environment.options)
 //        resolver.getde
         val tables = JdbcMetadataExtractor.initAndGetJdbcMetaDataTables(environment.options)
         // 通过KSP options获取JDBC配置

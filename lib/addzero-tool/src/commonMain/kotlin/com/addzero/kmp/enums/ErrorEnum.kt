@@ -34,11 +34,7 @@ enum class ErrorEnum(
     /**
      * 旧密码不正确
      */
-    OLD_PASSWORD_IS_NOT_TRUE(40015, "旧密码不正确") ,
-
-
-
-
+    OLD_PASSWORD_IS_NOT_TRUE(40015, "旧密码不正确"),
 
 
     /**

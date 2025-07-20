@@ -4,7 +4,10 @@ import com.addzero.common.kt_util.containsAny
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException
-import javax.print.*
+import javax.print.DocFlavor
+import javax.print.PrintException
+import javax.print.PrintServiceLookup
+import javax.print.SimpleDoc
 import javax.print.attribute.HashPrintRequestAttributeSet
 import javax.print.attribute.standard.*
 
@@ -96,8 +99,10 @@ object PrinterUtil {
      * @return 是否可打印
      */
     private fun isPrintable(fileName: String): Boolean {
-        val printableExtensions = arrayOf(".pdf", ".txt", ".jpg", ".jpeg", ""
-                + ".png",".doc",".xlsx",".xls")
+        val printableExtensions = arrayOf(
+            ".pdf", ".txt", ".jpg", ".jpeg", ""
+                    + ".png", ".doc", ".xlsx", ".xls"
+        )
         fileName.containsAny()
         return printableExtensions.any { fileName.lowercase().endsWith(it) }
     }

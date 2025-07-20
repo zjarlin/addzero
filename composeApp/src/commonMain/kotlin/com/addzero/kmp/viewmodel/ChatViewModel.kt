@@ -5,9 +5,9 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.addzero.kmp.assist.api
 import com.addzero.kmp.core.ext.nowLong
 import com.addzero.kmp.generated.api.ApiProvider.chatApi
-import com.addzero.kmp.assist.api
 import org.koin.android.annotation.KoinViewModel
 
 /**
@@ -46,13 +46,15 @@ class ChatViewModel : ViewModel() {
         val messageId = generateMessageId()
 
         // 添加用户消息
-        chatMessages.add(ChatMessage(
-            id = messageId,
-            content = msg,
-            isUser = true,
-            canRetry = false,
-            isError = false
-        ))
+        chatMessages.add(
+            ChatMessage(
+                id = messageId,
+                content = msg,
+                isUser = true,
+                canRetry = false,
+                isError = false
+            )
+        )
         chatInput = ""
 
         // 发送AI请求
@@ -99,34 +101,41 @@ class ChatViewModel : ViewModel() {
                 val response = chatApi.chat(message)
 
                 // 添加成功的AI回复
-                chatMessages.add(ChatMessage(
-                    id = messageId + "_ai",
-                    content = response ?: "🤖 响应为空",
-                    isUser = false,
-                    canRetry = false,
-                    isError = false
-                ))
+                chatMessages.add(
+                    ChatMessage(
+                        id = messageId + "_ai",
+                        content = response ?: "🤖 响应为空",
+                        isUser = false,
+                        canRetry = false,
+                        isError = false
+                    )
+                )
 
             } catch (e: Exception) {
                 // 处理错误
                 val errorMsg = when {
                     e.message?.contains("timeout", ignoreCase = true) == true ->
                         "抱歉，AI响应超时了，请点击重试 ⏰"
+
                     e.message?.contains("network", ignoreCase = true) == true ->
                         "网络连接异常，请检查网络后重试 🌐"
+
                     e.message?.contains("server", ignoreCase = true) == true ->
                         "服务器暂时不可用，请稍后重试 🔧"
+
                     else -> "抱歉，发生了错误：${e.message} 😔\n点击重试按钮重新发送"
                 }
 
                 // 添加错误消息（可重试）
-                chatMessages.add(ChatMessage(
-                    id = messageId + "_ai",
-                    content = errorMsg,
-                    isUser = false,
-                    canRetry = true,
-                    isError = true
-                ))
+                chatMessages.add(
+                    ChatMessage(
+                        id = messageId + "_ai",
+                        content = errorMsg,
+                        isUser = false,
+                        canRetry = true,
+                        isError = true
+                    )
+                )
 
             } finally {
                 // 结束AI思考状态和重试状态

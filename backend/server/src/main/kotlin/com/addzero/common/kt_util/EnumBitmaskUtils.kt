@@ -18,7 +18,7 @@ object EnumBitmaskUtils {
 
     // 二进制 → 枚举集合
     fun <T : Enum<T>> Int.toEnumList(clazz: KClass<T>): List<T> {
-        return  toEnumList(clazz.java)
+        return toEnumList(clazz.java)
     }
 
 

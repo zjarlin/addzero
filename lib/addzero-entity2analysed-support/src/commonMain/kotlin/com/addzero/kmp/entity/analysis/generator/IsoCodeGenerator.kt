@@ -6,13 +6,13 @@ import com.google.devtools.ksp.processing.KSPLogger
 
 /**
  * 同构体代码生成器
- * 
+ *
  * 负责生成同构体类的代码
  */
 class IsoCodeGenerator(
     private val logger: KSPLogger
 ) {
-    
+
     /**
      * 生成同构体代码
      */
@@ -24,10 +24,10 @@ class IsoCodeGenerator(
         val props = metadata.properties.joinToString(",\n") { prop ->
             generatePropertyCode(prop)
         }
-        
+
         // 生成优化的导入语句
         val optimizedImports = generateOptimizedImports(metadata)
-        
+
         // 生成同构体代码
         return """
             |package $packageName
@@ -41,7 +41,7 @@ class IsoCodeGenerator(
             |)
         """.trimMargin()
     }
-    
+
     /**
      * 生成属性代码
      */
@@ -52,7 +52,7 @@ class IsoCodeGenerator(
         } else ""
         return "    ${contextualAnnotation}val ${prop.name}: ${prop.isoTypeName}$nullableSuffix = ${prop.defaultValue}"
     }
-    
+
     /**
      * 生成优化的导入语句
      * 1. 修复 java.time.LocalDateTime -> kotlinx.datetime.LocalDateTime
@@ -60,7 +60,7 @@ class IsoCodeGenerator(
      */
     private fun generateOptimizedImports(metadata: EntityMetadata): String {
         val optimizedImports = mutableSetOf<String>()
-        
+
         metadata.properties.forEach { prop ->
             when {
                 // 日期时间类型：使用 kotlinx.datetime
@@ -72,12 +72,12 @@ class IsoCodeGenerator(
 
 
                 }
-                
+
                 // Jimmer 实体类型：不导入原实体，因为我们使用同构体
                 prop.isJimmerEntity && !prop.isCollection -> {
                     // 不添加原实体导入，同构体在同一包下
                 }
-                
+
                 // 集合中的 Jimmer 实体：不导入原实体
                 prop.isCollection && prop.genericType != null -> {
                     // 如果泛型不是 Jimmer 实体，可能需要导入
@@ -89,14 +89,14 @@ class IsoCodeGenerator(
                         }
                     }
                 }
-                
+
                 // 枚举类型：导入原枚举
                 prop.isEnum -> {
                     prop.qualifiedTypeName?.let { qualifiedType ->
                         optimizedImports.add("import $qualifiedType")
                     }
                 }
-                
+
                 // 其他非基础类型
                 !prop.isBasicType && prop.qualifiedTypeName != null -> {
                     val qualifiedType = prop.qualifiedTypeName!!
@@ -106,25 +106,25 @@ class IsoCodeGenerator(
                 }
             }
         }
-        
+
         return optimizedImports.sorted().joinToString("\n")
     }
-    
+
     /**
      * 判断是否为 Kotlin 内置类型
      */
     private fun isKotlinBuiltinType(qualifiedType: String): Boolean {
-        return qualifiedType.startsWith("kotlin.") || 
-               qualifiedType in setOf("String", "Int", "Long", "Double", "Float", "Boolean")
+        return qualifiedType.startsWith("kotlin.") ||
+                qualifiedType in setOf("String", "Int", "Long", "Double", "Float", "Boolean")
     }
-    
+
     /**
      * 判断是否为 Java 时间类型（需要替换为 kotlinx.datetime）
      */
     private fun isJavaTimeType(qualifiedType: String): Boolean {
         return qualifiedType.startsWith("java.time.")
     }
-    
+
     /**
      * 写入同构体文件
      */
@@ -134,12 +134,12 @@ class IsoCodeGenerator(
         packageName: String = "com.addzero.kmp.isomorphic"
     ) {
         val code = generateIsoCode(metadata, packageName)
-        
+
         // 写入文件
         val file = java.io.File("$outputDir/${metadata.isoClassName}.kt")
         file.parentFile?.mkdirs()
         file.writeText(code)
-        
+
         logger.info("Generated isomorphic data class: ${metadata.isoClassName} at ${file.absolutePath}")
     }
 }

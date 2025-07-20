@@ -29,7 +29,7 @@ import com.addzero.kmp.annotation.Route
 @Route("界面演示", "键盘快捷键")
 fun KeyboardShortcutsDemo() {
     val scrollState = rememberScrollState()
-    
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -45,22 +45,22 @@ fun KeyboardShortcutsDemo() {
             ),
             color = LabubuColors.PrimaryPink
         )
-        
+
         // 回车发送功能
         EnterToSendFeature()
-        
+
         HorizontalDivider()
-        
+
         // 快捷键列表
         ShortcutsList()
-        
+
         HorizontalDivider()
-        
+
         // 使用技巧
         UsageTips()
-        
+
         HorizontalDivider()
-        
+
         // 实际演示
         LiveDemo()
     }
@@ -96,7 +96,7 @@ private fun EnterToSendFeature() {
                     color = LabubuColors.DarkText
                 )
             }
-            
+
             Text(
                 text = """
                     🚀 新增功能特性：
@@ -136,7 +136,7 @@ private fun ShortcutsList() {
                 ),
                 color = LabubuColors.DarkText
             )
-            
+
             val shortcuts = listOf(
                 "Enter" to "发送消息",
                 "Shift + Enter" to "换行",
@@ -144,7 +144,7 @@ private fun ShortcutsList() {
                 "Cmd + Shift + A" to "打开/关闭AI聊天",
                 "Escape" to "关闭聊天界面"
             )
-            
+
             shortcuts.forEach { (key, description) ->
                 ShortcutItem(key, description)
             }
@@ -185,9 +185,9 @@ private fun ShortcutItem(
                 color = LabubuColors.DarkText
             )
         }
-        
+
         Spacer(modifier = Modifier.width(16.dp))
-        
+
         // 功能描述
         Text(
             text = description,
@@ -228,7 +228,7 @@ private fun UsageTips() {
                     color = LabubuColors.DarkText
                 )
             }
-            
+
             Text(
                 text = """
                     💡 高效使用技巧：
@@ -256,7 +256,7 @@ private fun UsageTips() {
 private fun LiveDemo() {
     var demoInput by remember { mutableStateOf("") }
     var demoMessages by remember { mutableStateOf(listOf<String>()) }
-    
+
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
@@ -285,13 +285,13 @@ private fun LiveDemo() {
                     color = LabubuColors.DarkText
                 )
             }
-            
+
             Text(
                 text = "在下面的输入框中试试回车发送功能：",
                 style = MaterialTheme.typography.bodyMedium,
                 color = LabubuColors.DarkText
             )
-            
+
             // 演示消息列表
             if (demoMessages.isNotEmpty()) {
                 Column(
@@ -318,7 +318,7 @@ private fun LiveDemo() {
                     }
                 }
             }
-            
+
             // 演示输入框
             LabubuInputArea(
                 input = demoInput,
@@ -331,7 +331,7 @@ private fun LiveDemo() {
                 },
                 enabled = demoInput.isNotBlank()
             )
-            
+
             // 清空按钮
             if (demoMessages.isNotEmpty()) {
                 TextButton(

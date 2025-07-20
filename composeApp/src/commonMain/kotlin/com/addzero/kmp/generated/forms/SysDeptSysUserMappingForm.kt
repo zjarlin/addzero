@@ -1,11 +1,14 @@
 package com.addzero.kmp.generated.forms
 
-import androidx.compose.runtime.*
-import com.addzero.kmp.component.high_level.AddMultiColumnContainer
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import com.addzero.kmp.component.drawer.AddDrawer
 import com.addzero.kmp.component.form.number.AddIntegerField
+import com.addzero.kmp.component.high_level.AddMultiColumnContainer
 import com.addzero.kmp.core.ext.parseObjectByKtx
-import com.addzero.kmp.generated.isomorphic.*
+import com.addzero.kmp.generated.isomorphic.SysDeptSysUserMappingIso
 
 
 /**
@@ -135,10 +138,12 @@ class SysDeptSysUserMappingFormDsl(
                 hiddenFields.add("sysDeptId")
                 renderMap.remove("sysDeptId")
             }
+
             render != null -> {
                 hiddenFields.remove("sysDeptId")
                 renderMap["sysDeptId"] = { render(state) }
             }
+
             else -> {
                 hiddenFields.remove("sysDeptId")
                 renderMap.remove("sysDeptId")
@@ -167,10 +172,12 @@ class SysDeptSysUserMappingFormDsl(
                 hiddenFields.add("sysUserId")
                 renderMap.remove("sysUserId")
             }
+
             render != null -> {
                 hiddenFields.remove("sysUserId")
                 renderMap["sysUserId"] = { render(state) }
             }
+
             else -> {
                 hiddenFields.remove("sysUserId")
                 renderMap.remove("sysUserId")

@@ -1,4 +1,3 @@
-
 package com.addzero.kmp.compose.icons
 
 import androidx.compose.material.icons.Icons
@@ -1519,7 +1518,11 @@ object IconMap {
         IconData("SignalWifiConnectedNoInternet4", "Filled", Icons.Filled.SignalWifiConnectedNoInternet4),
         IconData("SignalWifiOff", "Filled", Icons.Filled.SignalWifiOff),
         IconData("SignalWifiStatusbar4Bar", "Filled", Icons.Filled.SignalWifiStatusbar4Bar),
-        IconData("SignalWifiStatusbarConnectedNoInternet4", "Filled", Icons.Filled.SignalWifiStatusbarConnectedNoInternet4),
+        IconData(
+            "SignalWifiStatusbarConnectedNoInternet4",
+            "Filled",
+            Icons.Filled.SignalWifiStatusbarConnectedNoInternet4
+        ),
         IconData("SignalWifiStatusbarNull", "Filled", Icons.Filled.SignalWifiStatusbarNull),
         IconData("Signpost", "Filled", Icons.Filled.Signpost),
         IconData("SimCard", "Filled", Icons.Filled.SimCard),
@@ -2148,8 +2151,16 @@ object IconMap {
         IconData("FormatIndentDecrease", "AutoMirroredOutlined", Icons.AutoMirrored.Outlined.FormatIndentDecrease),
         IconData("FormatIndentIncrease", "AutoMirroredOutlined", Icons.AutoMirrored.Outlined.FormatIndentIncrease),
         IconData("FormatListBulleted", "AutoMirroredOutlined", Icons.AutoMirrored.Outlined.FormatListBulleted),
-        IconData("FormatTextdirectionLToR", "AutoMirroredOutlined", Icons.AutoMirrored.Outlined.FormatTextdirectionLToR),
-        IconData("FormatTextdirectionRToL", "AutoMirroredOutlined", Icons.AutoMirrored.Outlined.FormatTextdirectionRToL),
+        IconData(
+            "FormatTextdirectionLToR",
+            "AutoMirroredOutlined",
+            Icons.AutoMirrored.Outlined.FormatTextdirectionLToR
+        ),
+        IconData(
+            "FormatTextdirectionRToL",
+            "AutoMirroredOutlined",
+            Icons.AutoMirrored.Outlined.FormatTextdirectionRToL
+        ),
         IconData("Forward", "AutoMirroredOutlined", Icons.AutoMirrored.Outlined.Forward),
         IconData("ForwardToInbox", "AutoMirroredOutlined", Icons.AutoMirrored.Outlined.ForwardToInbox),
         IconData("Grading", "AutoMirroredOutlined", Icons.AutoMirrored.Outlined.Grading),
@@ -2247,7 +2258,6 @@ object IconMap {
     )
 
 
-
     /**
      * 获取指定类型的所有图标名称
      * @param type 图标类型
@@ -2270,7 +2280,6 @@ object IconMap {
             .distinct()
             .toList()
     }
-
 
 
     /**
@@ -2298,7 +2307,7 @@ object IconMap {
     fun getByNameOrDefault(type: String, name: String, default: @Composable () -> ImageVector): ImageVector {
         return getByName(type, name) ?: default()
     }
-    
+
     /**
      * 通过图标名称获取图标数据
      * @param iconKey 图标名称
@@ -2308,11 +2317,11 @@ object IconMap {
     operator fun get(iconKey: String): IconData {
         return allIcons
             .filter { it.iconKey == iconKey }
-            .firstOrNull() 
+            .firstOrNull()
             ?: allIcons
                 .filter { it.iconType == "Filled" }
                 .firstOrNull()
-                ?: IconData("Info", "Filled", Icons.Filled.Info)
+            ?: IconData("Info", "Filled", Icons.Filled.Info)
     }
 
 }

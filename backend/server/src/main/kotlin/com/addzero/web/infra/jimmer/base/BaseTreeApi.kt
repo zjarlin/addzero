@@ -14,7 +14,6 @@ import kotlin.reflect.KClass
 import kotlin.reflect.full.memberProperties
 
 
-
 /**
  *任意位置的下拉框,需要配合Iso2DataProvider做下拉数据的提供者,然后jimmer实体中的关联关系就可以用这个下拉框展示
  */
@@ -130,6 +129,7 @@ interface BaseTreeApi<E : Any> {
     }
 
 }
+
 private const val CHILDREN = "children"
 
 private const val PARENT = "parent"
