@@ -13,8 +13,6 @@ import org.springframework.stereotype.Component
 @Component
 class JdbcMetaInitEvent(
     private val dynamicDatasourceProperties: DynamicDatasourceProperties
-
-
 ) {
     @EventListener(ContextRefreshedEvent::class)
     @Async

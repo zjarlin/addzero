@@ -1,5 +1,6 @@
 package com.addzero.model.entity
 
+import com.addzero.kmp.entity2form.annotation.LabelProp
 import com.addzero.model.common.BaseEntity
 import org.babyfish.jimmer.sql.*
 
@@ -25,6 +26,7 @@ interface JdbcColumnMetadata : BaseEntity {
      */
     @Column(name = "column_name")
     @Key
+    @LabelProp
     val columnName: String?
 
     /**
@@ -61,6 +63,7 @@ interface JdbcColumnMetadata : BaseEntity {
      * remarks
      */
     @Column(name = "remarks")
+    @LabelProp
     val remarks: String?
 
     /**

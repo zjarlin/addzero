@@ -141,7 +141,7 @@ fun JdbcTableMetadataFormOriginal(
                 placeholder = "columns",
                 dataProvider = { dataList },
                 getId = { it.id ?: 0L },
-                getLabel = { it.name ?: "" },
+                getLabel = { it.columnName ?: "" },
                 
             )
         }
