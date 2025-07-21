@@ -4,11 +4,13 @@ package com.addzero.kmp.generated
  * 路由键
  * 请勿手动修改此文件
  */
-object RouteKeys {
+object RouteKeysIso {
     const val RICH_TEXT_DEMO = "com.addzero.kmp.demo.RichTextDemo"
     const val ADD_CARD_EXAMPLE = "com.addzero.kmp.demo.AddCardExample"
     const val ADD_GENERIC_TABLE_EXAMPLE = "com.addzero.kmp.demo.AddGenericTableExample"
     const val U_I_COMPONENTS_DEMO = "com.addzero.kmp.demo.UIComponentsDemo"
+    const val DAOISJDOAISJD = "com.addzero.kmp.demo.daoisjdoaisjd"
+    const val LARGE_TABLE_TEST_SCREEN = "com.addzero.kmp.demo.clean_table.LargeTableTestScreen"
     const val TIME_PICKER_EXAMPLE = "com.addzero.kmp.demo.date_test.TimePickerExample"
     const val TIME_PICKER_FIELD_TEST = "com.addzero.kmp.demo.date_test.TimePickerFieldTest"
     const val DATE_PICKER_FIELD_TEST = "com.addzero.kmp.demo.date_test.DatePickerFieldTest"
@@ -18,7 +20,6 @@ object RouteKeys {
     const val WE_CHAT_ICON = "/component/wechatIcon"
     const val DRAG_LIST_DEMO = "com.addzero.kmp.demo.DragListDemo"
     const val TEST_PICKER = "com.addzero.kmp.demo.upload.TestPicker"
-    const val FILE_UPLOAD_DRAWER_DEMO = "com.addzero.kmp.demo.upload.FileUploadDrawerDemo"
     const val UPLOAD_MANAGER_DEMO = "com.addzero.kmp.demo.upload.UploadManagerDemo"
     const val TEST_DIRECTORY_PICKER = "com.addzero.kmp.demo.upload.TestDirectoryPicker"
     const val IMAGE_LOAD = "com.addzero.kmp.demo.ImageLoad"
