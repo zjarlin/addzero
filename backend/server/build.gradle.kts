@@ -46,6 +46,7 @@ dependencies {
     implementation(projects.lib.addzeroComposeModelComponent)
 
     //通用库
+    implementation(projects.lib.addzeroKspSupportJdbc)
     implementation(projects.lib.addzeroTool)
     //天气库
     implementation(projects.lib.addzeroToolApiJvm)

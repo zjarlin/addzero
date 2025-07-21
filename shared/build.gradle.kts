@@ -4,7 +4,6 @@ import org.babyfish.jimmer.Vars.commonMainSourceDir
 
 plugins {
     id("kmp-shared")
-    // 暂时完全移除 KSP 插件，避免依赖顺序问题
     id("ksp4jdbc")
     id("ksp4shared-convention")
     id("de.jensklingenberg.ktorfit") version "+"

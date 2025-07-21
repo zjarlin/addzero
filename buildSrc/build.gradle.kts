@@ -12,6 +12,8 @@ repositories {
 dependencies {
 //    api(gradleApi())
 
+    implementation("org.yaml:snakeyaml:2.2")
+//    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.12.3")
     implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
 
     implementation(libs.gradlePlugin.android)

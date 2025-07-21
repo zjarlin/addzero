@@ -107,7 +107,7 @@ object JdbcMetadataExtractor {
      * @throws java.lang.ClassNotFoundException 如果找不到JDBC驱动
      * @throws java.sql.SQLException 如果数据库连接或查询失败
      */
-    private fun extractDatabaseMetadata(config: JdbcConfig): List<JdbcTableMetadata> {
+    fun extractDatabaseMetadata(config: JdbcConfig): List<JdbcTableMetadata> {
         val tables = mutableListOf<JdbcTableMetadata>()
         var connection: Connection? = null
 

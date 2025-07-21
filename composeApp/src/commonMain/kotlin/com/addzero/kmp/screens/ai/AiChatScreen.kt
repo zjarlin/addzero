@@ -603,12 +603,12 @@ private fun PromptCard(
     Box {
         AddCard(
             onClick = onSelected,
-            backgroundType = cardType,
+            backgroundType =  MellumCardType.Light,
             padding = 16.dp,
             modifier = Modifier.fillMaxWidth().hoverable(interactionSource)
         ) {
             ProductCardContent(
-                title = prompt.title ?: "AI提示词",
+                title = prompt.title,
                 subtitle = getPromptSubtitle(prompt.content),
                 icon = getPromptIcon(prompt.content),
                 description = prompt.content

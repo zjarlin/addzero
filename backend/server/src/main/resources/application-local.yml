@@ -2,12 +2,15 @@ spring:
   datasource:
     dynamic:
       primary: pg
+
       datasource:
+
         pg:
           driver-class-name: org.postgresql.Driver
           url: jdbc:postgresql://localhost:15432/postgres?currentSchema=public
           username: postgres
           password: postgres
+          exclude-tables: flyway_schema_history,vector_store,biz_mapping,sys_dept_sys_user_mapping,sys_role_sys_user_mapping
 #        dm:
 #          driver-class-name: dm.jdbc.driver.DmDriver
 #          url: jdbc:dm://11111111111111111:5236/SJZYXT?searchpath=public&stringtype =unspecified &clobAsString=1

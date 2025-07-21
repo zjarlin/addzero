@@ -16,5 +16,6 @@ class DynamicDatasourceProperties {
         lateinit var url: String
         lateinit var username: String
         lateinit var password: String
+        lateinit var excludeTables: String
     }
 }
