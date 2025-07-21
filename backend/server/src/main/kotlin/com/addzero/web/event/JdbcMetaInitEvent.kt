@@ -18,7 +18,7 @@ class JdbcMetaInitEvent(
 ) {
     @EventListener(ContextRefreshedEvent::class)
     @Async
-    fun initSql( ) {
+    fun initJdbcMetaData( ) {
         val primary = dynamicDatasourceProperties.primary
 
         val config = dynamicDatasourceProperties.datasource[primary]!!
