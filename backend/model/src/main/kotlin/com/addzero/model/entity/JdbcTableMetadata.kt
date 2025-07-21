@@ -1,9 +1,7 @@
 package com.addzero.model.entity
 
 import com.addzero.model.common.BaseEntity
-import org.babyfish.jimmer.sql.Column
-import org.babyfish.jimmer.sql.Entity
-import org.babyfish.jimmer.sql.Table
+import org.babyfish.jimmer.sql.*
 
 /**
  * JdbcTableMetadata
@@ -19,12 +17,14 @@ interface JdbcTableMetadata : BaseEntity {
      * tableName
      */
     @Column(name = "table_name")
+    @Key
     val tableName: String?
 
     /**
      * schemaName
      */
     @Column(name = "schema_name")
+    @Key
     val schemaName: String?
 
     /**
@@ -38,4 +38,7 @@ interface JdbcTableMetadata : BaseEntity {
      */
     @Column(name = "remarks")
     val remarks: String?
+
+    @OneToMany(mappedBy = "table")
+    val columns: List<JdbcColumnMetadata>
 }

@@ -15,6 +15,7 @@ data class JdbcTableMetadataIso(
     val schemaName: String? = null,
     val tableType: String? = null,
     val remarks: String? = null,
+    val columns: List<JdbcColumnMetadataIso> = emptyList(),
     val id: Long? = null,
     val updateBy: SysUserIso? = null,
     val createBy: SysUserIso? = null,

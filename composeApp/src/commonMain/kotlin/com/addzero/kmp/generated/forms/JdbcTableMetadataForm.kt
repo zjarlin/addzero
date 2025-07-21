@@ -41,12 +41,13 @@ object JdbcTableMetadataFormProps {
     const val schemaName = "schemaName"
     const val tableType = "tableType"
     const val remarks = "remarks"
+    const val columns = "columns"
 
     /**
      * 获取所有字段名列表（按默认顺序）
      */
     fun getAllFields(): List<String> {
-        return listOf(tableName, schemaName, tableType, remarks)
+        return listOf(tableName, schemaName, tableType, remarks, columns)
     }
 }
 
@@ -119,6 +120,29 @@ fun JdbcTableMetadataFormOriginal(
                 },
                 label = "remarks",
                 isRequired = false
+            )
+        },
+        JdbcTableMetadataFormProps.columns to {
+            var dataList by remember { mutableStateOf<List<JdbcColumnMetadataIso>>(emptyList()) }
+
+            LaunchedEffect(Unit) {
+                try {
+                    val provider = Iso2DataProvider.isoToDataProvider[JdbcColumnMetadataIso::class]
+                    dataList = provider?.invoke("") as? List<JdbcColumnMetadataIso> ?: emptyList()
+                } catch (e: Exception) {
+                    println("加载 columns 数据失败: ${e.message}")
+                    dataList = emptyList()
+                }
+            }
+
+            AddGenericMultiSelector(
+                value = state.value.columns ?: emptyList(),
+                onValueChange = { state.value = state.value.copy(columns = it) },
+                placeholder = "columns",
+                dataProvider = { dataList },
+                getId = { it.id ?: 0L },
+                getLabel = { it.name ?: "" },
+                
             )
         }
     )
@@ -291,6 +315,38 @@ class JdbcTableMetadataFormDsl(
         // 处理排序
         order?.let { orderValue ->
             updateFieldOrder("remarks", orderValue)
+        }
+    }
+
+    /**
+     * 配置 columns 字段
+     * @param hidden 是否隐藏该字段
+     * @param order 字段显示顺序（数值越小越靠前）
+     * @param render 自定义渲染函数
+     */
+    fun columns(
+        hidden: Boolean = false,
+        order: Int? = null,
+        render: (@Composable (MutableState<JdbcTableMetadataIso>) -> Unit)? = null
+    ) {
+        when {
+            hidden -> {
+                hiddenFields.add("columns")
+                renderMap.remove("columns")
+            }
+            render != null -> {
+                hiddenFields.remove("columns")
+                renderMap["columns"] = { render(state) }
+            }
+            else -> {
+                hiddenFields.remove("columns")
+                renderMap.remove("columns")
+            }
+        }
+
+        // 处理排序
+        order?.let { orderValue ->
+            updateFieldOrder("columns", orderValue)
         }
     }
 

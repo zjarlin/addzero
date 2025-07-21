@@ -47,13 +47,13 @@ object JdbcColumnMetadataFormProps {
     const val remarks = "remarks"
     const val defaultValue = "defaultValue"
     const val primaryKeyFlag = "primaryKeyFlag"
-    const val tableId = "tableId"
+    const val table = "table"
 
     /**
      * 获取所有字段名列表（按默认顺序）
      */
     fun getAllFields(): List<String> {
-        return listOf(tableName, columnName, jdbcType, columnType, columnLength, nullableBoolean, nullableFlag, remarks, defaultValue, primaryKeyFlag, tableId)
+        return listOf(tableName, columnName, jdbcType, columnType, columnLength, nullableBoolean, nullableFlag, remarks, defaultValue, primaryKeyFlag, table)
     }
 }
 
@@ -185,14 +185,27 @@ fun JdbcColumnMetadataFormOriginal(
                 isRequired = false
             )
         },
-        JdbcColumnMetadataFormProps.tableId to {
-            AddIntegerField(
-                value = state.value.tableId?.toString() ?: "",
-                onValueChange = {
-                    state.value = state.value.copy(tableId = if (it.isBlank()) null else it.parseObjectByKtx())
-                },
-                label = "tableId",
-                isRequired = false
+        JdbcColumnMetadataFormProps.table to {
+            var dataList by remember { mutableStateOf<List<JdbcTableMetadataIso>>(emptyList()) }
+
+            LaunchedEffect(Unit) {
+                try {
+                    val provider = Iso2DataProvider.isoToDataProvider[JdbcTableMetadataIso::class]
+                    dataList = provider?.invoke("") as? List<JdbcTableMetadataIso> ?: emptyList()
+                } catch (e: Exception) {
+                    println("加载 table 数据失败: ${e.message}")
+                    dataList = emptyList()
+                }
+            }
+
+            AddGenericSingleSelector(
+                value = state.value.table,
+                onValueChange = { state.value = state.value.copy(table = it) },
+                placeholder = "tableId",
+                dataProvider = { dataList },
+                getId = { it.id ?: 0L },
+                getLabel = { it.name ?: "" },
+                
             )
         }
     )
@@ -561,34 +574,34 @@ class JdbcColumnMetadataFormDsl(
     }
 
     /**
-     * 配置 tableId 字段
+     * 配置 table 字段
      * @param hidden 是否隐藏该字段
      * @param order 字段显示顺序（数值越小越靠前）
      * @param render 自定义渲染函数
      */
-    fun tableId(
+    fun table(
         hidden: Boolean = false,
         order: Int? = null,
         render: (@Composable (MutableState<JdbcColumnMetadataIso>) -> Unit)? = null
     ) {
         when {
             hidden -> {
-                hiddenFields.add("tableId")
-                renderMap.remove("tableId")
+                hiddenFields.add("table")
+                renderMap.remove("table")
             }
             render != null -> {
-                hiddenFields.remove("tableId")
-                renderMap["tableId"] = { render(state) }
+                hiddenFields.remove("table")
+                renderMap["table"] = { render(state) }
             }
             else -> {
-                hiddenFields.remove("tableId")
-                renderMap.remove("tableId")
+                hiddenFields.remove("table")
+                renderMap.remove("table")
             }
         }
 
         // 处理排序
         order?.let { orderValue ->
-            updateFieldOrder("tableId", orderValue)
+            updateFieldOrder("table", orderValue)
         }
     }
 

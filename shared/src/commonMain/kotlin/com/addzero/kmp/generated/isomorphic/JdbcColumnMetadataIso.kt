@@ -21,7 +21,7 @@ data class JdbcColumnMetadataIso(
     val remarks: String? = null,
     val defaultValue: String? = null,
     val primaryKeyFlag: String? = null,
-    val tableId: Long? = null,
+    val table: JdbcTableMetadataIso? = null,
     val id: Long? = null,
     val updateBy: SysUserIso? = null,
     val createBy: SysUserIso? = null,
