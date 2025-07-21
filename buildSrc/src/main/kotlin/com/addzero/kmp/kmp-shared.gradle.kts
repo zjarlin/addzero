@@ -1,6 +1,6 @@
-import org.babyfish.defIos
-import org.babyfish.doIos
-import org.babyfish.jimmer.Vars
+import com.addzero.defIos
+import com.addzero.doIos
+import com.addzero.Vars
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget

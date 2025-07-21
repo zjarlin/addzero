@@ -1,6 +1,6 @@
-import org.babyfish.jimmer.ksp.YmlUtil
-import org.babyfish.jimmer.util.AppConfig
-import org.babyfish.jimmer.util.SpringConfigReader
+import com.addzero.ksp.YmlUtil
+import com.addzero.util.AppConfig
+import com.addzero.util.SpringConfigReader
 import java.nio.file.Paths
 
 plugins {

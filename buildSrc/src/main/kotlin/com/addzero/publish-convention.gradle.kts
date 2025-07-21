@@ -1,6 +1,5 @@
-import org.babyfish.jimmer.Vars
 import java.time.LocalDate
-
+import com.addzero.Vars
 plugins {
     id("com.vanniktech.maven.publish")
 }

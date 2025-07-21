@@ -1,5 +1,5 @@
-import org.babyfish.jimmer.Vars.jvmMainKspBuildMetaDataDir
-import org.babyfish.jimmer.Vars.jvmMainSourceDir
+import com.addzero.Vars.jvmMainKspBuildMetaDataDir
+import com.addzero.Vars.jvmMainSourceDir
 
 plugins {
     id("kotlin-convention")

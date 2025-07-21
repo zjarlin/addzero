@@ -1,4 +1,4 @@
-package org.babyfish.jimmer
+package com.addzero
 
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter

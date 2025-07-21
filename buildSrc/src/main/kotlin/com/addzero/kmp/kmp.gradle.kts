@@ -1,7 +1,7 @@
-import org.babyfish.defIos
-import org.babyfish.doIos
-import org.babyfish.jimmer.Vars
-import org.babyfish.jimmer.Vars.Modules.COMPOSE_APP
+import com.addzero.defIos
+import com.addzero.doIos
+import com.addzero.Vars
+import com.addzero.Vars.Modules.COMPOSE_APP
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig

@@ -1,6 +1,6 @@
 import de.jensklingenberg.ktorfit.gradle.KtorfitPluginExtension
-import org.babyfish.jimmer.Vars.commonMainKspBuildMetaDataDir
-import org.babyfish.jimmer.Vars.commonMainSourceDir
+import com.addzero.Vars.commonMainKspBuildMetaDataDir
+import com.addzero.Vars.commonMainSourceDir
 
 plugins {
     id("kmp-shared")

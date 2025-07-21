@@ -1,4 +1,4 @@
-package org.babyfish.jimmer.util
+package com.addzero.util
 
 data class DataSourceConfig(
     val driverClassName: String,

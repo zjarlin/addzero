@@ -1,8 +1,9 @@
-import org.babyfish.jimmer.Vars.commonMainKspBuildMetaDataDir
-import org.babyfish.jimmer.Vars.commonMainSourceDir
-import org.babyfish.jimmer.Vars.jvmMainKspBuildMetaDataDir
-import org.babyfish.jimmer.Vars.jvmMainSourceDir
-
+import com.addzero.Vars.jvmMainSourceDir
+import com.addzero.Vars.jvmMainKspBuildMetaDataDir
+import com.addzero.Vars.commonMainSourceDir
+import com.addzero.Vars.commonMainKspBuildMetaDataDir
+import com.addzero.Vars.commonMainSourceDir
+import com.addzero.Vars.commonMainKspBuildMetaDataDir
 // 计算各模块目录（使用常量字符串）
 
 

@@ -1,7 +1,8 @@
-package org.babyfish.jimmer.util
+package com.addzero.util
 
 import org.yaml.snakeyaml.Yaml
 import java.nio.file.Path
+import kotlin.collections.get
 
 /**
  * Spring配置读取工具类

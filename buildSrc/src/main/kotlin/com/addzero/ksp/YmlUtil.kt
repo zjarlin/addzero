@@ -1,6 +1,7 @@
-package org.babyfish.jimmer.ksp
+package com.addzero.ksp
 
 import org.yaml.snakeyaml.Yaml
+import kotlin.collections.get
 import kotlin.io.path.Path
 
 object YmlUtil {
