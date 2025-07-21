@@ -83,7 +83,6 @@ class JimmerEntityCodeGenerator(
              * $description
              *
              * 对应数据库表: $tableName
-             * 自动生成的代码，请勿手动修改
              */
             @Entity
             @Table(name = "$tableName")

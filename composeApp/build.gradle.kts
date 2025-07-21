@@ -36,6 +36,8 @@ kotlin {
             // 原来的 FileKit 依赖现在由 klibs-component 模块提供
             implementation(libs.filekit.compose)
 
+            //自定义三方组件库
+            implementation(projects.lib.addzeroComposeKlibsComponent)
 
             //日志库
 //            implementation("co.touchlab:kermit:+") // 基础库

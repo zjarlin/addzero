@@ -21,7 +21,7 @@ class SysFavoriteTabController {
      */
     @GetMapping("/topFavoriteRoutes")
     fun topFavoriteRoutes(top: Int = 5): List<String> {
-        var execute = sql.executeQuery(SysFavoriteTab::class, top) {
+        val execute = sql.executeQuery(SysFavoriteTab::class, top) {
             groupBy(table.routeKey)
             orderBy(count(table.routeKey).desc())
             select(
@@ -29,7 +29,7 @@ class SysFavoriteTabController {
                 count(table.routeKey)
             )
         }
-        var map = execute.map {
+        val map = execute.map {
             it._1
         }
         return map
@@ -37,10 +37,10 @@ class SysFavoriteTabController {
 
     @PostMapping("/add")
     fun add(@RequestBody sysFavoriteTab: SysFavoriteTab): Boolean {
-        var save = sql.save(sysFavoriteTab) {
+        val save = sql.save(sysFavoriteTab) {
             setMode(SaveMode.INSERT_ONLY)
         }
-        var rowAffected = save.isRowAffected
+        val rowAffected = save.isRowAffected
         return rowAffected
 
     }

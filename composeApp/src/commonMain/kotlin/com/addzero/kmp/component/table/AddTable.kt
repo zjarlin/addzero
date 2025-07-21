@@ -138,24 +138,24 @@ fun AddTable(data: List<TableRowType>, columns: List<AddColumn>, buttonSloat: @C
 
         // 表格组件
         // 使用卡片风格的表格
-        when (selectedTheme) {
-            "Light" -> {
-                TableCardStyles.LightTheme(
-                    modifier = Modifier.fillMaxWidth(),
-                    config = tableConfig,
-                    buttonSlot = buttonSloat
-                )
-            }
-
-            "Dark" -> {
-                TableCardStyles.DarkTheme(
-                    modifier = Modifier.fillMaxWidth(),
-                    config = tableConfig,
-                    buttonSlot = buttonSloat
-                )
-            }
-
-        }
+//        when (selectedTheme) {
+//            "Light" -> {
+//                TableCardStyles.LightTheme(
+//                    modifier = Modifier.fillMaxWidth(),
+//                    config = tableConfig,
+//                    buttonSlot = buttonSloat
+//                )
+//            }
+//
+//            "Dark" -> {
+//                TableCardStyles.DarkTheme(
+//                    modifier = Modifier.fillMaxWidth(),
+//                    config = tableConfig,
+//                    buttonSlot = buttonSloat
+//                )
+//            }
+//
+//        }
 
     }
 }

@@ -1,10 +1,13 @@
 package com.addzero.kmp.component.table.body
 
-import androidx.compose.foundation.*
+import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.*
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,121 +19,12 @@ import com.addzero.kmp.component.button.AddEditDeleteButton
 import com.addzero.kmp.component.table.TableColumnType
 import com.addzero.kmp.component.table.TableRowType
 import com.addzero.kmp.component.table.header.column.RenderCell
-import com.addzero.kmp.component.table.viewmodel.StatePagination
-
-/**
- * 表格内容区组件
- */
-@Composable
-fun TableContent(
-    getIdFun: (TableRowType) -> Any = { it.hashCode() },
-    data: List<TableRowType>,
-    selectedItems: Set<Any>,
-    columns: List<TableColumnType>,
-    pageState: StatePagination,
-    multiSelect: Boolean,
-    showActions: Boolean,
-    rowHeight: Int,
-    onRowClick: (TableRowType) -> Unit = {},
-    onDeleteItem: ((Any) -> Unit)? = null,
-    onCheckboxClick: (TableRowType) -> Unit = {},
-    onBatchDelete: () -> Unit = {},
-    onBatchExport: () -> Unit = {},
-    scrollState: ScrollState? = null,
-    modifier: Modifier = Modifier,
-    renderCustomActions: @Composable (() -> Unit),
-    onEditClick: (TableRowType) -> Unit
-) {
-    val horizontalScrollState = scrollState ?: rememberScrollState()
-
-    // 批量操作按钮
-    if (multiSelect && selectedItems.isNotEmpty()) {
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(8.dp),
-            horizontalArrangement = Arrangement.End,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                "已选择 ${selectedItems.size} 项" + ",已选择的id$selectedItems",
-                style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.padding(end = 16.dp)
-            )
-            // @RBAC_PERMISSION: table.batch.delete - 批量删除权限
-            Button(onClick = onBatchDelete) {
-                Text("批量删除")
-            }
-
-            Spacer(modifier = Modifier.width(8.dp))
-
-            // @RBAC_PERMISSION: table.batch.export - 批量导出权限
-            Button(onClick = onBatchExport) {
-                Text("导出选中")
-            }
-        }
-    }
-
-    Box(modifier = modifier.fillMaxWidth()) {
-        LazyColumn(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            if (data.isEmpty()) {
-                item {
-                    Box(
-                        modifier = Modifier.fillMaxWidth().height(200.dp).padding(16.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = "没有数据",
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                }
-            } else {
-                itemsIndexed(data) { index, item ->
-                    val isSelected = selectedItems.contains(getIdFun(item))
-                    val backgroundColor = if (isSelected) MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f)
-                    else if (index % 2 == 0) MaterialTheme.colorScheme.surface
-                    else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
-
-                    val rowNumber = (pageState.currentPage - 1) * pageState.pageSize + index + 1
-
-                    TableRow(
-                        getidFun = getIdFun,
-                        item = item,
-                        rowNumber = rowNumber,
-                        isSelected = isSelected,
-                        multiSelect = multiSelect,
-                        showActions = showActions,
-                        rowHeight = rowHeight,
-                        backgroundColor = backgroundColor,
-                        onRowClick = onRowClick,
-                        onDeleteItem = onDeleteItem,
-                        onCheckboxClick = { onCheckboxClick(item) },
-                        horizontalScrollState = horizontalScrollState,
-                        columns = columns,
-                        renderCustomActions = renderCustomActions,
-                        onEditClick = onEditClick
-                    )
-
-                    if (index < data.size - 1) {
-                        HorizontalDivider(
-                            Modifier,
-                            DividerDefaults.Thickness,
-                            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
-                        )
-                    }
-                }
-            }
-        }
-    }
-}
 
 /**
  * 表格行组件
  */
 @Composable
-private fun TableRow(
+fun TableRow(
     getidFun: (TableRowType) -> Any,
     item: TableRowType,
     rowNumber: Int,

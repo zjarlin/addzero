@@ -124,29 +124,14 @@ class RouteMetadataProcessor(
         logger.warn("解析到 ${routeItems.size} 个路由项")
 
         // 生成路由键对象
-        val routeKeysTemplate = """
-            |package $GEN_PKG
-            |
-            |/**
-            | * 路由键
-            | * 请勿手动修改此文件
-            | */
-            |object RouteKeys {
-            |    ${
-            routeItems.joinToString("\n    ") {
-                val key = it.simpleName.toUnderLineCase().uppercase()
-                "const val $key = \"${it.routePath}\""
-            }
-        }
-            |}
-            |""".trimMargin()
+        val routeKeysTemplate = genRoutKeysTemplate(ROUTE_KEYS_NAME, routeItems)
 
         // 生成路由表
         val routeTableTemplate = """
             |package $GEN_PKG
             |
             |import androidx.compose.runtime.Composable
-            |import $GEN_PKG.RouteKeys
+            |import $GEN_PKG.$ROUTE_KEYS_NAME
             |import com.addzero.kmp.annotation.Route
 
             |
@@ -199,15 +184,17 @@ class RouteMetadataProcessor(
             logger.warn("开始生成路由键")
 
 
-            genCode("${GEN_PKG.toSharedSourceDir()}/${ROUTE_KEYS_NAME}.kt", routeKeysTemplate)
 
-//            codeGenerator.createNewFile(
-//                dependencies = Dependencies(true),
-//                packageName = GEN_PKG,
-//                fileName = ROUTE_KEYS_NAME
-//            ).use { stream ->
-//                stream.write(routeKeysTemplate.toByteArray())
-//            }
+            genSharedRouteKeys(routeItems)
+
+            // 生成路由键对象
+            codeGenerator.createNewFile(
+                dependencies = Dependencies(true),
+                packageName = GEN_PKG,
+                fileName = ROUTE_KEYS_NAME
+            ).use { stream ->
+                stream.write(routeKeysTemplate.toByteArray())
+            }
 
 
             logger.warn("开始生成路由表")
@@ -223,6 +210,37 @@ class RouteMetadataProcessor(
         } catch (e: Exception) {
             logger.warn("Error generating route files: ${e.message}")
         }
+    }
+
+    private fun genSharedRouteKeys(routeItems: Set<Route>) {
+        // 生成路由键对象
+        val routeKeysIsoFileName = ROUTE_KEYS_NAME + "Iso"
+        val routeKeysTemplateIso = genRoutKeysTemplate(routeKeysIsoFileName, routeItems)
+
+        genCode("${GEN_PKG.toSharedSourceDir()}/$routeKeysIsoFileName.kt", routeKeysTemplateIso)
+    }
+
+    private fun genRoutKeysTemplate(
+        routeKeysFileName: String,
+        routeItems: Set<Route>
+    ): String {
+        val routeKeysTemplate = """
+                |package $GEN_PKG
+                |
+                |/**
+                | * 路由键
+                | * 请勿手动修改此文件
+                | */
+                |object $routeKeysFileName {
+                |    ${
+            routeItems.joinToString("\n    ") {
+                val key = it.simpleName.toUnderLineCase().uppercase()
+                "const val $key = \"${it.routePath}\""
+            }
+        }
+                |}
+                |""".trimMargin()
+        return routeKeysTemplate
     }
 
     /**

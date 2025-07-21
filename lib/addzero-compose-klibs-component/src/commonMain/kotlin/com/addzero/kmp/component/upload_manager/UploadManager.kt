@@ -3,15 +3,12 @@
 package com.addzero.kmp.component.upload_manager
 
 import androidx.compose.runtime.mutableStateMapOf
-import com.addzero.kmp.component.form.file.USE_MOCK_FILE_UPLOAD
-import com.addzero.kmp.component.form.file.mockQueryProgress
-import com.addzero.kmp.core.ext.now
-import com.addzero.kmp.core.ext.nowLong
-import com.addzero.kmp.generated.api.ApiProvider.fileApi
+import com.addzero.kmp.component.file_picker.USE_MOCK_FILE_UPLOAD
+import com.addzero.kmp.component.file_picker.mockQueryProgress
 import io.ktor.client.request.forms.*
 import kotlinx.coroutines.*
-import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.Serializable
+import kotlin.time.Clock.System.now
 import kotlin.time.ExperimentalTime
 
 /**
@@ -38,8 +35,6 @@ data class UploadTask(
     val progress: Float = 0f,                         // 上传进度 0-1
     val status: UploadTaskStatus = UploadTaskStatus.PENDING,
     val errorMessage: String? = null,                 // 错误信息
-    val createTime: LocalDateTime = now,
-    val completeTime: LocalDateTime? = null
 ) {
     // 计算上传速度等辅助属性可以在这里添加
     val isActive: Boolean
@@ -115,7 +110,8 @@ class UploadManager {
                 val redisKey = if (USE_MOCK_FILE_UPLOAD) {
                     mockUploadFile(content)
                 } else {
-                    fileApi.upload(content)
+                    ""
+//                    fileApi.upload(content)
                 }
 
                 // 更新redisKey
@@ -157,21 +153,19 @@ class UploadManager {
                         updateTask(taskId) {
                             it.copy(
                                 status = UploadTaskStatus.COMPLETED,
-                                completeTime = now
                             )
                         }
                         break
                     }
                 } else {
                     // 真实API调用 - 需要根据实际API响应结构调整
-                    val response = fileApi.queryProgress(redisKey)
+//                    val response = fileApi.queryProgress(redisKey)
                     // TODO: 根据实际API响应结构更新这部分代码
                     // 暂时使用模拟逻辑
                     updateTask(taskId) { task ->
                         task.copy(
                             progress = 1f, // 临时设为完成
                             status = UploadTaskStatus.COMPLETED,
-                            completeTime = now
                         )
                     }
                     break
@@ -237,7 +231,7 @@ class UploadManager {
 
     // 辅助方法
     private fun generateTaskId(): String {
-        return "upload_${nowLong()}_${(0..9999).random()}"
+        return "upload_${111}_${(0..9999).random()}"
     }
 
     private fun updateTaskStatus(taskId: String, status: UploadTaskStatus) {
@@ -255,7 +249,7 @@ class UploadManager {
      */
     private suspend fun mockUploadFile(content: MultiPartFormDataContent): String {
         delay(500) // 模拟网络延迟
-        return "file_upload_${nowLong()}"
+        return "file_upload_${111}"
     }
 }
 

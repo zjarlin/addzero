@@ -13,7 +13,6 @@ import androidx.compose.ui.unit.dp
 import com.addzero.kmp.annotation.Route
 import com.addzero.kmp.component.button.AddIconButton
 import com.addzero.kmp.component.form.DynamicFormItem
-import com.addzero.kmp.component.table.TableCardStyles
 import com.addzero.kmp.component.table.TableRowType
 import com.addzero.kmp.component.table.config.*
 import com.addzero.kmp.component.table.model.AddColumn
@@ -191,24 +190,24 @@ fun AddGenericTableExample() {
 
         // 表格组件
         // 使用卡片风格的表格
-        when (selectedTheme) {
-            "Light" -> {
-                TableCardStyles.LightTheme(
-                    modifier = Modifier.fillMaxWidth(),
-                    config = tableConfig,
-                    buttonSlot = { SampleCustomButtons() }
-                )
-            }
-
-            "Dark" -> {
-                TableCardStyles.DarkTheme(
-                    modifier = Modifier.fillMaxWidth(),
-                    config = tableConfig,
-                    buttonSlot = { SampleCustomButtons() }
-                )
-            }
-
-        }
+//        when (selectedTheme) {
+//            "Light" -> {
+//                TableCardStyles.LightTheme(
+//                    modifier = Modifier.fillMaxWidth(),
+//                    config = tableConfig,
+//                    buttonSlot = { SampleCustomButtons() }
+//                )
+//            }
+//
+//            "Dark" -> {
+//                TableCardStyles.DarkTheme(
+//                    modifier = Modifier.fillMaxWidth(),
+//                    config = tableConfig,
+//                    buttonSlot = { SampleCustomButtons() }
+//                )
+//            }
+//
+//        }
     }
 }
 

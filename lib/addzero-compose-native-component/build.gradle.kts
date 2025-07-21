@@ -10,3 +10,9 @@ kotlin {
         }
     }
 }
+// build.gradle.kts
+kotlin {
+    compilerOptions {
+        freeCompilerArgs.add("-Xcontext-parameters")
+    }
+}

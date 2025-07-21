@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalTime::class)
+
 package com.addzero.kmp.component.upload_manager
 
 import androidx.compose.foundation.layout.*
@@ -11,8 +13,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.addzero.kmp.component.form.file.formatFileSize
-import com.addzero.kmp.core.ext.now
+import com.addzero.kmp.component.file_picker.formatFileSize
+import kotlin.time.ExperimentalTime
 
 /**
  * 上传管理器UI组件
@@ -21,8 +23,7 @@ import com.addzero.kmp.core.ext.now
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UploadManagerUI(
-    modifier: Modifier = Modifier,
-    uploadManager: UploadManager = GlobalUploadManager.instance
+    modifier: Modifier = Modifier, uploadManager: UploadManager = GlobalUploadManager.instance
 ) {
     var selectedTab by remember { mutableStateOf(0) }
     val tabs = listOf("进行中", "已完成", "失败")
@@ -30,29 +31,24 @@ fun UploadManagerUI(
     Column(modifier = modifier.fillMaxSize()) {
         // 顶部操作栏
         Card(
-            modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(
+            modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.surfaceVariant
             )
         ) {
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
+                modifier = Modifier.fillMaxWidth().padding(16.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "上传管理器",
-                    style = MaterialTheme.typography.headlineSmall
+                    text = "上传管理器", style = MaterialTheme.typography.headlineSmall
                 )
 
                 Row {
                     // 清除已完成按钮
                     if (uploadManager.completedTasks.isNotEmpty()) {
                         TextButton(
-                            onClick = { uploadManager.clearCompletedTasks() }
-                        ) {
+                            onClick = { uploadManager.clearCompletedTasks() }) {
                             Icon(Icons.Default.Clear, contentDescription = null)
                             Spacer(modifier = Modifier.width(4.dp))
                             Text("清除已完成")
@@ -62,8 +58,7 @@ fun UploadManagerUI(
                     // 清除失败按钮
                     if (uploadManager.failedTasks.isNotEmpty()) {
                         TextButton(
-                            onClick = { uploadManager.clearFailedTasks() }
-                        ) {
+                            onClick = { uploadManager.clearFailedTasks() }) {
                             Icon(Icons.Default.Delete, contentDescription = null)
                             Spacer(modifier = Modifier.width(4.dp))
                             Text("清除失败")
@@ -83,13 +78,9 @@ fun UploadManagerUI(
                     else -> 0
                 }
 
-                Tab(
-                    selected = selectedTab == index,
-                    onClick = { selectedTab = index },
-                    text = {
-                        Text("$title ($count)")
-                    }
-                )
+                Tab(selected = selectedTab == index, onClick = { selectedTab = index }, text = {
+                    Text("$title ($count)")
+                })
             }
         }
 
@@ -104,8 +95,7 @@ fun UploadManagerUI(
         if (currentTasks.isEmpty()) {
             // 空状态
             Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
+                modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
             ) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally
@@ -144,8 +134,7 @@ fun UploadManagerUI(
                     UploadTaskItem(
                         task = task,
                         onCancel = { uploadManager.cancelTask(task.id) },
-                        onRetry = { /* 需要传入content参数，这里暂时留空 */ }
-                    )
+                        onRetry = { /* 需要传入content参数，这里暂时留空 */ })
                 }
             }
         }
@@ -157,14 +146,10 @@ fun UploadManagerUI(
  */
 @Composable
 private fun UploadTaskItem(
-    task: UploadTask,
-    onCancel: () -> Unit,
-    onRetry: () -> Unit,
-    modifier: Modifier = Modifier
+    task: UploadTask, onCancel: () -> Unit, onRetry: () -> Unit, modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
+        modifier = modifier.fillMaxWidth(), colors = CardDefaults.cardColors(
             containerColor = when (task.status) {
                 UploadTaskStatus.FAILED -> MaterialTheme.colorScheme.errorContainer
                 UploadTaskStatus.COMPLETED -> MaterialTheme.colorScheme.primaryContainer
@@ -210,8 +195,7 @@ private fun UploadTaskItem(
 
                         UploadTaskStatus.UPLOADING, UploadTaskStatus.QUERYING -> {
                             CircularProgressIndicator(
-                                modifier = Modifier.size(20.dp),
-                                strokeWidth = 2.dp
+                                modifier = Modifier.size(20.dp), strokeWidth = 2.dp
                             )
                         }
 
@@ -271,17 +255,6 @@ private fun UploadTaskItem(
                 )
             }
 
-            // 完成时间
-            if (task.completeTime != null) {
-                Spacer(modifier = Modifier.height(4.dp))
-                val completeDateTime = now
-
-                Text(
-                    text = "完成时间: ${completeDateTime.date} ${completeDateTime.time}",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
 
             // 文件链接
             if (task.fileUrl != null) {

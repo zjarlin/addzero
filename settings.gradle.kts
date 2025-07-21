@@ -66,7 +66,6 @@ listOf("backend", "composeApp", "shared", "lib").forEach { module ->
 }
 
 
-// KSP 支持模块
 ("backend" to listOf(
     "server",
     "model"

@@ -1,4 +1,4 @@
-package com.addzero.kmp.ext
+package com.addzero.kmp.component.filekit.ext
 
 import com.addzero.kmp.util.WebUtil.getContentType
 import io.github.vinceglb.filekit.core.PlatformFile
