@@ -1,0 +1,39 @@
+#services:
+#
+#  backend:
+#    image: azul/zulu-openjdk:24
+#    container_name: addzero
+#    restart: always
+#    network_mode: host
+#    working_dir: /root
+#    environment:
+#      TZ: Asia/Shanghai
+#      LANG: zh_CN.UTF-8
+#      LANGUAGE: zh_CN:zh
+#      LC_ALL: zh_CN.UTF-8
+#    volumes:
+#      - ./lib:/root/lib
+#      - ./config:/root/config
+#      - ./apps.jar:/root/apps.jar
+#      - ./logs:/root/logs
+#      - /user/share/fonts:/user/share/fonts
+#    ports:
+#      - '7085:7085'
+#      - '5005:5005'
+#    command: >
+#      sh -c "
+#      java -jar  -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8 -Dspring.profiles.active=prod -Dspring.location.config=./config -Dloader.path=./lib /root/apps.jar
+#      "
+#
+#  pgvector:
+#    restart: unless-stopped
+#    image: pgvector/pgvector:pg17
+#    container_name: pgvector
+#    ports:
+##      建议端口改了防止恶意攻击
+#      - "15432:5432"
+#    environment:
+#      POSTGRES_USER: postgres
+#      POSTGRES_PASSWORD: postgres
+#    volumes:
+#      - ./data:/var/lib/postgresql/data

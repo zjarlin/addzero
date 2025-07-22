@@ -1,9 +1,16 @@
 # .github/workflows/publish.yml
 
 name: Publish
+
 on:
-  release:
-    types: [ released, prereleased ]
+  push:
+    branches:
+      - main       # 只在 main 分支推送时触发
+      - release/** # 或 release/* 分支
+    tags:
+      - 'v*'       # 可选：推送 tag 时也触发（如 v1.0.0）
+#  release:
+#    types: [ released, prereleased ]
 jobs:
   publish:
     name: Release build and publish

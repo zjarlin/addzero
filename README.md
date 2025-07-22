@@ -13,6 +13,24 @@
 ![项目截图](images/img_2.png)
 ![项目截图](images/img_1.png)
 ![项目截图](images/img.png)
+## 环境准备
+
+```shell
+# add in your .zhsrc or .bashrc
+SERVER_HOST=localhost
+DB_PORT=15432
+DATABASE_NAME=postgres
+SCHEMA_NAME=public
+JDBC_USERNAME=postgres
+JDBC_PASSWORD=postgres
+#以下表排除编译时分析
+EXCLUDE_TABLES=flyway_schema_history,vector_store,*_mapping
+
+```
+
+## tips :暂未验证其他jdbc的元数据分析兼容性,自行验证JdbcMetadataExtractor这个工具类
+## tips :目前Server模块需要SpringAI db推荐用PGVECTOR  see 
+## tips :数据库会在第一次启动后端时自动初始化
 
 ## ✨ 核心特性
 

@@ -265,23 +265,48 @@ object JdbcMetadataExtractor {
         return primaryKeys
     }
 
+
     /**
-     * 判断是否应该包含某个表
+     * 判断是否应该包含某个表（支持通配符 *）
+     * @param tableName 当前表名
+     * @param config 数据源配置
+     * @return 如果表名符合包含/排除规则则返回 true
      */
-    private fun shouldIncludeTable(tableName: String, config: JdbcConfig): Boolean {
-        // 如果指定了包含列表，则只处理列表中的表
-        if (!config.includeTables.isNullOrEmpty()) {
-            return config.includeTables.contains(tableName)
+    private fun shouldIncludeTable(tableName: String, config: JdbcConfig):
+            Boolean {
+        // 1. 如果指定了包含列表，则检查是否匹配任一包含规则
+        config.includeTables?.let { includeRules ->
+            if (includeRules.isNotEmpty()) {
+                return includeRules.any { rule -> matchesWildcard(tableName, rule) }
+            }
         }
 
-        // 如果指定了排除列表，则不处理列表中的表
-        if (!config.excludeTables.isNullOrEmpty()) {
-            return !config.excludeTables.contains(tableName)
+        // 2. 如果指定了排除列表，则检查是否匹配任一排除规则
+        config.excludeTables?.let { excludeRules ->
+            if (excludeRules.isNotEmpty()) {
+                return !excludeRules.any { rule -> matchesWildcard(tableName, rule) }
+            }
         }
 
-        // 默认包含所有表
+        // 3. 默认包含所有表
         return true
     }
+
+
+    /**
+     * 通配符匹配（支持 *）
+     * @param input 待匹配的字符串（如表名）
+     * @param pattern 通配符规则（如 "user_*", "*_mapping"）
+     */
+    private fun matchesWildcard(input: String, pattern: String): Boolean {
+        val regex = pattern
+            .replace(".", "\\.")  // 转义点号
+            .replace("*", ".*")   // 将 * 转换为正则的 .*
+            .let { "^$it$" }      // 完全匹配
+
+        return Regex(regex, RegexOption.IGNORE_CASE).matches(input)
+    }
+
 
     /**
      * 测试数据库连接

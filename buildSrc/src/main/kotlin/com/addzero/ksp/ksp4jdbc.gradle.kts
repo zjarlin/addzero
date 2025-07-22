@@ -1,12 +1,9 @@
 import com.addzero.ksp.YmlUtil
-import com.addzero.util.AppConfig
-import com.addzero.util.SpringConfigReader
-import java.nio.file.Paths
+import com.addzero.ksp.YmlUtil.replaceEnvInString
 
 plugins {
     id("com.google.devtools.ksp")
 }
-
 
 
    val serverProject = project(":backend:server")
@@ -24,31 +21,31 @@ val pgdatasource = YmlUtil.getConfigValue<Map<String,Any>>(ymlActiveConfig, "spr
 
 val datasource = pgdatasource[activeDatasource] as Map<String, String>
 println("datasource: $datasource")
-val driverClassName = datasource["driver-class-name"]!!
-val url= datasource["url"]!!
+val jdbcDriver = datasource["driver-class-name"]!!
+val url= datasource["url"].replaceEnvInString()
 val urlSplit = url.split("?")
+
 val jdbcUrl = urlSplit.first()
 val jdbcSchema = urlSplit.last().split("=").last()
-val username = datasource["username"]?:"postgres"
-val password = datasource["password"]?:"postgres"
-val excludeTables = datasource["exclude-tables"]?:""
+
+val jdbcUsername = datasource["username"].replaceEnvInString()
+val jdbcPassword = datasource["password"].replaceEnvInString()
+val excludeTables = datasource["exclude-tables"].replaceEnvInString()
 
 
 ksp {
-
     // JDBC 配置（用于枚举生成）
     arg("jdbcUrl", jdbcUrl)
-    arg("jdbcUsername", username)
-    arg("jdbcPassword", password)
+    arg("jdbcUsername", jdbcUsername)
+    arg("jdbcPassword", jdbcPassword)
     arg("jdbcSchema", jdbcSchema)
-    arg("jdbcDriver", driverClassName)
+    arg("jdbcDriver", jdbcDriver)
     // 可选：指定要排除的表（逗号分隔）
-    arg( "excludeTables", excludeTables )
+    arg("excludeTables", excludeTables)
     println("jdbcUrl: $jdbcUrl")
-    println("jdbcUsername: $username")
-    println("jdbcPassword: $password")
+    println("jdbcUsername: $jdbcUsername")
+    println("jdbcPassword: $jdbcPassword")
     println("jdbcSchema: $jdbcSchema")
-    println("jdbcDriver: $driverClassName")
+    println("jdbcDriver: $jdbcDriver")
     println("excludeTables: $excludeTables")
-
 }

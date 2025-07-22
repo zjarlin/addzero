@@ -2,15 +2,13 @@ spring:
   datasource:
     dynamic:
       primary: pg
-
       datasource:
-
         pg:
           driver-class-name: org.postgresql.Driver
-          url: jdbc:postgresql://localhost:15432/postgres?currentSchema=public
-          username: postgres
-          password: postgres
-          exclude-tables: flyway_schema_history,vector_store,biz_mapping,sys_dept_sys_user_mapping,sys_role_sys_user_mapping
+          url: jdbc:postgresql://${SERVER_HOST:localhost}:${DB_PORT:5432}/${DATABASE_NAME:postgres}?currentSchema=${SCHEMA_NAME:public}
+          username: ${JDBC_USERNAME:postgres1}
+          password: ${JDBC_PASSWORD:postgres1}
+          exclude-tables: ${EXCLUDE_TABLES:flyway_schema_history,vector_store,*_mapping}
 #        dm:
 #          driver-class-name: dm.jdbc.driver.DmDriver
 #          url: jdbc:dm://11111111111111111:5236/SJZYXT?searchpath=public&stringtype =unspecified &clobAsString=1
@@ -22,7 +20,7 @@ spring:
 #          username: root
 #          password: root
 #        h2 :
-#          url: jdbc:h2:file:${user.dir}/db/second_brain_data/data;AUTO_SERVER=TRUE
+#          url: jdbc:h2:file:${user.dir}/db/${YOUR_}/data;AUTO_SERVER=TRUE
 #          driver-class-name: org.h2.Driver                    # H2 驱动
 #          username:              # 默认用户名
 #          password:                                           # 默认密码为空

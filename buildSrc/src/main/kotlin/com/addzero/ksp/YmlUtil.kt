@@ -1,11 +1,22 @@
 package com.addzero.ksp
 
 import org.yaml.snakeyaml.Yaml
-import kotlin.collections.get
 import kotlin.io.path.Path
 
 object YmlUtil {
     private val yaml = Yaml()
+
+
+    fun String?.replaceEnvInString(defaultValueIfNull: String = ""): String {
+        this ?: return defaultValueIfNull
+        val regex = Regex("\\$\\{(\\w+)(?::([^}]*))?\\}")
+        return regex.replace(this) { matchResult ->
+            val (envVar, defaultValue) = matchResult.destructured
+            val getenv = System.getenv(envVar)
+            println("环境变量${envVar}拿到的值为: $getenv, 默认值为: $defaultValue")
+            getenv ?: defaultValue
+        }
+    }
 
 
     fun <T> loadYmlConfig(dir: String): T {
@@ -24,7 +35,7 @@ object YmlUtil {
     fun getActivate(dir: String): String {
         val loadYmlConfigMap = loadYmlConfigMap(dir)
         val configValue = getConfigValue<String>(loadYmlConfigMap, "spring.profiles.active")
-        return configValue?:"local"
+        return configValue ?: "local"
     }
 
 
