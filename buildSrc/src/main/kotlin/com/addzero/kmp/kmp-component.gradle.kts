@@ -1,5 +1,7 @@
 import com.google.devtools.ksp.gradle.KspAATask
+import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -28,14 +30,21 @@ kotlin {
 }
 
 // 修复 KSP 任务依赖问题
-listOf(
-    KotlinCompile::class,
-    Kotlin2JsCompile::class,
-    KspAATask::class
-).forEach { taskClass ->
-    tasks.withType(taskClass).configureEach {
-        if (name != "kspCommonMainKotlinMetadata") {
-            dependsOn("kspCommonMainKotlinMetadata")
-        }
+//listOf(
+//    KotlinCompile::class,
+//    Kotlin2JsCompile::class,
+//    KspAATask::class
+//).forEach { taskClass ->
+//    tasks.withType(taskClass).configureEach {
+//        if (name != "kspCommonMainKotlinMetadata") {
+//            dependsOn("kspCommonMainKotlinMetadata")
+//        }
+//    }
+//}
+
+tasks.withType<KotlinCompilationTask<*>>().configureEach {
+    if (name != "kspKotlin" || name != "kspCommonMainKotlinMetadata") {
+        dependsOn(":backend:model:kspKotlin")
+        dependsOn(":shared:kspCommonMainKotlinMetadata")
     }
 }

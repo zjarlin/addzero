@@ -33,8 +33,8 @@ fun App() {
 
     FollowSystemTheme(colorScheme = colorScheme) {
 //        GradientThemeWrapper(themeType = currentTheme) {
-//            MainLayoutWithLogin()
-        MainLayout()
+            MainLayoutWithLogin()
+//        MainLayout()
         ToastListener()
 //        }
     }
