@@ -14,7 +14,7 @@ abstract class KspBuddyExtension {
 
     /**
      * KSP 配置脚本生成路径
-     * 默认: build-logic/src/main/kotlin/convention-plugins/generated
+     * 默认: build-logic/src/main/kotlin/conventions/generated
      */
     abstract val kspScriptOutputDir: Property<String>
 

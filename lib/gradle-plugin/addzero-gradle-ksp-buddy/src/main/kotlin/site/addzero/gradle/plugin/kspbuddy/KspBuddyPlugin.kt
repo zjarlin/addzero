@@ -19,7 +19,8 @@ class KspBuddyPlugin : Plugin<Project> {
         val extension = project.extensions.create<KspBuddyExtension>("kspBuddy")
 
         // 设置默认值
-        extension.kspScriptOutputDir.convention("build-logic/src/main/kotlin/convention-plugins/generated")
+        val value = "build-logic/src/main/kotlin/conventions/generated"
+        extension.kspScriptOutputDir.convention(value)
 
         // 创建生成脚本的任务
         val generateTask = project.tasks.register<GenerateKspScriptTask>("generateKspScript") {
@@ -27,7 +28,7 @@ class KspBuddyPlugin : Plugin<Project> {
             group = "build"
 
             // 设置输出文件路径，使用模块名称作为文件名的一部分
-            val outputDirPath = extension.kspScriptOutputDir.getOrElse("build-logic/src/main/kotlin/convention-plugins/generated")
+            val outputDirPath = extension.kspScriptOutputDir.getOrElse(value)
             val generatedDir = File(project.rootProject.projectDir, outputDirPath)
             val moduleName = getModuleName(project)
             outputFile = File(generatedDir, "ksp-config4${moduleName}.gradle.kts")
@@ -43,7 +44,7 @@ class KspBuddyPlugin : Plugin<Project> {
         // 在项目配置完成后自动生成配置文件
         project.afterEvaluate {
             // 只有当mustMap有配置时才生成
-            if (extension.mustMap.isPresent && extension.mustMap.get().isNotEmpty()) {
+            if (extension.mustMap.isPresent && extension.mustMap.get().isNotEmpty() ) {
                 generateTask.get().generate()
             }
         }
@@ -138,7 +139,7 @@ abstract class GenerateKspScriptTask: DefaultTask() {
 
     private fun generateSettingsDataClass(packageDir: File, className: String, properties: Map<String, String>, packageName: String) {
         val file = File(packageDir, "${className}.kt")
-        
+
         // 如果没有属性，不需要生成文件
         if (properties.isEmpty()) {
             logger.lifecycle("No properties provided, skipping Settings data class generation")
@@ -168,7 +169,7 @@ abstract class GenerateKspScriptTask: DefaultTask() {
 
     private fun generateSettingContextObject(packageDir: File, objectName: String, settingsClassName: String, packageName: String, properties: Map<String, String>) {
         val file = File(packageDir, "${objectName}.kt")
-        
+
         // 如果没有属性，不需要生成文件
         if (properties.isEmpty()) {
             logger.lifecycle("No properties provided, skipping SettingContext object generation")
