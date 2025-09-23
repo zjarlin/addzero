@@ -43,9 +43,14 @@ class KspBuddyPlugin : Plugin<Project> {
 
         // 在项目配置完成后自动生成配置文件
         project.afterEvaluate {
-            // 只有当mustMap有配置时才生成
-            if (extension.mustMap.isPresent && extension.mustMap.get().isNotEmpty() ) {
-                generateTask.get().generate()
+            // 检查是否启用预编译文件生成
+            if (extension.enablePrecompile.getOrElse(true)) {
+                // 只有当mustMap有配置时才生成
+                if (extension.mustMap.isPresent && extension.mustMap.get().isNotEmpty() ) {
+                    generateTask.get().generate()
+                }
+            } else {
+                println("KSP预编译文件生成已禁用")
             }
         }
     }

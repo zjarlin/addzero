@@ -13,7 +13,7 @@ abstract class KspBuddyExtension {
     abstract val mustMap: MapProperty<String, String>
 
     /**
-     * KSP 配置脚本生成路径
+     * KSP 预编译配置脚本生成路径
      * 默认: build-logic/src/main/kotlin/conventions/generated
      */
     abstract val kspScriptOutputDir: Property<String>
@@ -23,9 +23,15 @@ abstract class KspBuddyExtension {
      */
     abstract val settingContext: Property<SettingContextConfig>
 
+    /**
+     * 是否启用预编译文件生成，默认为 true
+     */
+    abstract val enablePrecompile: Property<Boolean>
+
     init {
         // 设置默认值
         settingContext.convention(SettingContextConfig())
+        enablePrecompile.convention(false)
     }
 }
 
