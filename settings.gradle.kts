@@ -49,7 +49,7 @@ fun findAllProjectDirs(rootDir: File): List<File> {
     return result
 }
 
-fun autoInclude(): Unit {
+fun autoIncludeBuild(): Unit {
     val rootDir = settings.layout.rootDirectory.asFile
     val findAllProjectDirs = findAllProjectDirs(rootDir)
     val allProjectDirs = findAllProjectDirs
@@ -80,7 +80,7 @@ fun autoInclude(): Unit {
     println("✅ 模块自动扫描和包含完成")
 
 }
-autoInclude()
+autoIncludeBuild()
 plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "+"
 //    id("site.addzero.repo-buddy") version "2025.09.23"

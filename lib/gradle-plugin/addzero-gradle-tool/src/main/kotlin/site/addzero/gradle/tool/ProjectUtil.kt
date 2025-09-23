@@ -1,5 +1,7 @@
 package site.addzero.gradle.tool
 
+import org.apache.tools.ant.util.FileUtils
+import org.gradle.api.initialization.Settings
 import site.addzero.gradle.constant.Disposable.KSP_BUILD_DIR_JVM
 import site.addzero.gradle.constant.Disposable.KSP_BUILD_DIR_KMP
 import site.addzero.gradle.constant.Disposable.RESOURCE_DIR_JVM
@@ -81,7 +83,7 @@ fun generateProjectDirConfigMap(blackDir: List<String>, rootDir: File): List<Pro
     return map
 }
 
- fun getRelativePath(rootDir: File, projectDir: File): String {
+fun getRelativePath(rootDir: File, projectDir: File): String {
     val rootPath = rootDir.absolutePath
     val projectPath = projectDir.absolutePath
     return if (projectPath.startsWith(rootPath)) {
@@ -127,27 +129,38 @@ private fun String.toCamelCase(): String {
     }.joinToString("")
 }
 
-/**
- * 判断是否为应排除的目录
- */
-fun isExcludedDir(dirName: String): Boolean {
-    val excludedDirs = setOf(
-        "build",
-        "gradle",
-        ".gradle",
-        ".git",
-        ".idea",
-        "node_modules",
-        "target",
-        "out",
-        "bin",
-        ".settings",
-        "src",
-        "test",
-        "main",
-        "kotlin",
-        "java",
-        "resources"
+fun Settings.autoIncludeBuild(blackDir: List<String> =emptyList()) {
+
+    val rootDir = settings.layout.rootDirectory.asFile
+    val findAllProjectDirs = findAllProjectDirs(rootDir)
+    val allProjectDirs = findAllProjectDirs
+        .filter { it.absolutePath != rootDir.absolutePath } // 排除根项目本身
+        .filterNot { it.name in blackDir }
+
+    val (buildProj, modules) = allProjectDirs.partition {
+        val isBuildLogic = it.name.startsWith("build-logic") || it.name.startsWith("buildLogic")
+        isBuildLogic
+    }
+    // 输出扫描结果统计信息
+    println(
+        "🔍 扫描到 ${buildProj.size} 个构建逻辑模块，${modules.size} 个普通模块",
     )
-    return excludedDirs.contains(dirName) || dirName.startsWith(".")
+
+    buildProj.forEach {
+        settings.includeBuild(it)
+        // 打印调试信息
+        println("🔨 已包含构建逻辑模块: ${it.name}")
+
+    }
+    modules.forEach {
+        val relativePath = FileUtils.getRelativePath(rootDir, it)
+        val moduleName = ":${relativePath.replace(File.separator, ":")}"
+        settings.include(moduleName)
+        settings.findProject(moduleName)
+        println("📦 已包含项目模块: ${moduleName} (路径: ${relativePath})")
+    }
+    println("✅ 模块自动扫描和包含完成")
+
 }
+
+

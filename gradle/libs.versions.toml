@@ -3,7 +3,7 @@ addzeroToolIoVersion = "2025.09.20"
 addzeroIocCoreVersion = "2025.09.20"
 addzeroGradleToolVersion ="2025.09.18"
 addzeroKspBuddyVersion="0.0.608"
-addzeroPublishBuddyVersion="0.0.610"
+addzeroPublishBuddyVersion="2025.09.22"
 comCodingfelineBuildkonfigGradlePlugin = "0.17.1"
 jdk = "24"
 #https://central.sonatype.com/artifact/org.jetbrains.kotlin.jvm/org.jetbrains.kotlin.jvm.gradle.plugin
