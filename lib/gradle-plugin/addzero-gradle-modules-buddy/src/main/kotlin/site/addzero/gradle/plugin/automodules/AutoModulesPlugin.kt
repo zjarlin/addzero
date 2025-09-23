@@ -35,19 +35,23 @@ class AutoModulesPlugin : Plugin<Settings> {
             val isBuildLogic = it.name.startsWith("build-logic") || it.name.startsWith("buildLogic")
             isBuildLogic
         }
+
+        // 输出扫描结果统计信息
+        settings.gradle.rootProject.logger.lifecycle("🔍 扫描到 {} 个构建逻辑模块，{} 个普通模块", buildProj.size, modules.size)
+
         buildProj.forEach {
             settings.includeBuild(it)
             // 打印调试信息
-            println("Auto included build: ${it.name}")
+            settings.gradle.rootProject.logger.lifecycle("🔨 已包含构建逻辑模块: {}", it.name)
         }
         modules.forEach {
             val relativePath = getRelativePath(rootDir, it)
             val moduleName = ":${relativePath.replace(File.separator, ":")}"
             settings.include(moduleName)
-            println("Auto included module: $moduleName")
+            settings.findProject(moduleName)
+            settings.gradle.rootProject.logger.lifecycle("📦 已包含项目模块: {} (路径: {})", moduleName, relativePath)
         }
 
-
+        settings.gradle.rootProject.logger.lifecycle("✅ 模块自动扫描和包含完成")
     }
 }
-
