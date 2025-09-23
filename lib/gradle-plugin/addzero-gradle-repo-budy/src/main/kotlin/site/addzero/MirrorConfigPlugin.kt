@@ -1,4 +1,4 @@
-package com.example
+package site.addzero
 
 import org.gradle.api.Plugin
 import org.gradle.api.artifacts.dsl.RepositoryHandler

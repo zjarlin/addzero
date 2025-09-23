@@ -33,6 +33,15 @@ dependencyResolutionManagement {
     }
 }
 
+plugins{
+  id("org.gradle.toolchains.foojay-resolver-convention") version "+"
+
+
+//   id("site.addzero.repo-buddy") version "2025.09.23"
+//    id("site.addzero.modules-buddy") version "2025.09.22"
+//    2025.09.22
+}
+
     fun findAllProjectDirs(rootDir: File): List<File> {
         val result = mutableListOf<File>()
         if (File(rootDir, "build.gradle.kts").exists()) {

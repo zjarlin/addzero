@@ -13,7 +13,7 @@ gradlePlugin {
     plugins {
         register(project.name) {
             id = "site.addzero.repo-buddy"
-            implementationClass = "RepoConfigPlugin"
+            implementationClass = "site.addzero.RepoConfigPlugin"
         }
     }
 }
