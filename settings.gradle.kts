@@ -2,6 +2,7 @@ import org.apache.tools.ant.util.FileUtils.getRelativePath
 
 rootProject.name = "addzero"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+//includeBuild("build-logic")
 
 
 pluginManagement {
@@ -34,19 +35,20 @@ dependencyResolutionManagement {
 }
 
 
-    fun findAllProjectDirs(rootDir: File): List<File> {
-        val result = mutableListOf<File>()
-        if (File(rootDir, "build.gradle.kts").exists()) {
-            result.add(rootDir)
-        }
-        rootDir.listFiles { file: File ->
-            file.isDirectory
-        }?.forEach { subDir ->
-            result.addAll(findAllProjectDirs(subDir))
-        }
-        return result
+fun findAllProjectDirs(rootDir: File): List<File> {
+    val result = mutableListOf<File>()
+    if (File(rootDir, "build.gradle.kts").exists()) {
+        result.add(rootDir)
     }
+    rootDir.listFiles { file: File ->
+        file.isDirectory
+    }?.forEach { subDir ->
+        result.addAll(findAllProjectDirs(subDir))
+    }
+    return result
+}
 
+fun autoInclude(): Unit {
     val rootDir = settings.layout.rootDirectory.asFile
     val findAllProjectDirs = findAllProjectDirs(rootDir)
     val allProjectDirs = findAllProjectDirs
@@ -67,10 +69,10 @@ dependencyResolutionManagement {
         settings.include(moduleName)
         println("Auto included module: $moduleName")
     }
-plugins{
-  id("org.gradle.toolchains.foojay-resolver-convention") version "+"
-
-
-//   id("site.addzero.repo-buddy") version "2025.09.23"
+}
+autoInclude()
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version "+"
+//    id("site.addzero.repo-buddy") version "2025.09.23"
 //    id("site.addzero.modules-buddy") version "2025.09.22"
 }
