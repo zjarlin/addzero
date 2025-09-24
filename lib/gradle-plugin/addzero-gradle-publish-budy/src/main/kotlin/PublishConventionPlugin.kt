@@ -38,13 +38,12 @@ class PublishConventionPlugin : Plugin<Project> {
         // 配置Maven发布
         val dateFormat = SimpleDateFormat("yyyy.MM.dd", Locale.getDefault())
         val currentDate = dateFormat.format(Date())
-        
+
         // 计算当天发布次数
         val publishCount = getPublishCount(project, currentDate)
         val version = "$currentDate.$publishCount"
-        
-        println("项目版本为:::$version")
-        
+
+
         project.extensions.configure<MavenPublishBaseExtension> {
             publishToMavenCentral(true)
             signAllPublications()
@@ -90,7 +89,7 @@ class PublishConventionPlugin : Plugin<Project> {
                 }
             }
         }
-        
+
         // 发布完成后打印工件信息
         project.afterEvaluate {
             project.gradle.taskGraph.whenReady {
@@ -102,28 +101,28 @@ class PublishConventionPlugin : Plugin<Project> {
             }
         }
     }
-    
+
     /**
      * 获取当天发布次数
      */
     private fun getPublishCount(project: Project, currentDate: String): Int {
         val publishLogFile = File(project.rootDir, ".publish-log")
         val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
-        
+
         // 如果日志文件不存在，创建它
         if (!publishLogFile.exists()) {
             publishLogFile.createNewFile()
             publishLogFile.writeText("$today,1\n")
             return 1
         }
-        
+
         // 读取日志文件
         val lines = publishLogFile.readLines()
         if (lines.isEmpty()) {
             publishLogFile.writeText("$today,1\n")
             return 1
         }
-        
+
         // 查找今天的记录
         val todayLine = lines.find { it.startsWith("$today,") }
         return if (todayLine != null) {
@@ -141,14 +140,14 @@ class PublishConventionPlugin : Plugin<Project> {
             1
         }
     }
-    
+
     /**
      * 打印工件信息
      */
     private fun printArtifactInfo(project: Project, version: String) {
         val group = project.group.toString()
         val artifactId = project.name
-        
+
         println("🚀 发布完成！")
         println("📦 工件信息:")
         println("   组: $group")

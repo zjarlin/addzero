@@ -7,7 +7,6 @@ plugins {
 }
 dependencies {
     implementation(gradleApi())
-    implementation(project(":lib:gradle-plugin:addzero-gradle-tool"))
 }
 gradlePlugin {
     plugins {

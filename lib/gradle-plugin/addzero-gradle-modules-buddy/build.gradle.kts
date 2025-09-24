@@ -12,7 +12,8 @@ dependencies {
     implementation(gradleApi())
 //    implementation(libs.addzero.gradle.tool)
 //    implementation(project(":lib:gradle-plugin:addzero-gradle-tool"))
-    implementation(project(":lib:gradle-plugin:addzero-gradle-tool"))
+    implementation(projects.lib.gradlePlugin.addzeroGradleTool)
+
 }
 
 gradlePlugin {

@@ -9,9 +9,6 @@ import site.addzero.gradle.constant.Disposable.SOURCE_DIR_JVM
 import site.addzero.gradle.constant.Disposable.SOURCE_DIR_KMP
 import java.io.File
 
-// 定义黑名单目录列表
-val BLACKLIST_DIRS = listOf("buildSrc,", "build-logic")
-
 /**
  * 项目目录配置数据类
  * @property moduleName 模块名称
@@ -25,13 +22,13 @@ data class ProjectModuleConfig(
 
 
 fun getProjectDirConfigMapWithOutLib(rootDir: File): MutableMap<String, String> {
-    val projectDirConfigMapResult = getProjectDirConfigMap(BLACKLIST_DIRS + listOf("lib"), rootDir)
+    val projectDirConfigMapResult = getProjectDirConfigMap(listOf("lib"), rootDir)
     return projectDirConfigMapResult
 }
 
 
-fun getProjectDirConfigMap(blackDir: List<String> = BLACKLIST_DIRS, rootDir: File): MutableMap<String, String> {
-    val projectDirConfigMapResult = generateProjectDirConfigMap(blackDir, rootDir)
+fun getProjectDirConfigMap(blackRootDir: List<String>, rootDir: File): MutableMap<String, String> {
+    val projectDirConfigMapResult = generateProjectDirConfigMap(blackRootDir, rootDir)
     val mutableMapOf = mutableMapOf<String, String>()
     projectDirConfigMapResult.forEach { modelConfig ->
         val moduleName = modelConfig.moduleName
@@ -49,9 +46,9 @@ fun getProjectDirConfigMap(blackDir: List<String> = BLACKLIST_DIRS, rootDir: Fil
  * 生成项目目录配置映射
  * @return 包含所有项目模块目录配置的映射结果
  */
-fun generateProjectDirConfigMap(blackDir: List<String>, rootDir: File): List<ProjectModuleConfig> {
+fun generateProjectDirConfigMap(blackRootDir: List<String>, rootDir: File): List<ProjectModuleConfig> {
     val allProjectDirs = findAllProjectDirs(rootDir).filter { it != rootDir } // 排除根项目本身
-        .filter { !isBlacklisted(it, rootDir, blackDir) } // 排除黑名单目录
+        .filter { !isBlacklisted(it, rootDir, blackRootDir) } // 排除黑名单目录
 
     val map = allProjectDirs.map { projectDir ->
         val relativePath = getRelativePath(rootDir, projectDir)
@@ -107,14 +104,6 @@ fun findAllProjectDirs(rootDir: File): List<File> {
     return result
 }
 
-// 检查目录是否在黑名单中
-private fun isBlacklisted(projectDir: File, rootDir: File, blackDir: List<String>): Boolean {
-    val relativePath = getRelativePath(rootDir, projectDir)
-    return blackDir.any { blacklisted ->
-        relativePath == blacklisted || relativePath.startsWith("$blacklisted${File.separator}")
-    }
-}
-
 /**
  * 将路径转换为小驼峰命名
  */
@@ -129,38 +118,66 @@ private fun String.toCamelCase(): String {
     }.joinToString("")
 }
 
-fun Settings.autoIncludeBuild(blackDir: List<String> =emptyList()) {
 
-    val rootDir = settings.layout.rootDirectory.asFile
-    val findAllProjectDirs = findAllProjectDirs(rootDir)
-    val allProjectDirs = findAllProjectDirs
-        .filter { it.absolutePath != rootDir.absolutePath } // 排除根项目本身
-        .filterNot { it.name in blackDir }
+data class ProjectContext(
+    val buildLogics: List<File>, val modules: List<File>
+)
 
-    val (buildProj, modules) = allProjectDirs.partition {
+fun getProjectContext(rootDir: File): ProjectContext {
+    val allProjectDirs = findAllProjectDirs(rootDir).filter { it.absolutePath != rootDir.absolutePath }
+    val partition = allProjectDirs.partition {
         val isBuildLogic = it.name.startsWith("build-logic") || it.name.startsWith("buildLogic")
         isBuildLogic
     }
+    return ProjectContext(partition.first, partition.second)
+
+}
+
+
+fun Settings.autoIncludeBuild(predicate: (File) -> Boolean = { true }) {
+    val (buildLogics, modules) = getProjectContext(rootDir)
+
     // 输出扫描结果统计信息
     println(
-        "🔍 扫描到 ${buildProj.size} 个构建逻辑模块，${modules.size} 个普通模块",
+        "🔍 扫描到 ${buildLogics.size} 个构建逻辑模块，${modules.size} 个普通模块",
     )
 
-    buildProj.forEach {
-        settings.includeBuild(it)
-        // 打印调试信息
-        println("🔨 已包含构建逻辑模块: ${it.name}")
+    buildLogics.forEach {
+            settings.includeBuild(it)
+            // 打印调试信息
+            println("🔨 已包含构建逻辑模块: ${it.name}")
 
-    }
-    modules.forEach {
-        val relativePath = FileUtils.getRelativePath(rootDir, it)
-        val moduleName = ":${relativePath.replace(File.separator, ":")}"
-        settings.include(moduleName)
-        settings.findProject(moduleName)
-        println("📦 已包含项目模块: ${moduleName} (路径: ${relativePath})")
-    }
+        }
+    modules
+
+        .filter { predicate(it) }
+
+        .forEach {
+            val relativePath = FileUtils.getRelativePath(rootDir, it)
+            val moduleName = ":${relativePath.replace(File.separator, ":")}"
+            settings.include(moduleName)
+            settings.findProject(moduleName)
+            println("📦 已包含项目模块: ${moduleName} (路径: ${relativePath})")
+        }
     println("✅ 模块自动扫描和包含完成")
 
 }
 
+
+fun Settings.autoIncludeBuild(vararg blackModules: String = arrayOf()) {
+    autoIncludeBuild {
+        val relativePath = FileUtils.getRelativePath(rootDir, it)
+        val moduleName = ":${relativePath.replace(File.separator, ":")}"
+        moduleName !in blackModules
+    }
+}
+
+
+// 检查目录是否在黑名单中
+private fun isBlacklisted(projectDir: File, rootDir: File, blackDir: List<String>): Boolean {
+    val relativePath = getRelativePath(rootDir, projectDir)
+    return blackDir.any { blacklisted ->
+        relativePath == blacklisted || relativePath.startsWith("$blacklisted${File.separator}")
+    }
+}
 
