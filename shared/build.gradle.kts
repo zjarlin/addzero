@@ -16,8 +16,8 @@ plugins {
 
 
 dependencies {
-    kspCommonMainMetadata(projects.lib.ksp.jdbc2metadata.addzeroJdbc2enumProcessor)
-//    kspCommonMainMetadata(projects.lib.ksp.metadata.addzeroEnumProcessor)
+    kspCommonMainMetadata("site.addzero:addzero-jdbc2enum-processor:+")
+  //  kspCommonMainMetadata("site.addzero:addzero-enum-processor:+")
 }
 
 
@@ -28,13 +28,13 @@ kotlin {
 
             implementation(libs.kotlinx.datetime)
 
-            implementation(projects.lib.ksp.route.addzeroRouteCore)
-            implementation(projects.lib.toolKmp.addzeroTool)
-            implementation(projects.lib.toolSpring.starter.addzeroDictTransCore)
-            implementation(projects.lib.compose.addzeroComposeModelComponent)
-            implementation(projects.lib.toolJvm.jimmer.addzeroJimmerModelLowquery)
+            implementation("site.addzero:addzero-tool:+")
+                implementation("site.addzero:addzero-compose-model-component:+")
+    implementation("site.addzero:addzero-route-core:+")
+    implementation("site.addzero:addzero-dict-trans-core:+")
+    implementation("site.addzero:addzero-jimmer-model-lowquery:+")
 
-            implementation(projects.lib.toolKmp.addzeroNetworkStarter)
+    implementation("site.addzero:addzero-network-starter:+")
 
             implementation(libs.ktorfit.lib)
 

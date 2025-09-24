@@ -6,7 +6,7 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(project(":lib:tool-kmp:addzero-tool-json"))
+            implementation("site.addzero:addzero-tool-json:+")
 
         }
     }

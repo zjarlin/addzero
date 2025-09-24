@@ -33,24 +33,24 @@ dependencies {
     implementation("com.hivemq:hivemq-mqtt-client:1.3.9")
     implementation("site.addzero:addzero-tool-mqtt:+")
     implementation(libs.kotlinx.datetime)
-    implementation(projects.lib.compose.addzeroComposeModelComponent)
-    implementation(projects.lib.toolKmp.addzeroToolJson)
-    implementation(projects.lib.toolJvm.jimmer.addzeroJimmerExtLowquery)
-    implementation(projects.lib.toolJvm.addzeroToolCommonJvm)
-    implementation(projects.lib.toolSpring.starter.addzeroControllerAdviceSpringBootStarter)
+        implementation("site.addzero:addzero-compose-model-component:+")
+    implementation("site.addzero:addzero-tool-json:+")
+    implementation("site.addzero:addzero-jimmer-ext-lowquery:+")
+    implementation("site.addzero:addzero-tool-common-jvm:+")
+    implementation("site.addzero:addzero-controller-advice-spring-boot-starter:+")
 
-    implementation(projects.lib.toolJvm.addzeroToolSpring)
-    implementation(projects.lib.toolJvm.jimmer.addzeroJimmerExtLowquery)
-    implementation(projects.lib.toolJvm.jimmer.addzeroJimmerExtDynamicDatasource)
+    implementation("site.addzero:addzero-tool-spring:+")
+    implementation("site.addzero:addzero-jimmer-ext-lowquery:+")
+    implementation("site.addzero:addzero-jimmer-ext-dynamic-datasource:+")
 
     //通用库
-    implementation(projects.lib.toolJvm.addzeroToolJdbc)
+    implementation("site.addzero:addzero-tool-jdbc:+")
 
-    implementation(projects.lib.toolSpring.starter.addzeroCurllogSpringBootStarter)
-//    implementation(projects.lib.toolSpring.starter.addzeroDictTransSpringBootStarter)
-    implementation(projects.lib.toolKmp.addzeroTool)
+    implementation("site.addzero:addzero-curllog-spring-boot-starter:+")
+  //  implementation("site.addzero:addzero-dict-trans-spring-boot-starter:+")
+    implementation("site.addzero:addzero-tool:+")
     //天气库
-    implementation(projects.lib.toolJvm.addzeroToolApiJvm)
+    implementation("site.addzero:addzero-tool-api-jvm:+")
 
     //内部使用:共享业务逻辑
     implementation(projects.shared)
@@ -58,16 +58,16 @@ dependencies {
 
 
     //jdbc元数据转controller
-    ksp(projects.lib.ksp.jdbc2metadata.addzeroJdbc2controllerProcessor)
+    ksp("site.addzero:addzero-jdbc2controller-processor:+")
 
     // 阶段3: 依赖同构体的处理器
-    ksp(projects.lib.ksp.metadata.addzeroController2apiProcessor)
+    ksp("site.addzero:addzero-controller2api-processor:+")
 
     //测试ksp
-//    ksp(projects.lib.ksp.metadata.addzeroController2lazyhttpProcessor)
+//    ksp("site.addzero:addzero-controller2lazyhttp-processor:+")
 
     // 阶段4: 控制器转 Iso2DataProvider（生成到 shared 编译目录）
-    ksp(projects.lib.ksp.metadata.addzeroController2iso2dataproviderProcessor)
+    ksp("site.addzero:addzero-controller2iso2dataprovider-processor:+")
 
 
 // 引入 Spring AI 相关依赖

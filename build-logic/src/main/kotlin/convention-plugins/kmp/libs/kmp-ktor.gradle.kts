@@ -15,7 +15,7 @@ kotlin {
 
 
             implementation(libs.logback)
-//            implementation(projects.lib.toolKmp.addzeroToolJson)
+//            implementation("site.addzero:addzero-tool-json:+")
         }
 
         //懒人http

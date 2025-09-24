@@ -1,5 +1,4 @@
 import com.google.devtools.ksp.gradle.KspAATask
-import site.addzero.gradle.constant.Disposable.SOURCE_DIR_KMP
 
 plugins {
     id("kmp-app")
@@ -14,44 +13,41 @@ plugins {
 
 
 dependencies {
-    kspCommonMainMetadata(projects.lib.ksp.route.addzeroRouteProcessor)
-    kspCommonMainMetadata(projects.lib.compose.addzeroComposePropsProcessor)
-    kspCommonMainMetadata(projects.lib.ksp.metadata.ioc.addzeroIocProcessor)
+    kspCommonMainMetadata("site.addzero:addzero-route-processor:+")
+    kspCommonMainMetadata("site.addzero:addzero-compose-props-processor:+")
+    kspCommonMainMetadata("site.addzero:addzero-ioc-processor:+")
 }
-
 
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.lib.ksp.metadata.ioc.addzeroIocCore)
+            implementation("site.addzero:addzero-ioc-core:+")
             implementation(projects.shared)
             implementation(projects.sharedCompose)
 
-            implementation(projects.lib.toolKmp.addzeroTool)
+            implementation("site.addzero:addzero-tool:+")
 
 
-            implementation(projects.lib.toolKmp.addzeroNetworkStarter)
-            implementation(projects.lib.toolJvm.jimmer.addzeroJimmerModelLowquery)
+            implementation("site.addzero:addzero-network-starter:+")
+            implementation("site.addzero:addzero-jimmer-model-lowquery:+")
 
             // 组件库依赖
-            implementation(projects.lib.compose.addzeroComposeNativeComponent)
+            implementation("site.addzero:addzero-compose-native-component:+")
 
-            //jdbc元数据抽取
-//            implementation(projects.lib.ksp.common.addzeroKspSupportJdbc)
-            implementation(projects.lib.compose.addzeroComposeNativeComponentHook)
+            implementation("site.addzero:addzero-compose-native-component-hook:+")
 
             // 原来的 FileKit 依赖现在由 klibs-component 模块提供
             implementation(libs.filekit.compose)
 
             //自定义三方组件库
-            implementation(projects.lib.compose.addzeroComposeKlibsComponent)
+            implementation("site.addzero:addzero-compose-klibs-component:+")
 
 
             //注解处理器核心包
-            implementation(projects.lib.ksp.route.addzeroRouteCore)
-            implementation(projects.lib.compose.addzeroComposePropsAnnotations)
+            implementation("site.addzero:addzero-route-core:+")
+            implementation("site.addzero:addzero-compose-props-annotations:+")
 
-            implementation(projects.lib.ksp.metadata.entity2form.addzeroEntity2formCore)
+            implementation("site.addzero:addzero-entity2form-core:+")
 
             // 协程相关依赖
             implementation(libs.kotlinx.coroutines.core)
@@ -77,13 +73,6 @@ kotlin {
 
         }
 
-        // 添加源代码集配置，使KSP能够访问依赖模块的源代码
-//        commonMain {
-//            val addzeroComposeNativeComponent = projects.lib.compose.addzeroComposeNativeComponent
-//            val get = addzeroComposeNativeComponent.path
-//            val resolve = File(get).resolve(SOURCE_DIR_KMP)
-//            kotlin.srcDir(resolve.absolutePath)
-//        }
     }
 }
 

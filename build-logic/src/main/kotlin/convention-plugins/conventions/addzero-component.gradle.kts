@@ -17,9 +17,6 @@ val componentModules = rootProject.subprojects
 kotlin {
     sourceSets {
         commonMain.dependencies {
-//            implementation(projects.lib.toolKmp.addzeroToolJson)
-//            implementation(projects.lib.toolKmp.addzeroTool)
-
             componentModules.forEach {
                 implementation(it)
             }

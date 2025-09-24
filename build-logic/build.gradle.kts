@@ -2,15 +2,6 @@ plugins {
     `kotlin-dsl`
 }
 
-//buildscript {
-//    repositories {
-//        gradlePluginPortal()
-//    }
-//    dependencies {
-//        classpath(libs.gradlePlugin.buildkonfig)
-//    }
-//}
-
 repositories {
     mavenLocal()
     mavenCentral()
@@ -19,7 +10,7 @@ repositories {
 }
 
 dependencies {
-       implementation(libs.gradlePlugin.mavenPublish)
+    implementation(libs.gradlePlugin.mavenPublish)
     implementation(libs.org.graalvm.buildtools.native.gradle.plugin)
 
     implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
