@@ -7,7 +7,7 @@ plugins {
 //    alias(libs.plugins.composeHotReload)
     id("ksp4projectdir")
     id("kmp-ksp-plugin")
-    id("addzero-component")
+//    id("addzero-component")
     id("kmp-config")
 }
 
@@ -33,6 +33,19 @@ kotlin {
 
             // 组件库依赖
             implementation("site.addzero:addzero-compose-native-component:+")
+            implementation("site.addzero:addzero-compose-native-component-assist:+")
+            implementation("site.addzero:addzero-compose-native-component-button:+")
+            implementation("site.addzero:addzero-compose-native-component-card:+")
+            implementation("site.addzero:addzero-compose-native-component-form:+")
+            implementation("site.addzero:addzero-compose-native-component-high-level:+")
+            implementation("site.addzero:addzero-compose-native-component-hook:+")
+            implementation("site.addzero:addzero-compose-native-component-searchbar:+")
+            implementation("site.addzero:addzero-compose-native-component-select:+")
+            implementation("site.addzero:addzero-compose-native-component-table:+")
+            implementation("site.addzero:addzero-compose-native-component-table-core:+")
+            implementation("site.addzero:addzero-compose-native-component-table-pro:+")
+            implementation("site.addzero:addzero-compose-native-component-tree:+")
+
 
             implementation("site.addzero:addzero-compose-native-component-hook:+")
 
