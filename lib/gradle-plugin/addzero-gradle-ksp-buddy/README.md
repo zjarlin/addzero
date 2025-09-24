@@ -41,7 +41,7 @@ kspBuddy {
     )
 
     // 配置 KSP 脚本输出路径（默认值,不配置就是这个）
-    kspScriptOutputDir = "build-logic/src/main/kotlin/convention-plugins/generated"
+    kspScriptOutputDir = "build-logic/src/main/kotlin/conventions/generated"
 
     // 配置 SettingContext 生成
     settingContext = SettingContextConfig(

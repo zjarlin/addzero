@@ -6,7 +6,9 @@ val versionDate: String? = SimpleDateFormat("yyyy.MM.dd").format(Date())
 version = versionDate.toString()
 // 或者使用setter方法
 subprojects {
-    if (path.startsWith(":lib:") && name.contains("addzero-")) {
+    val bool = path.startsWith(":lib:") && name.contains("addzero-")
+    val contains1 = name.contains("build-logic")
+    if (bool||contains1) {
         apply(plugin = "site.addzero.publish-buddy")
     }
 }

@@ -7,13 +7,12 @@ plugins {
 }
 dependencies {
     implementation(gradleApi())
-    implementation(project(":lib:gradle-plugin:addzero-gradle-tool"))
 }
 gradlePlugin {
     plugins {
         register(project.name) {
             id = "site.addzero.repo-buddy"
-            implementationClass = "RepoConfigPlugin"
+            implementationClass = "site.addzero.RepoConfigPlugin"
         }
     }
 }
