@@ -1,15 +1,14 @@
 package jimmer_bug
 
 import org.babyfish.jimmer.ImmutableObjects
-import org.babyfish.jimmer.sql.ast.mutation.AssociatedSaveMode
 import org.babyfish.jimmer.sql.ast.mutation.SaveMode
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.TestConstructor
 import site.addzero.SpringBootApp
+import site.addzero.model.entity.Product
 import site.addzero.model.entity.SysDictItem
-import site.addzero.model.entity.SysDictProps
 
 @SpringBootTest(classes = [SpringBootApp::class])
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
@@ -46,6 +45,24 @@ class JimmerBugTests(val kSqlClient: KSqlClient) {
 //            setAssociatedMode(SysDictProps.SYS_DICT_ITEMS, AssociatedSaveMode.MERGE)
         }
         println(save1)
+    }
+
+     @Test
+    fun `test1`() {
+
+        val trimIndent = """{
+  "createTime" : "2025-09-25T15:48:30.401391",
+  "name" : "134",
+  "code" : "vasd",
+  "accessMethod" : "d",
+  "authMethod" : "d"
+}"""
+        val fromString = ImmutableObjects.fromString(Product::class.java, trimIndent)
+        val save1 = kSqlClient.saveCommand(fromString) {
+            setMode(SaveMode.INSERT_ONLY)
+        }
+        println(save1)
+
     }
 
 
