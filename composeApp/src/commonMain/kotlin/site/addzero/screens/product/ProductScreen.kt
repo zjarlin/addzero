@@ -15,17 +15,6 @@ fun ProductScreen(viewModel: ProductViewModel) {
     val rememberProductFormState = rememberProductFormState(viewModel.selectedT)
 
 
-    ProductForm(
-        rememberProductFormState,
-        visible = viewModel.showForm,
-        title = "产品表单",
-        onClose = {
-            viewModel.showForm = false
-        },
-        onSubmit = {
-            viewModel.onSaveForm(rememberProductFormState.value)
-        },
-    )
     AddTable(
         data = viewModel.data,
         columns = listOf(
@@ -89,5 +78,17 @@ fun ProductScreen(viewModel: ProductViewModel) {
         onDeleteClick = {
             viewModel.onDeleteClick(it)
         }
+    )
+
+    ProductForm(
+        rememberProductFormState,
+        visible = viewModel.showForm,
+        title = "产品表单",
+        onClose = {
+            viewModel.showForm = false
+        },
+        onSubmit = {
+            viewModel.onSaveForm(rememberProductFormState.value)
+        },
     )
 }
