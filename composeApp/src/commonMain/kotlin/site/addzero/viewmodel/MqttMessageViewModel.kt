@@ -75,9 +75,7 @@ class MqttMessageViewModel : ViewModel() {
                 showCommentEvents()
                 showRetryEvents()
             }
-
         }
-
 
         api {
             apiClientWithSse.sse(
@@ -85,23 +83,19 @@ class MqttMessageViewModel : ViewModel() {
                 port = 12344,
                 path = "/mqtt/consumer?brokerHost=$brokerHost&brokerPort=$brokerPort&topic=$topic"
             ) {
-                while (true) {
-                    incoming.collect { event ->
-                        event.event
-                        val data = event.data.toString()
-                        val currentList = _receivedMessages.value.toMutableList()
-                        currentList.add(0, data) // 添加到列表开头
-                        // 限制列表大小为100条消息
-                        if (currentList.size > 100) {
-                            currentList.removeAt(currentList.size - 1)
-                        }
-                        _receivedMessages.value = currentList
+                incoming.collect { event ->
+                    // 处理SSE事件
+                    val data = event.data.toString()
+                    val currentList = _receivedMessages.value.toMutableList()
+                    currentList.add(0, data) // 添加到列表开头
+                    // 限制列表大小为100条消息
+                    if (currentList.size > 100) {
+                        currentList.removeAt(currentList.size - 1)
                     }
+                    _receivedMessages.value = currentList
                 }
             }
         }
-
-
     }
 
     private fun stopSubscription() {
