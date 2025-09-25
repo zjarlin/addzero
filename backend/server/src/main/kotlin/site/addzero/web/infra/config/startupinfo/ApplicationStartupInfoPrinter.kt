@@ -45,32 +45,22 @@ class ApplicationStartupInfoPrinter(
                 DocType.KNIFE4J -> "Knife4j"
             }
 
-            // 只有Jimmer类型才显示API代理和Typescript路径
-            val jimmerSpecificLines = if (startupInfoProperties.docType == DocType.JIMMER) {
-                "│ API Proxy:   http://localhost:$port$path/ui${" ".repeat((37 - path.length).coerceAtLeast(0))}│\n" +
-                        "│ Typescript:  http://localhost:$port$path$tsZipPath${
-                            " ".repeat(
-                                (37 - tsZipPath.length).coerceAtLeast(
-                                    0
-                                )
-                            )
-                        }│\n"
-            } else {
-                ""
+            // 简化输出，去掉边框
+            val info = buildString {
+                appendLine()
+                appendLine("Application Startup Info:")
+                appendLine("========================")
+                appendLine("Application: $applicationName")
+                appendLine("Doc Type:    $docTypeName")
+                appendLine("------------------------")
+                appendLine("API Docs:    http://$ip:$port$path$uiPath")
+                
+                // 只有Jimmer类型才显示API代理和Typescript路径
+                if (startupInfoProperties.docType == DocType.JIMMER) {
+                    appendLine("API Proxy:   http://localhost:$port$path/ui")
+                    appendLine("Typescript:  http://localhost:$port$path$tsZipPath")
+                }
             }
-
-            val info = """
-                
-                ┌─────────────────────────────────────────────────────────────────┐
-                │                   Application Startup Info                      │
-                ├─────────────────────────────────────────────────────────────────┤
-                │ Application: ${applicationName.padEnd(47)}│
-                │ Doc Type:    ${docTypeName.padEnd(47)}│
-                ├─────────────────────────────────────────────────────────────────┤
-                │ API Docs:    http://$ip:$port$path$uiPath${" ".repeat((38 - uiPath.length).coerceAtLeast(0))}│
-                $jimmerSpecificLines└─────────────────────────────────────────────────────────────────┘
-                
-            """.trimIndent()
 
             println(info)
         } catch (e: Exception) {
