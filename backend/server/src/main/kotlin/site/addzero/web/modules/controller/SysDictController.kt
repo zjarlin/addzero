@@ -8,6 +8,7 @@ import site.addzero.web.infra.jimmer.base.BaseTreeApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import org.babyfish.jimmer.sql.ast.mutation.SaveMode
 import org.babyfish.jimmer.sql.kt.ast.expression.asc
 import org.babyfish.jimmer.sql.kt.ast.expression.`ilike?`
 import org.babyfish.jimmer.sql.kt.ast.expression.or
@@ -64,7 +65,9 @@ class SysDictController : BaseTreeApi<SysDict> , BaseController<SysDict> {
 
     @PostMapping("/saveDictItem")
     fun saveDictItem(@RequestBody impl: SysDictItem): SysDictItem {
-        val save = sql.save(impl)
+        val save = sql.save(impl){
+           setMode(SaveMode.INSERT_IF_ABSENT)
+        }
         return save.modifiedEntity
     }
 

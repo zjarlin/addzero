@@ -68,6 +68,7 @@ abstract class BaseTableViewModel<T, Api : TApi<T>>(val bizApi: Api) :
         api {
             val save = bizApi.save(ctx)
             ToastManager.success("保存成功")
+            onLoadData()
         }
     }
     fun onBatchDelete(it: Set<Any>) {
