@@ -30,11 +30,23 @@ interface ThingModelPropertyApi {
  * 路径: /thingModelProperty/save
  * 参数:
  *   - input: site.addzero.generated.isomorphic.ThingModelPropertyIso (RequestBody)
- * 返回类型: kotlin.Int
+ * 返回类型: site.addzero.generated.isomorphic.ThingModelPropertyIso
  */
     @POST("/thingModelProperty/save")    suspend fun save(
         @Body input: site.addzero.generated.isomorphic.ThingModelPropertyIso
-    ): kotlin.Int
+    ): site.addzero.generated.isomorphic.ThingModelPropertyIso
+
+/**
+ * upsert
+ * HTTP方法: POST
+ * 路径: /thingModelProperty/upsert
+ * 参数:
+ *   - input: site.addzero.generated.isomorphic.ThingModelPropertyIso (RequestBody)
+ * 返回类型: site.addzero.generated.isomorphic.ThingModelPropertyIso
+ */
+    @POST("/thingModelProperty/upsert")    suspend fun upsert(
+        @Body input: site.addzero.generated.isomorphic.ThingModelPropertyIso
+    ): site.addzero.generated.isomorphic.ThingModelPropertyIso
 
 /**
  * edit
@@ -59,6 +71,18 @@ interface ThingModelPropertyApi {
     @DELETE("/thingModelProperty/delete")    suspend fun deleteByIds(
         @Query("ids") ids: kotlin.String
     ): kotlin.Int
+
+/**
+ * delete
+ * HTTP方法: GET
+ * 路径: /thingModelProperty/delete
+ * 参数:
+ *   - id: kotlin.String (Query)
+ * 返回类型: kotlin.Boolean
+ */
+    @GET("/thingModelProperty/delete")    suspend fun delete(
+        @Query("id") id: kotlin.String
+    ): kotlin.Boolean
 
 /**
  * saveBatch

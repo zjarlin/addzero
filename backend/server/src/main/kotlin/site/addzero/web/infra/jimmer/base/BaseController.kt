@@ -38,28 +38,27 @@ interface BaseController<E : Any> : BaseGenericContext<E> {
     }
 
     @PostMapping("/save")
-    fun save(@RequestBody input: E): Int {
-//        val toJsonByKtx = input.toJson()
-//        val fromString = ImmutableObjects.fromString(CLASS(), toJsonByKtx)
-//
-//        //由于一些原因kmp实现unload比较麻烦,又因为无参构造字段必须要有默认值,这里得再卸载一下
-//        val jimmerEntity = fromString.setJimmerEntity {
-//            DraftObjects.unload(it, "createTime") // 清除createTime字段
-//        }
-//        val toJson = jimmerEntity?.toJson()
-        val save = sql.save(input!!) {
+    fun save(@RequestBody input: E): E {
+        val save = sql.save(input) {
             setMode(SaveMode.INSERT_ONLY)
         }
-        val modifiedEntity = save.totalAffectedRowCount
+        val modifiedEntity = save.modifiedEntity
+        return modifiedEntity
+    }
+
+    @PostMapping("/upsert")
+    fun upsert(@RequestBody input: E): E {
+        val save = sql.save(input)
+        val modifiedEntity = save.modifiedEntity
         return modifiedEntity
     }
 
     @PutMapping("/update")
     fun edit(@RequestBody e: E): Int {
-        val save = sql.save(e!!) {
+        val save = sql.save(e) {
             setMode(SaveMode.UPDATE_ONLY)
         }
-        val update =save.totalAffectedRowCount
+        val update = save.totalAffectedRowCount
         return update
     }
 
@@ -68,6 +67,13 @@ interface BaseController<E : Any> : BaseGenericContext<E> {
         val affectedRowCountMap = sql.deleteByIds(type, listOf(*ids)).totalAffectedRowCount
         return affectedRowCountMap
     }
+
+    @GetMapping("/delete")
+    fun delete(id: String): Boolean {
+        val affectedRowCountMap = sql.deleteByIds(type, listOf(id)).totalAffectedRowCount
+        return affectedRowCountMap > 0
+    }
+
 
     @PostMapping("/saveBatch")
     fun saveBatch(
@@ -82,6 +88,7 @@ interface BaseController<E : Any> : BaseGenericContext<E> {
         val byId = sql.findById(type, id)
         return byId
     }
+
 
     @GetMapping("/loadTableConfig")
     fun loadTableConfig() {

@@ -14,7 +14,7 @@ import site.addzero.entity.low_table.StateSort
 
 interface TApi<TIso> {
     suspend fun page(commonTableDaTaInputDTO: CommonTableDaTaInputDTO): PageResult<TIso>
-    suspend fun save(input: TIso): Int
+    suspend fun save(input: TIso): TIso
     suspend fun edit(e: TIso): Int
     suspend fun deleteByIds(ids: String): Int
     suspend fun saveBatch(input: List<TIso>): Int

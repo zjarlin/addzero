@@ -30,11 +30,23 @@ interface DeviceApi {
  * 路径: /device/save
  * 参数:
  *   - input: site.addzero.generated.isomorphic.DeviceIso (RequestBody)
- * 返回类型: kotlin.Int
+ * 返回类型: site.addzero.generated.isomorphic.DeviceIso
  */
     @POST("/device/save")    suspend fun save(
         @Body input: site.addzero.generated.isomorphic.DeviceIso
-    ): kotlin.Int
+    ): site.addzero.generated.isomorphic.DeviceIso
+
+/**
+ * upsert
+ * HTTP方法: POST
+ * 路径: /device/upsert
+ * 参数:
+ *   - input: site.addzero.generated.isomorphic.DeviceIso (RequestBody)
+ * 返回类型: site.addzero.generated.isomorphic.DeviceIso
+ */
+    @POST("/device/upsert")    suspend fun upsert(
+        @Body input: site.addzero.generated.isomorphic.DeviceIso
+    ): site.addzero.generated.isomorphic.DeviceIso
 
 /**
  * edit
@@ -59,6 +71,18 @@ interface DeviceApi {
     @DELETE("/device/delete")    suspend fun deleteByIds(
         @Query("ids") ids: kotlin.String
     ): kotlin.Int
+
+/**
+ * delete
+ * HTTP方法: GET
+ * 路径: /device/delete
+ * 参数:
+ *   - id: kotlin.String (Query)
+ * 返回类型: kotlin.Boolean
+ */
+    @GET("/device/delete")    suspend fun delete(
+        @Query("id") id: kotlin.String
+    ): kotlin.Boolean
 
 /**
  * saveBatch

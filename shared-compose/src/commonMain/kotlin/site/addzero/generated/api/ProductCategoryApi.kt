@@ -30,11 +30,23 @@ interface ProductCategoryApi {
  * 路径: /productCategory/save
  * 参数:
  *   - input: site.addzero.generated.isomorphic.ProductCategoryIso (RequestBody)
- * 返回类型: kotlin.Int
+ * 返回类型: site.addzero.generated.isomorphic.ProductCategoryIso
  */
     @POST("/productCategory/save")    suspend fun save(
         @Body input: site.addzero.generated.isomorphic.ProductCategoryIso
-    ): kotlin.Int
+    ): site.addzero.generated.isomorphic.ProductCategoryIso
+
+/**
+ * upsert
+ * HTTP方法: POST
+ * 路径: /productCategory/upsert
+ * 参数:
+ *   - input: site.addzero.generated.isomorphic.ProductCategoryIso (RequestBody)
+ * 返回类型: site.addzero.generated.isomorphic.ProductCategoryIso
+ */
+    @POST("/productCategory/upsert")    suspend fun upsert(
+        @Body input: site.addzero.generated.isomorphic.ProductCategoryIso
+    ): site.addzero.generated.isomorphic.ProductCategoryIso
 
 /**
  * edit
@@ -59,6 +71,18 @@ interface ProductCategoryApi {
     @DELETE("/productCategory/delete")    suspend fun deleteByIds(
         @Query("ids") ids: kotlin.String
     ): kotlin.Int
+
+/**
+ * delete
+ * HTTP方法: GET
+ * 路径: /productCategory/delete
+ * 参数:
+ *   - id: kotlin.String (Query)
+ * 返回类型: kotlin.Boolean
+ */
+    @GET("/productCategory/delete")    suspend fun delete(
+        @Query("id") id: kotlin.String
+    ): kotlin.Boolean
 
 /**
  * saveBatch

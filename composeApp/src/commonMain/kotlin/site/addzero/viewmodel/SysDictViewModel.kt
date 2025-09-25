@@ -38,7 +38,6 @@ class SysDictViewModel : ViewModel() {
         selectedDict?.sysDictItems ?: emptyList()
     }
 
-
     // 当前编辑的字典项
     var selectedDictItem by mutableStateOf<SysDictItemIso?>(null)
 
@@ -63,7 +62,7 @@ class SysDictViewModel : ViewModel() {
     // 保存字典
     fun onSaveDict(dict: SysDictIso) {
         api {
-            val saveDict = ApiProvider.sysDictApi.saveDict(dict)
+            val saveDict = ApiProvider.sysDictApi.save(dict)
             selectedDict = saveDict
             onSearch()
             ToastManager.info("保存成功")
@@ -73,10 +72,10 @@ class SysDictViewModel : ViewModel() {
     // 保存字典项
     fun onSaveDictItem(item: SysDictItemIso) {
         api {
-            val saveDictItem = ApiProvider.sysDictApi.saveDictItem(item)
+            val saveDictItem = ApiProvider.sysDictItemApi.save(item)
             showItemForm = false
+            selectedDict=saveDictItem.sysDict
             selectedDictItem = saveDictItem
-
             ToastManager.info("保存成功")
             onSearch()
         }
@@ -86,16 +85,8 @@ class SysDictViewModel : ViewModel() {
     // 删除字典项
     fun onDeleteDictItem(id: Long) {
         viewModelScope.launch {
-            ApiProvider.sysDictApi.deleteDictItem(id)
-            // 刷新当前选中的字典
-//            selectedDict?.let { dict ->
-//                val updatedDict = dictService.querydict(dict.dictCode).firstOrNull()
-//                if (updatedDict != null) {
-//                    selectedDict = updatedDict
-//                }
-//            }
+            ApiProvider.sysDictItemApi.delete(id.toString())
             onSearch()
-
         }
     }
 
@@ -113,9 +104,8 @@ class SysDictViewModel : ViewModel() {
 
     fun deleteDict(lng: Long) {
         viewModelScope.launch {
-            ApiProvider.sysDictApi.deleteDict(lng)
+            ApiProvider.sysDictApi.delete(lng.toString())
             onSearch()
-
             selectedDict = dicts.first()
 
         }

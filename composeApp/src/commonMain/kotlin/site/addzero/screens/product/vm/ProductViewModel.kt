@@ -14,8 +14,9 @@ object BizProductApi : TApi<ProductIso> {
         return productApi.page(commonTableDaTaInputDTO)
     }
 
-    override suspend fun save(input: ProductIso): Int {
-        return productApi.save(input)
+    override suspend fun save(input: ProductIso): ProductIso {
+        val save = productApi.save(input)
+        return save
     }
 
     override suspend fun edit(e: ProductIso): Int {

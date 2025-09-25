@@ -18,10 +18,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/sysDict")
 class SysDictController : BaseTreeApi<SysDict> , BaseController<SysDict> {
-
-
     @GetMapping("/querydict")
-
     fun querydict(@RequestParam keyword: String): List<SysDict> {
 //        throw BizException("dddddddddd")
         val createQuery = sql.executeQuery(SysDict::class) {
@@ -55,32 +52,19 @@ class SysDictController : BaseTreeApi<SysDict> , BaseController<SysDict> {
     }
 
 
-    @PostMapping("/saveDict")
-    fun saveDict(@RequestBody vO: SysDict): SysDict {
-        val save = sql.save(vO)
-        val modifiedEntity = save.modifiedEntity
-        return modifiedEntity
-    }
-
-
-    @PostMapping("/saveDictItem")
-    fun saveDictItem(@RequestBody impl: SysDictItem): SysDictItem {
-        val save = sql.save(impl){
-           setMode(SaveMode.INSERT_IF_ABSENT)
-        }
-        return save.modifiedEntity
-    }
-
-
-    @GetMapping("/deleteDictItem")
-    fun deleteDictItem(@RequestParam lng: Long) {
-        sql.deleteById(SysDictItem::class, lng)
-    }
-
-    @GetMapping("/deleteDict")
-    fun deleteDict(lng: Long) {
-        val deleteById = sql.deleteById(SysDict::class, lng)
-
-
-    }
+//    @PostMapping("/saveDict")
+//    fun saveDict(@RequestBody vO: SysDict): SysDict {
+//        val save = sql.save(vO)
+//        val modifiedEntity = save.modifiedEntity
+//        return modifiedEntity
+//    }
+//
+//
+//
+//    @GetMapping("/deleteDict")
+//    fun deleteDict(lng: Long) {
+//        val deleteById = sql.deleteById(SysDict::class, lng)
+//
+//
+//    }
 }
