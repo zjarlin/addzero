@@ -83,13 +83,19 @@ class MqttMessageViewModel : ViewModel() {
             apiClientWithSse.sse(
                 host = "localhost",
                 port = 12344,
-                path = "/mqtt/consumer/sse?brokerHost=$brokerHost&brokerPort=$brokerPort&topic=$topic"
+                path = "/mqtt/consumer?brokerHost=$brokerHost&brokerPort=$brokerPort&topic=$topic"
             ) {
                 while (true) {
                     incoming.collect { event ->
                         event.event
                         val data = event.data.toString()
-                        _receivedMessages.compareAndSet(_receivedMessages.value, listOf(data))
+                        val currentList = _receivedMessages.value.toMutableList()
+                        currentList.add(0, data) // 添加到列表开头
+                        // 限制列表大小为100条消息
+                        if (currentList.size > 100) {
+                            currentList.removeAt(currentList.size - 1)
+                        }
+                        _receivedMessages.value = currentList
                     }
                 }
             }
