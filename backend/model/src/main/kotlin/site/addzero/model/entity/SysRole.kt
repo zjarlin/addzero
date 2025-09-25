@@ -8,6 +8,7 @@ import org.babyfish.jimmer.sql.Entity
 import org.babyfish.jimmer.sql.Key
 import org.babyfish.jimmer.sql.ManyToMany
 import org.babyfish.jimmer.sql.Table
+import site.addzero.model.entity.SysUser
 
 /**
  * 系统角色实体

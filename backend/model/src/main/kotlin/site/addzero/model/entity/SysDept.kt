@@ -3,6 +3,7 @@ package site.addzero.model.entity
 import site.addzero.entity2form.annotation.LabelProp
 import site.addzero.model.common.BaseEntity
 import org.babyfish.jimmer.sql.*
+import site.addzero.model.entity.SysUser
 
 /**
  *部门

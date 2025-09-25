@@ -26,12 +26,14 @@ interface Product : BaseEntity {
 
     /** 产品分类 */
     @ManyToOne
+    @Key
     val productCategory: ProductCategory?
 
     /**
      * 关联的物模型
      */
     @OneToOne(mappedBy = "product")
+    @Key
     val thingModel: ThingModel?
 
     /**

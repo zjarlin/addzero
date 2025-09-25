@@ -1,7 +1,6 @@
 package site.addzero.web.infra.jimmer.base
 
 import site.addzero.common.consts.sql
-import site.addzero.web.infra.curllog.CurlLog
 import org.babyfish.jimmer.meta.ImmutableType
 import org.babyfish.jimmer.sql.fetcher.impl.FetcherImpl
 import org.babyfish.jimmer.sql.kt.ast.expression.`ilike?`
@@ -60,7 +59,6 @@ interface BaseTreeApi<E : Any> : BaseGenericContext<E> {
     }
 
     @GetMapping("/tree")
-    @CurlLog
     fun tree(
         @RequestParam keyword: String
     ): List<E> {

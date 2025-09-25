@@ -11,11 +11,13 @@
 ```
 
 或者在gradle.properties中设置：
+
 ```properties
 org.gradle.configuration-cache=false
 ```
 
 然后再执行：
+
 ```bash
 ./gradlew publishToMavenLocal
 ```
@@ -32,13 +34,14 @@ org.gradle.configuration-cache=false
 
 [![技术栈](https://skillicons.dev/icons?i=kotlin,gradle,idea,wasm,spring,postgres,docker,androidstudio)](https://skillicons.dev)
 
-**核心技术：** Kotlin Multiplatform •  Compose • Jimmer ORM • KSP • Spring Boot • PostgreSQL
+**核心技术：** Kotlin Multiplatform • Compose • Jimmer ORM • KSP • Spring Boot • PostgreSQL
 
 ## 📸 项目展示
 
 ![项目截图](images/img_2.png)
 ![项目截图](images/img_1.png)
 ![项目截图](images/img.png)
+
 ## 环境准备
 
 ```shell
@@ -52,6 +55,7 @@ export JDBC_PASSWORD=postgres
 export EXCLUDE_TABLES=flyway_schema_history,vector_store,*_mapping
 
 ```
+
 or powershell (notepad $profile)
 
 ```shell
@@ -66,7 +70,9 @@ $env:EXCLUDE_TABLES = "flyway_schema_history,vector_store,*_mapping"
 ```
 
 ## tips :暂未验证postgres以外类型数据库的元数据分析兼容性,自行验证JdbcMetadataExtractor这个工具类("自行适配,要改预编译")
-## tips :目前Server模块需要SpringAI db推荐用PGVECTOR 
+
+## tips :目前Server模块需要SpringAI db推荐用PGVECTOR
+
 ## tips :数据库会在第一次启动后端时自动初始化
 
 [//]: # (## tips :目前这个项目在积极维护中,libs有一部分代码暂时没精力搞中央仓库让所有人通用&#40;要抽配置&#41;,后续项目完善了考虑写文档说明libs每个库的作用,总之libs是作者懒到极致的封装体现!)
@@ -1089,8 +1095,18 @@ fun renderNavContent(navController: NavHostController) {
 [![Star History Chart](https://api.star-history.com/svg?repos=zjarlin/addzero.git&type=Date)](https://www.star-history.com/#zjarlin/addzero.git&Date)
 
 ## 常见问题:
+
 [ksp] java.lang.IllegalArgumentException: Error type '<ERROR TYPE:          检查controller入参或出参是否放在shared目录(因为客户端需要共享入参,出参实体)(通常为jimmer实体的同构体),然后删掉对应controller对应的api文件ksp重新生成即可
-Syntax error: Expecting an expression. 可能发生在多对一@ManyToOne  one的那一方没有可空? 导致预编译框架无法生成同构体默认值(可以说是bug,暂时不想修)
+Syntax error: Expecting an expression. 可能发生在多对一@ManyToOne one的那一方没有可空? 导致预编译框架无法生成同构体默认值(可以说是bug,暂时不想修)
 Unresolved reference 'name'. 可能发生在生成表单时jimmer实体未指定注解@LabelProp 导致表单选择器组件不知道按什么关键词搜索 , ksp 默认搜索字段为name,此时应该去实体上加注解@LabelProp
-为什么项目中BaseApi中的id要是String ,而且ids不能以vararg
+
+
+## 项目中可能有一些奇怪的地方
+
+为什么项目中BaseApi中的id要是String ,而且ids不能以vararg A: 客户端自动生成的ksp限制(vararg 写的时候不确定ksp能不能解析到)
+
+//由于一些原因kmp实现unload比较麻烦,又因为无参构造字段必须要有默认值,这里得再卸载一下
+val jimmerEntity = fromString.setJimmerEntity {
+DraftObjects.unload(it, "createTime") // 清除createTime字段
+}
 
