@@ -31,6 +31,7 @@ ksp {
 //}
 dependencies {
     implementation("com.hivemq:hivemq-mqtt-client:1.3.9")
+
     implementation("site.addzero:addzero-tool-mqtt:+")
     implementation(libs.kotlinx.datetime)
         implementation("site.addzero:addzero-compose-model-component:+")

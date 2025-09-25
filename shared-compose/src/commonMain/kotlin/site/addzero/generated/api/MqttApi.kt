@@ -28,16 +28,16 @@ interface MqttApi {
     ): kotlin.String
 
 /**
- * consumer
+ * consumerSse
  * HTTP方法: GET
- * 路径: /mqtt/consumer
+ * 路径: /mqtt/consumer/sse
  * 参数:
- *   - brokerHost: kotlin.String (Query)
- *   - brokerPort: kotlin.Int (Query)
- *   - topic: kotlin.String (Query)
+ *   - brokerHost: kotlin.String (RequestParam)
+ *   - brokerPort: kotlin.Int (RequestParam)
+ *   - topic: kotlin.String (RequestParam)
  * 返回类型: kotlin.Any
  */
-    @GET("/mqtt/consumer")    suspend fun consumer(
+    @GET("/mqtt/consumer/sse")    suspend fun consumerSse(
         @Query("brokerHost") brokerHost: kotlin.String,
         @Query("brokerPort") brokerPort: kotlin.Int,
         @Query("topic") topic: kotlin.String

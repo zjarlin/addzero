@@ -5,6 +5,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Send
+import androidx.compose.material.icons.filled.Subscriptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -12,7 +13,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import org.koin.android.annotation.KoinViewModel
 import org.koin.compose.viewmodel.koinViewModel
 import site.addzero.annotation.Route
 import site.addzero.component.button.AddIconButton
@@ -22,17 +22,44 @@ import site.addzero.viewmodel.MqttMessageViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-//@Route("工具", "MQTT消息发送")
-//@Preview
 fun MqttMessageScreen() {
     val viewModel = koinViewModel<MqttMessageViewModel>()
+    val scope = rememberCoroutineScope()
+    val receivedMessages by viewModel.receivedMessages.collectAsState()
+
+    Row(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        // 左侧：MQTT消息发送表单
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .padding(end = 8.dp)
+        ) {
+            MqttSenderForm(viewModel)
+        }
+
+        // 右侧：消息接收区域
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .padding(start = 8.dp)
+        ) {
+            MessageReceiverPanel(viewModel, receivedMessages)
+        }
+    }
+}
+
+@Composable
+fun MqttSenderForm(viewModel: MqttMessageViewModel) {
     val scope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
             .verticalScroll(scrollState),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
@@ -87,11 +114,23 @@ fun MqttMessageScreen() {
             supportingText = { Text("请输入有效的JSON格式内容") }
         )
 
-        // 发送按钮
+        // 按钮行
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.End
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
+            // 订阅/取消订阅按钮
+            AddIconButton(
+                text = if (viewModel.isSubscribed) "取消订阅" else "订阅消息",
+                imageVector = Icons.Default.Subscriptions,
+                onClick = {
+                    scope.launch {
+                        viewModel.toggleSubscription()
+                    }
+                }
+            )
+
+            // 发送按钮
             AddIconButton(
                 text = "发送消息",
                 imageVector = Icons.Default.Send,
@@ -121,6 +160,63 @@ fun MqttMessageScreen() {
                     else
                         MaterialTheme.colorScheme.onErrorContainer
                 )
+            }
+        }
+    }
+}
+
+@Composable
+fun MessageReceiverPanel(viewModel: MqttMessageViewModel, receivedMessages: List<String>) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        // 标题
+        Text(
+            text = "消息接收",
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.primary
+        )
+
+        // 消息列表
+        Card(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            val scrollState = rememberScrollState()
+
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp)
+                    .verticalScroll(scrollState)
+            ) {
+                if (receivedMessages.isEmpty()) {
+                    Text(
+                        text = "暂无消息",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                } else {
+                    receivedMessages.forEach { message ->
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 4.dp),
+                            colors = CardDefaults.cardColors(
+                                containerColor = MaterialTheme.colorScheme.secondaryContainer
+                            )
+                        ) {
+                            Text(
+                                text = message,
+                                modifier = Modifier.padding(12.dp),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSecondaryContainer
+                            )
+                        }
+                    }
+                }
             }
         }
     }

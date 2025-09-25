@@ -1,19 +1,36 @@
 package site.addzero.viewmodel
 
-import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import io.ktor.client.plugins.sse.*
+import io.ktor.http.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.withContext
 import org.koin.android.annotation.KoinViewModel
+import site.addzero.assist.api
+import site.addzero.core.network.apiClient
 import site.addzero.generated.api.ApiProvider.mqttApi
 
 @KoinViewModel
-class MqttMessageViewModel: ViewModel() {
+class MqttMessageViewModel : ViewModel() {
     var brokerHost by mutableStateOf("broker.emqx.io")
     var brokerPort by mutableStateOf(1883)
     var topic by mutableStateOf("")
     var message by mutableStateOf("{\n  \"key\": \"value\"\n}")
     var sendResult by mutableStateOf("")
+
+    // 接收到的消息列表
+    private val _receivedMessages = MutableStateFlow<List<String>>(emptyList())
+    val receivedMessages: StateFlow<List<String>> = _receivedMessages.asStateFlow()
+
+    // 控制订阅状态
+    var isSubscribed by mutableStateOf(false)
+    private var eventSourceJob: kotlinx.coroutines.Job? = null
 
     suspend fun sendMessage() {
         if (topic.isBlank()) {
@@ -35,5 +52,60 @@ class MqttMessageViewModel: ViewModel() {
         } catch (e: Exception) {
             sendResult = "错误: ${e.message}"
         }
+    }
+
+    fun toggleSubscription() {
+        if (isSubscribed) {
+            stopSubscription()
+        } else {
+            startSubscription()
+        }
+    }
+
+    private fun startSubscription() {
+        if (topic.isBlank()) {
+            sendResult = "错误: Topic不能为空"
+            return
+        }
+
+        isSubscribed = true
+        sendResult = "正在订阅消息..."
+        val apiClientWithSse = apiClient.config {
+            install(SSE) {
+                showCommentEvents()
+                showRetryEvents()
+            }
+
+        }
+
+
+        api {
+            apiClientWithSse.sse(
+                host = "localhost",
+                port = 12344,
+                path = "/mqtt/consumer/sse?brokerHost=$brokerHost&brokerPort=$brokerPort&topic=$topic"
+            ) {
+                while (true) {
+                    incoming.collect { event ->
+                        event.event
+                        val data = event.data.toString()
+                        _receivedMessages.compareAndSet(_receivedMessages.value, listOf(data))
+                    }
+                }
+            }
+        }
+
+
+    }
+
+    private fun stopSubscription() {
+        eventSourceJob?.cancel()
+        isSubscribed = false
+        sendResult = "已停止订阅"
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        stopSubscription()
     }
 }
