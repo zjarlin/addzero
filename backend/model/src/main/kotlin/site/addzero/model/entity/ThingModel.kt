@@ -1,8 +1,9 @@
-package site.addzero.model.entity.biz_device
+package site.addzero.model.entity
 
 import org.babyfish.jimmer.sql.*
 import site.addzero.entity2form.annotation.LabelProp
 import site.addzero.model.common.BaseEntity
+import site.addzero.model.entity.biz_device.ThingModelProperty
 
 /**
  * 物模型实体类，与产品一对一关联

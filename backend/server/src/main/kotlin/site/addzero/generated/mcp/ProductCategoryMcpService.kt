@@ -6,7 +6,7 @@
     import org.springframework.ai.tool.annotation.Tool
     import org.springframework.ai.tool.annotation.ToolParam
     import org.springframework.stereotype.Service
-    import site.addzero.model.entity.biz_device.ProductCategory
+    import site.addzero.model.entity.ProductCategory
     import site.addzero.generated.isomorphic.ProductCategoryIso
 
     /**

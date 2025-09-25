@@ -1,4 +1,4 @@
-package site.addzero.model.entity.biz_device
+package site.addzero.model.entity
 
 import org.babyfish.jimmer.sql.*
 import site.addzero.entity2form.annotation.LabelProp

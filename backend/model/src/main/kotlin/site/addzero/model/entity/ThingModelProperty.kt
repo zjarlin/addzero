@@ -6,6 +6,7 @@ import org.babyfish.jimmer.sql.ManyToOne
 import org.babyfish.jimmer.sql.Table
 import site.addzero.entity2form.annotation.LabelProp
 import site.addzero.model.common.BaseEntity
+import site.addzero.model.entity.ThingModel
 
 /**
  * 物模型属性实体类，属于物模型的一部分

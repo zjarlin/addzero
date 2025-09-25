@@ -1,4 +1,4 @@
-package site.addzero.model.entity.biz_device
+package site.addzero.model.entity
 
 import site.addzero.entity2form.annotation.LabelProp
 import site.addzero.model.common.BaseEntity
