@@ -6,7 +6,7 @@ spring:
 
   config:
     import:
-      #      - classpath:yml/external.yml
+      - classpath:yml/startup-info.yml
       - classpath:yml/ext.yml
       - classpath:yml/flyway.yml
       - classpath:yml/jimmer.yml

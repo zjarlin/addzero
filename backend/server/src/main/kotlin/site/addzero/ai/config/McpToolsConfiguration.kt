@@ -6,12 +6,14 @@ import org.springframework.ai.tool.definition.ToolDefinition
 import org.springframework.ai.tool.method.MethodToolCallbackProvider
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Configuration
+import org.springframework.core.annotation.Order
 
 /**
  * MCP工具配置类
  * 在应用启动时打印已注册的工具信息
  */
 @Configuration
+@Order(0)
 class McpToolsConfiguration(
 ) : CommandLineRunner {
 
