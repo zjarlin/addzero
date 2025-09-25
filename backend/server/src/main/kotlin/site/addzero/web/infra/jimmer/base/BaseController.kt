@@ -64,16 +64,17 @@ interface BaseController<E : Any> : BaseGenericContext<E> {
 
     @DeleteMapping("/delete")
     fun deleteByIds(@RequestParam vararg ids: String): Int {
-        val affectedRowCountMap = sql.deleteByIds(type, listOf(*ids)).totalAffectedRowCount
+        val map = ids.map { it.toLong() }
+        val affectedRowCountMap = sql.deleteByIds(type, map).totalAffectedRowCount
         return affectedRowCountMap
     }
 
     @GetMapping("/delete")
     fun delete(id: String): Boolean {
-        val affectedRowCountMap = sql.deleteByIds(type, listOf(id)).totalAffectedRowCount
+        val toLong = id.toLong()
+        val affectedRowCountMap = sql.deleteByIds(type, listOf(toLong)).totalAffectedRowCount
         return affectedRowCountMap > 0
     }
-
 
     @PostMapping("/saveBatch")
     fun saveBatch(

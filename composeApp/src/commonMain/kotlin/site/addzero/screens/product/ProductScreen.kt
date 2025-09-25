@@ -16,6 +16,7 @@ fun ProductScreen(viewModel: ProductViewModel) {
 
 
     AddTable(
+        getRowId = { it.id ?: 0 },
         data = viewModel.data,
         columns = listOf(
             ColumnConfig(
