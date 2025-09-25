@@ -1,22 +1,19 @@
 package site.addzero.web.infra.jimmer.base
 
 import cn.hutool.extra.spring.SpringUtil
-import site.addzero.entity.PageResult
-import site.addzero.entity.low_table.CommonTableDaTaInputDTO
-import site.addzero.jimmer.adv_search.queryPage
 import org.babyfish.jimmer.Page
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.springframework.web.bind.annotation.*
+import site.addzero.entity.PageResult
+import site.addzero.entity.low_table.CommonTableDaTaInputDTO
+import site.addzero.jimmer.adv_search.queryPage
 
-interface BaseController<E : Any> :BaseGenericContext<E>{
-        val type get() = CLASS().kotlin
-
-    //interface Noting
+interface BaseController<E : Any> : BaseGenericContext<E> {
+    val type get() = CLASS().kotlin
     val idName: String
         get() {
             return "id"
         }
-    // 懒加载 sqlClient，确保只初始化一次并缓存结果
     val sql: KSqlClient get() = lazySqlClient
 
     @PostMapping("/page")
@@ -27,10 +24,10 @@ interface BaseController<E : Any> :BaseGenericContext<E>{
         val stateSearchForms = commonTableDaTaInputDTO.stateSearches
         val pageNo = commonTableDaTaInputDTO.pageNo
         val pageSize = commonTableDaTaInputDTO.pageSize
-        val queryPage = sql.queryPage<E>(
+        val queryPage = sql.queryPage(
             sortStats = stateSorts,
             searchConditions = stateSearchForms,
-            entityClass =type,
+            entityClass = type,
             stateVos = mutableSetOf(),
             pageNo = pageNo,
             pageSize = pageSize,
@@ -38,7 +35,6 @@ interface BaseController<E : Any> :BaseGenericContext<E>{
         val pageRes = queryPage.toPageResult()
         return pageRes
     }
-
 
     @PostMapping("/save")
     fun save(@RequestBody input: E): Int {
@@ -51,8 +47,6 @@ interface BaseController<E : Any> :BaseGenericContext<E>{
         val update = sql.update(e).totalAffectedRowCount
         return update
     }
-
-
 
     @DeleteMapping("/delete")
     fun deleteByIds(@RequestParam vararg ids: String): Int {
@@ -75,8 +69,9 @@ interface BaseController<E : Any> :BaseGenericContext<E>{
     }
 
     @GetMapping("/loadTableConfig")
-    fun loadTableConfig()  {
+    fun loadTableConfig() {
     }
+
     companion object {
         private val lazySqlClient: KSqlClient by lazy {
             SpringUtil.getBean(KSqlClient::class.java)

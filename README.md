@@ -1092,3 +1092,5 @@ fun renderNavContent(navController: NavHostController) {
 [ksp] java.lang.IllegalArgumentException: Error type '<ERROR TYPE:          检查controller入参或出参是否放在shared目录(因为客户端需要共享入参,出参实体)(通常为jimmer实体的同构体),然后删掉对应controller对应的api文件ksp重新生成即可
 Syntax error: Expecting an expression. 可能发生在多对一@ManyToOne  one的那一方没有可空? 导致预编译框架无法生成同构体默认值(可以说是bug,暂时不想修)
 Unresolved reference 'name'. 可能发生在生成表单时jimmer实体未指定注解@LabelProp 导致表单选择器组件不知道按什么关键词搜索 , ksp 默认搜索字段为name,此时应该去实体上加注解@LabelProp
+为什么项目中BaseApi中的id要是String ,而且ids不能以vararg
+

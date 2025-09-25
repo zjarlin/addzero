@@ -7,24 +7,27 @@ import site.addzero.component.table.biz.AddTable
 import site.addzero.component.table.original.entity.ColumnConfig
 import site.addzero.generated.forms.ProductForm
 import site.addzero.generated.forms.rememberProductFormState
-import site.addzero.generated.isomorphic.ProductIso
 import site.addzero.screens.product.vm.ProductViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductScreen(viewModel: ProductViewModel) {
-    val rememberProductFormState = rememberProductFormState()
+    val rememberProductFormState = rememberProductFormState(viewModel.selectedT)
+
 
     ProductForm(
         rememberProductFormState,
-        visible = viewModel.showAddDialog,
+        visible = viewModel.showForm,
         title = "产品表单",
-        onClose = {},
-        onSubmit = {},
+        onClose = {
+            viewModel.showForm = false
+        },
+        onSubmit = {
+            viewModel.onSaveForm(rememberProductFormState.value)
+        },
     )
-
     AddTable(
-        data = viewModel.products,
+        data = viewModel.data,
         columns = listOf(
             ColumnConfig(
                 key = "name",
@@ -64,27 +67,27 @@ fun ProductScreen(viewModel: ProductViewModel) {
         ),
         getColumnKey = { it.key },
         getColumnLabel = {
-
-            Text(
-             it.comment
-            )
-
-         },
-        onSearch = { keyword, serchState, stateSort, StatePagination ->
-            println("搜索")
+            Text(it.comment)
         },
-        onSaveClick = {},
-        onImportClick = {},
+        onSearch = { keyword, serchState, stateSort, StatePagination ->
+            viewModel.onSearch(keyword, serchState, stateSort, StatePagination)
+        },
+        onSaveClick = {
+            viewModel.showForm = true
+        },
+        onImportClick = {
+        },
         onExportClick = { keyword, serchState, stateSort, StatePagination ->
         },
-        onBatchDelete = {},
-        onBatchExport = {},
-        onEditClick = { product ->
-            viewModel.selectedProduct = product as ProductIso
-            viewModel.showAddDialog = true
+        onBatchDelete = {
+            viewModel.onBatchDelete(it)
         },
-        onDeleteClick = { product ->
-            viewModel.deleteProduct((product as ProductIso).id ?: 0L)
+        onBatchExport = {},
+        onEditClick = {
+            viewModel.onEditClick(it)
+        },
+        onDeleteClick = {
+            viewModel.onDeleteClick(it)
         }
     )
 }
