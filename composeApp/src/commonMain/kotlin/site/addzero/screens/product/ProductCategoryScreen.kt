@@ -7,7 +7,6 @@ import site.addzero.component.table.biz.AddTable
 import site.addzero.component.table.original.entity.ColumnConfig
 import site.addzero.generated.forms.ProductCategoryForm
 import site.addzero.generated.forms.rememberProductCategoryFormState
-import site.addzero.generated.isomorphic.DeviceIso
 import site.addzero.generated.isomorphic.ProductCategoryIso
 import site.addzero.screens.product.vm.ProductCategoryViewModel
 
@@ -15,7 +14,7 @@ import site.addzero.screens.product.vm.ProductCategoryViewModel
 @Composable
 fun ProductCategoryScreen(viewModel: ProductCategoryViewModel) {
     AddTable(
-               getRowId = { it.id.toString() },
+        getRowId = { it.id.toString() },
 
         data = viewModel.data,
         columns = listOf(
@@ -51,14 +50,14 @@ fun ProductCategoryScreen(viewModel: ProductCategoryViewModel) {
 
         },
         onSaveClick = {
-                   viewModel.showForm = true
+            viewModel.showForm = true
 
         },
         onImportClick = {},
         onExportClick = { keyword, serchState, stateSort, StatePagination ->
         },
         onBatchDelete = {
-                       viewModel.onBatchDelete(it)
+            viewModel.onBatchDelete(it)
         },
         onBatchExport = {},
         onEditClick = {
@@ -73,12 +72,14 @@ fun ProductCategoryScreen(viewModel: ProductCategoryViewModel) {
         formState,
         visible = viewModel.showForm,
         title = "产品分类表单",
-        onClose = {viewModel.showForm=false},
+        onClose = { viewModel.showForm = false },
         onSubmit = {
             viewModel.onSaveForm(formState.value)
-            formState.value= ProductCategoryIso()
+            formState.value = ProductCategoryIso()
 
         },
-    )
+    ) {
+        products(hidden = true)
+    }
 
 }

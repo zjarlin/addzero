@@ -30,6 +30,7 @@ interface ProductCategory : BaseEntity {
     val parent: ProductCategory?
 
 
+    /** 产品 */
     @OneToMany(mappedBy = "productCategory")
     val products: List<Product>
 

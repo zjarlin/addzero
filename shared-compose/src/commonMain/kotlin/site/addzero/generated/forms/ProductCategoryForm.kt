@@ -142,7 +142,7 @@ fun ProductCategoryFormOriginal(
             AddGenericMultiSelector(
                 value = state.value.products ?: emptyList(),
                 onValueChange = { state.value = state.value.copy(products = it) },
-                placeholder = "products",
+                placeholder = "产品",
                 dataProvider = { dataList },
                 getId = { it.id ?: 0L },
                 getLabel = { it.name ?: "" },
