@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import io.ktor.client.plugins.sse.*
-import io.ktor.http.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,7 +19,7 @@ import site.addzero.generated.api.ApiProvider.mqttApi
 class MqttMessageViewModel : ViewModel() {
     var brokerHost by mutableStateOf("broker.emqx.io")
     var brokerPort by mutableStateOf(1883)
-    var topic by mutableStateOf("")
+    var topic by mutableStateOf("sensor/2/temperature")
     var message by mutableStateOf("{\n  \"key\": \"value\"\n}")
     var sendResult by mutableStateOf("")
 

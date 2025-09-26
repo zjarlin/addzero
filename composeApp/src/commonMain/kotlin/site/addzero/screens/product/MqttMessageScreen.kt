@@ -7,14 +7,15 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material.icons.filled.Subscriptions
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
-import site.addzero.annotation.Route
 import site.addzero.component.button.AddIconButton
 import site.addzero.component.form.number.AddIntegerField
 import site.addzero.component.form.text.AddTextField
@@ -91,7 +92,7 @@ fun MqttSenderForm(viewModel: MqttMessageViewModel) {
 
         // Topic字段
         AddTextField(
-            value = viewModel.topic.ifBlank { "sensor/2/temperature" },
+            value = viewModel.topic,
             onValueChange = { viewModel.topic = it },
             label = "Topic",
             placeholder = "例如: sensor/2/temperature",

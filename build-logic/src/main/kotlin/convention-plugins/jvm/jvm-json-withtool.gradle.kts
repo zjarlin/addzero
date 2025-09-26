@@ -1,6 +1,10 @@
+import org.gradle.accessors.dm.LibrariesForLibs
+
 plugins {
     id("jvm-json")
 }
+val libs = the<LibrariesForLibs>()
+
 dependencies {
-    implementation("site.addzero:addzero-tool-json:+")
+    implementation(libs.addzero.tool.json)
 }

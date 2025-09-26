@@ -7,60 +7,34 @@ plugins {
 //    alias(libs.plugins.composeHotReload)
     id("ksp4projectdir")
     id("kmp-ksp-plugin")
-//    id("addzero-component")
+    id("addzero-component")
     id("kmp-config")
 }
 
 
 dependencies {
-    kspCommonMainMetadata("site.addzero:addzero-route-processor:+")
-    kspCommonMainMetadata("site.addzero:addzero-compose-props-processor:+")
-    kspCommonMainMetadata("site.addzero:addzero-ioc-processor:+")
+    kspCommonMainMetadata(libs.addzero.route.processor)
+    kspCommonMainMetadata(libs.addzero.compose.props.processor)
+    kspCommonMainMetadata(libs.site.addzero.ioc.processor.v20250924)
 }
 
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation("site.addzero:addzero-ioc-core:+")
             implementation(projects.shared)
             implementation(projects.sharedCompose)
 
-            implementation("site.addzero:addzero-tool:+")
+            implementation("site.addzero:addzero-ioc-core:${libs.versions.addzeroLTSVersion.get()}")
+            implementation("site.addzero:addzero-tool:${libs.versions.addzeroLTSVersion.get()}")
+            implementation("site.addzero:addzero-network-starter:${libs.versions.addzeroLTSVersion.get()}")
+            implementation("site.addzero:addzero-jimmer-model-lowquery:${libs.versions.addzeroLTSVersion.get()}")
 
+            implementation("site.addzero:addzero-route-core:${libs.versions.addzeroLTSVersion.get()}")
+            implementation("site.addzero:addzero-compose-props-annotations:${libs.versions.addzeroLTSVersion.get()}")
 
-            implementation("site.addzero:addzero-network-starter:+")
-            implementation("site.addzero:addzero-jimmer-model-lowquery:+")
-
-            // 组件库依赖
-            implementation("site.addzero:addzero-compose-native-component:+")
-            implementation("site.addzero:addzero-compose-native-component-assist:+")
-            implementation("site.addzero:addzero-compose-native-component-button:+")
-            implementation("site.addzero:addzero-compose-native-component-card:+")
-            implementation("site.addzero:addzero-compose-native-component-form:+")
-            implementation("site.addzero:addzero-compose-native-component-high-level:+")
-            implementation("site.addzero:addzero-compose-native-component-hook:+")
-            implementation("site.addzero:addzero-compose-native-component-searchbar:+")
-            implementation("site.addzero:addzero-compose-native-component-select:+")
-            implementation("site.addzero:addzero-compose-native-component-table:+")
-            implementation("site.addzero:addzero-compose-native-component-table-core:+")
-            implementation("site.addzero:addzero-compose-native-component-table-pro:+")
-            implementation("site.addzero:addzero-compose-native-component-tree:+")
-
-
-            implementation("site.addzero:addzero-compose-native-component-hook:+")
-
-            // 原来的 FileKit 依赖现在由 klibs-component 模块提供
+            implementation("site.addzero:addzero-entity2form-core:${libs.versions.addzeroLTSVersion.get()}")
             implementation(libs.filekit.compose)
 
-            //自定义三方组件库
-            implementation("site.addzero:addzero-compose-klibs-component:+")
-
-
-            //注解处理器核心包
-            implementation("site.addzero:addzero-route-core:+")
-            implementation("site.addzero:addzero-compose-props-annotations:+")
-
-            implementation("site.addzero:addzero-entity2form-core:+")
 
             // 协程相关依赖
             implementation(libs.kotlinx.coroutines.core)

@@ -10,15 +10,15 @@ plugins {
 dependencies {
     ksp(libs.jimmer.ksp)
 
-    ksp("site.addzero:addzero-jdbc2entity-processor:+")
-    ksp("site.addzero:addzero-entity2iso-processor:+")
-    ksp("site.addzero:addzero-entity2form-processor:+")
-    ksp("site.addzero:addzero-entity2mcp-processor:+")
+    ksp(libs.addzero.jdbc2entity.processor)
+    ksp(libs.addzero.entity2iso.processor)
+    ksp(libs.addzero.entity2form.processor)
+    ksp(libs.addzero.entity2mcp.processor)
     implementation(libs.jimmer.sql.kotlin)
     //easy-excel
     implementation(libs.fastexcel)
     //实体表单核心注解
-    implementation("site.addzero:addzero-entity2form-core:+")
+    implementation(libs.addzero.entity2form.core)
     implementation(projects.shared)
     implementation(libs.hutool.all)
 }

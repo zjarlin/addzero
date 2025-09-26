@@ -30,28 +30,26 @@ ksp {
 //    mainClass.set("site.addzero.SpringBootAppKt")
 //}
 dependencies {
-    implementation("com.hivemq:hivemq-mqtt-client:1.3.9")
+    implementation(libs.hivemq.mqtt.client)
 
-    implementation("site.addzero:addzero-tool-mqtt:+")
+    implementation(libs.addzero.tool.mqtt)
     implementation(libs.kotlinx.datetime)
-        implementation("site.addzero:addzero-compose-model-component:+")
-    implementation("site.addzero:addzero-tool-json:+")
-    implementation("site.addzero:addzero-jimmer-ext-lowquery:+")
-    implementation("site.addzero:addzero-tool-common-jvm:+")
+        implementation(libs.addzero.compose.model.component)
+    implementation(libs.addzero.tool.json)
+    implementation(libs.addzero.jimmer.ext.lowquery)
+    implementation(libs.addzero.tool.common.jvm)
 //    implementation("site.addzero:addzero-controller-advice-spring-boot-starter:+")
 
-    implementation("site.addzero:addzero-tool-spring:+")
-    implementation("site.addzero:addzero-jimmer-ext-lowquery:+")
-    implementation("site.addzero:addzero-jimmer-ext-dynamic-datasource:+")
-
-    //通用库
-    implementation("site.addzero:addzero-tool-jdbc:+")
+    implementation(libs.addzero.tool.spring)
+    implementation(libs.addzero.jimmer.ext.lowquery)
+    implementation(libs.site.addzero.addzero.jimmer.ext.dynamic.datasource)
+    implementation(libs.addzero.tool.jdbc)
 
 //    implementation("site.addzero:addzero-curllog-spring-boot-starter:+")
   //  implementation("site.addzero:addzero-dict-trans-spring-boot-starter:+")
-    implementation("site.addzero:addzero-tool:+")
+    implementation(libs.addzero.tool)
     //天气库
-    implementation("site.addzero:addzero-tool-api-jvm:+")
+    implementation(libs.addzero.tool.api.jvm)
 
     //内部使用:共享业务逻辑
     implementation(projects.shared)
@@ -62,13 +60,13 @@ dependencies {
 //    ksp("site.addzero:addzero-jdbc2controller-processor:+")
 
     // 阶段3: 依赖同构体的处理器
-    ksp("site.addzero:addzero-controller2api-processor:+")
+    ksp(libs.addzero.controller2api.processor)
 
     //测试ksp
 //    ksp("site.addzero:addzero-controller2lazyhttp-processor:+")
 
     // 阶段4: 控制器转 Iso2DataProvider（生成到 shared 编译目录）
-    ksp("site.addzero:addzero-controller2iso2dataprovider-processor:+")
+    ksp(libs.addzero.controller2iso2dataprovider.processor)
 
 
 // 引入 Spring AI 相关依赖
