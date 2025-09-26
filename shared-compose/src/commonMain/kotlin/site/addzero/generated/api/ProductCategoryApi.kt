@@ -116,4 +116,16 @@ interface ProductCategoryApi {
  */
     @GET("/productCategory/loadTableConfig")    suspend fun loadTableConfig(): kotlin.Unit
 
+/**
+ * tree
+ * HTTP方法: GET
+ * 路径: /productCategory/tree
+ * 参数:
+ *   - keyword: kotlin.String (RequestParam)
+ * 返回类型: kotlin.collections.List<site.addzero.generated.isomorphic.ProductCategoryIso>
+ */
+    @GET("/productCategory/tree")    suspend fun tree(
+        @Query("keyword") keyword: kotlin.String
+    ): kotlin.collections.List<site.addzero.generated.isomorphic.ProductCategoryIso>
+
 }

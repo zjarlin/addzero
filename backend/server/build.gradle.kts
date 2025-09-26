@@ -30,11 +30,9 @@ ksp {
 //    mainClass.set("site.addzero.SpringBootAppKt")
 //}
 dependencies {
-    implementation(libs.hivemq.mqtt.client)
-
     implementation(libs.addzero.tool.mqtt)
     implementation(libs.kotlinx.datetime)
-        implementation(libs.addzero.compose.model.component)
+    implementation(libs.addzero.compose.model.component)
     implementation(libs.addzero.tool.json)
     implementation(libs.addzero.jimmer.ext.lowquery)
     implementation(libs.addzero.tool.common.jvm)
@@ -46,7 +44,7 @@ dependencies {
     implementation(libs.addzero.tool.jdbc)
 
 //    implementation("site.addzero:addzero-curllog-spring-boot-starter:+")
-  //  implementation("site.addzero:addzero-dict-trans-spring-boot-starter:+")
+    //  implementation("site.addzero:addzero-dict-trans-spring-boot-starter:+")
     implementation(libs.addzero.tool)
     //天气库
     implementation(libs.addzero.tool.api.jvm)
