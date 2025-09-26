@@ -59,15 +59,23 @@ abstract class BaseTableViewModel<T, Api : TApi<T>>(val bizApi: Api) :
             )
             data = page.rows
             page.totalPageCount
-            statePagination = statePagination.copy(currentPage = page.pageIndex, totalItems = page.totalRowCount.toInt())
+            statePagination =
+                statePagination.copy(currentPage = page.pageIndex, totalItems = page.totalRowCount.toInt())
             ToastManager.success("数据加载成功")
         }
     }
 
     fun onSaveForm(ctx: T) {
         api {
-            val save = bizApi.save(ctx)
-            ToastManager.success("保存成功")
+            if (selectedT == null) {
+                val save = bizApi.save(ctx)
+                selectedT = save
+                ToastManager.success("保存成功")
+            } else {
+                bizApi.edit(ctx)
+                ToastManager.success("修改成功")
+            }
+            showForm = false
             onLoadData()
         }
     }

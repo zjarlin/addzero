@@ -7,6 +7,7 @@ import site.addzero.component.table.biz.AddTable
 import site.addzero.component.table.original.entity.ColumnConfig
 import site.addzero.generated.forms.ThingModelForm
 import site.addzero.generated.forms.rememberThingModelFormState
+import site.addzero.generated.isomorphic.ThingModelIso
 import site.addzero.screens.product.vm.ThingModelViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -15,6 +16,7 @@ fun ThingModelScreen(viewModel: ThingModelViewModel) {
 
 
     AddTable(
+        getRowId = { it.id.toString() },
         data = viewModel.data,
         columns = listOf(
             ColumnConfig(
@@ -77,6 +79,7 @@ fun ThingModelScreen(viewModel: ThingModelViewModel) {
         onClose = { viewModel.showForm = false },
         onSubmit = {
             viewModel.onSaveForm(formState.value)
+            formState.value = ThingModelIso()
         },
     )
 }

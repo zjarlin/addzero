@@ -7,12 +7,14 @@ import site.addzero.component.table.biz.AddTable
 import site.addzero.component.table.original.entity.ColumnConfig
 import site.addzero.generated.forms.DeviceForm
 import site.addzero.generated.forms.rememberDeviceFormState
+import site.addzero.generated.isomorphic.DeviceIso
 import site.addzero.screens.product.vm.DeviceViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DeviceScreen(viewModel: DeviceViewModel) {
     AddTable(
+        getRowId = { it.id.toString() },
         data = viewModel.data,
         columns = listOf(
             ColumnConfig(
@@ -86,7 +88,7 @@ fun DeviceScreen(viewModel: DeviceViewModel) {
         },
         onSubmit = {
             viewModel.onSaveForm(formState.value)
-
+            formState.value= DeviceIso()
         },
     )
 

@@ -8,8 +8,6 @@ import site.addzero.util.MQTTUtils
 @RestController
 @RequestMapping("/mqtt")
 class MqttController {
-
-
     @GetMapping("/producer")
     fun producer(
         brokerHost: String = "broker.emqx.io",

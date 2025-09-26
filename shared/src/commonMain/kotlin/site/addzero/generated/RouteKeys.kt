@@ -37,6 +37,7 @@ object RouteKeys {
     const val EXCEL_METADATA_TEST_SCREEN = "site.addzero.screens.excel.ExcelMetadataTestScreen"
     const val PROD_MANNAGER = "site.addzero.screens.product.sc.ProdMannager"
     const val EQUIPMENT_CLASSIFICATION_MANAGEMENT = "site.addzero.screens.product.sc.EquipmentClassificationManagement"
+    const val MANAGEMENT_OF_PHYSICAL_MODELS = "site.addzero.screens.product.sc.managementOfPhysicalModels"
     const val DEVICE_MANNAGER = "site.addzero.screens.product.sc.DeviceMannager"
     const val SHEBIEJIERU = "site.addzero.screens.product.sc.Shebiejieru"
     const val JSON_DESIGNER_DEMO = "site.addzero.screens.json.JsonDesignerDemo"
@@ -79,6 +80,7 @@ object RouteKeys {
         Route(value = "测试", title = "元数据提取测试", routePath = "site.addzero.screens.excel.ExcelMetadataTestScreen", icon = "", order = 0.0, qualifiedName = "site.addzero.screens.excel.ExcelMetadataTestScreen"),
         Route(value = "物联网模块", title = "产品管理", routePath = "site.addzero.screens.product.sc.ProdMannager", icon = "", order = 0.0, qualifiedName = "site.addzero.screens.product.sc.ProdMannager"),
         Route(value = "物联网模块", title = "产品分类管理", routePath = "site.addzero.screens.product.sc.EquipmentClassificationManagement", icon = "", order = 0.0, qualifiedName = "site.addzero.screens.product.sc.EquipmentClassificationManagement"),
+        Route(value = "物联网模块", title = "物模型管理", routePath = "site.addzero.screens.product.sc.managementOfPhysicalModels", icon = "", order = 0.0, qualifiedName = "site.addzero.screens.product.sc.managementOfPhysicalModels"),
         Route(value = "物联网模块", title = "设备管理", routePath = "site.addzero.screens.product.sc.DeviceMannager", icon = "", order = 0.0, qualifiedName = "site.addzero.screens.product.sc.DeviceMannager"),
         Route(value = "物联网模块", title = "设备接入", routePath = "site.addzero.screens.product.sc.Shebiejieru", icon = "", order = 0.0, qualifiedName = "site.addzero.screens.product.sc.Shebiejieru"),
         Route(value = "界面演示", title = "JSON设计器演示", routePath = "site.addzero.screens.json.JsonDesignerDemo", icon = "", order = 0.0, qualifiedName = "site.addzero.screens.json.JsonDesignerDemo"),

@@ -39,6 +39,7 @@ interface Device : BaseEntity {
      * 是否启用
      */
     @Key
+    @Default("1")
     val enabled: Boolean
 
     /**

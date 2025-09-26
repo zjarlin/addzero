@@ -7,13 +7,14 @@ import site.addzero.component.table.biz.AddTable
 import site.addzero.component.table.original.entity.ColumnConfig
 import site.addzero.generated.forms.ProductForm
 import site.addzero.generated.forms.rememberProductFormState
+import site.addzero.generated.isomorphic.ProductIso
 import site.addzero.screens.product.vm.ProductViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductScreen(viewModel: ProductViewModel) {
     AddTable(
-        getRowId = { it.id ?: 0 },
+        getRowId = { it.id.toString() },
         data = viewModel.data,
         columns = listOf(
             ColumnConfig(
@@ -78,17 +79,18 @@ fun ProductScreen(viewModel: ProductViewModel) {
             viewModel.onDeleteClick(it)
         }
     )
-    val rememberProductFormState = rememberProductFormState(viewModel.selectedT)
+    val formState = rememberProductFormState(viewModel.selectedT)
 
     ProductForm(
-        rememberProductFormState,
+        formState,
         visible = viewModel.showForm,
         title = "产品表单",
         onClose = {
             viewModel.showForm = false
         },
         onSubmit = {
-            viewModel.onSaveForm(rememberProductFormState.value)
+            viewModel.onSaveForm(formState.value)
+            formState.value= ProductIso()
         },
     )
 }

@@ -162,7 +162,7 @@ fun ThingModelFormOriginal(
             AddGenericMultiSelector(
                 value = state.value.properties ?: emptyList(),
                 onValueChange = { state.value = state.value.copy(properties = it) },
-                placeholder = "properties",
+                placeholder = "属性列表",
                 dataProvider = { dataList },
                 getId = { it.id ?: 0L },
                 getLabel = { it.description ?: "" },

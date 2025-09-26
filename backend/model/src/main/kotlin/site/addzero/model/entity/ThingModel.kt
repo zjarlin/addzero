@@ -43,6 +43,7 @@ interface ThingModel : BaseEntity {
     @Default("1")
     val status: Int
 
+    /** 属性列表 */
     @OneToMany(mappedBy = "thingModel")
     val properties: List<ThingModelProperty>
 
