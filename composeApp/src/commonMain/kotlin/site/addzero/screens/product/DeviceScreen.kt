@@ -7,26 +7,13 @@ import site.addzero.component.table.biz.AddTable
 import site.addzero.component.table.original.entity.ColumnConfig
 import site.addzero.generated.forms.DeviceForm
 import site.addzero.generated.forms.rememberDeviceFormState
-import site.addzero.generated.isomorphic.DeviceIso
 import site.addzero.screens.product.vm.DeviceViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DeviceScreen(viewModel: DeviceViewModel) {
-    val devices = viewModel.loadDevices()
-    val deviceFormState = rememberDeviceFormState()
-
-    DeviceForm(
-        deviceFormState,
-        visible = viewModel.showAddDialog,
-        title = "产品分类表单",
-        onClose = {},
-        onSubmit = {},
-    )
-
     AddTable(
-
-        data = devices,
+        data = viewModel.data,
         columns = listOf(
             ColumnConfig(
                 key = "name",
@@ -67,22 +54,37 @@ fun DeviceScreen(viewModel: DeviceViewModel) {
 
         },
         onSearch = { keyword, serchState, stateSort, StatePagination ->
-            println("搜索")
+            viewModel.onSearch(keyword, serchState, stateSort, StatePagination)
+
         },
-        onSaveClick = {},
+        onSaveClick = {
+            viewModel.showForm = true
+        },
         onImportClick = {},
         onExportClick = { keyword, serchState, stateSort, StatePagination ->
         },
-        onBatchDelete = {},
-        onBatchExport = {},
-        onEditClick = { device ->
-            viewModel.selectedDevice = device as DeviceIso
-            viewModel.showAddDialog = true
+        onBatchDelete = {
+            viewModel.onBatchDelete(it)
         },
-        onDeleteClick = { device ->
-            viewModel.deleteDevice((device as DeviceIso).id ?: 0L)
+        onBatchExport = {},
+        onEditClick = {
+            viewModel.onEditClick(it)
+
+        },
+        onDeleteClick = {
+            viewModel.onDeleteClick(it)
         }
     )
+    val deviceFormState = rememberDeviceFormState()
+
+    DeviceForm(
+        deviceFormState,
+        visible = viewModel.showForm,
+        title = "产品分类表单",
+        onClose = {},
+        onSubmit = {},
+    )
+
 }
 
 

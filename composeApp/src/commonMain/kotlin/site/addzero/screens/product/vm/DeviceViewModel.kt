@@ -1,54 +1,43 @@
 package site.addzero.screens.product.vm
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
 import org.koin.android.annotation.KoinViewModel
+import site.addzero.abs.BaseTableViewModel
+import site.addzero.abs.TApi
+import site.addzero.entity.PageResult
+import site.addzero.entity.low_table.CommonTableDaTaInputDTO
+import site.addzero.generated.api.ApiProvider.deviceApi
 import site.addzero.generated.isomorphic.DeviceIso
-import site.addzero.generated.isomorphic.ProductIso
 
+object BizDeviceApi : TApi<DeviceIso> {
+    override suspend fun page(commonTableDaTaInputDTO: CommonTableDaTaInputDTO): PageResult<DeviceIso> {
+        return deviceApi.page(commonTableDaTaInputDTO)
+    }
+
+    override suspend fun save(input: DeviceIso): DeviceIso {
+        return deviceApi.save(input)
+    }
+
+    override suspend fun edit(e: DeviceIso): Int {
+        return deviceApi.edit(e)
+    }
+
+    override suspend fun deleteByIds(ids: String): Int {
+        return deviceApi.deleteByIds(ids)
+    }
+
+    override suspend fun saveBatch(input: List<DeviceIso>): Int {
+        return deviceApi.saveBatch(input)
+    }
+
+    override suspend fun findById(id: String): DeviceIso {
+        return deviceApi.findById(id)
+    }
+
+    override suspend fun loadTableConfig() {
+        return deviceApi.loadTableConfig()
+    }
+}
 @KoinViewModel
-class DeviceViewModel : ViewModel() {
-    var showAddDialog by mutableStateOf(false)
-    var selectedDevice by mutableStateOf<DeviceIso?>(null)
+class DeviceViewModel : BaseTableViewModel<DeviceIso, BizDeviceApi>(BizDeviceApi) {
 
-    fun loadDevices(): List<DeviceIso> {
-        return emptyList()
-    }
-
-    fun loadProducts(): List<ProductIso> {
-        return listOf(
-            ProductIso(
-                id = 1,
-                name = "数控机床",
-                code = "CNC-001",
-                description = "高精度数控机床",
-                accessMethod = "MQTT",
-                authMethod = "证书认证",
-                enabled = true
-            ),
-            ProductIso(
-                id = 2,
-                name = "温湿度传感器",
-                code = "THS-001",
-                description = "温湿度传感器",
-                accessMethod = "MQTT",
-                authMethod = "密钥认证",
-                enabled = true
-            )
-        )
-    }
-
-    fun addDevice(device: DeviceIso) {
-        // TODO: 添加设备
-    }
-
-    fun updateDevice(device: DeviceIso) {
-        // TODO: 更新设备
-    }
-
-    fun deleteDevice(id: Long) {
-        // TODO: 删除设备
-    }
 }

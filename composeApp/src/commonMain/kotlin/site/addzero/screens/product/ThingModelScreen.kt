@@ -7,25 +7,15 @@ import site.addzero.component.table.biz.AddTable
 import site.addzero.component.table.original.entity.ColumnConfig
 import site.addzero.generated.forms.ThingModelForm
 import site.addzero.generated.forms.rememberThingModelFormState
-import site.addzero.generated.isomorphic.ThingModelPropertyIso
 import site.addzero.screens.product.vm.ThingModelViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ThingModelScreen(viewModel: ThingModelViewModel, productId: Long) {
-    val thingModelProperties = viewModel.loadThingModelProperties(productId)
-    val thingModelFormState = rememberThingModelFormState()
+fun ThingModelScreen(viewModel: ThingModelViewModel) {
 
-    ThingModelForm(
-        thingModelFormState,
-        visible = viewModel.showAddDialog,
-        title = "物模型属性表单",
-        onClose = {viewModel.showAddDialog=false},
-        onSubmit = {},
-    )
 
     AddTable(
-        data = thingModelProperties,
+        data = viewModel.data,
         columns = listOf(
             ColumnConfig(
                 key = "identifier",
@@ -55,28 +45,38 @@ fun ThingModelScreen(viewModel: ThingModelViewModel, productId: Long) {
         ),
         getColumnKey = { it.key },
         getColumnLabel = {
-
-
             Text(
-             it.comment
+                it.comment
             )
-
         },
         onSearch = { keyword, serchState, stateSort, StatePagination ->
-            println("搜索")
+            viewModel.onSearch(keyword, serchState, stateSort, StatePagination)
         },
-        onSaveClick = {},
+        onSaveClick = {
+            viewModel.showForm = true
+        },
         onImportClick = {},
         onExportClick = { keyword, serchState, stateSort, StatePagination ->
         },
-        onBatchDelete = {},
-        onBatchExport = {},
-        onEditClick = { property ->
-            viewModel.selectedProperty = property as ThingModelPropertyIso
-            viewModel.showAddDialog = true
+        onBatchDelete = {
+            viewModel.onBatchDelete(it)
         },
-        onDeleteClick = { property ->
-            viewModel.deleteProperty((property as ThingModelPropertyIso).id ?: 0L)
+        onBatchExport = {},
+        onEditClick = {
+            viewModel.onDeleteClick(it)
+        },
+        onDeleteClick = {
+            viewModel.onDeleteClick(it)
         }
+    )
+    val formState = rememberThingModelFormState()
+    ThingModelForm(
+        formState,
+        visible = viewModel.showForm,
+        title = "物模型属性表单",
+        onClose = { viewModel.showForm = false },
+        onSubmit = {
+            viewModel.onSaveForm(formState.value)
+        },
     )
 }

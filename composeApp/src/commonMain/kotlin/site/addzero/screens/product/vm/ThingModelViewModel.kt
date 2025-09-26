@@ -1,39 +1,44 @@
 package site.addzero.screens.product.vm
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
 import org.koin.android.annotation.KoinViewModel
-import site.addzero.generated.isomorphic.ThingModelPropertyIso
+import site.addzero.abs.BaseTableViewModel
+import site.addzero.abs.TApi
+import site.addzero.entity.PageResult
+import site.addzero.entity.low_table.CommonTableDaTaInputDTO
+import site.addzero.generated.api.ApiProvider.thingModelApi
+import site.addzero.generated.isomorphic.ThingModelIso
+
+object BizThingModelApi : TApi<ThingModelIso> {
+    override suspend fun page(commonTableDaTaInputDTO: CommonTableDaTaInputDTO): PageResult<ThingModelIso> {
+        return thingModelApi.page(commonTableDaTaInputDTO)
+    }
+
+    override suspend fun save(input: ThingModelIso): ThingModelIso {
+        return thingModelApi.save(input)
+    }
+
+    override suspend fun edit(e: ThingModelIso): Int {
+        return thingModelApi.edit(e)
+    }
+
+    override suspend fun deleteByIds(ids: String): Int {
+        return thingModelApi.deleteByIds(ids)
+    }
+
+    override suspend fun saveBatch(input: List<ThingModelIso>): Int {
+        return thingModelApi.saveBatch(input)
+    }
+
+    override suspend fun findById(id: String): ThingModelIso {
+        return thingModelApi.findById(id)
+    }
+
+    override suspend fun loadTableConfig() {
+        return thingModelApi.loadTableConfig()
+    }
+}
 
 @KoinViewModel
-class ThingModelViewModel : ViewModel() {
-    var showAddDialog by mutableStateOf(false)
-    var selectedProperty by mutableStateOf<ThingModelPropertyIso?>(null)
+class ThingModelViewModel : BaseTableViewModel<ThingModelIso, BizThingModelApi>(BizThingModelApi) {
 
-    fun loadThingModelProperties(productId: Long): List<ThingModelPropertyIso> {
-        return listOf(
-            ThingModelPropertyIso(
-                id = 1,
-                identifier = "temperature",
-                name = "温度",
-                dataType = "float",
-                dataPrecision = 2,
-                accessMode = "读写上报"
-            )
-        )
-    }
-
-    fun addProperty(productId: Long, property: ThingModelPropertyIso) {
-        // TODO: 添加物模型属性
-    }
-
-    fun updateProperty(property: ThingModelPropertyIso) {
-        // TODO: 更新物模型属性
-    }
-
-    fun deleteProperty(id: Long) {
-        // TODO: 删除物模型属性
-    }
 }

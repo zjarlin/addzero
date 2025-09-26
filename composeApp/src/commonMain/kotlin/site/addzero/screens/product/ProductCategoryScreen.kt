@@ -7,30 +7,23 @@ import site.addzero.component.table.biz.AddTable
 import site.addzero.component.table.original.entity.ColumnConfig
 import site.addzero.generated.forms.ProductCategoryForm
 import site.addzero.generated.forms.rememberProductCategoryFormState
-import site.addzero.generated.isomorphic.ProductCategoryIso
 import site.addzero.screens.product.vm.ProductCategoryViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductCategoryScreen(viewModel: ProductCategoryViewModel) {
-    val categories = viewModel.loadCategories()
-    val productCategoryFormState = rememberProductCategoryFormState()
-
-    ProductCategoryForm(
-        productCategoryFormState,
-        visible = viewModel.showAddDialog,
-        title = "产品分类表单",
-        onClose = {},
-        onSubmit = {},
-    )
-
     AddTable(
-        data = categories,
+        data = viewModel.data,
         columns = listOf(
             ColumnConfig(
                 key = "name",
                 comment = "分类名称",
                 kmpType = "kotlin.String"
+            ),
+            ColumnConfig(
+                key = "parent",
+                comment = "上级分类",
+                kmpType = "site.addzero.generated.isomorphic.ProductCategoryIso"
             ),
             ColumnConfig(
                 key = "description",
@@ -41,32 +34,43 @@ fun ProductCategoryScreen(viewModel: ProductCategoryViewModel) {
                 key = "enabled",
                 comment = "是否启用",
                 kmpType = "kotlin.Boolean"
-            )
+            ),
         ),
         getColumnKey = { it.key },
         getColumnLabel = {
-
-             Text(
-             it.comment
+            Text(
+                it.comment
             )
-
-
-         },
-        onSearch = { keyword, serchState, stateSort, StatePagination ->
-            println("搜索")
         },
-        onSaveClick = {},
+        onSearch = { keyword, serchState, stateSort, StatePagination ->
+            viewModel.onSearch(keyword, serchState, stateSort, StatePagination)
+
+        },
+        onSaveClick = {
+                   viewModel.showForm = true
+
+        },
         onImportClick = {},
         onExportClick = { keyword, serchState, stateSort, StatePagination ->
         },
-        onBatchDelete = {},
-        onBatchExport = {},
-        onEditClick = { category ->
-            viewModel.selectedCategory = category as ProductCategoryIso
-            viewModel.showAddDialog = true
+        onBatchDelete = {
+                       viewModel.onBatchDelete(it)
         },
-        onDeleteClick = { category ->
-            viewModel.deleteCategory((category as ProductCategoryIso).id ?: 0L)
+        onBatchExport = {},
+        onEditClick = {
+            viewModel.onEditClick(it)
+        },
+        onDeleteClick = {
+            viewModel.onDeleteClick(it)
         }
     )
+    val productCategoryFormState = rememberProductCategoryFormState()
+    ProductCategoryForm(
+        productCategoryFormState,
+        visible = viewModel.showForm,
+        title = "产品分类表单",
+        onClose = {},
+        onSubmit = {},
+    )
+
 }

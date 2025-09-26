@@ -59,8 +59,8 @@ abstract class BaseTableViewModel<T, Api : TApi<T>>(val bizApi: Api) :
             )
             data = page.rows
             page.totalPageCount
-            statePagination =
-                statePagination.copy(currentPage = page.pageIndex, totalItems = page.totalRowCount.toInt())
+            statePagination = statePagination.copy(currentPage = page.pageIndex, totalItems = page.totalRowCount.toInt())
+            ToastManager.success("数据加载成功")
         }
     }
 
@@ -71,6 +71,7 @@ abstract class BaseTableViewModel<T, Api : TApi<T>>(val bizApi: Api) :
             onLoadData()
         }
     }
+
     fun onBatchDelete(it: Set<Any>) {
         api {
             bizApi.deleteByIds(ids = it.joinToString(","))
@@ -89,15 +90,12 @@ abstract class BaseTableViewModel<T, Api : TApi<T>>(val bizApi: Api) :
 
     fun onEditClick(id: Any) {
         api {
+            selectedT = bizApi.findById(id.toString())
             showForm = true
-//            val findById = bizApi.findById(id)
-//            selectedT = findById
         }
     }
-
 
     init {
         onLoadData()
     }
-
 }

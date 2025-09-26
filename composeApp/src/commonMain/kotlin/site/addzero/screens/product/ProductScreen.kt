@@ -12,9 +12,6 @@ import site.addzero.screens.product.vm.ProductViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductScreen(viewModel: ProductViewModel) {
-    val rememberProductFormState = rememberProductFormState(viewModel.selectedT)
-
-
     AddTable(
         getRowId = { it.id ?: 0 },
         data = viewModel.data,
@@ -72,7 +69,8 @@ fun ProductScreen(viewModel: ProductViewModel) {
         onBatchDelete = {
             viewModel.onBatchDelete(it)
         },
-        onBatchExport = {},
+        onBatchExport = {
+        },
         onEditClick = {
             viewModel.onEditClick(it)
         },
@@ -80,6 +78,7 @@ fun ProductScreen(viewModel: ProductViewModel) {
             viewModel.onDeleteClick(it)
         }
     )
+    val rememberProductFormState = rememberProductFormState(viewModel.selectedT)
 
     ProductForm(
         rememberProductFormState,

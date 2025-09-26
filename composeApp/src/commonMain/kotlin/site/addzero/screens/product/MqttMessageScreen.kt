@@ -129,7 +129,6 @@ fun MqttSenderForm(viewModel: MqttMessageViewModel) {
                     }
                 }
             )
-
             // 发送按钮
             AddIconButton(
                 text = "发送消息",
