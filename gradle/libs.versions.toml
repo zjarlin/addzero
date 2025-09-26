@@ -69,6 +69,8 @@ h2 = "2.3.232"
 mysqlConnector = "8.0.33"
 kotlinpoetKsp = "2.2.0"
 jimmer = "0.9.110"
+#jimmer = "9.9.905"
+
 springAi = "1.0.1"
 velocity = "1.7"
 xFileStorage = "2.3.0"

@@ -75,14 +75,19 @@ fun DeviceScreen(viewModel: DeviceViewModel) {
             viewModel.onDeleteClick(it)
         }
     )
-    val deviceFormState = rememberDeviceFormState()
+    val formState = rememberDeviceFormState()
 
     DeviceForm(
-        deviceFormState,
+        formState,
         visible = viewModel.showForm,
         title = "产品分类表单",
-        onClose = {},
-        onSubmit = {},
+        onClose = {
+            viewModel.showForm = false
+        },
+        onSubmit = {
+            viewModel.onSaveForm(formState.value)
+
+        },
     )
 
 }

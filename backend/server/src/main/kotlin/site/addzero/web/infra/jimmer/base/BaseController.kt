@@ -86,7 +86,7 @@ interface BaseController<E : Any> : BaseGenericContext<E> {
 
     @GetMapping("/findById")
     fun findById(id: String): E? {
-        val byId = sql.findById(type, id)
+        val byId = sql.findById(type, id.toLong())
         return byId
     }
 

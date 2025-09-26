@@ -64,13 +64,16 @@ fun ProductCategoryScreen(viewModel: ProductCategoryViewModel) {
             viewModel.onDeleteClick(it)
         }
     )
-    val productCategoryFormState = rememberProductCategoryFormState()
+    val formState = rememberProductCategoryFormState()
     ProductCategoryForm(
-        productCategoryFormState,
+        formState,
         visible = viewModel.showForm,
         title = "产品分类表单",
-        onClose = {},
-        onSubmit = {},
+        onClose = {viewModel.showForm=false},
+        onSubmit = {
+            viewModel.onSaveForm(formState.value)
+
+        },
     )
 
 }
