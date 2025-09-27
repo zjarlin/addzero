@@ -53,8 +53,6 @@ $env:EXCLUDE_TABLES = "flyway_schema_history,vector_store,*_mapping"
 
 ## tips :数据库会在第一次启动后端时自动初始化
 
-[//]: # (## tips :目前这个项目在积极维护中,libs有一部分代码暂时没精力搞中央仓库让所有人通用&#40;要抽配置&#41;,后续项目完善了考虑写文档说明libs每个库的作用,总之libs是作者懒到极致的封装体现!)
-
 ## ✨ 核心特性
 
 ### 🎯 **一致性保证** - 单一数据源，多端同步
@@ -64,8 +62,6 @@ $env:EXCLUDE_TABLES = "flyway_schema_history,vector_store,*_mapping"
 - **网络 API 自动生成** - 解析 Controller 符号，自动生成类型安全的网络调用
 - **同构体生成** (跨平台 Shared) - `SysUserIso` 等数据传输对象
 - **字典/枚举生成** (跨平台 Shared) - `site.addzero.generated.enums`
-- **矢量图标管理** - `IconKeys` 常量 + `IconMap` 映射
-- **JDBC 元数据** (跨平台 Shared) - `site.addzero.jdbc.meta.jdbcMetadata`
 
 ### 🎨 **智能表单生成** - KSP 驱动的动态 UI
 
@@ -80,15 +76,6 @@ $env:EXCLUDE_TABLES = "flyway_schema_history,vector_store,*_mapping"
 - **🔄 响应式状态管理** - 基于MutableState的自动UI更新
 - **📦 多列布局支持** - AddMultiColumnContainer自动布局
 - **🎭 条件渲染** - 支持基于业务逻辑的动态字段显示/隐藏
-
-### 🎨 **ComposeAssist 响应式组件** - Vue风格的状态管理
-
-- **✅ 响应式State生成** - 基于`mutableStateOf`的自动重组机制
-- **🎯 参数打包** - 将组件参数打包为类型安全的State对象
-- **🚀 Widget函数生成** - 只接受State参数的辅助组件
-- **🧩 完整泛型支持** - 支持泛型函数和约束泛型
-- **🔄 自动重组** - 修改State属性自动触发UI更新
-- **📦 零样板代码** - 一个`@ComposeAssist`注解生成完整工具集
 
 ### 🌳 **树形组件设计** - 插槽重构理念
 
