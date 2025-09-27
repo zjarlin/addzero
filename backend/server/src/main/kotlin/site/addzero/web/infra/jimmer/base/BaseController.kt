@@ -40,7 +40,7 @@ interface BaseController<E : Any> : BaseGenericContext<E> {
     @PostMapping("/save")
     fun save(@RequestBody input: E): E {
         val save = sql.save(input) {
-            setMode(SaveMode.INSERT_ONLY)
+            setMode(SaveMode.NON_IDEMPOTENT_UPSERT)
         }
         val modifiedEntity = save.modifiedEntity
         return modifiedEntity

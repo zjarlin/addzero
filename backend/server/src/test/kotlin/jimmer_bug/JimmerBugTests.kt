@@ -1,5 +1,6 @@
 package jimmer_bug
 
+import kotlinx.datetime.LocalDateTime
 import org.babyfish.jimmer.ImmutableObjects
 import org.babyfish.jimmer.sql.ast.mutation.SaveMode
 import org.babyfish.jimmer.sql.kt.KSqlClient
@@ -52,16 +53,26 @@ class JimmerBugTests(val kSqlClient: KSqlClient) {
 
         val trimIndent = """{
   "createTime" : "2025-09-25T15:48:30.401391",
-  "name" : "134",
-  "code" : "vasd",
-  "accessMethod" : "d",
-  "authMethod" : "d"
+//  "name" : "134",
+//  "code" : "vasd",
+//  "accessMethod" : "d",
+//  "authMethod" : "d",
+// "id" :123456, 
 }"""
-        val fromString = ImmutableObjects.fromString(Product::class.java, trimIndent)
-        val save1 = kSqlClient.saveCommand(fromString) {
+         val product = Product {
+//             id = 123456
+             name="123123"
+             code="dajsoidj"
+             accessMethod="das"
+             authMethod="das"
+//             enabled=true
+             createTime= java.time.LocalDateTime.now()
+         }
+         val save1 = kSqlClient.saveCommand(product) {
             setMode(SaveMode.INSERT_ONLY)
-        }
-        println(save1)
+        }.execute()
+         val modifiedEntity = save1.modifiedEntity
+         println(modifiedEntity)
 
     }
 

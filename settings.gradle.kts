@@ -21,7 +21,7 @@ pluginManagement {
 
 dependencyResolutionManagement {
     repositories {
-//        mavenLocal()
+        mavenLocal()
         google {
             mavenContent {
                 includeGroupAndSubgroups("androidx")
