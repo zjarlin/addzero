@@ -13,7 +13,7 @@ import kotlin.time.ExperimentalTime
 // 判断是否在今天
 fun LocalDateTime.isToday(): Boolean {
     val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-    return year == today.year && month == today.month && dayOfMonth == today.dayOfMonth
+    return year == today.year && month == today.month && day == today.day
 }
 
 
@@ -65,7 +65,6 @@ fun nowInt(): Int {
     val now = now().toStdlibInstant().nanosecondsOfSecond
     return now
 }
-
 
 val now: LocalDateTime get() = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
 
