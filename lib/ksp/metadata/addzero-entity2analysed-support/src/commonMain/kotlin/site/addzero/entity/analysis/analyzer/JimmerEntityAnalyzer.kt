@@ -377,7 +377,7 @@ class JimmerEntityAnalyzer(
                 "name" // 默认值
             }
         } catch (e: Exception) {
-            logger.warn("查找 @LabelProp 失败: ${classDecl.simpleName.asString()}, 使用默认值")
+            println("查找 @LabelProp 失败: ${classDecl.simpleName.asString()}, 使用默认值")
             "name" // 出错时使用默认值
         }
     }

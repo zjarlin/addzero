@@ -1,17 +1,12 @@
-package site.addzero.easycode.user_need_impl
+package site.addzero.lib_adpator.jimmer_easycode.user_need_impl
 
 import org.apache.velocity.VelocityContext
 import org.apache.velocity.app.VelocityEngine
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
 import site.addzero.easycode.inter.AbsCodegenContextProvider
-import site.addzero.easycode.inter.CodeGenContextHolder
 import site.addzero.easycode.inter.TemplateContext
 import site.addzero.entity.analysis.model.EntityMetadata
-
-val absCodegenContext = object : AbsCodegenContextProvider<CodeGenEnum>() {
-    override val clazzEnum: Class<CodeGenEnum>
-        get() = CodeGenEnum::class.java
-}
+import kotlin.jvm.java
 
 //init
 /**
@@ -71,3 +66,4 @@ enum class CodeGenEnum : TemplateContext<EntityMetadata> {
 //    Entity2VoList,
 //    Entity2PoList,
 }
+

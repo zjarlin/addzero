@@ -10,11 +10,13 @@ plugins {
 
 kotlin {
     dependencies {
+        api(projects.lib.ksp.common.addzeroKspEasycodeCore)
+
         implementation(projects.lib.ksp.common.addzeroKspSupport)
 
     }
     sourceSets {
-        commonMain.dependencies {
+        jvmMain.dependencies {
             implementation("org.apache.velocity:velocity-engine-core:2.3")
         }
     }
