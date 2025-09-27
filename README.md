@@ -2,33 +2,11 @@
 
 > 基于 Kotlin Multiplatform + Jimmer ORM 的全栈开发脚手架，通过 KSP 实现前后端代码生成的完美一致性，提升开发效率并保证类型安全。
 
-## 发布到Maven Local
-
-由于项目使用了Maven Publish插件，与Gradle配置缓存存在兼容性问题，在执行发布任务时需要禁用配置缓存：
-
-```bash
-./gradlew publishToMavenLocal --no-configuration-cache
-```
-
-或者在gradle.properties中设置：
-
-```properties
-org.gradle.configuration-cache=false
-```
-
-然后再执行：
-
-```bash
-./gradlew publishToMavenLocal
-```
-
 ## 项目特点
-
-1. **前后端一致性**：通过 Jimmer 实体作为唯一数据源，驱动前后端代码同步
-2. **编译时生成**：使用 KSP 替代注解处理器进行编译时代码生成，确保类型安全和高性能
-3. **响应式状态管理**：利用 ComposeAssist 注解实现 Vue 风格的响应式状态管理
-4. **策略模式**：采用策略模式实现可扩展的字段识别与表单生成
-5. **模块化架构**：多模块分层架构，便于维护和扩展
+ **前后端一致性**：通过 Jimmer 实体作为解析元数据，驱动前后端代码同步
+ **编译时生成**：使用 KSP 替代注解处理器进行编译时代码生成，确保类型安全和高性能
+ **模块化架构**：多模块分层架构，便于维护和扩展
+ **所有lib均已发布在中央仓库**：https://gitee.com/zjarlin/addzero-lib.git
 
 ## 🚀 技术栈
 
