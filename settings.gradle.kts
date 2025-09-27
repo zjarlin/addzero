@@ -69,7 +69,6 @@ fun autoIncludeModules(rootDir: File, vararg blackModuleName: String) {
         val relativePath = getRelativePath(rootDir, it)
         val moduleName = ":${relativePath.replace(File.separator, ":")}"
         val isIncluded = moduleName !in blackModuleName
-        // 不再在这里打印跳过信息，避免重复
         isIncluded
     }
 }
@@ -105,7 +104,6 @@ fun autoIncludeModules(rootDir: File, predicate: (File) -> Boolean = { true }) {
             }
         }
 
-    // Print detailed information
     println(
         "\n" + """
         Build Logic (${buildLogicNames.size}):

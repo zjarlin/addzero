@@ -1,0 +1,29 @@
+package ${packageName}
+
+#foreach($import in $imports)
+import ${import}
+#end
+
+/**
+ * ${description}
+ * 
+ * 对应数据库表: ${tableName}
+ * 
+ * @author ${generatedBy}
+ * @generated ${timestamp}
+ */
+@Entity
+@Table(name = "${tableName}")
+interface ${className} #if($hasId): BaseEntity #end{
+
+#foreach($property in $properties)
+    /**
+     * ${property.comment}
+     */
+#foreach($annotation in $property.annotations)
+    ${annotation}
+#end
+    val ${property.name}: ${property.type}#if($property.nullable)?#end
+
+#end
+}

@@ -30,6 +30,8 @@ ksp {
 //    mainClass.set("site.addzero.SpringBootAppKt")
 //}
 dependencies {
+    ksp(projects.lib.ksp.common.addzeroKspEasycodeJimmer)
+
     implementation(libs.addzero.tool.mqtt)
     implementation(libs.kotlinx.datetime)
     implementation(libs.addzero.compose.model.component)
