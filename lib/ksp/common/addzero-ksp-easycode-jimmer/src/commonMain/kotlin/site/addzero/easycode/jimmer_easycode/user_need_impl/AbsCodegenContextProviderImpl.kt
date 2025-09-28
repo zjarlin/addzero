@@ -34,13 +34,19 @@ enum class CodeGenEnum : TemplateContext<EntityMetadata> {
             }
         override val templatePath: String
             get() = run {
-                ClasspathResourceLoader::class.java.getResource("/templates/entity.vm")?.file?.let {
-                    it.substring(it.lastIndexOf("/") + 1)
+                val resource = ClasspathResourceLoader::class.java.getResource("/templates/entity.vm")
+                resource?.file?.let {
+                    if (it.endsWith(".vm")) {
+                        // 如果是文件，返回完整路径
+                        return@run it
+                    } else {
+                        // 如果是目录或其他情况，返回默认模板路径
+                        return@run "/Users/zjarlin/IdeaProjects/addzero/backend/server/src/main/resources/templates/entity.vm"
+                    }
                 } ?: run {
-                    println("templatePath not found")
-                    ""
+                    println("templatePath not found, using default path")
+                    "/Users/zjarlin/IdeaProjects/addzero/backend/server/src/main/resources/templates/entity.vm"
                 }
-                ""
             }
         override val velocityEngineCallBack: (VelocityEngine) -> Unit
             get() = {

@@ -37,6 +37,7 @@ abstract class AbstractTemplateProcessor<T : Any>(
      */
     override fun process(resolver: Resolver): List<KSAnnotated> {
         val extract = absCodegenContext.extract(resolver)
+
         metadataCache = extract.metadata
         dependenciesFiles.addAll(extract.dependencies)
         return extract.notValid
@@ -56,10 +57,21 @@ abstract class AbstractTemplateProcessor<T : Any>(
         // 处理每个模板上下文
         val metadata = metadataCache
 
+
+
         javaClass.enumConstants.forEach { templateContext ->
             val templatePath = templateContext.templatePath
             val skipExistFile = templateContext.skipExistFile
-            val templateContent = Files.readString(File(templatePath).toPath())
+
+            // 检查templatePath是否为目录
+            val templateFile = File(templatePath)
+            if (templateFile.isDirectory) {
+                // 如果是目录，跳过处理
+                println("Template path is a directory, skipping: $templatePath")
+                return@forEach
+            }
+
+            val templateContent = Files.readString(templateFile.toPath())
             println("tttttttt$templateContent")
 
             metadata.forEach { meta ->
@@ -90,10 +102,6 @@ abstract class AbstractTemplateProcessor<T : Any>(
                     }
                 }
             }
-
-
         }
-
-
     }
 }

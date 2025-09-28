@@ -30,7 +30,6 @@ ksp {
 //    mainClass.set("site.addzero.SpringBootAppKt")
 //}
 dependencies {
-    ksp(projects.lib.ksp.common.addzeroKspEasycodeJimmer)
 //    implementation(projects.lib.ksp.common.addzeroKspEasycodeJimmer)
 //    implementation(projects.lib.ksp.common.addzeroKspEasycodeCore)
 //    implementation("org.apache.velocity:velocity-engine-core:2.3")
