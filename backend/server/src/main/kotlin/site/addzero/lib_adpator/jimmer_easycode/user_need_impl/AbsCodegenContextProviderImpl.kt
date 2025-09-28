@@ -8,8 +8,14 @@ import site.addzero.easycode.inter.AbsCodegenContextProvider
 import site.addzero.easycode.inter.CodeGenContextHolder
 import site.addzero.easycode.inter.TemplateContext
 
+class AbsCodegenContextProviderImpl : AbsCodegenContextProvider<CodeGenEnum>() {
+    init {
+        CodeGenContextHolder.absCodegenContextProvider = this
+    }
+    override val clazzEnum: Class<CodeGenEnum>
+        get() = CodeGenEnum::class.java
+}
 
-//init
 /**
  * 代码生成清单
  * @author zjarlin
@@ -46,11 +52,6 @@ enum class CodeGenEnum : TemplateContext<EntityMetadata> {
             }
         override val velocityEngineCallBack: (VelocityEngine) -> Unit
             get() = {
-                val provider = object : AbsCodegenContextProvider<CodeGenEnum>() {
-                    override val clazzEnum: Class<CodeGenEnum>
-                        get() = CodeGenEnum::class.java
-                }
-                CodeGenContextHolder.absCodegenContextProvider = provider
             }
         override val velocityContextCallback: (VelocityContext) -> Unit
             get() = {
