@@ -1,4 +1,4 @@
-package site.addzero.easycode.ksp
+package site.addzero.easycode.util
 
 import org.apache.velocity.VelocityContext
 import org.apache.velocity.app.VelocityEngine
