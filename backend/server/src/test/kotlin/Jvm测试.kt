@@ -1,12 +1,17 @@
-import site.addzero.common.util.excel.ExcelUtil
-import site.addzero.web.infra.jimmer.toMap
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
+import site.addzero.common.util.excel.ExcelUtil
+import site.addzero.web.infra.jackson.toJson
+import site.addzero.web.infra.jimmer.toMap
 import weatherutil.WeatherUtil
 
 //fun main() =
+
+fun main() {
+
+}
 
 fun log(message: Any?) {
     println("[${Thread.currentThread().name}] $message")

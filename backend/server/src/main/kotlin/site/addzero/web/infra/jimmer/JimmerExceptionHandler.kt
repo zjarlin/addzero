@@ -18,7 +18,7 @@ import java.net.URI
 
 @RestControllerAdvice
 @org.springframework.core.annotation.Order(0)
-class GlobalExceptionHandler {
+class JimmerExceptionHandler {
     private fun createBaseProblemDetail(
         status: HttpStatus,
         detail: String?,

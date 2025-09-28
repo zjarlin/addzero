@@ -1,11 +1,11 @@
 package site.addzero.addzero_common
 
-import site.addzero.model.entity.BizNote
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.TestConstructor
-import kotlin.reflect.full.declaredMemberProperties
+import site.addzero.model.entity.BizNote
+import site.addzero.web.infra.jackson.toJson
 
 @SpringBootTest
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
@@ -17,6 +17,18 @@ class SpringBootAppTests(
 
     //    @Autowired
 //    private lateinit var postgresMetadataService: PostgresMetadataService
+    @Test
+    fun sdiaojsod(): Unit {
+        val toJson = Unit.toJson()
+        val aaa: (Unit) -> Unit = { Unit }
+        val toJson1 = aaa.toJson()
+        println()
+
+//        val columnsMetadata = databaseMetadataService.getColumnsMetadata()
+//        val foreignKeysMetadata = databaseMetadataService.getForeignKeysMetadata()
+//        val primaryKeysMetadata = databaseMetadataService.getPrimaryKeysMetadata()
+        println()
+    }
 
 
     @Test

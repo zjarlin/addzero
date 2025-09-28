@@ -8,7 +8,7 @@ plugins {
 
 dependencies {
     ksp(libs.jimmer.ksp)
-    ksp(projects.lib.ksp.common.addzeroKspEasycodeJimmer)
+//    ksp(projects.lib.ksp.common.addzeroKspEasycodeJimmer)
 
     ksp(libs.addzero.jdbc2entity.processor)
     ksp(libs.addzero.entity2iso.processor)
