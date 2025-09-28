@@ -10,14 +10,11 @@ import site.addzero.easycode.ksp.AbstractTemplateProcessor
 
 class CodegenContextKspProvider(
     private val absCodegenContextProvider: AbsCodegenContextProvider<*>
-) :
-    SymbolProcessorProvider {
+) : SymbolProcessorProvider {
     override fun create(
         environment: SymbolProcessorEnvironment
     ): SymbolProcessor {
-        println("ttt$absCodegenContextProvider")
         val processor = object : AbstractTemplateProcessor<EntityMetadata>(
-
             absCodegenContextProvider, environment
         ) {}
         return processor
