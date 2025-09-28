@@ -59,6 +59,7 @@ abstract class AbstractTemplateProcessor<T : Any>(
             val templatePath = templateContext.templatePath
             val skipExistFile = templateContext.skipExistFile
             val templateContent = Files.readString(File(templatePath).toPath())
+            println("tttttttt$templateContent")
 
             metadata.forEach { meta ->
                 val fileName = templateContext.getFileName(meta, options)

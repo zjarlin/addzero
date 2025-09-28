@@ -5,13 +5,9 @@ import org.apache.velocity.app.VelocityEngine
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
 import site.addzero.easycode.analysis.model.EntityMetadata
 import site.addzero.easycode.inter.AbsCodegenContextProvider
-import site.addzero.easycode.inter.CodeGenContextHolder
 import site.addzero.easycode.inter.TemplateContext
 
 class AbsCodegenContextProviderImpl : AbsCodegenContextProvider<CodeGenEnum>() {
-    init {
-        CodeGenContextHolder.absCodegenContextProvider = this
-    }
     override val clazzEnum: Class<CodeGenEnum>
         get() = CodeGenEnum::class.java
 }
@@ -65,11 +61,4 @@ enum class CodeGenEnum : TemplateContext<EntityMetadata> {
 //                imports
             }
     },
-//    Entity2Dto,
-//    Entity2Vo,
-//    Entity2Po,
-//    Entity2DtoList,
-//    Entity2VoList,
-//    Entity2PoList,
 }
-
