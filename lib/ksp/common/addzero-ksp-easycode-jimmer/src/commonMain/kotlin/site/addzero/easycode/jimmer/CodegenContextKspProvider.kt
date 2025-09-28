@@ -12,7 +12,6 @@ class CodegenContextKspProvider : SymbolProcessorProvider {
     override fun create(
         environment: SymbolProcessorEnvironment
     ): SymbolProcessor {
-        CodeGenContextHolder.initContext()
         val processor = object : AbstractTemplateProcessor<EntityMetadata>(
             CodeGenContextHolder.absCodegenContextProvider, environment
         ) {}

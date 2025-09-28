@@ -10,8 +10,6 @@ plugins {
 
 kotlin {
     dependencies {
-        api(projects.lib.ksp.common.addzeroKspEasycodeCore)
-
         implementation(projects.lib.ksp.common.addzeroKspSupport)
 
     }

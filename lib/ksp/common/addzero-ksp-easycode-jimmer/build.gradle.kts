@@ -11,9 +11,8 @@ plugins {
 kotlin {
     dependencies {
         implementation(projects.lib.ksp.common.addzeroKspSupport)
-        api(projects.lib.ksp.common.addzeroKspEasycode)
         implementation(projects.lib.ksp.metadata.addzeroEntity2analysedSupport)
-//        implementation(projects.lib.toolKmp.addzeroToolKoin)
+        api(projects.lib.ksp.common.addzeroKspEasycode)
 
     }
     sourceSets {
