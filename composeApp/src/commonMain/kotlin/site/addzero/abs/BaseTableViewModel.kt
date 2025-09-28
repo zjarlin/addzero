@@ -23,8 +23,7 @@ interface TApi<TIso> {
 }
 
 
-abstract class BaseTableViewModel<T, Api : TApi<T>>(val bizApi: Api) :
-    ViewModel() {
+abstract class BaseTableViewModel<T, Api : TApi<T>>(val bizApi: Api) : ViewModel() {
     var data by mutableStateOf(listOf<T>())
     var showForm by mutableStateOf(false)
     var selectedT by mutableStateOf<T?>(null)
@@ -83,6 +82,8 @@ abstract class BaseTableViewModel<T, Api : TApi<T>>(val bizApi: Api) :
     fun onBatchDelete(it: Set<Any>) {
         api {
             bizApi.deleteByIds(ids = it.joinToString(","))
+            //清除已选择的内容
+
             ToastManager.success("批量删除成功")
             onLoadData()
         }
