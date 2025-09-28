@@ -30,10 +30,10 @@ ksp {
 //    mainClass.set("site.addzero.SpringBootAppKt")
 //}
 dependencies {
-//    ksp(projects.lib.ksp.common.addzeroKspEasycodeJimmer)
-//    implementation(projects.lib.ksp.common.addzeroKspEasycodeJimmer)
+    ksp(projects.lib.ksp.common.addzeroKspEasycodeJimmer)
+    implementation(projects.lib.ksp.common.addzeroKspEasycodeJimmer)
 //    implementation(projects.lib.ksp.common.addzeroKspEasycodeCore)
-//    implementation("org.apache.velocity:velocity-engine-core:2.3")
+    implementation("org.apache.velocity:velocity-engine-core:2.3")
 //    implementation(projects.lib.ksp.metadata.addzeroEntity2analysedSupport)
 
     implementation(libs.addzero.tool.mqtt)

@@ -1,4 +1,4 @@
-package site.addzero.entity.analysis.model
+package site.addzero.easycode.analysis.model
 
 /**
  * Jimmer 实体元数据

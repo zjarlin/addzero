@@ -1,14 +1,14 @@
-package site.addzero.entity.analysis.analyzer
+package site.addzero.easycode.analysis.analyzer
 
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.symbol.ClassKind
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSPropertyDeclaration
 import com.google.devtools.ksp.symbol.KSType
-import site.addzero.entity.analysis.model.EntityMetadata
-import site.addzero.entity.analysis.model.EnumMetadata
-import site.addzero.entity.analysis.model.PropertyMetadata
-import site.addzero.entity.analysis.model.TypeAnalysisResult
+import site.addzero.easycode.analysis.model.EntityMetadata
+import site.addzero.easycode.analysis.model.EnumMetadata
+import site.addzero.easycode.analysis.model.PropertyMetadata
+import site.addzero.easycode.analysis.model.TypeAnalysisResult
 import site.addzero.util.defaultValue
 import site.addzero.util.getArgStr
 import site.addzero.util.isJimmerEntity

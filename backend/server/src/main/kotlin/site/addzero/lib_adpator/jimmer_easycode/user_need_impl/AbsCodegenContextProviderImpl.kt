@@ -3,10 +3,11 @@ package site.addzero.lib_adpator.jimmer_easycode.user_need_impl
 import org.apache.velocity.VelocityContext
 import org.apache.velocity.app.VelocityEngine
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+import site.addzero.easycode.analysis.model.EntityMetadata
 import site.addzero.easycode.inter.AbsCodegenContextProvider
+import site.addzero.easycode.inter.CodeGenContextHolder
 import site.addzero.easycode.inter.TemplateContext
-import site.addzero.entity.analysis.model.EntityMetadata
-import kotlin.jvm.java
+
 
 //init
 /**
@@ -45,7 +46,11 @@ enum class CodeGenEnum : TemplateContext<EntityMetadata> {
             }
         override val velocityEngineCallBack: (VelocityEngine) -> Unit
             get() = {
-
+                val provider = object : AbsCodegenContextProvider<CodeGenEnum>() {
+                    override val clazzEnum: Class<CodeGenEnum>
+                        get() = CodeGenEnum::class.java
+                }
+                CodeGenContextHolder.absCodegenContextProvider = provider
             }
         override val velocityContextCallback: (VelocityContext) -> Unit
             get() = {

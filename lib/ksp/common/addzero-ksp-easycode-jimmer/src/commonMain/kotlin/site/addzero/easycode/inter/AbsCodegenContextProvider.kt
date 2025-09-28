@@ -3,8 +3,8 @@ package site.addzero.easycode.inter
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.validate
-import site.addzero.entity.analysis.analyzer.JimmerEntityAnalyzer
-import site.addzero.entity.analysis.model.EntityMetadata
+import site.addzero.easycode.analysis.analyzer.JimmerEntityAnalyzer
+import site.addzero.easycode.analysis.model.EntityMetadata
 import kotlin.reflect.KClass
 
 abstract class AbsCodegenContextProvider<T> : AbsCodegenContext<EntityMetadata, T> where T : TemplateContext<EntityMetadata>, T : Enum<T> {
