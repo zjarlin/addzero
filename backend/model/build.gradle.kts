@@ -1,4 +1,3 @@
-
 plugins {
     id("kotlin-convention")
     id("ksp4jdbc")
@@ -10,6 +9,7 @@ plugins {
 dependencies {
     ksp(libs.jimmer.ksp)
     ksp(projects.lib.ksp.common.addzeroKspEasycodeJimmer)
+
     ksp(libs.addzero.jdbc2entity.processor)
     ksp(libs.addzero.entity2iso.processor)
     ksp(libs.addzero.entity2form.processor)
@@ -21,6 +21,7 @@ dependencies {
     implementation(libs.addzero.entity2form.core)
     implementation(projects.shared)
     implementation(libs.hutool.all)
+
 }
 ksp {
 
