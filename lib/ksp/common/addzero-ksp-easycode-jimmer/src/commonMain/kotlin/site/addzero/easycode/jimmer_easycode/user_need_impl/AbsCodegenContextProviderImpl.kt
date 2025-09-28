@@ -1,4 +1,4 @@
-package site.addzero.lib_adpator.jimmer_easycode.user_need_impl
+package site.addzero.easycode.jimmer_easycode.user_need_impl
 
 import org.apache.velocity.VelocityContext
 import org.apache.velocity.app.VelocityEngine
@@ -7,10 +7,6 @@ import site.addzero.easycode.analysis.model.EntityMetadata
 import site.addzero.easycode.inter.AbsCodegenContextProvider
 import site.addzero.easycode.inter.TemplateContext
 
-class AbsCodegenContextProviderImpl : AbsCodegenContextProvider<CodeGenEnum>() {
-    override val clazzEnum: Class<CodeGenEnum>
-        get() = CodeGenEnum::class.java
-}
 
 /**
  * 代码生成清单
@@ -62,3 +58,7 @@ enum class CodeGenEnum : TemplateContext<EntityMetadata> {
             }
     },
 }
+    val absCodegenContextProviderImpl = object : AbsCodegenContextProvider<CodeGenEnum>() {
+        override val clazzEnum: Class<CodeGenEnum>
+            get() = CodeGenEnum::class.java
+    }

@@ -7,6 +7,7 @@ import org.springframework.boot.runApplication
 @SpringBootApplication
 @EnableImplicitApi
 class SpringBootApp
+
 fun main(args: Array<String>) {
     runApplication<SpringBootApp>(*args)
 }

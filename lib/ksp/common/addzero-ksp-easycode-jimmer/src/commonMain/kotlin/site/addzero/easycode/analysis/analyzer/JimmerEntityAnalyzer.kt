@@ -1,6 +1,5 @@
 package site.addzero.easycode.analysis.analyzer
 
-import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.symbol.ClassKind
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSPropertyDeclaration
@@ -19,36 +18,32 @@ import site.addzero.util.isJimmerEntity
  * 统一的 Jimmer 实体元数据解析工具
  * 负责分析实体结构、属性类型、注解等信息
  */
-class JimmerEntityAnalyzer(
-) {
-
-
-
+class JimmerEntityAnalyzer{
     /**
      * 分析单个实体 (KSP原生版本)
      */
     fun analyzeEntity(entity: KSClassDeclaration): EntityMetadata {
-            val className = entity.simpleName.asString()
-            val packageName = entity.packageName.asString()
-            val qualifiedName = entity.qualifiedName?.asString() ?: ""
+        val className = entity.simpleName.asString()
+        val packageName = entity.packageName.asString()
+        val qualifiedName = entity.qualifiedName?.asString() ?: ""
 
-            // 收集导入信息
-            val imports = mutableSetOf<String>()
+        // 收集导入信息
+        val imports = mutableSetOf<String>()
 
-            // 提取实体描述
-            val description = extractEntityDescription(entity)
-            // 分析属性
-            val properties = entity.getAllProperties().map { prop ->
-                analyzeProperty(prop, imports)
-            }.toList()
-            return EntityMetadata(
-                className = className,
-                packageName = packageName,
-                qualifiedName = qualifiedName,
-                properties = properties,
-                imports = imports,
-                description = description
-            )
+        // 提取实体描述
+        val description = extractEntityDescription(entity)
+        // 分析属性
+        val properties = entity.getAllProperties().map { prop ->
+            analyzeProperty(prop, imports)
+        }.toList()
+        return EntityMetadata(
+            className = className,
+            packageName = packageName,
+            qualifiedName = qualifiedName,
+            properties = properties,
+            imports = imports,
+            description = description
+        )
 
     }
 
@@ -107,34 +102,8 @@ class JimmerEntityAnalyzer(
         }
 
         // 如果没有找到注解描述，使用预定义的映射规则
-        return getDefaultEntityDescription(entity.simpleName.asString())
-    }
-
-    /**
-     * 获取默认的实体描述
-     */
-    private fun getDefaultEntityDescription(className: String): String {
-        return when (className) {
-            "SysDict" -> "字典"
-            "SysUser" -> "用户"
-            "SysDept" -> "部门"
-            "SysRole" -> "角色"
-            "BizNote" -> "笔记"
-            "BizTag" -> "标签"
-            "BizDotfiles" -> "配置文件"
-            "SysWeather" -> "天气"
-            "SysDictItem" -> "字典项"
-            "SysAiPrompt" -> "AI提示词"
-            else -> {
-                // 默认转换：去掉Sys/Biz前缀，转换为中文描述
-                val simpleName = className
-                    .removePrefix("Sys")
-                    .removePrefix("Biz")
-
-                // 这里可以添加更多的转换规则
-                simpleName.lowercase()
-            }
-        }
+        val className = entity.simpleName.asString()
+        return className
     }
 
 
@@ -178,7 +147,7 @@ class JimmerEntityAnalyzer(
                 null
             }
         } else null
-        val defaultValue =prop.defaultValue
+        val defaultValue = prop.defaultValue
 
 //         generateDefaultValue(type, isNullable, typeAnalysis, enumMetadata)
 
@@ -327,7 +296,6 @@ class JimmerEntityAnalyzer(
             }
         }
     }
-
 
 
     private fun generateLabel(name: String): String {
