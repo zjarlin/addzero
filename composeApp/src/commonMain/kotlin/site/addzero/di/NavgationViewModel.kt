@@ -9,8 +9,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import site.addzero.generated.RouteKeys
 import site.addzero.generated.RouteTable
-import site.addzero.settings.SettingContext4Compose
 
 object NavgationViewModel {
     private var _navController: NavHostController? = null
@@ -20,7 +20,7 @@ object NavgationViewModel {
         _navController = controller
         NavHost(
             navController = controller,
-            startDestination = SettingContext4Compose.HOME_SCREEN,
+            startDestination = RouteKeys.HOME_SCREEN,
             modifier = Modifier.fillMaxSize().padding(16.dp)
         ) {
             // 动态生成导航目标

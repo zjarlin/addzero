@@ -11,12 +11,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.withContext
 import org.koin.android.annotation.KoinViewModel
+import site.addzero.BuildKonfig
 import site.addzero.assist.api
-import site.addzero.core.network.apiClient
-import site.addzero.core.network.apiClientWithSse
 import site.addzero.generated.api.ApiProvider.mqttApi
-import site.addzero.settings.SettingContext4Compose.BASE_HOST
-import site.addzero.settings.SettingContext4Compose.BASE_PORT
 
 @KoinViewModel
 class MqttMessageViewModel : ViewModel() {
@@ -72,10 +69,11 @@ class MqttMessageViewModel : ViewModel() {
 
         isSubscribed = true
         sendResult = "正在订阅消息..."
+
         api {
             apiClientWithSse.sse(
-                host = BASE_HOST,
-                port = BASE_PORT,
+                host = BuildKonfig.BASE_HOST,
+                port = BuildKonfig.BASE_PORT,
                 path = "/mqtt/consumer?brokerHost=$brokerHost&brokerPort=$brokerPort&topic=$topic"
             ) {
                 incoming.collect { event ->

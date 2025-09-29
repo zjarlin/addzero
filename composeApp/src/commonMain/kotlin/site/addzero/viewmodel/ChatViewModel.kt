@@ -11,11 +11,11 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
+import site.addzero.BuildKonfig
 import site.addzero.assist.api
 import site.addzero.core.ext.nowLong
 import site.addzero.core.network.apiClientWithSse
 import site.addzero.generated.api.ApiProvider.chatApi
-import site.addzero.settings.SettingContext4Compose
 
 /**
  * 🤖 聊天视图模型
@@ -183,7 +183,7 @@ class ChatViewModel : ViewModel() {
                         this.method = HttpMethod.parse("GET")
                         url {
                             //                            takeFrom(ktorfit.baseUrl + "/chat/ask")
-                            takeFrom(SettingContext4Compose.BASE_URL + "/chat/ask")
+                            takeFrom(BuildKonfig.BASE_URL + "/chat/ask")
                             parameter("text", message)
                         }
                     }

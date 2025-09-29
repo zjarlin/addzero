@@ -5,7 +5,7 @@ import io.ktor.client.*
 import io.ktor.client.plugins.*
 import io.ktor.client.request.*
 import io.ktor.http.*
-import site.addzero.settings.SettingContext4Compose
+import site.addzero.BuildKonfig
 
 object AddHttpClient {
     private var mytoken: String? = null
@@ -21,7 +21,7 @@ object AddHttpClient {
 
     val httpclient by lazy {
         apiClient.config {
-            configBaseUrl(SettingContext4Compose.BASE_URL)
+            configBaseUrl(BuildKonfig.BASE_URL)
 //            configToken(mytoken)
 // 动态添加token到每个请求
             configToken()

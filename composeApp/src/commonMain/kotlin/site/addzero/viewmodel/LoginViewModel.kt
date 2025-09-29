@@ -12,11 +12,11 @@ import site.addzero.entity.SignInStatus
 import site.addzero.generated.api.ApiProvider.loginApi
 import site.addzero.generated.api.ApiProvider.sysUserCenterApi
 import site.addzero.generated.isomorphic.SysUserIso
-import site.addzero.settings.SettingContext4Compose
 import site.addzero.ui.infra.model.navigation.RecentTabsManagerViewModel
 import org.koin.android.annotation.KoinViewModel
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import site.addzero.BuildKonfig
 
 private const val defaultUsername = "admin"
 
@@ -160,7 +160,7 @@ class LoginViewModel : ViewModel(), KoinComponent {
             val token = signinSecond.token
 
             if (token.isNotBlank()) {
-                site.addzero.component.toast.ToastManager.success(SettingContext4Compose.WELCOME_MSG)
+                site.addzero.component.toast.ToastManager.success(BuildKonfig.WELCOME_MSG)
             }
 
             AddHttpClient.setToken(null)

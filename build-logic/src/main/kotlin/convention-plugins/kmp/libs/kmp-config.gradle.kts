@@ -13,12 +13,12 @@ buildkonfig {
         defByClass(BuildSettings::class)
     }
     defaultConfigs {
-        val projectProperties = getProjectProperties(project,".env.prod")
+        val projectProperties = getProjectProperties(project,".env")
         defByMap(projectProperties)
     }
 
     defaultConfigs("dev") {
-        buildConfigField(FieldSpec.Type.STRING, "dasda", "sss")
+        buildConfigField(FieldSpec.Type.STRING, "测试", "测试")
     }
 
 
