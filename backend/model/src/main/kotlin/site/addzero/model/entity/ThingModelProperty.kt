@@ -1,8 +1,10 @@
 package site.addzero.model.entity.biz_device
 
+import org.babyfish.jimmer.sql.DissociateAction
 import org.babyfish.jimmer.sql.Entity
 import org.babyfish.jimmer.sql.Key
 import org.babyfish.jimmer.sql.ManyToOne
+import org.babyfish.jimmer.sql.OnDissociate
 import org.babyfish.jimmer.sql.Table
 import site.addzero.entity2form.annotation.LabelProp
 import site.addzero.model.common.BaseEntity
@@ -19,6 +21,8 @@ interface ThingModelProperty : BaseEntity {
      * 所属物模型
      */
     @ManyToOne
+          @OnDissociate(DissociateAction.DELETE)
+
     val thingModel: ThingModel?
 
     /**

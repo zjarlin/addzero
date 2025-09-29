@@ -28,6 +28,7 @@ interface Device : BaseEntity {
      * 所属产品
      */
     @ManyToOne
+       @OnDissociate(DissociateAction.DELETE)
     val product: Product?
 
     /**

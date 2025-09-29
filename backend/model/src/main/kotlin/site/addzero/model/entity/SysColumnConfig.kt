@@ -56,6 +56,7 @@ interface SysColumnConfig : BaseEntity {
 
 
     @ManyToOne
+       @OnDissociate(DissociateAction.DELETE)
     @JoinColumn(name = "table_id")
     val tableConfig: SysTableConfig?
 }

@@ -1,9 +1,8 @@
 package site.addzero.model.entity
 
+import org.babyfish.jimmer.sql.*
 import site.addzero.entity2form.annotation.LabelProp
 import site.addzero.model.common.BaseEntity
-import org.babyfish.jimmer.sql.*
-import site.addzero.model.entity.SysUser
 
 /**
  *部门
@@ -18,8 +17,9 @@ interface SysDept : BaseEntity {
     @LabelProp
     val name: String
 
-    @ManyToOne
     @Key
+    @ManyToOne
+    @OnDissociate(DissociateAction.DELETE)
     @JoinColumn(name = "parent_id")
     val parent: SysDept?
 

@@ -27,6 +27,7 @@ interface ProductCategory : BaseEntity {
      * 父分类
      */
     @ManyToOne
+       @OnDissociate(DissociateAction.DELETE)
     val parent: ProductCategory?
 
 

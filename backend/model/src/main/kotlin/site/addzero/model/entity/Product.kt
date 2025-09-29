@@ -27,6 +27,7 @@ interface Product : BaseEntity {
     /** 产品分类 */
     @ManyToOne
     @Key
+       @OnDissociate(DissociateAction.DELETE)
     val productCategory: ProductCategory?
 
     /**
@@ -63,5 +64,6 @@ interface Product : BaseEntity {
      * 是否启用
      */
     @Key
+    @Default("1")
     val enabled: Boolean
 }

@@ -30,6 +30,8 @@ jimmer:
               name: Authorization
         securities:
           - AuthorizationHeader: [ ]
+  #            关联所基于的外键是假的
+  default-dissociation-action-checkable: false
 
 
 
