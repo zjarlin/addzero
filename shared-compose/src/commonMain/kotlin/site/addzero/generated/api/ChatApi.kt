@@ -1,6 +1,7 @@
 package site.addzero.generated.api
 
 import de.jensklingenberg.ktorfit.http.*
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Ktorfit接口 - 由KSP自动生成
@@ -16,6 +17,18 @@ interface ChatApi {
  * 返回类型: kotlin.collections.List<kotlin.Any>
  */
     @GET("/chatgettools")    suspend fun gettools(): kotlin.collections.List<kotlin.Any>
+
+/**
+ * askFlow
+ * HTTP方法: GET
+ * 路径: /chat/askFlow
+ * 参数:
+ *   - text: kotlin.String (Query)
+ * 返回类型: kotlinx.coroutines.flow.Flow<kotlin.String>
+ */
+    @GET("/chat/askFlow")    suspend fun askFlow(
+        @Query("text") text: kotlin.String
+    ): kotlinx.coroutines.flow.Flow<kotlin.String>
 
 /**
  * ask

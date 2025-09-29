@@ -1,10 +1,11 @@
 package site.addzero.core.network
 
-import site.addzero.settings.SettingContext4Compose
 import de.jensklingenberg.ktorfit.Ktorfit
+import io.ktor.client.*
 import io.ktor.client.plugins.*
 import io.ktor.client.request.*
 import io.ktor.http.*
+import site.addzero.settings.SettingContext4Compose
 
 object AddHttpClient {
     private var mytoken: String? = null
@@ -17,16 +18,22 @@ object AddHttpClient {
         return mytoken
     }
 
+
     val httpclient by lazy {
         apiClient.config {
             configBaseUrl(SettingContext4Compose.BASE_URL)
 //            configToken(mytoken)
-            // 动态添加token到每个请求
-            defaultRequest {
-                headers {
-                    mytoken?.let {
-                        append(HttpHeaders.Authorization, it)
-                    }
+// 动态添加token到每个请求
+            configToken()
+        }
+    }
+
+
+    private fun HttpClientConfig<*>.configToken() {
+        defaultRequest {
+            headers {
+                mytoken?.let {
+                    append(HttpHeaders.Authorization, it)
                 }
             }
         }

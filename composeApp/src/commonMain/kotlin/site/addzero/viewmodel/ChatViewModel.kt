@@ -11,12 +11,11 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
+import site.addzero.assist.api
 import site.addzero.core.ext.nowLong
-import site.addzero.core.network.AddHttpClient.ktorfit
 import site.addzero.core.network.apiClientWithSse
+import site.addzero.generated.api.ApiProvider.chatApi
 import site.addzero.settings.SettingContext4Compose
-import site.addzero.settings.SettingContext4Compose.BASE_HOST
-import site.addzero.settings.SettingContext4Compose.BASE_PORT
 
 /**
  * 🤖 聊天视图模型
@@ -116,17 +115,74 @@ class ChatViewModel : ViewModel() {
             )
         )
 
+        sselogic(message, aiMessageId)
+//        flowlogic(message, aiMessageId)
+//       extracted
+    }
+
+    private fun flowlogic(message: String, aiMessageId: String) {
+
+        api {
+            try {
+                val askFlow = chatApi.askFlow(message)
+                askFlow.collect {
+                    val currentMessages = chatMessages.toMutableList()
+                    val aiMessageIndex = currentMessages.indexOfFirst { it.id == aiMessageId }
+
+                    if (aiMessageIndex != -1) {
+                        val existingMessage = currentMessages[aiMessageIndex]
+                        currentMessages[aiMessageIndex] = existingMessage.copy(
+                            content = existingMessage.content + it
+                        )
+                        chatMessages.clear()
+                        chatMessages.addAll(currentMessages)
+                    }
+
+                }
+                // 完成后更新AI消息状态
+                val finalMessages = chatMessages.toMutableList()
+                val aiMessageIndex = finalMessages.indexOfFirst { it.id == aiMessageId }
+                if (aiMessageIndex != -1) {
+                    val finalMessage = finalMessages[aiMessageIndex]
+                    finalMessages[aiMessageIndex] = finalMessage.copy(canRetry = true)
+                    chatMessages.clear()
+                    chatMessages.addAll(finalMessages)
+                }
+            } catch (e: Exception) {
+                // 处理错误情况
+                val errorMessages = chatMessages.toMutableList()
+                val aiMessageIndex = errorMessages.indexOfFirst { it.id == aiMessageId }
+                if (aiMessageIndex != -1) {
+                    val errorMessage = errorMessages[aiMessageIndex]
+                    errorMessages[aiMessageIndex] = errorMessage.copy(
+                        content = "抱歉，回复出错了: ${e.message}",
+                        isError = true,
+                        canRetry = true
+                    )
+                    chatMessages.clear()
+                    chatMessages.addAll(errorMessages)
+                }
+
+            } finally {
+                isAiThinking = false
+                retryingMessageId = null
+            }
+
+        }
+    }
+
+    private fun sselogic(message: String, aiMessageId: String) {
         viewModelScope.launch {
             // 使用SSE方式接收流式响应
             try {
                 apiClientWithSse.sse(
-//                    host = BASE_HOST,
-//                    port = BASE_PORT,
-//                    path = "/chat/ask",
+                    //                    host = BASE_HOST,
+                    //                    port = BASE_PORT,
+                    //                    path = "/chat/ask",
                     request = {
                         this.method = HttpMethod.parse("GET")
                         url {
-//                            takeFrom(ktorfit.baseUrl + "/chat/ask")
+                            //                            takeFrom(ktorfit.baseUrl + "/chat/ask")
                             takeFrom(SettingContext4Compose.BASE_URL + "/chat/ask")
                             parameter("text", message)
                         }

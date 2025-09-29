@@ -13,6 +13,7 @@ import kotlinx.coroutines.withContext
 import org.koin.android.annotation.KoinViewModel
 import site.addzero.assist.api
 import site.addzero.core.network.apiClient
+import site.addzero.core.network.apiClientWithSse
 import site.addzero.generated.api.ApiProvider.mqttApi
 import site.addzero.settings.SettingContext4Compose.BASE_HOST
 import site.addzero.settings.SettingContext4Compose.BASE_PORT
@@ -71,13 +72,6 @@ class MqttMessageViewModel : ViewModel() {
 
         isSubscribed = true
         sendResult = "正在订阅消息..."
-        val apiClientWithSse = apiClient.config {
-            install(SSE) {
-                showCommentEvents()
-                showRetryEvents()
-            }
-        }
-
         api {
             apiClientWithSse.sse(
                 host = BASE_HOST,

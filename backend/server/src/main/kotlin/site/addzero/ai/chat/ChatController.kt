@@ -1,18 +1,19 @@
 package site.addzero.ai.chat
 
-import site.addzero.ai.config.gettooldef
 import io.swagger.v3.oas.annotations.Operation
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.reactive.asFlow
 import org.springframework.ai.chat.client.ChatClient
 import org.springframework.ai.chat.model.ChatModel
 import org.springframework.ai.tool.definition.ToolDefinition
 import org.springframework.ai.tool.method.MethodToolCallbackProvider
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter
 import reactor.core.publisher.Flux
+import site.addzero.ai.config.gettooldef
 import java.io.IOException
 
 @RestController
@@ -36,8 +37,19 @@ class ChatController(
         return gettooldef
     }
 
-    @GetMapping(value = ["/ask"], produces = [MediaType
-        .TEXT_EVENT_STREAM_VALUE])
+
+//           @GetMapping(value = ["/askFlow"], produces = [MediaType .TEXT_EVENT_STREAM_VALUE])
+    @GetMapping("/askFlow")
+    fun askFlow(text: String): Flow<String> {
+        val stream: Flux<String> = chatClient.prompt().user {
+            it.text(text)
+        }.stream().content()
+        val asFlow = stream.asFlow()
+        return asFlow
+    }
+
+
+    @GetMapping(value = ["/ask"], produces = [MediaType.TEXT_EVENT_STREAM_VALUE])
     fun ask(text: String): SseEmitter {
         val emitter = SseEmitter(Long.MAX_VALUE)
 
