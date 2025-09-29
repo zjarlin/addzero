@@ -1,5 +1,6 @@
-package site.addzero.web.infra.jimmer
+package site.addzero.web.infra.exception_advice
 
+import org.babyfish.jimmer.CircularReferenceException
 import org.babyfish.jimmer.UnloadedException
 import org.babyfish.jimmer.error.CodeBasedException
 import org.babyfish.jimmer.error.CodeBasedRuntimeException
@@ -7,9 +8,13 @@ import org.babyfish.jimmer.jackson.ImmutableModuleRequiredException
 import org.babyfish.jimmer.sql.exception.CircularDeletionException
 import org.babyfish.jimmer.sql.exception.DatabaseValidationException
 import org.babyfish.jimmer.sql.exception.EmptyResultException
+import org.babyfish.jimmer.sql.exception.ExecutionException
+import org.babyfish.jimmer.sql.exception.SerializationException
 import org.babyfish.jimmer.sql.exception.TooManyResultsException
+import org.springframework.core.annotation.Order
 import org.springframework.http.HttpStatus
 import org.springframework.http.ProblemDetail
+import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.method.annotation.HandlerMethodValidationException
@@ -17,7 +22,7 @@ import site.addzero.web.infra.config.log
 import java.net.URI
 
 @RestControllerAdvice
-@org.springframework.core.annotation.Order(0)
+@Order(0)
 class JimmerExceptionHandler {
     private fun createBaseProblemDetail(
         status: HttpStatus,
@@ -77,8 +82,8 @@ class JimmerExceptionHandler {
         ex.message
     ).also { log.error("CodeBasedRuntimeException: {}", ex.message, ex) }
 
-    @ExceptionHandler(org.babyfish.jimmer.CircularReferenceException::class)
-    fun handleCircularReferenceException(ex: org.babyfish.jimmer.CircularReferenceException) =
+    @ExceptionHandler(CircularReferenceException::class)
+    fun handleCircularReferenceException(ex: CircularReferenceException) =
         createStandardProblemDetail(
             HttpStatus.INTERNAL_SERVER_ERROR,
             "数据关联错误：检测到循环引用，请检查实体间的双向关联配置",
@@ -107,8 +112,8 @@ class JimmerExceptionHandler {
         DATABASE_VALIDATION_FAILED_ERROR_CODE
     ).also { log.error("DatabaseValidationException: {}", ex.message, ex) }
 
-    @ExceptionHandler(org.babyfish.jimmer.sql.exception.ExecutionException::class)
-    fun handleExecutionException(ex: org.babyfish.jimmer.sql.exception.ExecutionException) =
+    @ExceptionHandler(ExecutionException::class)
+    fun handleExecutionException(ex: ExecutionException) =
         createStandardProblemDetail(
             HttpStatus.INTERNAL_SERVER_ERROR,
             "数据库操作失败：SQL执行出错",
@@ -138,8 +143,8 @@ class JimmerExceptionHandler {
         ex.message
     ).also { log.warn("TooManyResultsException: {}", ex.message) }
 
-    @ExceptionHandler(org.babyfish.jimmer.sql.exception.SerializationException::class)
-    fun handleSerializationException(ex: org.babyfish.jimmer.sql.exception.SerializationException) =
+    @ExceptionHandler(SerializationException::class)
+    fun handleSerializationException(ex: SerializationException) =
         createStandardProblemDetail(
             HttpStatus.BAD_REQUEST,
             "序列化失败：数据序列化或反序列化过程中出错",
@@ -200,9 +205,9 @@ class JimmerExceptionHandler {
         }
     }
 
-    @ExceptionHandler(org.springframework.web.bind.MethodArgumentNotValidException::class)
+    @ExceptionHandler(MethodArgumentNotValidException::class)
     fun handleMethodArgumentNotValidException(
-        ex: org.springframework.web.bind.MethodArgumentNotValidException
+        ex: MethodArgumentNotValidException
     ): ProblemDetail {
         log.warn("MethodArgumentNotValidException: {}", ex.message)
 
