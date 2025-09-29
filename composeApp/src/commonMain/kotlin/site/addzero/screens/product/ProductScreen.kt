@@ -14,7 +14,8 @@ import site.addzero.screens.product.vm.ProductViewModel
 @Composable
 fun ProductScreen(viewModel: ProductViewModel) {
     AddTable(
-        getRowId = { it.id.toString() },
+        getRowId = { it.id?:0L },
+
         data = viewModel.data,
         columns = listOf(
             ColumnConfig(

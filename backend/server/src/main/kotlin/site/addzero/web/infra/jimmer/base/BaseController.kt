@@ -1,6 +1,7 @@
 package site.addzero.web.infra.jimmer.base
 
 import cn.hutool.extra.spring.SpringUtil
+import org.babyfish.jimmer.DraftObjects
 import org.babyfish.jimmer.Page
 import org.babyfish.jimmer.sql.ast.mutation.SaveMode
 import org.babyfish.jimmer.sql.kt.KSqlClient
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.*
 import site.addzero.entity.PageResult
 import site.addzero.entity.low_table.CommonTableDaTaInputDTO
 import site.addzero.jimmer.adv_search.queryPage
+import site.addzero.web.infra.jimmer.toJimmerEntity
 
 interface BaseController<E : Any> : BaseGenericContext<E> {
     val type get() = CLASS().kotlin
@@ -48,6 +50,7 @@ interface BaseController<E : Any> : BaseGenericContext<E> {
 
     @PostMapping("/upsert")
     fun upsert(@RequestBody input: E): E {
+        DraftObjects.unload(input,"createTime")
         val save = sql.save(input)
         val modifiedEntity = save.modifiedEntity
         return modifiedEntity
@@ -55,6 +58,7 @@ interface BaseController<E : Any> : BaseGenericContext<E> {
 
     @PutMapping("/update")
     fun edit(@RequestBody e: E): Int {
+            DraftObjects.unload(e,"createTime")
         val save = sql.save(e) {
             setMode(SaveMode.UPDATE_ONLY)
         }

@@ -14,7 +14,8 @@ import site.addzero.screens.product.vm.ProductCategoryViewModel
 @Composable
 fun ProductCategoryScreen(viewModel: ProductCategoryViewModel) {
     AddTable(
-        getRowId = { it.id.toString() },
+        getRowId = { it.id?:0L },
+
 
         data = viewModel.data,
         columns = listOf(

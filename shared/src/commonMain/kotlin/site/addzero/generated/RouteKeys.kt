@@ -37,7 +37,6 @@ object RouteKeys {
     const val DEVICE_MANNAGER = "site.addzero.screens.product.sc.DeviceMannager"
     const val SHEBIEJIERU = "site.addzero.screens.product.sc.Shebiejieru"
     const val JSON_DESIGNER_DEMO = "site.addzero.screens.json.JsonDesignerDemo"
-    const val AI_TIMEOUT_AND_ANIMATION_DEMO = "site.addzero.screens.ai.AiTimeoutAndAnimationDemo"
     const val SYS_DEPT_SCREEN = "/system/sysDept"
     const val TABS_EXAMPLE_SCREEN = "examples/tabs"
     const val DICT_MANAGER_SCREEN = "/dict"
@@ -76,7 +75,6 @@ object RouteKeys {
         Route(value = "物联网模块", title = "设备管理", routePath = "site.addzero.screens.product.sc.DeviceMannager", icon = "", order = 0.0, qualifiedName = "site.addzero.screens.product.sc.DeviceMannager"),
         Route(value = "物联网模块", title = "设备接入", routePath = "site.addzero.screens.product.sc.Shebiejieru", icon = "", order = 0.0, qualifiedName = "site.addzero.screens.product.sc.Shebiejieru"),
         Route(value = "界面演示", title = "JSON设计器演示", routePath = "site.addzero.screens.json.JsonDesignerDemo", icon = "", order = 0.0, qualifiedName = "site.addzero.screens.json.JsonDesignerDemo"),
-        Route(value = "界面演示", title = "AI超时和思考动画", routePath = "site.addzero.screens.ai.AiTimeoutAndAnimationDemo", icon = "", order = 0.0, qualifiedName = "site.addzero.screens.ai.AiTimeoutAndAnimationDemo"),
         Route(value = "系统管理", title = "部门管理", routePath = "/system/sysDept", icon = "Business", order = 0.0, qualifiedName = "site.addzero.screens.dept.SysDeptScreen"),
         Route(value = "组件示例", title = "多标签页组件", routePath = "examples/tabs", icon = "Sharp", order = 3.0, qualifiedName = "site.addzero.demo.TabsExampleScreen"),
         Route(value = "系统管理", title = "字典管理", routePath = "/dict", icon = "Category", order = 3.0, qualifiedName = "site.addzero.screens.dict.DictManagerScreen")

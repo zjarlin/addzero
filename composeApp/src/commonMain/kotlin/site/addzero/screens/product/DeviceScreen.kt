@@ -14,7 +14,8 @@ import site.addzero.screens.product.vm.DeviceViewModel
 @Composable
 fun DeviceScreen(viewModel: DeviceViewModel) {
     AddTable(
-        getRowId = { it.id.toString() },
+        getRowId = { it.id?:0L },
+
         data = viewModel.data,
         columns = listOf(
             ColumnConfig(

@@ -16,7 +16,8 @@ fun ThingModelScreen(viewModel: ThingModelViewModel) {
 
 
     AddTable(
-        getRowId = { it.id.toString() },
+        getRowId = { it.id?:0L },
+
         data = viewModel.data,
         columns = listOf(
             ColumnConfig(
@@ -65,7 +66,7 @@ fun ThingModelScreen(viewModel: ThingModelViewModel) {
         },
         onBatchExport = {},
         onEditClick = {
-            viewModel.onDeleteClick(it)
+            viewModel.onEditClick(it)
         },
         onDeleteClick = {
             viewModel.onDeleteClick(it)
