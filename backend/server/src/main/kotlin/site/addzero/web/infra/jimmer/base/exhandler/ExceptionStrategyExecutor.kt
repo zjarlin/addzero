@@ -3,6 +3,7 @@ package site.addzero.web.infra.jimmer.base.exhandler
 import cn.hutool.core.util.StrUtil
 import cn.hutool.extra.spring.SpringUtil
 import site.addzero.web.infra.jimmer.base.exhandler.autoaddcol.AutoAddColStrategy
+import org.springframework.http.ProblemDetail
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Component
 
@@ -35,18 +36,18 @@ fun extractColumnNames(sql: String?): String {
 
 @Component
 class ExceptionStrategyExecutor(
-    private val strategies: MutableList<out AutoAddColStrategy>, private val jdbcTemplate: JdbcTemplate
+    private val strategies: MutableList<out AutoAddColStrategy>
+    , private val jdbcTemplate: JdbcTemplate
 ) {
-    fun handleException(message: String?, causeMessage: String?): Boolean? {
+    fun handleException(message: String?, causeMessage: String?): ProblemDetail? {
         // 遍历策略，找到第一个可处理的策略
-        val handle = try {
+        try {
             val strategy = strategies.first { it.canHandle(message, causeMessage) == true }
-            strategy.handle(message, causeMessage)
-            return true
+            return strategy.handle(message, causeMessage)
         } catch (e: Exception) {
-            return false
+            e.printStackTrace()
+            return null
         }
-        return false
     }
 
 }

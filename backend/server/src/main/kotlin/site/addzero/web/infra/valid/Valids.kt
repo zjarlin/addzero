@@ -1,21 +1,17 @@
 package site.addzero.web.infra.valid
 
 import cn.hutool.core.collection.CollUtil
-import cn.hutool.core.text.CharSequenceUtil
 import cn.hutool.core.util.ReflectUtil
 import cn.hutool.core.util.StrUtil
 import site.addzero.common.util.metainfo.MetaInfoUtils
-import site.addzero.entity.Res
 import site.addzero.str.addAll
 import site.addzero.web.infra.valid.entity.Des
-import site.addzero.web.infra.valid.entity.ValidVO
 import com.alibaba.fastjson2.JSON
 import com.alibaba.fastjson2.JSONObject
 import jakarta.validation.ConstraintViolation
 import jakarta.validation.Validation
 import jakarta.validation.Validator
 import jakarta.validation.ValidatorFactory
-import java.util.function.Consumer
 
 /**
  * valid校验封装
@@ -24,49 +20,6 @@ import java.util.function.Consumer
  * @since 2022/07/19
  */
 object Valids {
-    /**
-     * @param list
-     * @param consumer 批量导入方法
-     * @return [Result]<[ValidVO]>
-     * @author zjarlin
-     * @since 2023/10/07
-     */
-    inline fun <reified T> returnValidList(list: List<T>, consumer: Consumer<List<T>>): Res<*> {
-        if (CollUtil.isEmpty(list)) {
-            val fail = Res.fail("导入数据不能为空")
-            return fail
-        }
-        val tClass = T::class.java
-        val validate: List<JSONObject> = validate(list)
-
-//        val all: Map<Boolean, List<JSONObject>> =
-        val all = validate.partition {
-            val msg = it.getString("msg") // 使用 getString 获取
-            CharSequenceUtil.isBlank(msg)
-        }
-        val successList = all.first
-        val errorList = all.second
-
-        if (CollUtil.isNotEmpty(successList)) {
-            val collect = successList.map { jsonObject ->
-                JSON.parseObject(jsonObject.toJSONString(), tClass)
-            }
-            consumer.accept(collect)
-        }
-
-        val objectValidList = ValidVO().apply {
-            errorNo = errorList.size
-            successNo = successList.size
-            this.successList = successList
-            this.errorList = errorList
-        }
-
-        return if (objectValidList.errorNo!! > 0) {
-            Res.success("失败条数${objectValidList.errorNo}，成功条数${objectValidList.successNo}", objectValidList)
-        } else {
-            Res.success("全部导入成功!成功条数${objectValidList.successNo}")
-        }
-    }
 
     /**
      * 校验list增加一列报错信息
