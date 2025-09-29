@@ -1,8 +1,8 @@
 package site.addzero.model.entity
 
+import org.babyfish.jimmer.sql.*
 import site.addzero.entity2form.annotation.LabelProp
 import site.addzero.model.common.BaseEntity
-import org.babyfish.jimmer.sql.*
 
 /**
  * 产品分类实体类，用于对产品进行归类，例如：机床
@@ -27,7 +27,7 @@ interface ProductCategory : BaseEntity {
      * 父分类
      */
     @ManyToOne
-       @OnDissociate(DissociateAction.DELETE)
+    @OnDissociate(DissociateAction.DELETE)
     val parent: ProductCategory?
 
 
@@ -44,5 +44,6 @@ interface ProductCategory : BaseEntity {
      * 是否启用
      */
     @Key
+    @Default("true")
     val enabled: Boolean
 }

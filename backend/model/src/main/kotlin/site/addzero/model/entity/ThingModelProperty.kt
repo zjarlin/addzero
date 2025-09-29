@@ -1,11 +1,6 @@
 package site.addzero.model.entity.biz_device
 
-import org.babyfish.jimmer.sql.DissociateAction
-import org.babyfish.jimmer.sql.Entity
-import org.babyfish.jimmer.sql.Key
-import org.babyfish.jimmer.sql.ManyToOne
-import org.babyfish.jimmer.sql.OnDissociate
-import org.babyfish.jimmer.sql.Table
+import org.babyfish.jimmer.sql.*
 import site.addzero.entity2form.annotation.LabelProp
 import site.addzero.model.common.BaseEntity
 import site.addzero.model.entity.ThingModel
@@ -21,7 +16,7 @@ interface ThingModelProperty : BaseEntity {
      * 所属物模型
      */
     @ManyToOne
-          @OnDissociate(DissociateAction.DELETE)
+    @OnDissociate(DissociateAction.DELETE)
 
     val thingModel: ThingModel?
 
@@ -54,6 +49,7 @@ interface ThingModelProperty : BaseEntity {
     /**
      * 是否必填
      */
+    @Default("true")
     val required: Boolean
 
 
@@ -93,5 +89,6 @@ interface ThingModelProperty : BaseEntity {
     /**
      * 排序
      */
+    @Default("0")
     val sort: Int
 }

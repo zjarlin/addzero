@@ -4,10 +4,7 @@ import androidx.compose.runtime.Composable
 import org.koin.compose.viewmodel.koinViewModel
 import site.addzero.annotation.Route
 import site.addzero.screens.product.*
-import site.addzero.screens.product.vm.DeviceViewModel
-import site.addzero.screens.product.vm.ProductCategoryViewModel
-import site.addzero.screens.product.vm.ProductViewModel
-import site.addzero.screens.product.vm.ThingModelViewModel
+import site.addzero.screens.product.vm.*
 
 
 @Route("物联网模块", "产品管理")
@@ -26,10 +23,20 @@ fun EquipmentClassificationManagement() {
 
 @Route("物联网模块", "物模型管理")
 @Composable
-fun managementOfPhysicalModels() {
+fun ManagementOfPhysicalModels() {
     val koinViewModel = koinViewModel<ThingModelViewModel>()
     ThingModelScreen(koinViewModel)
 }
+
+
+@Route("物联网模块", "物模型属性管理")
+@Composable
+fun ManagementOfPhysicalModelAttributes() {
+    val koinViewModel = koinViewModel<ThingModelPropertyViewModel>()
+    ThingModelPropertyScreen(koinViewModel)
+}
+
+
 @Route("物联网模块", "设备管理")
 @Composable
 fun DeviceMannager() {

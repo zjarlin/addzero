@@ -1,8 +1,8 @@
 package site.addzero.model.entity
 
+import org.babyfish.jimmer.sql.*
 import site.addzero.entity2form.annotation.LabelProp
 import site.addzero.model.common.BaseEntity
-import org.babyfish.jimmer.sql.*
 
 /**
  * 设备实体类，基于产品创建
@@ -28,7 +28,7 @@ interface Device : BaseEntity {
      * 所属产品
      */
     @ManyToOne
-       @OnDissociate(DissociateAction.DELETE)
+    @OnDissociate(DissociateAction.DELETE)
     val product: Product?
 
     /**
@@ -46,5 +46,6 @@ interface Device : BaseEntity {
     /**
      * 设备状态
      */
+    @Default("1")
     val status: String?
 }
