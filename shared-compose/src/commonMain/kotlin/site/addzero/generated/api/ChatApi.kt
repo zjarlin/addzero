@@ -23,10 +23,10 @@ interface ChatApi {
  * 路径: /chat/ask
  * 参数:
  *   - text: kotlin.String (Query)
- * 返回类型: kotlin.String?
+ * 返回类型: kotlin.Any
  */
     @POST("/chat/ask")    suspend fun ask(
         @Query("text") text: kotlin.String
-    ): kotlin.String?
+    ): kotlin.Any
 
 }
