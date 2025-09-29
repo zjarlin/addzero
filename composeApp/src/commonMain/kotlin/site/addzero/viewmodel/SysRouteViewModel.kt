@@ -13,6 +13,12 @@ import site.addzero.settings.SettingContext4Compose
 import site.addzero.util.data_structure.tree.List2TreeUtil
 import org.koin.android.annotation.KoinViewModel
 
+/**
+ * 侧边路由菜单视图
+ * @author zjarlin
+ * @date 2025/09/29
+ * @constructor 创建[SysRouteViewModel]
+ */
 @KoinViewModel
 class SysRouteViewModel() : ViewModel() {
     fun updateRoute(string: String) {

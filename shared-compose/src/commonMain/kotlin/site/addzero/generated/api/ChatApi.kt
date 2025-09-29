@@ -27,6 +27,6 @@ interface ChatApi {
  */
     @GET("/chat/ask")    suspend fun ask(
         @Query("text") text: kotlin.String
-    ): Any
+    ): kotlin.Any
 
 }
