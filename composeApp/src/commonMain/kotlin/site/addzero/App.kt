@@ -4,8 +4,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.context.startKoin
-import org.koin.core.error.KoinApplicationAlreadyStartedException
 import org.koin.ksp.generated.defaultModule
+import org.koin.mp.KoinPlatformTools
 import site.addzero.di.NavgationViewModel
 import site.addzero.ioc.generated.IocContainer
 import site.addzero.ui.auth.LoginScreen
@@ -28,9 +28,7 @@ fun App() {
 }
 
 @Composable
-private fun AppContent() {
-    val themeViewModel = koinViewModel<ThemeViewModel>()
-
+private fun AppContent(themeViewModel: ThemeViewModel = koinViewModel()) {
     MaterialTheme(
         colorScheme = themeViewModel.colorScheme,
         shapes = MaterialTheme.shapes,
@@ -66,14 +64,13 @@ private fun MainLayoutWithLogin() {
 
 //@Composable
 private fun initKoin() {
-    try {
+    val orNull = KoinPlatformTools.defaultContext().getOrNull()
+    if (orNull == null) {
         startKoin {
             printLogger()
             modules(
                 defaultModule,
             )
         }
-    } catch (e: KoinApplicationAlreadyStartedException) {
-        // Koin 已经启动，忽略异常
     }
 }
