@@ -128,7 +128,6 @@ class ChatViewModel : ViewModel() {
                         url {
 //                            takeFrom(ktorfit.baseUrl + "/chat/ask")
                             takeFrom(SettingContext4Compose.BASE_URL + "/chat/ask")
-                            println("输入为${message}")
                             parameter("text", message)
                         }
                     }
