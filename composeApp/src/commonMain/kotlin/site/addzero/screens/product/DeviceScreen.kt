@@ -78,7 +78,7 @@ fun DeviceScreen(viewModel: DeviceViewModel) {
             viewModel.onDeleteClick(it)
         }
     )
-    val formState = rememberDeviceFormState()
+    val formState = rememberDeviceFormState(viewModel.selectedT)
 
     DeviceForm(
         formState,

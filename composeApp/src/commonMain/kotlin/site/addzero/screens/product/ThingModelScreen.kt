@@ -72,7 +72,7 @@ fun ThingModelScreen(viewModel: ThingModelViewModel) {
             viewModel.onDeleteClick(it)
         }
     )
-    val formState = rememberThingModelFormState()
+    val formState = rememberThingModelFormState(viewModel.selectedT)
     ThingModelForm(
         formState,
         visible = viewModel.showForm,
