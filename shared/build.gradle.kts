@@ -7,7 +7,7 @@ plugins {
     id("ksp4jdbc")
     id("ksp4enum")
     id("ksp4projectdir")
-//    id("kmp-config")
+    id("kmp-config-link")
 //    alias(libs.plugins.konfig)
 }
 dependencies {

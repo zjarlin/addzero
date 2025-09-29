@@ -9,6 +9,8 @@ plugins {
     id("kmp-ksp-plugin")
     id("addzero-component")
     id("kmp-config")
+    id("kmp-config-ui")
+    id("kmp-config-link")
 }
 
 

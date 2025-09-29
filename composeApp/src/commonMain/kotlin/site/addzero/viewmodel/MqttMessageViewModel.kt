@@ -13,6 +13,7 @@ import kotlinx.coroutines.withContext
 import org.koin.android.annotation.KoinViewModel
 import site.addzero.BuildKonfig
 import site.addzero.assist.api
+import site.addzero.core.network.apiClientWithSse
 import site.addzero.generated.api.ApiProvider.mqttApi
 
 @KoinViewModel

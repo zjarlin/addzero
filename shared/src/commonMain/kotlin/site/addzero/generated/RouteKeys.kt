@@ -8,9 +8,7 @@ import site.addzero.annotation.Route
  */
 object RouteKeys {
     const val RICH_TEXT_DEMO = "site.addzero.demo.RichTextDemo"
-    const val ADD_CARD_EXAMPLE = "site.addzero.demo.AddCardExample"
     const val U_I_COMPONENTS_DEMO = "site.addzero.demo.UIComponentsDemo"
-    const val TABLE_BIG_DATA_TEST2 = "site.addzero.demo.table.TableBigDataTest2"
     const val TIME_PICKER_EXAMPLE = "site.addzero.demo.date_test.TimePickerExample"
     const val TIME_PICKER_FIELD_TEST = "site.addzero.demo.date_test.TimePickerFieldTest"
     const val DATE_PICKER_FIELD_TEST = "site.addzero.demo.date_test.DatePickerFieldTest"
@@ -24,8 +22,6 @@ object RouteKeys {
     const val UPLOAD_MANAGER_DEMO = "site.addzero.demo.upload.UploadManagerDemo"
     const val TEST_DIRECTORY_PICKER = "site.addzero.demo.upload.TestDirectoryPicker"
     const val IMAGE_LOAD = "site.addzero.demo.ImageLoad"
-    const val DEPT_SELECTOR_EXAMPLE = "site.addzero.component.form.dept_selector.DeptSelectorExample"
-    const val SINGLE_DEPT_SELECTOR_EXAMPLE = "site.addzero.component.form.dept_selector.SingleDeptSelectorExample"
     const val AUTO_COMPLETE_DEMO = "site.addzero.component.autocomplet.AutoCompleteDemo"
     const val HOME_SCREEN = "/home"
     const val ROLE_LIST_SCREEN = "/system/role"
@@ -51,9 +47,7 @@ object RouteKeys {
      */
     val allMeta = listOf(
         Route(value = "组件示例", title = "富文本", routePath = "site.addzero.demo.RichTextDemo", icon = "", order = 0.0, qualifiedName = "site.addzero.demo.RichTextDemo"),
-        Route(value = "", title = "AddCardExample", routePath = "site.addzero.demo.AddCardExample", icon = "", order = 0.0, qualifiedName = "site.addzero.demo.AddCardExample"),
         Route(value = "组件示例", title = "UI组件测试", routePath = "site.addzero.demo.UIComponentsDemo", icon = "", order = 0.0, qualifiedName = "site.addzero.demo.UIComponentsDemo"),
-        Route(value = "", title = "TableBigDataTest2", routePath = "site.addzero.demo.table.TableBigDataTest2", icon = "", order = 0.0, qualifiedName = "site.addzero.demo.table.TableBigDataTest2"),
         Route(value = "时间选择器示例", title = "TimePickerExample", routePath = "site.addzero.demo.date_test.TimePickerExample", icon = "", order = 0.0, qualifiedName = "site.addzero.demo.date_test.TimePickerExample"),
         Route(value = "组件示例", title = "时间选择器", routePath = "site.addzero.demo.date_test.TimePickerFieldTest", icon = "", order = 0.0, qualifiedName = "site.addzero.demo.date_test.TimePickerFieldTest"),
         Route(value = "组件示例", title = "日期选择器", routePath = "site.addzero.demo.date_test.DatePickerFieldTest", icon = "", order = 0.0, qualifiedName = "site.addzero.demo.date_test.DatePickerFieldTest"),
@@ -67,8 +61,6 @@ object RouteKeys {
         Route(value = "组件示例", title = "上传管理器", routePath = "site.addzero.demo.upload.UploadManagerDemo", icon = "", order = 0.0, qualifiedName = "site.addzero.demo.upload.UploadManagerDemo"),
         Route(value = "组件示例", title = "文件夹选择器", routePath = "site.addzero.demo.upload.TestDirectoryPicker", icon = "", order = 0.0, qualifiedName = "site.addzero.demo.upload.TestDirectoryPicker"),
         Route(value = "组件示例", title = "图片加载", routePath = "site.addzero.demo.ImageLoad", icon = "", order = 0.0, qualifiedName = "site.addzero.demo.ImageLoad"),
-        Route(value = "", title = "DeptSelectorExample", routePath = "site.addzero.component.form.dept_selector.DeptSelectorExample", icon = "", order = 0.0, qualifiedName = "site.addzero.component.form.dept_selector.DeptSelectorExample"),
-        Route(value = "", title = "SingleDeptSelectorExample", routePath = "site.addzero.component.form.dept_selector.SingleDeptSelectorExample", icon = "", order = 0.0, qualifiedName = "site.addzero.component.form.dept_selector.SingleDeptSelectorExample"),
         Route(value = "组件示例", title = "自动完成", routePath = "site.addzero.component.autocomplet.AutoCompleteDemo", icon = "", order = 0.0, qualifiedName = "site.addzero.component.autocomplet.AutoCompleteDemo"),
         Route(value = "", title = "主页", routePath = "/home", icon = "Home", order = 0.0, qualifiedName = "site.addzero.screens.home.HomeScreen"),
         Route(value = "系统管理", title = "角色管理", routePath = "/system/role", icon = "Group", order = 0.0, qualifiedName = "site.addzero.screens.role.RoleListScreen"),
