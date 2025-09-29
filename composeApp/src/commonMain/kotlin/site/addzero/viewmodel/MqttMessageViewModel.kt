@@ -14,6 +14,8 @@ import org.koin.android.annotation.KoinViewModel
 import site.addzero.assist.api
 import site.addzero.core.network.apiClient
 import site.addzero.generated.api.ApiProvider.mqttApi
+import site.addzero.settings.SettingContext4Compose.BASE_HOST
+import site.addzero.settings.SettingContext4Compose.BASE_PORT
 
 @KoinViewModel
 class MqttMessageViewModel : ViewModel() {
@@ -78,8 +80,8 @@ class MqttMessageViewModel : ViewModel() {
 
         api {
             apiClientWithSse.sse(
-                host = "localhost",
-                port = 12344,
+                host = BASE_HOST,
+                port = BASE_PORT,
                 path = "/mqtt/consumer?brokerHost=$brokerHost&brokerPort=$brokerPort&topic=$topic"
             ) {
                 incoming.collect { event ->

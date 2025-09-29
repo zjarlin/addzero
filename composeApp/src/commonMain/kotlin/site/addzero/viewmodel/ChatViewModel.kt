@@ -5,10 +5,12 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import site.addzero.assist.api
-import site.addzero.core.ext.nowLong
-import site.addzero.generated.api.ApiProvider.chatApi
+import androidx.lifecycle.viewModelScope
+import io.ktor.client.plugins.sse.*
+import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
+import site.addzero.core.ext.nowLong
+import site.addzero.core.network.apiClientWithSse
 
 /**
  * 🤖 聊天视图模型
@@ -95,50 +97,65 @@ class ChatViewModel : ViewModel() {
     private fun sendAiRequest(message: String, messageId: String) {
         // 开始AI思考状态
         isAiThinking = true
+        val aiMessageId = messageId + "_ai"
 
-        api {
+        // 添加初始的AI回复消息（空内容）
+        chatMessages.add(
+            ChatMessage(
+                id = aiMessageId,
+                content = "",
+                isUser = false,
+                canRetry = false,
+                isError = false
+            )
+        )
+
+        viewModelScope.launch {
+            // 使用SSE方式接收流式响应
             try {
-                val response = chatApi.ask(message)
+                apiClientWithSse.sse(
+                    path = "/chat/ask",
+                ) {
+                    incoming.collect {event->
+                        val currentMessages = chatMessages.toMutableList()
+                        val aiMessageIndex = currentMessages.indexOfFirst { it.id == aiMessageId }
 
-                // 添加成功的AI回复
-                chatMessages.add(
-                    ChatMessage(
-                        id = messageId + "_ai",
-                        content = response ?: "🤖 响应为空",
-                        isUser = false,
-                        canRetry = false,
-                        isError = false
-                    )
-                )
+                        if (aiMessageIndex != -1) {
+                            val existingMessage = currentMessages[aiMessageIndex]
+                            currentMessages[aiMessageIndex] = existingMessage.copy(
+                                content = existingMessage.content + event.data
+                            )
+                            chatMessages.clear()
+                            chatMessages.addAll(currentMessages)
+                        }
 
-            } catch (e: Exception) {
-                // 处理错误
-                val errorMsg = when {
-                    e.message?.contains("timeout", ignoreCase = true) == true ->
-                        "抱歉，AI响应超时了，请点击重试 ⏰"
-
-                    e.message?.contains("network", ignoreCase = true) == true ->
-                        "网络连接异常，请检查网络后重试 🌐"
-
-                    e.message?.contains("server", ignoreCase = true) == true ->
-                        "服务器暂时不可用，请稍后重试 🔧"
-
-                    else -> "抱歉，发生了错误：${e.message} 😔\n点击重试按钮重新发送"
+                    }
                 }
 
-                // 添加错误消息（可重试）
-                chatMessages.add(
-                    ChatMessage(
-                        id = messageId + "_ai",
-                        content = errorMsg,
-                        isUser = false,
-                        canRetry = true,
-                        isError = true
+                // 完成后更新AI消息状态
+                val finalMessages = chatMessages.toMutableList()
+                val aiMessageIndex = finalMessages.indexOfFirst { it.id == aiMessageId }
+                if (aiMessageIndex != -1) {
+                    val finalMessage = finalMessages[aiMessageIndex]
+                    finalMessages[aiMessageIndex] = finalMessage.copy(canRetry = true)
+                    chatMessages.clear()
+                    chatMessages.addAll(finalMessages)
+                }
+            } catch (e: Exception) {
+                // 处理错误情况
+                val errorMessages = chatMessages.toMutableList()
+                val aiMessageIndex = errorMessages.indexOfFirst { it.id == aiMessageId }
+                if (aiMessageIndex != -1) {
+                    val errorMessage = errorMessages[aiMessageIndex]
+                    errorMessages[aiMessageIndex] = errorMessage.copy(
+                        content = "抱歉，回复出错了: ${e.message}",
+                        isError = true,
+                        canRetry = true
                     )
-                )
-
+                    chatMessages.clear()
+                    chatMessages.addAll(errorMessages)
+                }
             } finally {
-                // 结束AI思考状态和重试状态
                 isAiThinking = false
                 retryingMessageId = null
             }
