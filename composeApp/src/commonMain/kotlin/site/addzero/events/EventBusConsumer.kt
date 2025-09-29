@@ -27,6 +27,8 @@ fun EventBusConsumer() {
                 show("系统异常")
 //                show(this.bodyAsText())
             }
+//            val bodyAsText = this.bodyAsText()
+            // TODO: ProblemDetail重构,弃用Res
             val body = this.body<Res<Any>>()
             val message = body.message
             val code = body.code
