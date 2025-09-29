@@ -7,10 +7,16 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.ktor.client.plugins.sse.*
+import io.ktor.client.request.*
+import io.ktor.http.*
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
 import site.addzero.core.ext.nowLong
+import site.addzero.core.network.AddHttpClient.ktorfit
 import site.addzero.core.network.apiClientWithSse
+import site.addzero.settings.SettingContext4Compose
+import site.addzero.settings.SettingContext4Compose.BASE_HOST
+import site.addzero.settings.SettingContext4Compose.BASE_PORT
 
 /**
  * 🤖 聊天视图模型
@@ -114,9 +120,20 @@ class ChatViewModel : ViewModel() {
             // 使用SSE方式接收流式响应
             try {
                 apiClientWithSse.sse(
-                    path = "/chat/ask",
+//                    host = BASE_HOST,
+//                    port = BASE_PORT,
+//                    path = "/chat/ask",
+                    request = {
+                        this.method = HttpMethod.parse("GET")
+                        url {
+//                            takeFrom(ktorfit.baseUrl + "/chat/ask")
+                            takeFrom(SettingContext4Compose.BASE_URL + "/chat/ask")
+                            println("输入为${message}")
+                            parameter("text", message)
+                        }
+                    }
                 ) {
-                    incoming.collect {event->
+                    incoming.collect { event ->
                         val currentMessages = chatMessages.toMutableList()
                         val aiMessageIndex = currentMessages.indexOfFirst { it.id == aiMessageId }
 

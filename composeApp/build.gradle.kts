@@ -21,6 +21,8 @@ dependencies {
 kotlin {
     sourceSets {
         commonMain.dependencies {
+            implementation(libs.ktorfit.lib)
+
             implementation(projects.shared)
             implementation(projects.sharedCompose)
 

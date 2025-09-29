@@ -36,15 +36,16 @@ class ChatController(
         return gettooldef
     }
 
-    @PostMapping(value = ["/ask"], produces = [MediaType.TEXT_EVENT_STREAM_VALUE])
+    @GetMapping(value = ["/ask"], produces = [MediaType
+        .TEXT_EVENT_STREAM_VALUE])
     fun ask(text: String): SseEmitter {
         val emitter = SseEmitter(Long.MAX_VALUE)
-        
+
         try {
             val stream: Flux<String> = chatClient.prompt().user {
                 it.text(text)
             }.stream().content()
-            
+
             stream.subscribe(
                 { data ->
                     try {
@@ -63,7 +64,7 @@ class ChatController(
         } catch (e: Exception) {
             emitter.completeWithError(e)
         }
-        
+
         return emitter
     }
 }

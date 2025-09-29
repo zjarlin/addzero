@@ -19,13 +19,13 @@ interface ChatApi {
 
 /**
  * ask
- * HTTP方法: POST
+ * HTTP方法: GET
  * 路径: /chat/ask
  * 参数:
  *   - text: kotlin.String (Query)
  * 返回类型: kotlin.Any
  */
-    @POST("/chat/ask")    suspend fun ask(
+    @GET("/chat/ask")    suspend fun ask(
         @Query("text") text: kotlin.String
     ): kotlin.Any
 
