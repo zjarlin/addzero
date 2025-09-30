@@ -11,7 +11,6 @@ import site.addzero.easycode.analysis.model.PropertyMetadata
 import site.addzero.easycode.analysis.model.TypeAnalysisResult
 import site.addzero.util.defaultValue
 import site.addzero.util.getArg
-import site.addzero.util.getArgStr
 import site.addzero.util.isJimmerEntity
 
 
@@ -64,43 +63,43 @@ class JimmerEntityAnalyzer{
             when (annotationName) {
                 "Schema" -> {
                     // Swagger/OpenAPI @Schema(description = "...")
-                    val description = annotation.getArgStr("description")
+                    val description = annotation.getArg("description").toString()
                     if (description.isNotBlank()) return description
                 }
 
                 "ApiModel" -> {
                     // Swagger @ApiModel(description = "...")
-                    val description = annotation.getArgStr("description")
+                    val description = annotation.getArg("description").toString()
                     if (description.isNotBlank()) return description
                 }
 
                 "Entity" -> {
                     // JPA @Entity(description = "...")
-                    val description = annotation.getArgStr("description")
+                    val description = annotation.getArg("description").toString()
                     if (description.isNotBlank()) return description
                 }
 
                 "Table" -> {
                     // JPA @Table(comment = "...")
-                    val description = annotation.getArgStr("comment")
+                    val description = annotation.getArg("comment").toString()
                     if (description.isNotBlank()) return description
                 }
 
                 "Comment" -> {
                     // 自定义 @Comment("...")
-                    val description = annotation.getArgStr("value")
+                    val description = annotation.getArg("value").toString()
                     if (description.isNotBlank()) return description
                 }
 
                 "Description" -> {
                     // 自定义 @Description("...")
-                    val description = annotation.getArgStr("value")
+                    val description = annotation.getArg("value").toString()
                     if (description.isNotBlank()) return description
                 }
 
                 "JsonPropertyDescription" -> {
                     // Jackson @JsonPropertyDescription("...")
-                    val description = annotation.getArgStr("value")
+                    val description = annotation.getArg("value").toString()
                     if (description.isNotBlank()) return description
                 }
             }
