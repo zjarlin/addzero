@@ -29,7 +29,7 @@ fun DictCard(
     onEditClick: () -> Unit,
     onDeleteClick: () -> Unit,
 ) {
-    AddCard {
+    AddCard (onClick=onClick){
         Row(
             modifier = Modifier
                 .fillMaxWidth()

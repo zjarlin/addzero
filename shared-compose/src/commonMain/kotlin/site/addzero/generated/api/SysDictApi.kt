@@ -1,10 +1,9 @@
 package site.addzero.generated.api
 
 import de.jensklingenberg.ktorfit.http.*
-import site.addzero.generated.isomorphic.SysDictIso
-import site.addzero.generated.isomorphic.SysDictItemIso
 import site.addzero.entity.PageResult
 import site.addzero.entity.low_table.CommonTableDaTaInputDTO
+import site.addzero.generated.isomorphic.SysDictIso
 
 /**
  * Ktorfit接口 - 由KSP自动生成
@@ -24,54 +23,6 @@ interface SysDictApi {
     @GET("/sysDict/querydict")    suspend fun querydict(
         @Query("keyword") keyword: kotlin.String
     ): kotlin.collections.List<site.addzero.generated.isomorphic.SysDictIso>
-
-/**
- * saveDict
- * HTTP方法: POST
- * 路径: /sysDict/saveDict
- * 参数:
- *   - vO: site.addzero.generated.isomorphic.SysDictIso (RequestBody)
- * 返回类型: site.addzero.generated.isomorphic.SysDictIso
- */
-    @POST("/sysDict/saveDict")    suspend fun saveDict(
-        @Body vO: site.addzero.generated.isomorphic.SysDictIso
-    ): site.addzero.generated.isomorphic.SysDictIso
-
-/**
- * saveDictItem
- * HTTP方法: POST
- * 路径: /sysDict/saveDictItem
- * 参数:
- *   - impl: site.addzero.generated.isomorphic.SysDictItemIso (RequestBody)
- * 返回类型: site.addzero.generated.isomorphic.SysDictItemIso
- */
-    @POST("/sysDict/saveDictItem")    suspend fun saveDictItem(
-        @Body impl: site.addzero.generated.isomorphic.SysDictItemIso
-    ): site.addzero.generated.isomorphic.SysDictItemIso
-
-/**
- * deleteDictItem
- * HTTP方法: GET
- * 路径: /sysDict/deleteDictItem
- * 参数:
- *   - lng: kotlin.Long (RequestParam)
- * 返回类型: kotlin.Unit
- */
-    @GET("/sysDict/deleteDictItem")    suspend fun deleteDictItem(
-        @Query("lng") lng: kotlin.Long
-    ): kotlin.Unit
-
-/**
- * deleteDict
- * HTTP方法: GET
- * 路径: /sysDict/deleteDict
- * 参数:
- *   - lng: kotlin.Long (Query)
- * 返回类型: kotlin.Unit
- */
-    @GET("/sysDict/deleteDict")    suspend fun deleteDict(
-        @Query("lng") lng: kotlin.Long
-    ): kotlin.Unit
 
 /**
  * tree
@@ -103,11 +54,23 @@ interface SysDictApi {
  * 路径: /sysDict/save
  * 参数:
  *   - input: site.addzero.generated.isomorphic.SysDictIso (RequestBody)
- * 返回类型: kotlin.Int
+ * 返回类型: site.addzero.generated.isomorphic.SysDictIso
  */
     @POST("/sysDict/save")    suspend fun save(
         @Body input: site.addzero.generated.isomorphic.SysDictIso
-    ): kotlin.Int
+    ): site.addzero.generated.isomorphic.SysDictIso
+
+/**
+ * upsert
+ * HTTP方法: POST
+ * 路径: /sysDict/upsert
+ * 参数:
+ *   - input: site.addzero.generated.isomorphic.SysDictIso (RequestBody)
+ * 返回类型: site.addzero.generated.isomorphic.SysDictIso
+ */
+    @POST("/sysDict/upsert")    suspend fun upsert(
+        @Body input: site.addzero.generated.isomorphic.SysDictIso
+    ): site.addzero.generated.isomorphic.SysDictIso
 
 /**
  * edit
@@ -132,6 +95,18 @@ interface SysDictApi {
     @DELETE("/sysDict/delete")    suspend fun deleteByIds(
         @Query("ids") ids: kotlin.String
     ): kotlin.Int
+
+/**
+ * delete
+ * HTTP方法: GET
+ * 路径: /sysDict/delete
+ * 参数:
+ *   - id: kotlin.String (Query)
+ * 返回类型: kotlin.Boolean
+ */
+    @GET("/sysDict/delete")    suspend fun delete(
+        @Query("id") id: kotlin.String
+    ): kotlin.Boolean
 
 /**
  * saveBatch

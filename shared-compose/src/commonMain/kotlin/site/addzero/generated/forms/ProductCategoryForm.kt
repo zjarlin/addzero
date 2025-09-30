@@ -40,6 +40,7 @@ object ProductCategoryFormProps {
     const val name = "name"
     const val description = "description"
     const val parent = "parent"
+    const val products = "products"
     const val sort = "sort"
     const val enabled = "enabled"
 
@@ -47,7 +48,7 @@ object ProductCategoryFormProps {
      * 获取所有字段名列表（按默认顺序）
      */
     fun getAllFields(): List<String> {
-        return listOf(name, description, parent, sort, enabled)
+        return listOf(name, description, parent, products, sort, enabled)
     }
 }
 
@@ -119,6 +120,29 @@ fun ProductCategoryFormOriginal(
                 value = state.value.parent,
                 onValueChange = { state.value = state.value.copy(parent = it) },
                 placeholder = "父分类",
+                dataProvider = { dataList },
+                getId = { it.id ?: 0L },
+                getLabel = { it.name ?: "" },
+                
+            )
+        },
+        ProductCategoryFormProps.products to {
+            var dataList by remember { mutableStateOf<List<ProductIso>>(emptyList()) }
+
+            LaunchedEffect(Unit) {
+                try {
+                    val provider = Iso2DataProvider.isoToDataProvider[ProductIso::class]
+                    dataList = provider?.invoke("") as? List<ProductIso> ?: emptyList()
+                } catch (e: Exception) {
+                    println("加载 products 数据失败: ${e.message}")
+                    dataList = emptyList()
+                }
+            }
+
+            AddGenericMultiSelector(
+                value = state.value.products ?: emptyList(),
+                onValueChange = { state.value = state.value.copy(products = it) },
+                placeholder = "产品",
                 dataProvider = { dataList },
                 getId = { it.id ?: 0L },
                 getLabel = { it.name ?: "" },
@@ -280,6 +304,38 @@ class ProductCategoryFormDsl(
         // 处理排序
         order?.let { orderValue ->
             updateFieldOrder("parent", orderValue)
+        }
+    }
+
+    /**
+     * 配置 products 字段
+     * @param hidden 是否隐藏该字段
+     * @param order 字段显示顺序（数值越小越靠前）
+     * @param render 自定义渲染函数
+     */
+    fun products(
+        hidden: Boolean = false,
+        order: Int? = null,
+        render: (@Composable (MutableState<ProductCategoryIso>) -> Unit)? = null
+    ) {
+        when {
+            hidden -> {
+                hiddenFields.add("products")
+                renderMap.remove("products")
+            }
+            render != null -> {
+                hiddenFields.remove("products")
+                renderMap["products"] = { render(state) }
+            }
+            else -> {
+                hiddenFields.remove("products")
+                renderMap.remove("products")
+            }
+        }
+
+        // 处理排序
+        order?.let { orderValue ->
+            updateFieldOrder("products", orderValue)
         }
     }
 

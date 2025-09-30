@@ -7,35 +7,25 @@ plugins {
     id("ksp4jdbc")
     id("ksp4enum")
     id("ksp4projectdir")
-//    id("kmp-config")
+    id("kmp-config-link")
 //    alias(libs.plugins.konfig)
-
 }
-
-
-
-
 dependencies {
-    kspCommonMainMetadata(projects.lib.ksp.jdbc2metadata.addzeroJdbc2enumProcessor)
-//    kspCommonMainMetadata(projects.lib.ksp.metadata.addzeroEnumProcessor)
+    kspCommonMainMetadata("site.addzero:addzero-jdbc2enum-processor:${libs.versions.addzeroLTSVersion.get()}")
+    //  kspCommonMainMetadata("site.addzero:addzero-enum-processor:+")
 }
-
-
 kotlin {
     sourceSets {
         commonMain.dependencies {
 //            implementation(libs.ktorfit.lib)
-
             implementation(libs.kotlinx.datetime)
+            implementation("site.addzero:addzero-tool:${libs.versions.addzeroLTSVersion.get()}")
+            implementation("site.addzero:addzero-compose-model-component:${libs.versions.addzeroLTSVersion.get()}")
+            implementation("site.addzero:addzero-route-core:${libs.versions.addzeroLTSVersion.get()}")
+            implementation("site.addzero:addzero-dict-trans-core:${libs.versions.addzeroLTSVersion.get()}")
+            implementation("site.addzero:addzero-jimmer-model-lowquery:${libs.versions.addzeroLTSVersion.get()}")
 
-            implementation(projects.lib.ksp.route.addzeroRouteCore)
-            implementation(projects.lib.toolKmp.addzeroTool)
-            implementation(projects.lib.toolSpring.starter.addzeroDictTransCore)
-            implementation(projects.lib.compose.addzeroComposeModelComponent)
-            implementation(projects.lib.toolJvm.jimmer.addzeroJimmerModelLowquery)
-
-            implementation(projects.lib.toolKmp.addzeroNetworkStarter)
-
+            implementation("site.addzero:addzero-network-starter:${libs.versions.addzeroLTSVersion.get()}")
             implementation(libs.ktorfit.lib)
 
         }

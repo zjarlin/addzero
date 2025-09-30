@@ -1,8 +1,0 @@
-package site.addzero.entity.low_table
-
-/**
- * 排序方向
- */
-enum class EnumSortDirection {
-    ASC, DESC, NONE
-}

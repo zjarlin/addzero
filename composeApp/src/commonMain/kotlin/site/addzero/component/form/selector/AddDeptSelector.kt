@@ -32,8 +32,9 @@ fun AddDeptSelector(
     showConfirmButton: Boolean = true,
     maxHeight: Dp = 400.dp
 ) {
+
     var tempSelectedDepts by remember { mutableStateOf(value) }
-    site.addzero.component.form.selector.AddGenericMultiSelector(
+    AddGenericMultiSelector(
         value = tempSelectedDepts,
         onValueChange = { tempSelectedDepts = it },
         dataProvider = { sysDeptApi.tree("") },

@@ -1,0 +1,14 @@
+# 启动信息打印配置示例
+app:
+  startup:
+    info:
+      # 是否启用启动信息打印
+      enabled: true
+      
+      # 文档类型 (JIMMER, SWAGGER, KNIFE4J)
+      doc-type: JIMMER
+
+# 应用名称配置（可选）
+# spring:
+#   application:
+#     name: My Application

@@ -254,14 +254,15 @@ fun KSDeclaration.ktName(): String {
     return this.simpleName.asString()
 }
 
-
-
 fun KSAnnotation?.getArg(argName: String): Any? {
     val value = this?.arguments?.firstOrNull { it.name?.asString() == argName }?.value
     return value
 
 }
 
+fun KSAnnotation?.getArgStr(argName: String): String {
+    return getArg(argName).toString()
+}
 
 fun KSPropertyDeclaration.isCustomClassType(): Boolean {
     val type = this.type.resolve()

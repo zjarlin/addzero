@@ -1,13 +1,19 @@
 package site.addzero.model.entity
 
+import org.babyfish.jimmer.sql.Entity
+import org.babyfish.jimmer.sql.GeneratedValue
+import org.babyfish.jimmer.sql.Id
+import org.babyfish.jimmer.sql.Key
+import org.babyfish.jimmer.sql.ManyToMany
+import org.babyfish.jimmer.sql.Table
+import site.addzero.entity2form.annotation.LabelProp
+import site.addzero.model.common.BaseDateTime
+import site.addzero.model.common.SnowflakeIdGenerator
+
 // 临时注释掉，避免 KSP 处理顺序问题
 // import site.addzero.generated.enums.EnumSysGender
 //import jakarta.validation.constraints.NotBlank
 //import jakarta.validation.constraints.Pattern
-import site.addzero.entity2form.annotation.LabelProp
-import site.addzero.model.common.BaseDateTime
-import site.addzero.model.common.SnowflakeIdGenerator
-import org.babyfish.jimmer.sql.*
 
 /**
  * 用户

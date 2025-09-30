@@ -33,9 +33,6 @@ import coil3.compose.AsyncImage
 import site.addzero.component.button.AddIconButton
 import site.addzero.component.card.AddCard
 import site.addzero.generated.isomorphic.SysAiPromptIso
-import site.addzero.settings.SettingContext4Compose
-import site.addzero.settings.SettingContext4Compose.AI_AVATAR_1
-import site.addzero.settings.SettingContext4Compose.AI_DESCRIPTION
 import site.addzero.viewmodel.AiPromptViewModel
 import site.addzero.viewmodel.ChatMessage
 import site.addzero.viewmodel.ChatViewModel
@@ -43,6 +40,7 @@ import com.mikepenz.markdown.m3.Markdown
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
+import site.addzero.BuildKonfig
 import androidx.compose.ui.text.font.FontWeight as ComposeFontWeight
 
 // Labubu风格的颜色主题
@@ -171,12 +169,12 @@ private fun LabubuTopBar(
 
         Column {
             Text(
-                text = SettingContext4Compose.AI_NAME, style = MaterialTheme.typography.titleMedium.copy(
+                text = BuildKonfig.AI_NAME, style = MaterialTheme.typography.titleMedium.copy(
                     fontWeight = ComposeFontWeight.Bold, fontSize = 18.sp
                 ), color = MaterialTheme.colorScheme.onPrimary
             )
             Text(
-                text = AI_DESCRIPTION,
+                text = BuildKonfig.AI_DESCRIPTION,
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
             )
@@ -452,7 +450,7 @@ private fun LabubuChatBubble(
 @Composable
 private fun Avatar() {
     AsyncImage(
-        model = AI_AVATAR_1,
+        model = BuildKonfig.AI_AVATAR_1,
         contentDescription = null,
     )
 }

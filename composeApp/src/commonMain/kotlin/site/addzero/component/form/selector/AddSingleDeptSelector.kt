@@ -35,14 +35,13 @@ fun AddSingleDeptSelector(
     var selectedDept by remember { mutableStateOf(value) }
 
 
-    site.addzero.component.form.selector.AddGenericSingleSelector(
+    AddGenericSingleSelector(
         value = selectedDept,
         onValueChange = { selectedDept = it },
         dataProvider = { sysDeptApi.tree("") },
         getId = { it.id!! },
         getLabel = { it.name },
-        getChildren = { it.children }
-    )
+        getChildren = { it.children })
 
 
 }

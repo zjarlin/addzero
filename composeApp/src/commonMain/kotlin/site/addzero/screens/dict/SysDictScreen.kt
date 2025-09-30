@@ -167,6 +167,8 @@ private fun RenderDictList(vm: SysDictViewModel) {
     ) {
         DictCard(dictType = it, isSelected = vm.selectedDict?.id == it.id, onClick = {
             vm.selectedDict = it
+
+
         }, onEditClick = {
             vm.selectedDict = it
             vm.showDictForm = true

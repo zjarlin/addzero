@@ -1,0 +1,49 @@
+package site.addzero.model.entity
+
+import org.babyfish.jimmer.sql.*
+import site.addzero.entity2form.annotation.LabelProp
+import site.addzero.model.common.BaseEntity
+
+/**
+ * 产品分类实体类，用于对产品进行归类，例如：机床
+ */
+@Entity
+@Table(name = "product_category")
+interface ProductCategory : BaseEntity {
+
+    /**
+     * 分类名称
+     */
+    @Key
+    @LabelProp
+    val name: String
+
+    /**
+     * 分类描述
+     */
+    val description: String?
+
+    /**
+     * 父分类
+     */
+    @ManyToOne
+    @OnDissociate(DissociateAction.DELETE)
+    val parent: ProductCategory?
+
+
+    /** 产品 */
+    @OneToMany(mappedBy = "productCategory")
+    val products: List<Product>
+
+    /**
+     * 排序
+     */
+    val sort: Int?
+
+    /**
+     * 是否启用
+     */
+    @Key
+    @Default("true")
+    val enabled: Boolean
+}

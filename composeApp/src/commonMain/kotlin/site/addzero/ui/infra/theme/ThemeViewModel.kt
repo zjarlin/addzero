@@ -1,12 +1,12 @@
 package site.addzero.ui.infra.theme
 
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import site.addzero.generated.enums.EnumSysTheme
-import site.addzero.settings.SettingContext4Compose
 import org.koin.android.annotation.KoinViewModel
+import site.addzero.generated.enums.EnumSysTheme
 
 /**
  * 主题视图模型
@@ -24,7 +24,11 @@ class ThemeViewModel : ViewModel() {
     }
 
     // 当前主题类型，默认为蓝色亮色主题
-    var currentTheme by mutableStateOf(SettingContext4Compose.DEFAULT_THEME)
+    var currentTheme by mutableStateOf(EnumSysTheme.LIGHT_BLUE)
+    val colorScheme by derivedStateOf {
+        AppThemes.getColorScheme(currentTheme)
+    }
+
 
     val isDarkMode: Boolean
         get() = currentTheme.isDark()

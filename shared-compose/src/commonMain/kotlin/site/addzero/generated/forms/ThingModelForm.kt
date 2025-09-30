@@ -40,12 +40,15 @@ object ThingModelFormProps {
     const val product = "product"
     const val name = "name"
     const val description = "description"
+    const val identifier = "identifier"
+    const val status = "status"
+    const val properties = "properties"
 
     /**
      * 获取所有字段名列表（按默认顺序）
      */
     fun getAllFields(): List<String> {
-        return listOf(product, name, description)
+        return listOf(product, name, description, identifier, status, properties)
     }
 }
 
@@ -121,6 +124,49 @@ fun ThingModelFormOriginal(
                 },
                 label = "模型描述",
                 isRequired = false
+            )
+        },
+        ThingModelFormProps.identifier to {
+            AddTextField(
+                value = state.value.identifier?.toString() ?: "",
+                onValueChange = {
+                    state.value = state.value.copy(identifier = if (it.isNullOrEmpty()) null else it.parseObjectByKtx())
+                },
+                label = "模型标识",
+                isRequired = false
+            )
+        },
+        ThingModelFormProps.status to {
+            AddIntegerField(
+                value = state.value.status?.toString() ?: "",
+                onValueChange = {
+                    state.value = state.value.copy(status = if (it.isNullOrEmpty()) 0 else it.parseObjectByKtx())
+                },
+                label = "状态",
+                isRequired = true
+            )
+        },
+        ThingModelFormProps.properties to {
+            var dataList by remember { mutableStateOf<List<ThingModelPropertyIso>>(emptyList()) }
+
+            LaunchedEffect(Unit) {
+                try {
+                    val provider = Iso2DataProvider.isoToDataProvider[ThingModelPropertyIso::class]
+                    dataList = provider?.invoke("") as? List<ThingModelPropertyIso> ?: emptyList()
+                } catch (e: Exception) {
+                    println("加载 properties 数据失败: ${e.message}")
+                    dataList = emptyList()
+                }
+            }
+
+            AddGenericMultiSelector(
+                value = state.value.properties ?: emptyList(),
+                onValueChange = { state.value = state.value.copy(properties = it) },
+                placeholder = "属性列表",
+                dataProvider = { dataList },
+                getId = { it.id ?: 0L },
+                getLabel = { it.description ?: "" },
+                
             )
         }
     )
@@ -261,6 +307,102 @@ class ThingModelFormDsl(
         // 处理排序
         order?.let { orderValue ->
             updateFieldOrder("description", orderValue)
+        }
+    }
+
+    /**
+     * 配置 identifier 字段
+     * @param hidden 是否隐藏该字段
+     * @param order 字段显示顺序（数值越小越靠前）
+     * @param render 自定义渲染函数
+     */
+    fun identifier(
+        hidden: Boolean = false,
+        order: Int? = null,
+        render: (@Composable (MutableState<ThingModelIso>) -> Unit)? = null
+    ) {
+        when {
+            hidden -> {
+                hiddenFields.add("identifier")
+                renderMap.remove("identifier")
+            }
+            render != null -> {
+                hiddenFields.remove("identifier")
+                renderMap["identifier"] = { render(state) }
+            }
+            else -> {
+                hiddenFields.remove("identifier")
+                renderMap.remove("identifier")
+            }
+        }
+
+        // 处理排序
+        order?.let { orderValue ->
+            updateFieldOrder("identifier", orderValue)
+        }
+    }
+
+    /**
+     * 配置 status 字段
+     * @param hidden 是否隐藏该字段
+     * @param order 字段显示顺序（数值越小越靠前）
+     * @param render 自定义渲染函数
+     */
+    fun status(
+        hidden: Boolean = false,
+        order: Int? = null,
+        render: (@Composable (MutableState<ThingModelIso>) -> Unit)? = null
+    ) {
+        when {
+            hidden -> {
+                hiddenFields.add("status")
+                renderMap.remove("status")
+            }
+            render != null -> {
+                hiddenFields.remove("status")
+                renderMap["status"] = { render(state) }
+            }
+            else -> {
+                hiddenFields.remove("status")
+                renderMap.remove("status")
+            }
+        }
+
+        // 处理排序
+        order?.let { orderValue ->
+            updateFieldOrder("status", orderValue)
+        }
+    }
+
+    /**
+     * 配置 properties 字段
+     * @param hidden 是否隐藏该字段
+     * @param order 字段显示顺序（数值越小越靠前）
+     * @param render 自定义渲染函数
+     */
+    fun properties(
+        hidden: Boolean = false,
+        order: Int? = null,
+        render: (@Composable (MutableState<ThingModelIso>) -> Unit)? = null
+    ) {
+        when {
+            hidden -> {
+                hiddenFields.add("properties")
+                renderMap.remove("properties")
+            }
+            render != null -> {
+                hiddenFields.remove("properties")
+                renderMap["properties"] = { render(state) }
+            }
+            else -> {
+                hiddenFields.remove("properties")
+                renderMap.remove("properties")
+            }
+        }
+
+        // 处理排序
+        order?.let { orderValue ->
+            updateFieldOrder("properties", orderValue)
         }
     }
 

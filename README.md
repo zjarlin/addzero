@@ -2,43 +2,24 @@
 
 > 基于 Kotlin Multiplatform + Jimmer ORM 的全栈开发脚手架，通过 KSP 实现前后端代码生成的完美一致性，提升开发效率并保证类型安全。
 
-## 发布到Maven Local
-
-由于项目使用了Maven Publish插件，与Gradle配置缓存存在兼容性问题，在执行发布任务时需要禁用配置缓存：
-
-```bash
-./gradlew publishToMavenLocal --no-configuration-cache
-```
-
-或者在gradle.properties中设置：
-```properties
-org.gradle.configuration-cache=false
-```
-
-然后再执行：
-```bash
-./gradlew publishToMavenLocal
-```
-
 ## 项目特点
-
-1. **前后端一致性**：通过 Jimmer 实体作为唯一数据源，驱动前后端代码同步
-2. **编译时生成**：使用 KSP 替代注解处理器进行编译时代码生成，确保类型安全和高性能
-3. **响应式状态管理**：利用 ComposeAssist 注解实现 Vue 风格的响应式状态管理
-4. **策略模式**：采用策略模式实现可扩展的字段识别与表单生成
-5. **模块化架构**：多模块分层架构，便于维护和扩展
+ **前后端一致性**：通过 Jimmer 实体作为解析元数据，驱动前后端代码同步
+ **编译时生成**：使用 KSP 进行编译时代码生成，确保类型安全和高性能
+ **模块化架构**：多模块分层架构，便于维护和扩展
+ **所有lib均已发布在中央仓库**：https://gitee.com/zjarlin/addzero-lib.git
 
 ## 🚀 技术栈
 
 [![技术栈](https://skillicons.dev/icons?i=kotlin,gradle,idea,wasm,spring,postgres,docker,androidstudio)](https://skillicons.dev)
 
-**核心技术：** Kotlin Multiplatform •  Compose • Jimmer ORM • KSP • Spring Boot • PostgreSQL
+**核心技术：** Kotlin Multiplatform • Compose • Jimmer ORM • KSP • Spring Boot • PostgreSQL
 
 ## 📸 项目展示
 
 ![项目截图](images/img_2.png)
 ![项目截图](images/img_1.png)
 ![项目截图](images/img.png)
+
 ## 环境准备
 
 ```shell
@@ -52,6 +33,7 @@ export JDBC_PASSWORD=postgres
 export EXCLUDE_TABLES=flyway_schema_history,vector_store,*_mapping
 
 ```
+
 or powershell (notepad $profile)
 
 ```shell
@@ -66,10 +48,10 @@ $env:EXCLUDE_TABLES = "flyway_schema_history,vector_store,*_mapping"
 ```
 
 ## tips :暂未验证postgres以外类型数据库的元数据分析兼容性,自行验证JdbcMetadataExtractor这个工具类("自行适配,要改预编译")
-## tips :目前Server模块需要SpringAI db推荐用PGVECTOR 
-## tips :数据库会在第一次启动后端时自动初始化
 
-[//]: # (## tips :目前这个项目在积极维护中,libs有一部分代码暂时没精力搞中央仓库让所有人通用&#40;要抽配置&#41;,后续项目完善了考虑写文档说明libs每个库的作用,总之libs是作者懒到极致的封装体现!)
+## tips :目前Server模块需要SpringAI db推荐用PGVECTOR
+
+## tips :数据库会在第一次启动后端时自动初始化
 
 ## ✨ 核心特性
 
@@ -80,8 +62,6 @@ $env:EXCLUDE_TABLES = "flyway_schema_history,vector_store,*_mapping"
 - **网络 API 自动生成** - 解析 Controller 符号，自动生成类型安全的网络调用
 - **同构体生成** (跨平台 Shared) - `SysUserIso` 等数据传输对象
 - **字典/枚举生成** (跨平台 Shared) - `site.addzero.generated.enums`
-- **矢量图标管理** - `IconKeys` 常量 + `IconMap` 映射
-- **JDBC 元数据** (跨平台 Shared) - `site.addzero.jdbc.meta.jdbcMetadata`
 
 ### 🎨 **智能表单生成** - KSP 驱动的动态 UI
 
@@ -96,15 +76,6 @@ $env:EXCLUDE_TABLES = "flyway_schema_history,vector_store,*_mapping"
 - **🔄 响应式状态管理** - 基于MutableState的自动UI更新
 - **📦 多列布局支持** - AddMultiColumnContainer自动布局
 - **🎭 条件渲染** - 支持基于业务逻辑的动态字段显示/隐藏
-
-### 🎨 **ComposeAssist 响应式组件** - Vue风格的状态管理
-
-- **✅ 响应式State生成** - 基于`mutableStateOf`的自动重组机制
-- **🎯 参数打包** - 将组件参数打包为类型安全的State对象
-- **🚀 Widget函数生成** - 只接受State参数的辅助组件
-- **🧩 完整泛型支持** - 支持泛型函数和约束泛型
-- **🔄 自动重组** - 修改State属性自动触发UI更新
-- **📦 零样板代码** - 一个`@ComposeAssist`注解生成完整工具集
 
 ### 🌳 **树形组件设计** - 插槽重构理念
 
@@ -1089,6 +1060,18 @@ fun renderNavContent(navController: NavHostController) {
 [![Star History Chart](https://api.star-history.com/svg?repos=zjarlin/addzero.git&type=Date)](https://www.star-history.com/#zjarlin/addzero.git&Date)
 
 ## 常见问题:
+
 [ksp] java.lang.IllegalArgumentException: Error type '<ERROR TYPE:          检查controller入参或出参是否放在shared目录(因为客户端需要共享入参,出参实体)(通常为jimmer实体的同构体),然后删掉对应controller对应的api文件ksp重新生成即可
-Syntax error: Expecting an expression. 可能发生在多对一@ManyToOne  one的那一方没有可空? 导致预编译框架无法生成同构体默认值(可以说是bug,暂时不想修)
+Syntax error: Expecting an expression. 可能发生在多对一@ManyToOne one的那一方没有可空? 导致预编译框架无法生成同构体默认值(可以说是bug,暂时不想修)
 Unresolved reference 'name'. 可能发生在生成表单时jimmer实体未指定注解@LabelProp 导致表单选择器组件不知道按什么关键词搜索 , ksp 默认搜索字段为name,此时应该去实体上加注解@LabelProp
+
+
+## 项目中可能有一些奇怪的地方
+
+为什么项目中BaseApi中的id要是String ,而且ids不能以vararg A: 客户端自动生成的ksp限制(vararg 写的时候不确定ksp能不能解析到)
+
+//由于一些原因kmp实现unload比较麻烦,又因为无参构造字段必须要有默认值,这里得再卸载一下
+val jimmerEntity = fromString.setJimmerEntity {
+DraftObjects.unload(it, "createTime") // 清除createTime字段
+}
+

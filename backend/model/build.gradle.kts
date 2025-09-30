@@ -1,4 +1,3 @@
-
 plugins {
     id("kotlin-convention")
     id("ksp4jdbc")
@@ -9,21 +8,20 @@ plugins {
 
 dependencies {
     ksp(libs.jimmer.ksp)
-//    ksp(projects.lib.toolJvm.jimmer.addzeroJimmerKspAutoddl)
+//    ksp(projects.lib.ksp.common.addzeroKspEasycodeJimmer)
 
-//    ksp(projects.lib.kld.addzeroKldJimmer)
-
-    ksp(projects.lib.ksp.jdbc2metadata.addzeroJdbc2entityProcessor)
-    ksp(projects.lib.ksp.metadata.addzeroEntity2isoProcessor)
-    ksp(projects.lib.ksp.metadata.entity2form.addzeroEntity2formProcessor)
-    ksp(projects.lib.ksp.metadata.addzeroEntity2mcpProcessor)
+    ksp(libs.addzero.jdbc2entity.processor)
+    ksp(libs.addzero.entity2iso.processor)
+    ksp(libs.addzero.entity2form.processor)
+    ksp(libs.addzero.entity2mcp.processor)
     implementation(libs.jimmer.sql.kotlin)
     //easy-excel
     implementation(libs.fastexcel)
     //实体表单核心注解
-    implementation(projects.lib.ksp.metadata.entity2form.addzeroEntity2formCore)
+    implementation(libs.addzero.entity2form.core)
     implementation(projects.shared)
     implementation(libs.hutool.all)
+
 }
 ksp {
 

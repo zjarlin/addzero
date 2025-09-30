@@ -12,14 +12,5 @@ buildkonfig {
     defaultConfigs {
         defByClass(BuildSettings::class)
     }
-    defaultConfigs {
-        val projectProperties = getProjectProperties(project,".env.prod")
-        defByMap(projectProperties)
-    }
-
-    defaultConfigs("dev") {
-        buildConfigField(FieldSpec.Type.STRING, "dasda", "sss")
-    }
-
 
 }

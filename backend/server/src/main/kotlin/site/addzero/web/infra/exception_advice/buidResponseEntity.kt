@@ -1,12 +1,5 @@
 package site.addzero.web.infra.exception_advice
 
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
-
-inline fun <reified T> T.buidResponseEntity(): ResponseEntity<T?> {
-    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(this)
-}
-
 inline fun <reified E : Throwable> E?.buildMessage(): String {
     return buildString {
         var currentCause: Throwable? = this@buildMessage

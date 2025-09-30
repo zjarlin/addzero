@@ -1,7 +1,7 @@
 package site.addzero.model.common
 
-import site.addzero.model.entity.SysUser
 import org.babyfish.jimmer.sql.*
+import site.addzero.model.entity.SysUser
 
 @MappedSuperclass
 interface BaseEntity : BaseDateTime {

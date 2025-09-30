@@ -49,7 +49,7 @@ class SysDeptController : BaseTreeApi<SysDept> {
     @GetMapping("/get/{id}")
     fun get(id: Long): SysDeptIso {
 
-        return TODO("提供返回值")
+        return SysDeptIso()
     }
 
 

@@ -40,16 +40,22 @@ object ThingModelPropertyFormProps {
     const val thingModel = "thingModel"
     const val identifier = "identifier"
     const val name = "name"
+    const val description = "description"
     const val dataType = "dataType"
-    const val dataSpecs = "dataSpecs"
+    const val required = "required"
+    const val minNormalValue = "minNormalValue"
+    const val maxNormalValue = "maxNormalValue"
+    const val minWarningValue = "minWarningValue"
+    const val maxWarningValue = "maxWarningValue"
     const val dataPrecision = "dataPrecision"
     const val accessMode = "accessMode"
+    const val sort = "sort"
 
     /**
      * 获取所有字段名列表（按默认顺序）
      */
     fun getAllFields(): List<String> {
-        return listOf(thingModel, identifier, name, dataType, dataSpecs, dataPrecision, accessMode)
+        return listOf(thingModel, identifier, name, description, dataType, required, minNormalValue, maxNormalValue, minWarningValue, maxWarningValue, dataPrecision, accessMode, sort)
     }
 }
 
@@ -127,6 +133,16 @@ fun ThingModelPropertyFormOriginal(
                 isRequired = true
             )
         },
+        ThingModelPropertyFormProps.description to {
+            AddTextField(
+                value = state.value.description?.toString() ?: "",
+                onValueChange = {
+                    state.value = state.value.copy(description = if (it.isNullOrEmpty()) "" else it.parseObjectByKtx())
+                },
+                label = "属性描述",
+                isRequired = true
+            )
+        },
         ThingModelPropertyFormProps.dataType to {
             AddTextField(
                 value = state.value.dataType?.toString() ?: "",
@@ -137,14 +153,55 @@ fun ThingModelPropertyFormOriginal(
                 isRequired = true
             )
         },
-        ThingModelPropertyFormProps.dataSpecs to {
-            AddTextField(
-                value = state.value.dataSpecs?.toString() ?: "",
+        ThingModelPropertyFormProps.required to {
+            AddSwitchField(
+                value = state.value.required ?: false,
+                onValueChange = { state.value = state.value.copy(required = it) },
+                label = "是否必填"
+            )
+        },
+        ThingModelPropertyFormProps.minNormalValue to {
+            AddMoneyField(
+                value = state.value.minNormalValue?.toString() ?: "",
                 onValueChange = {
-                    state.value = state.value.copy(dataSpecs = if (it.isNullOrEmpty()) null else it.parseObjectByKtx())
+                    state.value = state.value.copy(minNormalValue = if (it.isNullOrEmpty()) null else it.parseObjectByKtx())
                 },
-                label = "数据范围，根据数据类型可能表示数值范围或枚举值",
-                isRequired = false
+                label = "正常范围最小值",
+                isRequired = false,
+                currency = "CNY"
+            )
+        },
+        ThingModelPropertyFormProps.maxNormalValue to {
+            AddMoneyField(
+                value = state.value.maxNormalValue?.toString() ?: "",
+                onValueChange = {
+                    state.value = state.value.copy(maxNormalValue = if (it.isNullOrEmpty()) null else it.parseObjectByKtx())
+                },
+                label = "正常范围最大值",
+                isRequired = false,
+                currency = "CNY"
+            )
+        },
+        ThingModelPropertyFormProps.minWarningValue to {
+            AddMoneyField(
+                value = state.value.minWarningValue?.toString() ?: "",
+                onValueChange = {
+                    state.value = state.value.copy(minWarningValue = if (it.isNullOrEmpty()) null else it.parseObjectByKtx())
+                },
+                label = "正常范围最小值",
+                isRequired = false,
+                currency = "CNY"
+            )
+        },
+        ThingModelPropertyFormProps.maxWarningValue to {
+            AddMoneyField(
+                value = state.value.maxWarningValue?.toString() ?: "",
+                onValueChange = {
+                    state.value = state.value.copy(maxWarningValue = if (it.isNullOrEmpty()) null else it.parseObjectByKtx())
+                },
+                label = "正常范围最大值",
+                isRequired = false,
+                currency = "CNY"
             )
         },
         ThingModelPropertyFormProps.dataPrecision to {
@@ -164,6 +221,16 @@ fun ThingModelPropertyFormOriginal(
                     state.value = state.value.copy(accessMode = if (it.isNullOrEmpty()) "" else it.parseObjectByKtx())
                 },
                 label = "读取方式：读、写、上报",
+                isRequired = true
+            )
+        },
+        ThingModelPropertyFormProps.sort to {
+            AddIntegerField(
+                value = state.value.sort?.toString() ?: "",
+                onValueChange = {
+                    state.value = state.value.copy(sort = if (it.isNullOrEmpty()) 0 else it.parseObjectByKtx())
+                },
+                label = "排序",
                 isRequired = true
             )
         }
@@ -309,6 +376,38 @@ class ThingModelPropertyFormDsl(
     }
 
     /**
+     * 配置 description 字段
+     * @param hidden 是否隐藏该字段
+     * @param order 字段显示顺序（数值越小越靠前）
+     * @param render 自定义渲染函数
+     */
+    fun description(
+        hidden: Boolean = false,
+        order: Int? = null,
+        render: (@Composable (MutableState<ThingModelPropertyIso>) -> Unit)? = null
+    ) {
+        when {
+            hidden -> {
+                hiddenFields.add("description")
+                renderMap.remove("description")
+            }
+            render != null -> {
+                hiddenFields.remove("description")
+                renderMap["description"] = { render(state) }
+            }
+            else -> {
+                hiddenFields.remove("description")
+                renderMap.remove("description")
+            }
+        }
+
+        // 处理排序
+        order?.let { orderValue ->
+            updateFieldOrder("description", orderValue)
+        }
+    }
+
+    /**
      * 配置 dataType 字段
      * @param hidden 是否隐藏该字段
      * @param order 字段显示顺序（数值越小越靠前）
@@ -341,34 +440,162 @@ class ThingModelPropertyFormDsl(
     }
 
     /**
-     * 配置 dataSpecs 字段
+     * 配置 required 字段
      * @param hidden 是否隐藏该字段
      * @param order 字段显示顺序（数值越小越靠前）
      * @param render 自定义渲染函数
      */
-    fun dataSpecs(
+    fun required(
         hidden: Boolean = false,
         order: Int? = null,
         render: (@Composable (MutableState<ThingModelPropertyIso>) -> Unit)? = null
     ) {
         when {
             hidden -> {
-                hiddenFields.add("dataSpecs")
-                renderMap.remove("dataSpecs")
+                hiddenFields.add("required")
+                renderMap.remove("required")
             }
             render != null -> {
-                hiddenFields.remove("dataSpecs")
-                renderMap["dataSpecs"] = { render(state) }
+                hiddenFields.remove("required")
+                renderMap["required"] = { render(state) }
             }
             else -> {
-                hiddenFields.remove("dataSpecs")
-                renderMap.remove("dataSpecs")
+                hiddenFields.remove("required")
+                renderMap.remove("required")
             }
         }
 
         // 处理排序
         order?.let { orderValue ->
-            updateFieldOrder("dataSpecs", orderValue)
+            updateFieldOrder("required", orderValue)
+        }
+    }
+
+    /**
+     * 配置 minNormalValue 字段
+     * @param hidden 是否隐藏该字段
+     * @param order 字段显示顺序（数值越小越靠前）
+     * @param render 自定义渲染函数
+     */
+    fun minNormalValue(
+        hidden: Boolean = false,
+        order: Int? = null,
+        render: (@Composable (MutableState<ThingModelPropertyIso>) -> Unit)? = null
+    ) {
+        when {
+            hidden -> {
+                hiddenFields.add("minNormalValue")
+                renderMap.remove("minNormalValue")
+            }
+            render != null -> {
+                hiddenFields.remove("minNormalValue")
+                renderMap["minNormalValue"] = { render(state) }
+            }
+            else -> {
+                hiddenFields.remove("minNormalValue")
+                renderMap.remove("minNormalValue")
+            }
+        }
+
+        // 处理排序
+        order?.let { orderValue ->
+            updateFieldOrder("minNormalValue", orderValue)
+        }
+    }
+
+    /**
+     * 配置 maxNormalValue 字段
+     * @param hidden 是否隐藏该字段
+     * @param order 字段显示顺序（数值越小越靠前）
+     * @param render 自定义渲染函数
+     */
+    fun maxNormalValue(
+        hidden: Boolean = false,
+        order: Int? = null,
+        render: (@Composable (MutableState<ThingModelPropertyIso>) -> Unit)? = null
+    ) {
+        when {
+            hidden -> {
+                hiddenFields.add("maxNormalValue")
+                renderMap.remove("maxNormalValue")
+            }
+            render != null -> {
+                hiddenFields.remove("maxNormalValue")
+                renderMap["maxNormalValue"] = { render(state) }
+            }
+            else -> {
+                hiddenFields.remove("maxNormalValue")
+                renderMap.remove("maxNormalValue")
+            }
+        }
+
+        // 处理排序
+        order?.let { orderValue ->
+            updateFieldOrder("maxNormalValue", orderValue)
+        }
+    }
+
+    /**
+     * 配置 minWarningValue 字段
+     * @param hidden 是否隐藏该字段
+     * @param order 字段显示顺序（数值越小越靠前）
+     * @param render 自定义渲染函数
+     */
+    fun minWarningValue(
+        hidden: Boolean = false,
+        order: Int? = null,
+        render: (@Composable (MutableState<ThingModelPropertyIso>) -> Unit)? = null
+    ) {
+        when {
+            hidden -> {
+                hiddenFields.add("minWarningValue")
+                renderMap.remove("minWarningValue")
+            }
+            render != null -> {
+                hiddenFields.remove("minWarningValue")
+                renderMap["minWarningValue"] = { render(state) }
+            }
+            else -> {
+                hiddenFields.remove("minWarningValue")
+                renderMap.remove("minWarningValue")
+            }
+        }
+
+        // 处理排序
+        order?.let { orderValue ->
+            updateFieldOrder("minWarningValue", orderValue)
+        }
+    }
+
+    /**
+     * 配置 maxWarningValue 字段
+     * @param hidden 是否隐藏该字段
+     * @param order 字段显示顺序（数值越小越靠前）
+     * @param render 自定义渲染函数
+     */
+    fun maxWarningValue(
+        hidden: Boolean = false,
+        order: Int? = null,
+        render: (@Composable (MutableState<ThingModelPropertyIso>) -> Unit)? = null
+    ) {
+        when {
+            hidden -> {
+                hiddenFields.add("maxWarningValue")
+                renderMap.remove("maxWarningValue")
+            }
+            render != null -> {
+                hiddenFields.remove("maxWarningValue")
+                renderMap["maxWarningValue"] = { render(state) }
+            }
+            else -> {
+                hiddenFields.remove("maxWarningValue")
+                renderMap.remove("maxWarningValue")
+            }
+        }
+
+        // 处理排序
+        order?.let { orderValue ->
+            updateFieldOrder("maxWarningValue", orderValue)
         }
     }
 
@@ -433,6 +660,38 @@ class ThingModelPropertyFormDsl(
         // 处理排序
         order?.let { orderValue ->
             updateFieldOrder("accessMode", orderValue)
+        }
+    }
+
+    /**
+     * 配置 sort 字段
+     * @param hidden 是否隐藏该字段
+     * @param order 字段显示顺序（数值越小越靠前）
+     * @param render 自定义渲染函数
+     */
+    fun sort(
+        hidden: Boolean = false,
+        order: Int? = null,
+        render: (@Composable (MutableState<ThingModelPropertyIso>) -> Unit)? = null
+    ) {
+        when {
+            hidden -> {
+                hiddenFields.add("sort")
+                renderMap.remove("sort")
+            }
+            render != null -> {
+                hiddenFields.remove("sort")
+                renderMap["sort"] = { render(state) }
+            }
+            else -> {
+                hiddenFields.remove("sort")
+                renderMap.remove("sort")
+            }
+        }
+
+        // 处理排序
+        order?.let { orderValue ->
+            updateFieldOrder("sort", orderValue)
         }
     }
 

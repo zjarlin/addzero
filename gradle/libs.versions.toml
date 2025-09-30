@@ -1,14 +1,8 @@
 [versions]
-addzeroToolIoVersion = "2025.09.20"
-addzeroIocCoreVersion = "2025.09.20"
-addzeroGradleToolVersion ="2025.09.18"
-addzeroKspBuddyVersion="0.0.608"
-addzeroPublishBuddyVersion="2025.09.22"
+addzeroLTSVersion = "2025.09.26"
 comCodingfelineBuildkonfigGradlePlugin = "0.17.1"
+hivemqMqttClientVersion = "1.3.9"
 jdk = "24"
-
-oldjdk = "8"
-oldjdkname = "1.8"
 #https://central.sonatype.com/artifact/org.jetbrains.kotlin.jvm/org.jetbrains.kotlin.jvm.gradle.plugin
 #kotlin = "2.2.0"
 # https://central.sonatype.com/artifact/com.google.devtools.ksp/com.google.devtools.ksp.gradle.plugin
@@ -33,8 +27,7 @@ androidx-core = "1.17.0"
 androidx-espresso = "3.7.0"
 androidx-testExt = "1.3.0"
 composeHotReload = "1.0.0-beta07"
-#composeMultiplatform = "1.9.0"
-composeMultiplatform = "1.8.2"
+composeMultiplatform = "1.9.0"
 junit = "4.13.2"
 kotlinx-serialization = "1.9.0"
 filekitCompose = "0.8.8"
@@ -68,6 +61,8 @@ h2 = "2.3.232"
 mysqlConnector = "8.0.33"
 kotlinpoetKsp = "2.2.0"
 jimmer = "0.9.110"
+#jimmer = "9.9.905"
+
 springAi = "1.0.1"
 velocity = "1.7"
 xFileStorage = "2.3.0"
@@ -99,17 +94,36 @@ okhttp = "4.12.0"
 
 [libraries]
 
-addzero-ioc-core = { module = "site.addzero:addzero-ioc-core", version.ref = "addzeroIocCoreVersion" }
-addzero-ioc-processor = { module = "site.addzero:addzero-ioc-processor", version.ref = "addzeroToolIoVersion" }
-addzero-tool-io = { module = "site.addzero:addzero-tool-io", version.ref = "addzeroToolIoVersion" }
+addzero-compose-model-component = { module = "site.addzero:addzero-compose-model-component", version.ref = "addzeroLTSVersion" }
+addzero-compose-props-processor = { module = "site.addzero:addzero-compose-props-processor", version.ref = "addzeroLTSVersion" }
+addzero-controller2api-processor = { module = "site.addzero:addzero-controller2api-processor", version.ref = "addzeroLTSVersion" }
+addzero-controller2iso2dataprovider-processor = { module = "site.addzero:addzero-controller2iso2dataprovider-processor", version.ref = "addzeroLTSVersion" }
+addzero-entity2form-core = { module = "site.addzero:addzero-entity2form-core", version.ref = "addzeroLTSVersion" }
+addzero-entity2form-processor = { module = "site.addzero:addzero-entity2form-processor", version.ref = "addzeroLTSVersion" }
+addzero-entity2iso-processor = { module = "site.addzero:addzero-entity2iso-processor", version.ref = "addzeroLTSVersion" }
+addzero-entity2mcp-processor = { module = "site.addzero:addzero-entity2mcp-processor", version.ref = "addzeroLTSVersion" }
+addzero-ioc-core = { module = "site.addzero:addzero-ioc-core", version.ref = "addzeroLTSVersion" }
+addzero-ioc-processor = { module = "site.addzero:addzero-ioc-processor", version.ref = "addzeroLTSVersion" }
+addzero-jdbc2entity-processor = { module = "site.addzero:addzero-jdbc2entity-processor", version.ref = "addzeroLTSVersion" }
+addzero-jimmer-ext-lowquery = { module = "site.addzero:addzero-jimmer-ext-lowquery", version.ref = "addzeroLTSVersion" }
+addzero-route-processor = { module = "site.addzero:addzero-route-processor", version.ref = "addzeroLTSVersion" }
+addzero-tool = { module = "site.addzero:addzero-tool", version.ref = "addzeroLTSVersion" }
+addzero-tool-api-jvm = { module = "site.addzero:addzero-tool-api-jvm", version.ref = "addzeroLTSVersion" }
+addzero-tool-common-jvm = { module = "site.addzero:addzero-tool-common-jvm", version.ref = "addzeroLTSVersion" }
+addzero-tool-io = { module = "site.addzero:addzero-tool-io", version.ref = "addzeroLTSVersion" }
+addzero-tool-jdbc = { module = "site.addzero:addzero-tool-jdbc", version.ref = "addzeroLTSVersion" }
+addzero-tool-json = { module = "site.addzero:addzero-tool-json", version.ref = "addzeroLTSVersion" }
+addzero-tool-mqtt = { module = "site.addzero:addzero-tool-mqtt", version.ref = "addzeroLTSVersion" }
+addzero-tool-spring = { module = "site.addzero:addzero-tool-spring", version.ref = "addzeroLTSVersion" }
 gradlePlugin-buildkonfig = { module = "com.codingfeline.buildkonfig:buildkonfig-gradle-plugin", version.ref = "comCodingfelineBuildkonfigGradlePlugin" }
 
 gradlePlugin-buildkonfig-cp = { module = "com.codingfeline.buildkonfig:buildkonfig-compiler", version.ref = "comCodingfelineBuildkonfigGradlePlugin" }
 
+hivemq-mqtt-client = { module = "com.hivemq:hivemq-mqtt-client", version.ref = "hivemqMqttClientVersion" }
 kotlinx-cli = { module = "org.jetbrains.kotlinx:kotlinx-cli", version.ref = "kotlinx-cli" }
 clikt = { module = "com.github.ajalt.clikt:clikt", version.ref = "clikt" }
 
-addzero-gradle-tool = { module = "site.addzero:addzero-gradle-tool", version.ref = "addzeroGradleToolVersion" }
+addzero-gradle-tool = { module = "site.addzero:addzero-gradle-tool", version.ref = "addzeroLTSVersion" }
 
 okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 
@@ -136,6 +150,8 @@ flyway-database-postgresql = { module = "org.flywaydb:flyway-database-postgresql
 aspectjweaver = { module = "org.aspectj:aspectjweaver", version.ref = "aspectjweaver" }
 
 org-graalvm-buildtools-native-gradle-plugin = { module = "org.graalvm.buildtools.native:org.graalvm.buildtools.native.gradle.plugin", version.ref = "orgGraalvmBuildtoolsNativeGradlePluginVersion" }
+site-addzero-addzero-jimmer-ext-dynamic-datasource = { module = "site.addzero:addzero-jimmer-ext-dynamic-datasource", version.ref = "addzeroLTSVersion" }
+site-addzero-ioc-processor-v20250924 = { module = "site.addzero:addzero-ioc-processor", version.ref = "addzeroLTSVersion" }
 tomlj = { module = "org.tomlj:tomlj", version.ref = "tomlj" }
 
 dameng-jdbc-driver = { module = "com.dameng:DmJdbcDriver18", version.ref = "damengJdbc" }
@@ -217,8 +233,8 @@ kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 
 gradlePlugin-android = { module = "com.android.tools.build:gradle", version.ref = "androidGradlePlugin" }
 
-gradlePluginKspBuddy = { module = "site.addzero:site.addzero.ksp-buddy.gradle.plugin", version .ref = "addzeroKspBuddyVersion" }
-gradlePluginPublishBuddy = { module = "site.addzero:site.addzero.publish-buddy.gradle.plugin", version .ref = "addzeroKspBuddyVersion" }
+gradlePluginKspBuddy = { module = "site.addzero:site.addzero.ksp-buddy.gradle.plugin", version .ref = "addzeroLTSVersion" }
+gradlePluginPublishBuddy = { module = "site.addzero:site.addzero.publish-buddy.gradle.plugin", version .ref = "addzeroLTSVersion" }
 
 
 gradlePlugin-ktorfit = { module = "de.jensklingenberg.ktorfit:de.jensklingenberg.ktorfit.gradle.plugin", version.ref = "ktorfitGradlePlugin" }
@@ -273,8 +289,8 @@ ktor-serverTestHost = { module = "io.ktor:ktor-server-test-host-jvm", version.re
 
 [plugins]
 
-addzeroKspBuddy = { id = "site.addzero.ksp-buddy", version.ref = "addzeroKspBuddyVersion" }
-addzeroPublishBuddy = { id = "site.addzero.publish-buddy", version.ref = "addzeroPublishBuddyVersion" }
+addzeroKspBuddy = { id = "site.addzero.ksp-buddy", version.ref = "addzeroLTSVersion" }
+addzeroPublishBuddy = { id = "site.addzero.publish-buddy", version.ref = "addzeroLTSVersion" }
 
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }

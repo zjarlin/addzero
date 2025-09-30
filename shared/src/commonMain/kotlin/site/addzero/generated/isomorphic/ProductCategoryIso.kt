@@ -14,6 +14,7 @@ data class ProductCategoryIso(
     val name: String = "",
     val description: String? = null,
     val parent: ProductCategoryIso? = null,
+    val products: List<ProductIso> = emptyList(),
     val sort: Int? = null,
     val enabled: Boolean = false,
     val id: Long? = null,

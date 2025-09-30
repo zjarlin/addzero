@@ -7,20 +7,16 @@ plugins {
     id("kmp-datetime")
 }
 dependencies {
-    kspCommonMainMetadata(projects.lib.ksp.metadata.addzeroApiproviderProcessor)
+    kspCommonMainMetadata("site.addzero:addzero-apiprovider-processor:${libs.versions.addzeroLTSVersion.get()}")
 }
-
 
 kotlin {
     sourceSets {
         commonMain.dependencies {
-//            implementation("io.github.ltttttttttttt:LazyPeopleHttp-lib:+")
-
-            implementation(projects.lib.toolKmp.addzeroTool)
-//            implementation(projects.lib.compose.addzeroComposeNativeComponentTableCore)
-            implementation(projects.lib.toolJvm.jimmer.addzeroJimmerModelLowquery)
+            implementation("site.addzero:addzero-tool:${libs.versions.addzeroLTSVersion.get()}")
+            implementation("site.addzero:addzero-jimmer-model-lowquery:${libs.versions.addzeroLTSVersion.get()}")
             implementation(projects.shared)
-            implementation(projects.lib.toolKmp.addzeroNetworkStarter)
+            implementation("site.addzero:addzero-network-starter:${libs.versions.addzeroLTSVersion.get()}")
         }
     }
 }

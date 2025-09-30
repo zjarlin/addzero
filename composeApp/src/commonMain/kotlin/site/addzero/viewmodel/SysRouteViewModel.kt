@@ -9,10 +9,15 @@ import site.addzero.di.NavgationViewModel
 import site.addzero.entity.sys.menu.EnumSysMenuType
 import site.addzero.entity.sys.menu.SysMenuVO
 import site.addzero.generated.RouteKeys
-import site.addzero.settings.SettingContext4Compose
 import site.addzero.util.data_structure.tree.List2TreeUtil
 import org.koin.android.annotation.KoinViewModel
 
+/**
+ * 侧边路由菜单视图
+ * @author zjarlin
+ * @date 2025/09/29
+ * @constructor 创建[SysRouteViewModel]
+ */
 @KoinViewModel
 class SysRouteViewModel() : ViewModel() {
     fun updateRoute(string: String) {
@@ -21,7 +26,7 @@ class SysRouteViewModel() : ViewModel() {
     }
     //默认展开
     var isExpand by mutableStateOf(true)
-    var currentRoute by mutableStateOf(SettingContext4Compose.HOME_SCREEN)
+    var currentRoute by mutableStateOf(RouteKeys.HOME_SCREEN)
     var keyword by mutableStateOf("")
         private set
 

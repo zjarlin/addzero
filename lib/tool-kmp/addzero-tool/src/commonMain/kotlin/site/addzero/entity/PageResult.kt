@@ -1,5 +1,8 @@
 package site.addzero.entity
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class PageResult<T>(
     val rows: List<T> = emptyList(),
 
