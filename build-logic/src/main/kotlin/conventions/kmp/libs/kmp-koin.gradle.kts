@@ -7,12 +7,10 @@ plugins {
 val libs = the<LibrariesForLibs>()
 
 kotlin {
-    sourceSets {
-        commonMain.dependencies {
+dependencies {
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.koin.compose.viewmodel.navigation)
         }
 
     }
-}

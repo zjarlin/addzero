@@ -8,11 +8,9 @@ val libs = the<LibrariesForLibs>()
 
 kotlin {
 
-    sourceSets {
-        commonMain.dependencies {
-            implementation(libs.addzero.tool.json)
+    dependencies {
+        implementation(libs.addzero.tool.json)
 
-        }
     }
-
 }
+

@@ -4,9 +4,7 @@ plugins {
 }
 
 kotlin {
-    sourceSets {
-        commonMain.dependencies {
+dependencies {
             api(projects.lib.toolKmp.addzeroToolStr)
         }
     }
-}

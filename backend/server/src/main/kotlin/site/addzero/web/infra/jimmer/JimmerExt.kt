@@ -55,8 +55,6 @@ fun KSqlClient.sql(sql: String): List<Map<String?, Any?>?> = SpringUtil.getBean(
 
 
 infix fun <E : Enum<E>> KExpression<List<E>>.`enumValueIn?`(enums: Collection<E>): KNonNullExpression<Boolean>? {
-
-
     if (enums.isEmpty()) {
         return null
     }

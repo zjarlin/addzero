@@ -21,8 +21,7 @@ dependencies {
 }
 
 kotlin {
-    sourceSets {
-        commonMain.dependencies {
+dependencies {
             implementation(libs.ktorfit.lib)
 
             implementation(projects.shared)
@@ -59,13 +58,10 @@ kotlin {
             //富文本 see https://klibs.io/project/MohamedRejeb/compose-rich-editor
             implementation(libs.richeditor.compose)
 
-            implementation(compose.materialIconsExtended)
-
 
         }
 
     }
-}
 
 // build.gradle.kts
 //kotlin {

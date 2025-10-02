@@ -6,20 +6,18 @@ plugins {
 val libs = the<LibrariesForLibs>()
 
 kotlin {
+    dependencies{
+
+        implementation(libs.ktor.client.core)
+        implementation(libs.ktor.client.content.negotiation)
+        implementation(libs.ktor.serialization.kotlinx.json)
+        implementation(libs.ktor.client.logging)
+
+
+        implementation(libs.logback)
+    }
     sourceSets {
-        commonMain.dependencies {
-            implementation(libs.ktor.client.core)
-            implementation(libs.ktor.client.content.negotiation)
-            implementation(libs.ktor.serialization.kotlinx.json)
-            implementation(libs.ktor.client.logging)
 
-
-            implementation(libs.logback)
-//            implementation("site.addzero:addzero-tool-json:+")
-        }
-
-        //懒人http
-//            implementation(libs.lazy.people.http)
         androidMain.dependencies {
             api(libs.ktor.client.cio)
         }

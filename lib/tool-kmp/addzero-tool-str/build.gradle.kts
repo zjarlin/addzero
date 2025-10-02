@@ -4,8 +4,7 @@ plugins {
 }
 
 kotlin {
-    sourceSets {
-        commonMain.dependencies {
+dependencies {
             // put your Multiplatform dependencies here
             // Kotlinx Serialization 核心库
 //            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${kotlinxSerializationVersion}")
@@ -18,4 +17,3 @@ kotlin {
         }
     }
 
-}

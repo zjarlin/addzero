@@ -11,12 +11,10 @@ dependencies {
 }
 
 kotlin {
-    sourceSets {
-        commonMain.dependencies {
+dependencies {
             implementation("site.addzero:addzero-tool:${libs.versions.addzeroLTSVersion.get()}")
             implementation("site.addzero:addzero-jimmer-model-lowquery:${libs.versions.addzeroLTSVersion.get()}")
             implementation(projects.shared)
             implementation("site.addzero:addzero-network-starter:${libs.versions.addzeroLTSVersion.get()}")
         }
     }
-}

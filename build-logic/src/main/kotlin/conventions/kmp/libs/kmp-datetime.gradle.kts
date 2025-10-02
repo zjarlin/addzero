@@ -5,10 +5,8 @@ plugins {
 }
 val libs = the<org.gradle.accessors.dm.LibrariesForLibs>()
 kotlin {
-    sourceSets {
-        commonMain.dependencies {
+dependencies {
             implementation(libs.kotlinx.datetime)
         }
     }
 
-}
