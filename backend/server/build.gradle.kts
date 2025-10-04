@@ -34,43 +34,23 @@ dependencies {
 //    implementation(projects.lib.ksp.common.addzeroKspEasycodeCore)
 //    implementation("org.apache.velocity:velocity-engine-core:2.3")
 //    implementation(projects.lib.ksp.metadata.addzeroEntity2analysedSupport)
+    implementation(libs.kotlinx.datetime)
 
     implementation(libs.addzero.tool.mqtt)
-    implementation(libs.kotlinx.datetime)
     implementation(libs.addzero.compose.model.component)
     implementation(libs.addzero.tool.json)
     implementation(libs.addzero.jimmer.ext.lowquery)
     implementation(libs.addzero.tool.common.jvm)
-//    implementation("site.addzero:addzero-controller-advice-spring-boot-starter:+")
-
     implementation(libs.addzero.tool.spring)
     implementation(libs.addzero.jimmer.ext.lowquery)
-    implementation(libs.site.addzero.addzero.jimmer.ext.dynamic.datasource)
     implementation(libs.addzero.tool.jdbc)
-
-//    implementation("site.addzero:addzero-curllog-spring-boot-starter:+")
-    //  implementation("site.addzero:addzero-dict-trans-spring-boot-starter:+")
     implementation(libs.addzero.tool)
-    //天气库
     implementation(libs.addzero.tool.api.jvm)
-
-    //内部使用:共享业务逻辑
+    ksp(libs.addzero.controller2api.processor)
+    ksp(libs.addzero.controller2iso2dataprovider.processor)
+    implementation(libs.site.addzero.addzero.jimmer.ext.dynamic.datasource)
     implementation(projects.shared)
     implementation(projects.backend.model)
-
-
-    //jdbc元数据转controller
-//    ksp("site.addzero:addzero-jdbc2controller-processor:+")
-
-    // 阶段3: 依赖同构体的处理器
-    ksp(libs.addzero.controller2api.processor)
-
-    //测试ksp
-//    ksp("site.addzero:addzero-controller2lazyhttp-processor:+")
-
-    // 阶段4: 控制器转 Iso2DataProvider（生成到 shared 编译目录）
-    ksp(libs.addzero.controller2iso2dataprovider.processor)
-
 
 // 引入 Spring AI 相关依赖
     implementation(libs.spring.ai.starter.mcp.server.webflux)
