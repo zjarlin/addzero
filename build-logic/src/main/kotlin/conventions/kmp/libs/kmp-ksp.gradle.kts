@@ -8,11 +8,9 @@ val libs = the<LibrariesForLibs>()
 
 kotlin {
     jvm()
-    sourceSets {
-        commonMain.dependencies {
+dependencies {
             implementation(libs.ksp.symbol.processing.api)
         }
     }
-}
 
 

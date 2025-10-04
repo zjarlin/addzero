@@ -16,10 +16,8 @@ dependencies {
 
 
 kotlin {
-    sourceSets {
-        commonMain.dependencies {
+dependencies {
             implementation(libs.lazy.people.http)
         }
 
     }
-}

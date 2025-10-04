@@ -5,25 +5,25 @@ import ${import}
 #end
 
 /**
- * ${description}
- * 
- * 对应数据库表: ${tableName}
- * 
+ * ${className}
+ *
+ * 对应数据库表: ${className}
+ *
  * @author ${generatedBy}
  * @generated ${timestamp}
  */
 @Entity
-@Table(name = "${tableName}")
+@Table(name = "${className}")
 interface ${className} #if($hasId): BaseEntity #end{
 
 #foreach($property in $properties)
     /**
-     * ${property.comment}
+     * ${property.name}
      */
 #foreach($annotation in $property.annotations)
     ${annotation}
 #end
-    val ${property.name}: ${property.type}#if($property.nullable)?#end
+    val ${property.name}: ${property.qualifiedTypeName}#if($property.isNullable)?#end
 
 #end
 }

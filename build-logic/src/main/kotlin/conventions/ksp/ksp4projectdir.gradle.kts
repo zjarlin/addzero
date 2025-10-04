@@ -1,13 +1,14 @@
 import site.addzero.gradle.tool.getProjectDirConfigMap
+import site.addzero.gradle.tool.getProjectDirConfigMapWithOutLib
 
 plugins {
     id("com.google.devtools.ksp")
 }
 
+val rootDir1 = project.rootDir
 ksp {
-    val blackDir = project.rootDir.absolutePath
-//    getProjectDirConfigMap(listOf("lib")).forEach { (key,
-//                                                                                      value) ->
-//        arg(key, value)
-//    }
+    val projectDirConfigMapWithOutLib = getProjectDirConfigMapWithOutLib(rootDir1)
+    projectDirConfigMapWithOutLib.forEach { (key, value) ->
+        arg(key, value)
+    }
 }

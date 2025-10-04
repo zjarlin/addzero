@@ -15,11 +15,10 @@ dependencies {
     //  kspCommonMainMetadata("site.addzero:addzero-enum-processor:+")
 }
 kotlin {
-    sourceSets {
-        commonMain.dependencies {
+dependencies {
 //            implementation(libs.ktorfit.lib)
             implementation(libs.kotlinx.datetime)
-            implementation("site.addzero:addzero-tool:${libs.versions.addzeroLTSVersion.get()}")
+//            implementation("site.addzero:addzero-tool:${libs.versions.addzeroLTSVersion.get()}")
             implementation("site.addzero:addzero-compose-model-component:${libs.versions.addzeroLTSVersion.get()}")
             implementation("site.addzero:addzero-route-core:${libs.versions.addzeroLTSVersion.get()}")
             implementation("site.addzero:addzero-dict-trans-core:${libs.versions.addzeroLTSVersion.get()}")
@@ -30,4 +29,3 @@ kotlin {
 
         }
     }
-}

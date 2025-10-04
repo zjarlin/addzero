@@ -3,11 +3,11 @@ plugins {
     id("kmp-json-withtool")
 }
 kotlin {
+    dependencies{
+        api(projects.lib.toolKmp.addzeroToolStr)
+    }
+
     sourceSets {
-        commonMain.dependencies {
-//            implementation(projects.lib.toolKmp.addzeroToolJson)
-            api(projects.lib.toolKmp.addzeroToolStr)
-        }
         jvmMain.dependencies {
             implementation(libs.pinyin4j)
         }

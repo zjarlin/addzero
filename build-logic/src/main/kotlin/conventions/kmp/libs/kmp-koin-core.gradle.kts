@@ -9,12 +9,10 @@ dependencies {
     kspCommonMainMetadata(libs.koin.ksp.compiler)
 }
 kotlin {
-    sourceSets {
-        commonMain.dependencies {
+dependencies {
             implementation(project.dependencies.platform(libs.koin.bom))
             implementation(libs.koin.annotations)
             implementation(libs.koin.core)
         }
 
     }
-}
