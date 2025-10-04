@@ -22,9 +22,7 @@ dependencies {
     //实体表单核心注解
     implementation(projects.shared)
     implementation(libs.hutool.all)
-
 }
 ksp {
-
     arg("modelPackageName", "site.addzero.model.entity")
 }
