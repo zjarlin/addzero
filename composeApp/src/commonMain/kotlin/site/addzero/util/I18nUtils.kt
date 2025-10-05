@@ -71,6 +71,10 @@ interface AppStringResources {
     val helloUser: String
     val settings: String
     val language: String
+    val counter: String
+    val increaseCount: String
+    val reset: String
+    val currentLanguage: String
 }
 
 /**
@@ -82,6 +86,10 @@ object ChineseResources : AppStringResources {
     override val helloUser: String get() = "你好, {0}!"
     override val settings: String get() = "设置"
     override val language: String get() = "语言"
+    override val counter: String get() = "计数器: {0}"
+    override val increaseCount: String get() = "增加计数"
+    override val reset: String get() = "重置"
+    override val currentLanguage: String get() = "当前语言: {0}"
 }
 
 /**
@@ -93,6 +101,10 @@ object EnglishResources : AppStringResources {
     override val helloUser: String get() = "Hello, {0}!"
     override val settings: String get() = "Settings"
     override val language: String get() = "Language"
+    override val counter: String get() = "Counter: {0}"
+    override val increaseCount: String get() = "Increase Count"
+    override val reset: String get() = "Reset"
+    override val currentLanguage: String get() = "Current Language: {0}"
 }
 
 /**
@@ -164,4 +176,19 @@ fun translate(resource: AppStringResources.() -> String): String {
     // 在非Composable环境中使用默认语言
     val resources = getAppStringResources(I18nUtils.getCurrentLanguage())
     return resources.resource()
+}
+
+/**
+ * 带参数的全局翻译函数（非Composable环境）
+ */
+@ReadOnlyComposable
+fun translate(resource: AppStringResources.() -> String, vararg formatArgs: Any): String {
+    val translatedString = translate(resource)
+    return try {
+        formatArgs.foldIndexed(translatedString) { index, acc, arg ->
+            acc.replace("{${index}}", arg.toString())
+        }
+    } catch (e: Exception) {
+        translatedString
+    }
 }
