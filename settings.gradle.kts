@@ -1,6 +1,6 @@
 import org.apache.tools.ant.util.FileUtils.getRelativePath
 
-rootProject.name = "addzero"
+rootProject.name =rootDir.name
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 
