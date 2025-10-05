@@ -1,7 +1,9 @@
 package site.addzero
 
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.text.intl.Locale
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.context.startKoin
 import org.koin.ksp.generated.defaultModule
@@ -21,8 +23,8 @@ import site.addzero.viewmodel.SysRouteViewModel
 @Composable
 fun App() {
     initKoin()
-
     AppContent()
+
 
     IocContainer.iocAllStart()
 }

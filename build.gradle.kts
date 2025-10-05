@@ -45,3 +45,6 @@ allprojects {
 
     buildscript { repositories { all { aliyunProxy() } } }
 }
+
+// 添加libs.versions.toml中需要的库
+//apply(from = "./build-logic/settings.gradle.kts")

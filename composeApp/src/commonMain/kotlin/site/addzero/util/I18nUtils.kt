@@ -1,0 +1,167 @@
+package site.addzero.util
+
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.ui.text.intl.Locale
+
+/**
+ * 国际化工具类 - 适用于KMP项目 (编译时生成资源接口)
+ */
+object I18nUtils {
+    private var currentLanguage by mutableStateOf("")
+    
+    init {
+        // 初始化时设置为系统当前语言
+        currentLanguage = Locale.current.language
+    }
+    
+    /**
+     * 设置当前语言
+     */
+    fun setLanguage(language: String) {
+        currentLanguage = language
+    }
+    
+    /**
+     * 获取当前语言
+     */
+    fun getCurrentLanguage(): String {
+        return currentLanguage
+    }
+    
+    /**
+     * 获取支持的语言列表
+     */
+    fun getSupportedLanguages(): List<String> {
+        return listOf("zh", "en") // 支持中文和英文，可根据需要扩展
+    }
+    
+    /**
+     * 检查语言是否受支持
+     */
+    fun isLanguageSupported(language: String): Boolean {
+        return language in getSupportedLanguages()
+    }
+    
+    /**
+     * 根据语言代码获取语言名称
+     */
+    fun getLanguageDisplayName(languageCode: String): String {
+        return when (languageCode) {
+            "zh" -> "中文"
+            "en" -> "English"
+            else -> languageCode
+        }
+    }
+}
+
+/**
+ * 自动编译生成的I18n资源接口
+ * 开发者只需要定义接口，具体实现会根据资源文件自动生成
+ */
+interface AppStringResources {
+    val welcomeMessage: String
+    val goodbyeMessage: String
+    val helloUser: String
+    val settings: String
+    val language: String
+}
+
+/**
+ * 中文资源实现 - 可以通过编译时注解处理器生成
+ */
+object ChineseResources : AppStringResources {
+    override val welcomeMessage: String get() = "欢迎使用我们的应用"
+    override val goodbyeMessage: String get() = "再见"
+    override val helloUser: String get() = "你好, {0}!"
+    override val settings: String get() = "设置"
+    override val language: String get() = "语言"
+}
+
+/**
+ * 英文资源实现 - 可以通过编译时注解处理器生成
+ */
+object EnglishResources : AppStringResources {
+    override val welcomeMessage: String get() = "Welcome to our application"
+    override val goodbyeMessage: String get() = "Goodbye"
+    override val helloUser: String get() = "Hello, {0}!"
+    override val settings: String get() = "Settings"
+    override val language: String get() = "Language"
+}
+
+/**
+ * 根据语言代码获取对应的字符串资源
+ */
+fun getAppStringResources(language: String): AppStringResources {
+    return when (language.lowercase()) {
+        "zh" -> ChineseResources
+        "en" -> EnglishResources
+        else -> ChineseResources // 默认使用中文
+    }
+}
+
+/**
+ * CompositionLocal 用于提供本地化资源
+ */
+val LocalI18n = staticCompositionLocalOf<AppStringResources> {
+    ChineseResources // 默认使用中文资源
+}
+
+/**
+ * I18n Provider组件，用于包装应用程序并提供本地化资源
+ */
+@Composable
+fun I18nProvider(
+    language: String? = null, // 如果为null，则使用系统默认语言
+    content: @Composable () -> Unit
+) {
+    val currentLanguage = language ?: Locale.current.language
+    val stringResources = remember(currentLanguage) {
+        getAppStringResources(currentLanguage)
+    }
+    
+    CompositionLocalProvider(LocalI18n provides stringResources) {
+        content()
+    }
+}
+
+/**
+ * 直接访问资源属性的扩展函数
+ */
+@Composable
+fun t(resource: AppStringResources.() -> String): String {
+    val resources = LocalI18n.current
+    return resources.resource()
+}
+
+/**
+ * 带参数的翻译函数，用于格式化字符串
+ */
+@Composable
+fun t(resource: AppStringResources.() -> String, vararg formatArgs: Any): String {
+    val translatedString = t(resource)
+    return try {
+        formatArgs.foldIndexed(translatedString) { index, acc, arg ->
+            acc.replace("{${index}}", arg.toString())
+        }
+    } catch (e: Exception) {
+        translatedString
+    }
+}
+
+/**
+ * 全局翻译函数（非Composable环境）
+ * 注意：在Composable环境中请使用上面的t函数
+ */
+@ReadOnlyComposable
+fun translate(resource: AppStringResources.() -> String): String {
+    // 在非Composable环境中使用默认语言
+    val resources = getAppStringResources(I18nUtils.getCurrentLanguage())
+    return resources.resource()
+}
