@@ -9,46 +9,30 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.text.intl.Locale
+import site.addzero.util.I18nUtils.currentLanguage
 
 /**
  * 国际化工具类 - 适用于KMP项目 (编译时生成资源接口)
  */
 object I18nUtils {
-    private var currentLanguage by mutableStateOf("")
-    
-    init {
-        // 初始化时设置为系统当前语言
-        currentLanguage = Locale.current.language
-    }
-    
-    /**
-     * 设置当前语言
-     */
-    fun setLanguage(language: String) {
-        currentLanguage = language
-    }
-    
-    /**
-     * 获取当前语言
-     */
-    fun getCurrentLanguage(): String {
-        return currentLanguage
-    }
-    
+    var currentLanguage by mutableStateOf(Locale.current.language)
+
+
+
     /**
      * 获取支持的语言列表
      */
     fun getSupportedLanguages(): List<String> {
         return listOf("zh", "en") // 支持中文和英文，可根据需要扩展
     }
-    
+
     /**
      * 检查语言是否受支持
      */
     fun isLanguageSupported(language: String): Boolean {
         return language in getSupportedLanguages()
     }
-    
+
     /**
      * 根据语言代码获取语言名称
      */
@@ -137,7 +121,7 @@ fun I18nProvider(
     val stringResources = remember(currentLanguage) {
         getAppStringResources(currentLanguage)
     }
-    
+
     CompositionLocalProvider(LocalI18n provides stringResources) {
         content()
     }
@@ -174,7 +158,7 @@ fun t(resource: AppStringResources.() -> String, vararg formatArgs: Any): String
 @ReadOnlyComposable
 fun translate(resource: AppStringResources.() -> String): String {
     // 在非Composable环境中使用默认语言
-    val resources = getAppStringResources(I18nUtils.getCurrentLanguage())
+    val resources = getAppStringResources(currentLanguage)
     return resources.resource()
 }
 
