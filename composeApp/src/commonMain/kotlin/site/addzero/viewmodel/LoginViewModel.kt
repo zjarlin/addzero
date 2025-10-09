@@ -4,6 +4,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import org.koin.android.annotation.KoinViewModel
+import site.addzero.BuildKonfig
 import site.addzero.assist.api
 import site.addzero.core.network.AddHttpClient
 import site.addzero.entity.CheckSignInput
@@ -13,10 +15,6 @@ import site.addzero.generated.api.ApiProvider.loginApi
 import site.addzero.generated.api.ApiProvider.sysUserCenterApi
 import site.addzero.generated.isomorphic.SysUserIso
 import site.addzero.ui.infra.model.navigation.RecentTabsManagerViewModel
-import org.koin.android.annotation.KoinViewModel
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
-import site.addzero.BuildKonfig
 
 private const val defaultUsername = "admin"
 
@@ -25,10 +23,9 @@ private const val defaultUsername = "admin"
  * 登录状态管理
  */
 @KoinViewModel
-class LoginViewModel : ViewModel(), KoinComponent {
-
-    // 注入最近标签页管理器
-    private val recentTabsManagerViewModel: RecentTabsManagerViewModel by inject()
+class LoginViewModel(
+    private val recentTabsManagerViewModel: RecentTabsManagerViewModel
+) : ViewModel() {
 
     var singinStatus: SignInStatus by mutableStateOf(
         SignInStatus.None
