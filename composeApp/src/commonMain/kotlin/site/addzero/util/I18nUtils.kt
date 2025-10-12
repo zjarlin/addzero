@@ -9,17 +9,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.text.intl.Locale
+import site.addzero.util.I18nUtils.currentLanguage
 
 /**
  * 国际化工具类 - 适用于KMP项目 (编译时生成资源接口)
  */
 object I18nUtils {
-    var currentLanguage by mutableStateOf("")
+    var currentLanguage by mutableStateOf(Locale.current.language)
 
-    init {
-        // 初始化时设置为系统当前语言
-        currentLanguage = Locale.current.language
-    }
+
 
     /**
      * 获取支持的语言列表
@@ -160,7 +158,7 @@ fun t(resource: AppStringResources.() -> String, vararg formatArgs: Any): String
 @ReadOnlyComposable
 fun translate(resource: AppStringResources.() -> String): String {
     // 在非Composable环境中使用默认语言
-    val resources = getAppStringResources(I18nUtils.currentLanguage)
+    val resources = getAppStringResources(currentLanguage)
     return resources.resource()
 }
 
