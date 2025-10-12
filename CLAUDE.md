@@ -276,3 +276,10 @@ class MenuSearchViewModel : SearchViewModel<SysMenuVO> {
 5. **Function-First Design**: Prefer functional interfaces over class hierarchies
 
 This design philosophy ensures maximum reusability and maintainability across different business contexts.
+
+
+尽量封装泛型+lambda组件,不要定义数据类
+每次完成任务编译一下获取报错自己解决
+
+渲染函数逻辑尽量拆分为一个个小函数
+

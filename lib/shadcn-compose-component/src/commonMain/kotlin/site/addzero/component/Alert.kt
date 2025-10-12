@@ -103,7 +103,7 @@ data class AlertStyle(
 
 object AlertDefaults {
     @Composable
-    fun colors(): AlertStyle {
+    internal fun colors(): AlertStyle {
         val colors = MaterialTheme.colors
         return AlertStyle(
             borderColors = colors.border,
