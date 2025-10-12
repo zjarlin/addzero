@@ -6,6 +6,8 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -16,8 +18,10 @@ import org.koin.mp.KoinPlatformTools
 import site.addzero.adapter.RouteKeysNavigationAdapter
 import site.addzero.youtrack.components.UserInfo
 import site.addzero.youtrack.components.*
-import site.addzero.youtrack.layout.YouTrackLayout
-import site.addzero.youtrack.layout.YouTrackLayoutSlots
+import site.addzero.component.sidebar.*
+import site.addzero.component.Button
+import site.addzero.component.ButtonSize
+import site.addzero.component.ButtonVariant
 import site.addzero.di.NavgationViewModel
 import site.addzero.generated.RouteKeys
 import site.addzero.generated.RouteTable
@@ -25,6 +29,7 @@ import site.addzero.ioc.generated.IocContainer
 import site.addzero.themes.ShadcnTheme
 import site.addzero.themes.YouTrackColors
 import site.addzero.themes.YouTrackLightColors
+import site.addzero.themes.colors
 import site.addzero.ui.auth.LoginScreen
 import site.addzero.ui.infra.model.favorite.FavoriteTabsViewModel
 import site.addzero.ui.infra.model.navigation.RecentTabsManagerViewModel
@@ -78,7 +83,6 @@ fun App() {
 @Composable
 private fun CustomSidebarLayout() {
     val controller = rememberNavController()
-    var isSidebarOpen by remember { mutableStateOf(true) }
     var isDarkTheme by remember { mutableStateOf(true) }
 
     // 导航元数据适配器
@@ -98,129 +102,107 @@ private fun CustomSidebarLayout() {
         shadcnDarkColors = YouTrackColors,
         shadcnLightColors = YouTrackLightColors
     ) {
-        YouTrackLayout(
-            isSidebarOpen = isSidebarOpen,
-            onSidebarToggle = { isSidebarOpen = !isSidebarOpen },
-            slots = object : YouTrackLayoutSlots {
-                @Composable
-                override fun Sidebar(
-                    onNavigate: (String) -> Unit,
-                    selectedRoute: String,
-                    searchQuery: String,
-                    onSearchQueryChange: (String) -> Unit
-                ) {
-                    // 侧边栏内容
-                    YouTrackSidebar(
-                        navigationMetadataProvider = navigationMetadataProvider,
-                        selectedRoute = selectedRoute,
-                        onNavigate = onNavigate,
-                        searchQuery = searchQuery,
-                        onSearchQueryChange = onSearchQueryChange,
-                        onLogout = {
-                            // 处理退出登录逻辑
-                            controller.navigate("login")
-                        },
-                        userInfo = userInfo,
-                        appTitle = "AddZero",
-                        appSubtitle = "智能管理平台",
-                        modifier = Modifier.fillMaxSize()
-                    )
-                }
-
-                @Composable
-                override fun TopBar(
-                    currentRoute: String,
-                    currentTitle: String,
-                    onMenuClick: () -> Unit,
-                    onThemeToggle: () -> Unit
-                ) {
-                    YouTrackTopBar(
-                        currentTitle = currentTitle,
-                        onMenuClick = onMenuClick,
-                        onNotificationClick = { /* 处理通知点击 */ },
-                        onProfileClick = {
-                            controller.navigate("profile")
-                        },
-                        onSearchClick = { /* 处理搜索点击 */ },
-                        onThemeToggle = {
-                            isDarkTheme = !isDarkTheme
+        SidebarProvider(defaultOpen = true) {
+            SidebarLayout(
+                sidebarHeader = {
+                    SidebarHeader {
+                        // 应用标题区域
+                        Column {
+                            Text(
+                                "AddZero",
+                                style = MaterialTheme.typography.titleLarge,
+                                color = MaterialTheme.colors.sidebarForeground,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Text(
+                                "智能管理平台",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colors.sidebarForeground.copy(alpha = 0.7f)
+                            )
                         }
-                    )
-                }
 
-                @Composable
-                override fun SidebarHeader(
-                    searchQuery: String,
-                    onSearchQueryChange: (String) -> Unit
-                ) {
-                    YouTrackSidebarHeader(
-                        searchQuery = searchQuery,
-                        onSearchQueryChange = onSearchQueryChange,
-                        appTitle = "AddZero",
-                        appSubtitle = "智能管理平台"
-                    )
-                }
+                        Spacer(modifier = Modifier.height(16.dp))
 
-                @Composable
-                override fun SidebarContent(
-                    onNavigate: (String) -> Unit,
-                    selectedRoute: String,
-                    searchQuery: String
-                ) {
-                    // 构建树形菜单数据
-                    val menuTree = remember(searchQuery) {
-                        MenuTreeBuilder.buildFromNavigationMetadata(
-                            navigationItems = navigationMetadataProvider.getAllNavigationItems(),
-                            searchQuery = searchQuery
+                        // 搜索框
+                        YouTrackSidebarHeader(
+                            searchQuery = "",
+                            onSearchQueryChange = { },
+                            appTitle = "AddZero",
+                            appSubtitle = "智能管理平台"
                         )
                     }
+                },
+                sidebarContent = {
+                    SidebarContent {
+                        // 构建树形菜单数据
+                        val menuTree = remember("") {
+                            MenuTreeBuilder.buildFromNavigationMetadata(
+                                navigationItems = navigationMetadataProvider.getAllNavigationItems(),
+                                searchQuery = ""
+                            )
+                        }
 
-                    YouTrackMenuTree(
-                        nodes = menuTree,
-                        selectedRoute = selectedRoute,
-                        onNavigate = onNavigate,
-                        searchQuery = searchQuery,
-                        modifier = Modifier.fillMaxSize()
-                    )
-                }
+                        YouTrackMenuTree(
+                            nodes = menuTree,
+                            selectedRoute = RouteKeys.HOME_SCREEN,
+                            onNavigate = { route ->
+                                controller.navigate(route)
+                            },
+                            searchQuery = "",
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    }
+                },
+                sidebarFooter = {
+                    SidebarFooter {
+                        YouTrackSidebarFooter(
+                            selectedRoute = RouteKeys.HOME_SCREEN,
+                            onNavigate = { route ->
+                                controller.navigate(route)
+                            },
+                            onLogout = {
+                                controller.navigate("login")
+                            },
+                            userInfo = userInfo
+                        )
+                    }
+                },
+                content = {
+                    // 主要内容区域包含顶部导航栏和页面内容
+                    Column(modifier = Modifier.fillMaxSize()) {
+                        // 顶部导航栏
+                        YouTrackTopBar(
+                            currentTitle = "AddZero Admin",
+                            onMenuClick = {
+                                // shadcn sidebar 会自动处理菜单切换
+                            },
+                            onNotificationClick = { /* 处理通知点击 */ },
+                            onProfileClick = {
+                                controller.navigate("profile")
+                            },
+                            onSearchClick = { /* 处理搜索点击 */ },
+                            onThemeToggle = {
+                                isDarkTheme = !isDarkTheme
+                            }
+                        )
 
-                @Composable
-                override fun SidebarFooter(
-                    selectedRoute: String,
-                    onNavigate: (String) -> Unit
-                ) {
-                    YouTrackSidebarFooter(
-                        selectedRoute = selectedRoute,
-                        onNavigate = onNavigate,
-                        onLogout = {
-                            // 处理退出登录逻辑
-                            controller.navigate("login")
-                        },
-                        userInfo = userInfo
-                    )
-                }
-
-                @Composable
-                override fun MainContent(
-                    paddingValues: PaddingValues
-                ) {
-                    NavHost(
-                        navController = controller,
-                        startDestination = RouteKeys.HOME_SCREEN,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(paddingValues)
-                    ) {
-                        // 动态生成导航目标
-                        RouteTable.allRoutes.forEach { (route, content) ->
-                            this.composable(route) {
-                                content()
+                        // 页面内容
+                        NavHost(
+                            navController = controller,
+                            startDestination = RouteKeys.HOME_SCREEN,
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+                            // 动态生成导航目标
+                            RouteTable.allRoutes.forEach { (route, content) ->
+                                this.composable(route) {
+                                    content()
+                                }
                             }
                         }
                     }
                 }
-            }
-        )
+            )
+        }
     }
 }
 
