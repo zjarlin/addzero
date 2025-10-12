@@ -26,6 +26,7 @@ dependencies {
 
             implementation(projects.shared)
             implementation(projects.sharedCompose)
+            implementation(projects.lib.shadcnComposeComponent)
 
             implementation("site.addzero:addzero-ioc-core:${libs.versions.addzeroLTSVersion.get()}")
             implementation("site.addzero:addzero-tool:${libs.versions.addzeroLTSVersion.get()}")

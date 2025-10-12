@@ -20,7 +20,7 @@ val LocalSidebarState = compositionLocalOf<SidebarState> {
  */
 @Composable
 fun SidebarProvider(
-    defaultOpen: Boolean = false,
+    defaultOpen: Boolean = true,
     content: @Composable () -> Unit
 ) {
     val isMobileDevice = isMobile()

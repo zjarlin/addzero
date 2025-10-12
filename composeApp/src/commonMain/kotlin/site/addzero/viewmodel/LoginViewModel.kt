@@ -15,6 +15,7 @@ import site.addzero.generated.api.ApiProvider.loginApi
 import site.addzero.generated.api.ApiProvider.sysUserCenterApi
 import site.addzero.generated.isomorphic.SysUserIso
 import site.addzero.ui.infra.model.navigation.RecentTabsManagerViewModel
+import site.addzero.di.NavgationViewModel
 
 private const val defaultUsername = "admin"
 
@@ -87,6 +88,8 @@ class LoginViewModel(
                 AddHttpClient.setToken(loginContext)
                 //设置当前登录人即可进入主界面
                 currentToken = SysUserIso().copy(username = defaultUsername, nickname = "超级管理员")
+                // 登录成功后跳转到后台管理系统
+                NavgationViewModel.navigate("/admin/system")
                 return@api
             }
             val signin = loginApi.signin(loginContext)
@@ -158,6 +161,8 @@ class LoginViewModel(
 
             if (token.isNotBlank()) {
                 site.addzero.component.toast.ToastManager.success(BuildKonfig.WELCOME_MSG)
+                // 登录成功后跳转到后台管理系统
+                NavgationViewModel.navigate("/admin/system")
             }
 
             AddHttpClient.setToken(null)
