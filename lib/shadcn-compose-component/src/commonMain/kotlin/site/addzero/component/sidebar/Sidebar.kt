@@ -22,9 +22,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -394,4 +392,66 @@ fun SidebarMenuButton(
             fontWeight = FontWeight.Medium
         )
     }
+}
+
+/**
+ * 增强版侧边栏菜单项，参考官方 NavigationDrawerItem
+ * 支持图标、徽章和更好的交互体验
+ */
+@Composable
+fun SidebarNavigationItem(
+    label: @Composable () -> Unit,
+    selected: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    icon: (@Composable () -> Unit)? = null,
+    badge: (@Composable () -> Unit)? = null,
+    colors: NavigationDrawerItemColors = NavigationDrawerItemDefaults.colors(
+        selectedContainerColor = MaterialTheme.colors.sidebarAccent,
+        selectedIconColor = MaterialTheme.colors.sidebarAccentForeground,
+        selectedTextColor = MaterialTheme.colors.sidebarAccentForeground,
+        unselectedContainerColor = Color.Transparent,
+        unselectedIconColor = MaterialTheme.colors.sidebarForeground,
+        unselectedTextColor = MaterialTheme.colors.sidebarForeground
+    )
+) {
+    val sidebarState = LocalSidebarState.current
+
+    NavigationDrawerItem(
+        label = label,
+        selected = selected,
+        onClick = {
+            onClick()
+            // 移动端菜单选择后自动关闭侧边栏
+            if (sidebarState.isMobile) {
+                sidebarState.closeSidebar()
+            }
+        },
+        modifier = modifier,
+        icon = icon,
+        badge = badge,
+        colors = colors
+    )
+}
+
+/**
+ * 简化版导航菜单项，适用于文本菜单
+ */
+@Composable
+fun SidebarNavigationItem(
+    text: String,
+    selected: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    icon: (@Composable () -> Unit)? = null,
+    badge: (@Composable () -> Unit)? = null
+) {
+    SidebarNavigationItem(
+        label = { Text(text) },
+        selected = selected,
+        onClick = onClick,
+        modifier = modifier,
+        icon = icon,
+        badge = badge
+    )
 }

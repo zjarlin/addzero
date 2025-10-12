@@ -1,9 +1,10 @@
 package site.addzero
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
@@ -35,10 +36,25 @@ import site.addzero.viewmodel.SysRouteViewModel
 @Composable
 fun App() {
     initKoin()
-//    AppContent()
+    IocContainer.iocAllStart()
+
+    // 原来的自定义侧边栏实现（已注释）
+//    CustomSidebarLayout()
+
+    // TODO: 在这里实现新的 ModalNavigationDrawer
+    ModalNavigationDrawerLayout()
+}
+
+/**
+ * 原来自定义侧边栏的实现逻辑
+ * 保留作为参考和备份
+ */
+@Composable
+private fun CustomSidebarLayout() {
     var currentRoute by remember { mutableStateOf("dashboard") }
     val controller = rememberNavController()
     var isSidebarOpen by remember { mutableStateOf(true) }
+
     ShadcnTheme(isDarkTheme = false) {
         SidebarProvider(defaultOpen = isSidebarOpen) {
             SidebarLayout(
@@ -63,8 +79,8 @@ fun App() {
                         },
                         onLogout = {
                             // 处理退出登录逻辑
-                            val loginViewModel = koinViewModel<LoginViewModel>()
-                            loginViewModel.logout()
+//                            val loginViewModel = koinViewModel<LoginViewModel>()
+//                            loginViewModel.logout()
                             currentRoute = "login"
                         }
                     )
@@ -102,8 +118,33 @@ fun App() {
             }
         }
     }
+}
 
-    IocContainer.iocAllStart()
+/**
+ * 新的 ModalNavigationDrawer 实现
+ * 这里你可以测试官方的 ModalNavigationDrawer 效果
+ */
+@Composable
+private fun ModalNavigationDrawerLayout() {
+    // TODO: 在这里实现 ModalNavigationDrawer
+    // 临时使用简单的文本，等待你的实现
+    ShadcnTheme(isDarkTheme = true) {
+        // 临时占位内容
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "准备实现 ModalNavigationDrawer",
+                style = MaterialTheme.typography.headlineMedium
+            )
+            Text(
+                text = "请在这里添加你的 ModalNavigationDrawer 实现",
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+    }
 }
 
 

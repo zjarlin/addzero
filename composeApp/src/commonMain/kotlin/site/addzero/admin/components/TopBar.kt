@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import site.addzero.component.Button
 import site.addzero.component.ButtonSize
 import site.addzero.component.ButtonVariant
+import site.addzero.component.sidebar.SidebarTrigger
 import site.addzero.themes.colors
 
 @Composable
@@ -38,14 +39,7 @@ fun TopBar(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Button(
-                onClick = onMenuClick,
-                size = ButtonSize.Icon,
-                variant = ButtonVariant.Ghost
-            ) {
-                // 这里可以放置汉堡菜单图标
-                Text("☰", color = MaterialTheme.colors.foreground)
-            }
+            SidebarTrigger()
 
             Text(
                 text = when (currentRoute) {
