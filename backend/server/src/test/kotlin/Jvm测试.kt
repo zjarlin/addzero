@@ -1,11 +1,16 @@
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import org.babyfish.jimmer.Draft
+import org.babyfish.jimmer.runtime.DraftSpi
 import org.junit.jupiter.api.Test
 import site.addzero.common.util.excel.ExcelUtil
+import site.addzero.model.entity.SysUser
+import site.addzero.model.entity.SysUserDraft
 import site.addzero.web.infra.jackson.toJson
 import site.addzero.web.infra.jimmer.toMap
 import weatherutil.WeatherUtil
+import kotlin.jvm.java
 
 //fun main() =
 
@@ -18,6 +23,20 @@ fun log(message: Any?) {
 }
 
 class Jvm测试 {
+
+    @Test
+    fun `test11`() {
+        val sysUser = SysUser {
+        }
+        //todo 上面假设是数据库查完了 我想经过aop切面做一些后置工作
+
+       //todo 假设走到了   val obj= pjp.proceed()
+        if (obj is xxxx) {
+            // todo  这里可能直接返回实体对象
+        }else if (obj is xxxxx) {
+           //todo 这里可能是dto捏的对象  :View
+        }
+    }
 
     @Test
     fun test111() {

@@ -2,6 +2,7 @@ package jimmer_bug
 
 import kotlinx.datetime.LocalDateTime
 import org.babyfish.jimmer.ImmutableObjects
+import org.babyfish.jimmer.runtime.DraftSpi
 import org.babyfish.jimmer.sql.ast.mutation.SaveMode
 import org.babyfish.jimmer.sql.kt.KSqlClient
 import org.junit.jupiter.api.Test
@@ -10,10 +11,21 @@ import org.springframework.test.context.TestConstructor
 import site.addzero.SpringBootApp
 import site.addzero.model.entity.Product
 import site.addzero.model.entity.SysDictItem
+import site.addzero.model.entity.SysUser
 
 @SpringBootTest(classes = [SpringBootApp::class])
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 class JimmerBugTests(val kSqlClient: KSqlClient) {
+
+    fun isDraft(obj:Any): Boolean {
+        val bool = SysUser {
+
+        } is DraftSpi
+        println(bool)
+
+        return TODO("提供返回值")
+    }
+
 
     @Test
     fun `test`() {
