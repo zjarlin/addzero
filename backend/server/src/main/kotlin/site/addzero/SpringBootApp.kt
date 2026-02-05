@@ -9,5 +9,6 @@ import org.springframework.boot.runApplication
 class SpringBootApp
 
 fun main(args: Array<String>) {
-    runApplication<SpringBootApp>(*args)
+  val runApplication = runApplication<SpringBootApp>(*args)
+  runApplication.getBeansOfType<>()
 }

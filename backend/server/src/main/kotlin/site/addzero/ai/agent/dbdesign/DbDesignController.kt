@@ -1,9 +1,11 @@
 package site.addzero.ai.agent.dbdesign
 
+import cn.hutool.extra.spring.SpringUtil
 import site.addzero.ai.config.ChatModels
 import site.addzero.ai.util.ai.ai_abs_builder.AiUtil
 import site.addzero.entity.ai.FormDTO
 import org.springframework.ai.tool.annotation.Tool
+import org.springframework.stereotype.Repository
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController

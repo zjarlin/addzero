@@ -3,7 +3,6 @@ package site.addzero.web.infra.jimmer
 import cn.hutool.core.bean.BeanUtil
 import cn.hutool.extra.spring.SpringUtil
 import site.addzero.common.kt_util.toBitmask
-import site.addzero.core.ext.toJsonByKtx
 import site.addzero.web.infra.jackson.toJson
 import com.alibaba.fastjson2.parseObject
 import org.babyfish.jimmer.DraftObjects

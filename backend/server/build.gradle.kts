@@ -1,13 +1,13 @@
 import com.google.devtools.ksp.gradle.KspAATask
-import site.addzero.gradle.constant.Disposable.KSP_BUILD_DIR_JVM
+
 
 plugins {
 //    id("com.google.devtools.ksp")
     id("spring-convention")
     id("test-conventions")
-    id("ksp4iso")
+    id("site.addzero.buildlogic.ksp.ksp4iso")
     id("ksp4dict")
-    id("ksp4projectdir")
+    id("site.addzero.buildlogic.ksp.ksp4projectdir")
     id("org.jetbrains.kotlin.plugin.noarg") version libs.versions.kotlin
 
 //    id("ksp4controller2lazypeoplehttp")
@@ -146,7 +146,7 @@ dependencies {
 // server/build.gradle.kts
 kotlin {
     sourceSets.main {
-        kotlin.srcDir(KSP_BUILD_DIR_JVM)
+        kotlin.srcDir("build/generated/ksp/main/kotlin")
     }
 
 }

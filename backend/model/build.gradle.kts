@@ -1,9 +1,12 @@
 plugins {
-    id("kotlin-convention")
-    id("ksp4jdbc")
-    id("ksp4iso")
-    id("ksp4projectdir")
-    id("ksp4autoddl")
+//    id("kotlin-convention")
+    alias(libs.plugins.site.addzero.jvm.kotlin. convention)
+//    alias(libs.plugins.site)
+//   site-addzero-jvm-kotlin-convention
+    id("site.addzero.buildlogic.ksp.ksp4jdbc")
+    id("site.addzero.buildlogic.ksp.ksp4iso")
+    id("site.addzero.buildlogic.ksp.ksp4projectdir")
+    id("site.addzero.buildlogic.ksp.ksp4autoddl")
 }
 dependencies {
     ksp(libs.jimmer.ksp)

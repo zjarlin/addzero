@@ -1,5 +1,5 @@
 plugins {
     id("kmp-core")
-    id("kmp-json")
+    id("site.addzero.buildlogic.kmp.libs.kmp-json")
 
 }

@@ -20,3 +20,7 @@ captures
 .kiro
 .vscode
 /composeApp/src/commonMain/kotlin/site/addzero/component/table.zip
+/.cursorignore
+/.editorconfig
+/.qoderignore
+/.warpindexignore
