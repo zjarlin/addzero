@@ -19,12 +19,11 @@ dependencies {
 //            implementation(libs.ktorfit.lib)
             implementation(libs.kotlinx.datetime)
 //            implementation("site.addzero:tool:${libs.versions.addzeroLTSVersion.get()}")
-            implementation("site.addzero:compose-model-component:${libs.versions.addzeroLTSVersion.get()}")
-            implementation("site.addzero:route-core:${libs.versions.addzeroLTSVersion.get()}")
-            implementation("site.addzero:dict-trans-core:${libs.versions.addzeroLTSVersion.get()}")
-            implementation("site.addzero:jimmer-model-lowquery:${libs.versions.addzeroLTSVersion.get()}")
-
-            implementation("site.addzero:network-starter:${libs.versions.addzeroLTSVersion.get()}")
+            implementation(libs.compose.model.component)
+            implementation(libs.route.core)
+            implementation(libs.dict.trans.core)
+            implementation(libs.jimmer.model.lowquery)
+            implementation(libs.network.starter)
             implementation(libs.ktorfit.lib)
 
         }

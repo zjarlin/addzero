@@ -3,7 +3,7 @@
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 
 plugins {
-    id("kmp-ksp")
+    id("site.addzero.buildlogic.kmp.libs.kmp-ksp")
 //    id("kmp-json-withtool")
 //    id("kmp-koin")
 

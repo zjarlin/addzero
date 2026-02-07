@@ -1,5 +1,5 @@
 plugins {
-    id("kmp-component")
+    id("site.addzero.buildlogic.kmp.composition.kmp-component")
 }
 kotlin{
    dependencies {

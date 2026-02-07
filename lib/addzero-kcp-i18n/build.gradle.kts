@@ -1,5 +1,5 @@
 plugins {
-    id("kotlin-convention")
+    id("site.addzero.buildlogic.jvm.kotlin-convention")
 }
 
 dependencies {

@@ -3,10 +3,9 @@ import com.google.devtools.ksp.gradle.KspAATask
 
 plugins {
 //    id("com.google.devtools.ksp")
-    id("spring-convention")
-    id("test-conventions")
+    id("site.addzero.buildlogic.spring.spring-app")
     id("site.addzero.buildlogic.ksp.ksp4iso")
-    id("ksp4dict")
+    id("site.addzero.buildlogic.ksp.ksp4dict")
     id("site.addzero.buildlogic.ksp.ksp4projectdir")
     id("org.jetbrains.kotlin.plugin.noarg") version libs.versions.kotlin
 
@@ -123,7 +122,7 @@ dependencies {
 
 // 引入数据库驱动
 
-    runtimeOnly(libs.postgresql.driver)
+    runtimeOnly(libs.postgresql)
 
     runtimeOnly(libs.mysql.connector.java)
 

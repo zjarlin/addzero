@@ -3,7 +3,7 @@
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 
 plugins {
-    id("kmp-component")
+    id("site.addzero.buildlogic.kmp.composition.kmp-component")
     id("site.addzero.buildlogic.kmp.composition.kmp-json-withtool")
     id("site.addzero.buildlogic.kmp.libs.kmp-datetime")
 }
