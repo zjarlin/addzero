@@ -3,11 +3,11 @@ plugins {
     id("site.addzero.buildlogic.kmp.composition.kmp-json-withtool")
 }
 kotlin {
-    dependencies{
-        api(projects.lib.toolKmp.addzeroToolStr)
-    }
 
     sourceSets {
+      commonMain.dependencies {
+        api(libs.tool.str)
+      }
         jvmMain.dependencies {
             implementation(libs.pinyin4j)
         }

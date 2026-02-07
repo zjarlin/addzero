@@ -19,7 +19,7 @@ dependencies {
 //            implementation(libs.ktorfit.lib)
             implementation(libs.kotlinx.datetime)
 //            implementation("site.addzero:tool:${libs.versions.addzeroLTSVersion.get()}")
-            implementation(libs.compose.model.component)
+            implementation(libs.addzero.compose.model.component)
             implementation(libs.route.core)
             implementation(libs.dict.trans.core)
             implementation(libs.jimmer.model.lowquery)

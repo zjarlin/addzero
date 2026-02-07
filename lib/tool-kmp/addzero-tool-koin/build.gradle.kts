@@ -3,7 +3,7 @@
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 
 plugins {
-    id("org.jetbrains.kotlin.multiplatform")
+    id("site.addzero.buildlogic.kmp.kmp-convention")
 }
 
 kotlin {
