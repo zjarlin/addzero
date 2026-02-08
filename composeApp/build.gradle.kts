@@ -77,13 +77,13 @@ kotlin {
 
 
 // 为所有KSP任务添加对主KSP任务的依赖
-tasks.withType<KspAATask>().configureEach {
-    val kspMetadataTask = tasks.findByName("kspCommonMainKotlinMetadata")
-    if (kspMetadataTask != null && name != "kspCommonMainKotlinMetadata") {
-        dependsOn(kspMetadataTask)
-    }
-    if (name != "kspKotlin") {
-        dependsOn(":backend:model:kspKotlin")
-        dependsOn(":backend:server:kspKotlin")
-    }
-}
+//tasks.withType<KspAATask>().configureEach {
+//    val kspMetadataTask = tasks.findByName("kspCommonMainKotlinMetadata")
+//    if (kspMetadataTask != null && name != "kspCommonMainKotlinMetadata") {
+//        dependsOn(kspMetadataTask)
+//    }
+//    if (name != "kspKotlin") {
+//        dependsOn(":backend:model:kspKotlin")
+//        dependsOn(":backend:server:kspKotlin")
+//    }
+//}
