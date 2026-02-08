@@ -111,7 +111,9 @@ dependencies {
 
     implementation(libs.pinyin4j)
 
-    implementation(libs.fastexcel)
+    implementation(libs.fastexcel) {
+        exclude(group = "org.ehcache", module = "ehcache")
+    }
 //    implementation("org.springdoc:springdoc-openapi-ui:1.6.9")
 
 //    implementation("com.github.xiaoymin:knife4j-openapi3-ui:+")
