@@ -16,7 +16,6 @@ plugins {
 
 dependencies {
     kspCommonMainMetadata(libs.addzero.route.processor)
-    // todo 这个ksp弃用了,打包参数的等kotlin更新函数整体传参和展开运算符才能二次封装,不然打包整体参数无意义,二次封装用起来还是割裂
 //    kspCommonMainMetadata(libs.addzero.compose.props.processor)
     kspCommonMainMetadata(libs.addzero.ioc.processor)
 }
@@ -79,10 +78,9 @@ kotlin {
 
 // 为所有KSP任务添加对主KSP任务的依赖
 tasks.withType<KspAATask>().configureEach {
-
-    if (name != "kspCommonMainKotlinMetadata") {
-        dependsOn("kspCommonMainKotlinMetadata")
-//        dependsOn(":lib:compose:addzero-compose-native-component-table-pro:kspCommonMainKotlinMetadata")
+    val kspMetadataTask = tasks.findByName("kspCommonMainKotlinMetadata")
+    if (kspMetadataTask != null && name != "kspCommonMainKotlinMetadata") {
+        dependsOn(kspMetadataTask)
     }
     if (name != "kspKotlin") {
         dependsOn(":backend:model:kspKotlin")
