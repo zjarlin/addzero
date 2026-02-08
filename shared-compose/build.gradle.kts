@@ -1,7 +1,7 @@
 plugins {
   id("site.addzero.buildlogic.kmp.cmp-lib")
   id("site.addzero.buildlogic.kmp.kmp-ksp-plugin")
-//    id("site.addzero.buildlogic.kmp.libs.kmp-ktorfit")
+    id("site.addzero.buildlogic.kmp.kmp-ktorfit")
 //  id("site.addzero.buildlogic.conventions.addzero-component")
   id("site.addzero.buildlogic.kmp.kmp-json-withtool")
   id("site.addzero.buildlogic.kmp.kmp-datetime")
