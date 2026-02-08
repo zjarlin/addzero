@@ -33,15 +33,15 @@ kotlin {
         implementation(projects.lib.shadcnComposeComponent)
         implementation(projects.lib.youtrackSidebar)
 
-        implementation("site.addzero:ioc-core:${libs.versions.addzeroLTSVersion.get()}")
-        implementation("site.addzero:tool:${libs.versions.addzeroLTSVersion.get()}")
-        implementation("site.addzero:network-starter:${libs.versions.addzeroLTSVersion.get()}")
-        implementation("site.addzero:jimmer-model-lowquery:${libs.versions.addzeroLTSVersion.get()}")
+        implementation(libs.addzero.ioc.core)
+        implementation(libs.addzero.tool)
+        implementation(libs.network.starter)
+        implementation(libs.jimmer.model.lowquery)
 
-        implementation("site.addzero:route-core:${libs.versions.addzeroLTSVersion.get()}")
-        implementation("site.addzero:compose-props-annotations:${libs.versions.addzeroLTSVersion.get()}")
+        implementation(libs.route.core)
+        implementation(libs.compose.props.annotations)
 
-        implementation("site.addzero:entity2form-core:${libs.versions.addzeroLTSVersion.get()}")
+        implementation(libs.addzero.entity2form.core)
         implementation(libs.filekit.compose)
 
 

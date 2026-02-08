@@ -1,5 +1,5 @@
 plugins {
-    id("site.addzero.buildlogic.kmp.libs.kmp-ksp")
+    id("site.addzero.buildlogic.kmp.kmp-ksp")
     id("site.addzero.buildlogic.kmp.kmp-json-withtool")
 }
 kotlin {

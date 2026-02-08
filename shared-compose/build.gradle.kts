@@ -1,20 +1,22 @@
 plugins {
-    id("site.addzero.buildlogic.kmp.cmp-lib")
-    id("site.addzero.buildlogic.kmp.kmp-ksp-plugin")
+  id("site.addzero.buildlogic.kmp.cmp-lib")
+  id("site.addzero.buildlogic.kmp.kmp-ksp-plugin")
 //    id("site.addzero.buildlogic.kmp.libs.kmp-ktorfit")
-    id("site.addzero.buildlogic.conventions.addzero-component")
-    id("site.addzero.buildlogic.kmp.kmp-json-withtool")
-    id("site.addzero.buildlogic.kmp.libs.kmp-datetime")
+//  id("site.addzero.buildlogic.conventions.addzero-component")
+  id("site.addzero.buildlogic.kmp.kmp-json-withtool")
+  id("site.addzero.buildlogic.kmp.kmp-datetime")
 }
 dependencies {
-    kspCommonMainMetadata("site.addzero:apiprovider-processor:${libs.versions.addzeroLTSVersion.get()}")
+  kspCommonMainMetadata(libs.apiprovider.processor)
 }
 
 kotlin {
-dependencies {
-            implementation("site.addzero:tool:${libs.versions.addzeroLTSVersion.get()}")
-            implementation("site.addzero:jimmer-model-lowquery:${libs.versions.addzeroLTSVersion.get()}")
-            implementation(projects.shared)
-            implementation("site.addzero:network-starter:${libs.versions.addzeroLTSVersion.get()}")
-        }
-    }
+  dependencies {
+//    implementation(libs.bundles.addzero.component)
+    implementation(libs.addzero.tool)
+    implementation(libs.jimmer.model.lowquery)
+    implementation(libs.network.starter)
+
+    implementation(projects.shared)
+  }
+}

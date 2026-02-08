@@ -3,12 +3,11 @@ import com.google.devtools.ksp.gradle.KspAATask
 
 plugins {
 //    id("com.google.devtools.ksp")
-    id("site.addzero.buildlogic.spring.spring-app")
+    id("site.addzero.buildlogic.spring4.spring-app")
     id("site.addzero.buildlogic.ksp.ksp4iso")
     id("site.addzero.buildlogic.ksp.ksp4dict")
     id("site.addzero.buildlogic.ksp.ksp4projectdir")
     id("org.jetbrains.kotlin.plugin.noarg") version libs.versions.kotlin
-
 //    id("ksp4controller2lazypeoplehttp")
 
 }

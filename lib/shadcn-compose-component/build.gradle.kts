@@ -3,9 +3,9 @@
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 
 plugins {
-    id("site.addzero.buildlogic.kmp.composition.kmp-component")
+    id("site.addzero.buildlogic.kmp.cmp-lib")
     id("site.addzero.buildlogic.kmp.kmp-json-withtool")
-    id("site.addzero.buildlogic.kmp.libs.kmp-datetime")
+    id("site.addzero.buildlogic.kmp.kmp-datetime")
 }
 kotlin {
     dependencies {
