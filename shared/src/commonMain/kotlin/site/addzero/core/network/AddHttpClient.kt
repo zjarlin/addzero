@@ -20,10 +20,10 @@ object AddHttpClient {
 
 
     val httpclient by lazy {
-        apiClient.config {
-            configBaseUrl(BuildKonfig.BASE_URL)
-//            configToken(mytoken)
-// 动态添加token到每个请求
+        HttpClient {
+            defaultRequest {
+                url(BuildKonfig.BASE_URL)
+            }
             configToken()
         }
     }
