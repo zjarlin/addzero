@@ -23,7 +23,7 @@ dependencies {
 
 kotlin {
     dependencies {
-      implementation(libs.bundles.addzero.component)
+//      implementation(libs.bundles.addzero.component)
         implementation(libs.ktorfit.lib)
 //   todo 研究这个kmp库     composehook
 //        implementation("xyz.junerver.compose:hooks2:+")
