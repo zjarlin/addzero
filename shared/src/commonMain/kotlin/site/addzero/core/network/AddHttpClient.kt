@@ -8,7 +8,7 @@ import io.ktor.http.*
 import site.addzero.BuildKonfig
 
 object AddHttpClient {
-    private var mytoken: String? = null
+    var mytoken: String? = null
 
     fun setToken(token: String?) {
         this.mytoken = token

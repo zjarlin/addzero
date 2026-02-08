@@ -8,8 +8,6 @@ plugins {
   id("site.addzero.buildlogic.ksp.ksp4enum")
   id("site.addzero.buildlogic.ksp.ksp4projectdir")
   id("site.addzero.buildlogic.kmp.kmp-konfig")
-//    id("kmp-config-link")
-//    alias(libs.plugins.konfig)
 }
 dependencies {
   kspCommonMainMetadata("site.addzero:jdbc2enum-processor:${libs.versions.addzeroLTSVersion.get()}")
