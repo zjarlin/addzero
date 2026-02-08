@@ -8,9 +8,16 @@ plugins {
     id("site.addzero.buildlogic.ksp.ksp4dict")
     id("site.addzero.buildlogic.ksp.ksp4projectdir")
     id("org.jetbrains.kotlin.plugin.noarg") version libs.versions.kotlin
-//    id("ksp4controller2lazypeoplehttp")
 
 }
+
+// ehcache:3.11.1 需要 jaxb-runtime:[2.2,3)，但仓库里只有 4.x
+// 直接排除 ehcache 整个传递依赖树，fastexcel 不需要它
+configurations.all {
+    exclude(group = "org.ehcache", module = "ehcache")
+}
+//    id("ksp4controller2lazypeoplehttp")
+
 noArg {
     annotation("site.addzero.common.anno.NoArg")
 }
@@ -111,9 +118,7 @@ dependencies {
 
     implementation(libs.pinyin4j)
 
-    implementation(libs.fastexcel) {
-        exclude(group = "org.ehcache", module = "ehcache")
-    }
+    implementation(libs.fastexcel)
 //    implementation("org.springdoc:springdoc-openapi-ui:1.6.9")
 
 //    implementation("com.github.xiaoymin:knife4j-openapi3-ui:+")
