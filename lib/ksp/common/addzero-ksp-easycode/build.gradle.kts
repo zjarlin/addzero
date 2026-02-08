@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 
 plugins {
     id("site.addzero.buildlogic.kmp.libs.kmp-ksp")
-    id("site.addzero.buildlogic.kmp.composition.kmp-json-withtool")
+    id("site.addzero.buildlogic.kmp.kmp-json-withtool")
 }
 
 

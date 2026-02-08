@@ -1,7 +1,7 @@
 //import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 
 plugins {
-    id("site.addzero.buildlogic.kmp.composition.kmp-lib")
+    id("site.addzero.buildlogic.kmp.cmp-lib")
     id("site.addzero.buildlogic.kmp.libs.kmp-datetime")
     id("site.addzero.buildlogic.kmp.libs.kmp-json")
     id("site.addzero.buildlogic.ksp.ksp4jdbc")

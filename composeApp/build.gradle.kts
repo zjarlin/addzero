@@ -1,13 +1,13 @@
 import com.google.devtools.ksp.gradle.KspAATask
 
 plugins {
-    id("site.addzero.buildlogic.kmp.composition.kmp-app")
-    id("site.addzero.buildlogic.kmp.libs.kmp-koin")
-    id("site.addzero.buildlogic.kmp.composition.kmp-json-withtool")
+    id("site.addzero.buildlogic.kmp.cmp-app")
+    id("site.addzero.buildlogic.kmp.kmp-koin")
+    id("site.addzero.buildlogic.kmp.kmp-json-withtool")
 //    alias(libs.plugins.composeHotReload)
     id("site.addzero.buildlogic.ksp.ksp4projectdir")
-    id("site.addzero.buildlogic.kmp.libs.kmp-ksp-plugin")
-    id("site.addzero.buildlogic.conventions.addzero-component")
+    id("site.addzero.buildlogic.kmp.kmp-ksp-plugin")
+//    id("site.addzero.buildlogic.conventions.addzero-component")
 //    id("kmp-config")
 //    id("kmp-config-ui")
 //    id("kmp-config-link")
@@ -23,6 +23,7 @@ dependencies {
 
 kotlin {
     dependencies {
+      implementation(libs.bundles.addzero.component)
         implementation(libs.ktorfit.lib)
 //   todo 研究这个kmp库     composehook
 //        implementation("xyz.junerver.compose:hooks2:+")
