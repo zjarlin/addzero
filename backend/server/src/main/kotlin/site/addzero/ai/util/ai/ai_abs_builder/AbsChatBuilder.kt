@@ -82,10 +82,10 @@ class AbsChatBuilder<V : VectorStore>(
         if (condition) {
             val chatMemory = SpringUtil.getBean(ChatMemory::class.java)
             //会话记忆
-//            spec.advisors( //会话记录注册
-//                PromptChatMemoryAdvisor(chatMemory),  //回答带上会话记录
-//                MessageChatMemoryAdvisor(chatMemory, sessionId, 10)
-//            )
+            spec.advisors( //会话记录注册
+                PromptChatMemoryAdvisor(chatMemory),  //回答带上会话记录
+                MessageChatMemoryAdvisor(chatMemory, sessionId, 10)
+            )
         }
         return this
     }

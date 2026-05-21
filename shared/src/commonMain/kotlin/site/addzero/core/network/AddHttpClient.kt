@@ -8,36 +8,37 @@ import io.ktor.http.*
 import site.addzero.BuildKonfig
 
 object AddHttpClient {
-    var mytoken: String? = null
+  var mytoken: String? = null
 
-    fun setToken(token: String?) {
-        this.mytoken = token
+  fun setToken(token: String?) {
+    this.mytoken = token
+  }
+
+  fun getToken(): String? {
+    return mytoken
+  }
+
+
+  val httpclient by lazy {
+    apiClient.config {
+      defaultRequest {
+        url(BuildKonfig.BASE_URL)
+      }
+      configToken()
+
     }
-
-    fun getToken(): String? {
-        return mytoken
-    }
+  }
 
 
-    val httpclient by lazy {
-        HttpClient {
-            defaultRequest {
-                url(BuildKonfig.BASE_URL)
-            }
-            configToken()
+  private fun HttpClientConfig<*>.configToken() {
+    defaultRequest {
+      headers {
+        mytoken?.let {
+          append(HttpHeaders.Authorization, it)
         }
+      }
     }
+  }
 
-
-    private fun HttpClientConfig<*>.configToken() {
-        defaultRequest {
-            headers {
-                mytoken?.let {
-                    append(HttpHeaders.Authorization, it)
-                }
-            }
-        }
-    }
-
-    val ktorfit = Ktorfit.Builder().httpClient(httpclient).build()
+  val ktorfit = Ktorfit.Builder().httpClient(httpclient).build()
 }

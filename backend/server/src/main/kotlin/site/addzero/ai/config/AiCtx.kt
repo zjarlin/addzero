@@ -99,11 +99,8 @@ object AiCtx {
     }
 
     fun defaultChatClient(defaultChatModel: ChatModel): ChatClient {
-
         var buildOpt = defaultChatModel.defaultOptions
         val modelName = buildOpt.model
-
-
         //        if (defaultChatModel is OllamaChatModel) {
         //            val ollamaOptions = buildOpt as OllamaOptions
         //            ollamaOptions.model = modelName
