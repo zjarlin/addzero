@@ -5,7 +5,7 @@ version = versionDate.toString()
 // 或者使用setter方法
 subprojects {
     if (path.startsWith(":lib:") ) {
-        apply(plugin = "site.addzero.publish-buddy")
+        apply(plugin = "site.addzero.gradle.plugin.publish-buddy")
     }
 }
 //tasks.named<Wrapper>("wrapper") {
@@ -15,7 +15,7 @@ subprojects {
 plugins {
 //    id("site.addzero.publish-buddy") version "+"
 //    gradlePluginPublishBuddy
-    alias(libs.plugins.addzeroPublishBuddy) apply false
+    alias(libs.plugins.site.addzero.gradle.plugin.publish.buddy) apply false
     // this is necessary to avoid the plugins to be loaded multiple times
     // in each subproject's classloader
     alias(libs.plugins.androidApplication) apply false
@@ -41,7 +41,16 @@ fun ArtifactRepository.aliyunProxy() {
 }
 
 allprojects {
-    repositories { all { aliyunProxy() } }
+    repositories {
+        mavenLocal()
+        maven("https://dl.google.com/dl/android/maven2/") {
+            name = "GoogleDirect"
+        }
+        maven("https://repo1.maven.org/maven2") {
+            name = "MavenCentralDirect"
+        }
+        all { aliyunProxy() }
+    }
 
     buildscript { repositories { all { aliyunProxy() } } }
 }
